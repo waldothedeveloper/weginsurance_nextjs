@@ -6,9 +6,7 @@ name = "javascript"
   [analyzers.meta]
   plugins = ["react"]
 
-[[transformers]]
-name = "prettier"
-
 [[analyzers]]
 name = "secrets"
 enabled = true
+
