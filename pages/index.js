@@ -1,6 +1,6 @@
+// import Login from "@/components/login";
+import { AppRoot } from "@/components/root";
 import Head from "next/head";
-import Login from "@/components/login";
-
 //
 export default function Home() {
   return (
@@ -12,7 +12,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex flex-col">
-        <Login />
+        <AppRoot />
       </main>
     </>
   );
