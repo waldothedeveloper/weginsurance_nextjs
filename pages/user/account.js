@@ -1,17 +1,20 @@
+import { buildClerkProps, clerkClient, getAuth } from "@clerk/nextjs/server";
+
 import { AppShell } from "@/components/AppShell/AppShell";
-// import Logout from "@/components/logout";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
 //
 export default function UserAccount() {
-  const { user } = useUser();
   return (
     <div>
       <AppShell />
-      {/* <Logout /> */}
     </div>
   );
 }
 
-export const getServerSideProps = withPageAuthRequired();
+export const getServerSideProps = async ({ req }) => {
+  const { userId } = getAuth(req);
+
+  const user = userId ? await clerkClient.users.getUser(userId) : undefined;
+  // ...
+  return { props: { ...buildClerkProps(req, { user }) } };
+};

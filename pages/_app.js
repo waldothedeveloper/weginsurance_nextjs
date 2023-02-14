@@ -1,11 +1,11 @@
 import "@/styles/globals.css";
 
-import { UserProvider } from "@auth0/nextjs-auth0/client";
+import { ClerkProvider } from "@clerk/nextjs";
 
 export default function App({ Component, pageProps }) {
   return (
-    <UserProvider>
+    <ClerkProvider {...pageProps}>
       <Component {...pageProps} />
-    </UserProvider>
+    </ClerkProvider>
   );
 }
