@@ -5,3 +5,8 @@ name = "javascript"
 
   [analyzers.meta]
   plugins = ["react"]
+
+[[analyzers]]
+name = "secrets"
+enabled = true
+
