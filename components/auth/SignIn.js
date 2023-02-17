@@ -11,6 +11,7 @@ export const SignInComponent = () => {
             className="mx-auto h-18 w-auto rounded-lg"
             src={logo}
             alt="weginsurance logo"
+            priority
           />
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
             Entrar a la cuenta
