@@ -1,16 +1,12 @@
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
+import { Dashboard } from "@/components/AppShell/dashboard";
 import { Disclosure } from "@headlessui/react";
 import Image from "next/image";
+import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
+import { classNames } from "@/utils/classNames";
 import logo from "@/public/weg_logo.jpg";
-import userImg from "@/public/user_test.avif";
-
-const user = {
-  name: "Tom Cook",
-  email: "tom@example.com",
-  imageUrl: userImg,
-};
 
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
@@ -19,15 +15,6 @@ const navigation = [
   { name: "Calendar", href: "#", current: false },
   { name: "Reports", href: "#", current: false },
 ];
-const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "/api/auth/logout" },
-];
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
 
 export const AppShell = () => {
   return (
@@ -54,7 +41,7 @@ export const AppShell = () => {
                         <div className="hidden md:block">
                           <div className="ml-10 flex items-baseline space-x-4">
                             {navigation.map((item) => (
-                              <a
+                              <Link
                                 key={item.name}
                                 href={item.href}
                                 className={classNames(
@@ -66,7 +53,7 @@ export const AppShell = () => {
                                 aria-current={item.current ? "page" : undefined}
                               >
                                 {item.name}
-                              </a>
+                              </Link>
                             ))}
                           </div>
                         </div>
@@ -81,7 +68,7 @@ export const AppShell = () => {
                             <BellIcon className="h-6 w-6" aria-hidden="true" />
                           </button>
 
-                          {/* Profile dropdown */}
+                          {/* Profile dropdown from Clerk */}
                           <UserButton />
                         </div>
                       </div>
@@ -156,9 +143,7 @@ export const AppShell = () => {
         <main className="-mt-32">
           <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
             {/* Replace with your content */}
-            <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
-              <div className="h-96 rounded-lg border-4 border-dashed border-gray-200" />
-            </div>
+            <Dashboard />
             {/* /End replace */}
           </div>
         </main>
