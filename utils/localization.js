@@ -5,7 +5,7 @@ const commonTexts = {
       subtitle: "para continuar a {{applicationName}}",
       formTitle: "Código de verificación",
       formSubtitle:
-        "Introduzca el Código de verificación enviado a su número de telefono",
+        "Introduzca el código de verificación enviado a su número de teléfono",
       resendButton: "Reenviar código",
     },
   },
@@ -16,22 +16,22 @@ export const localization = {
   dividerText: "o",
   formFieldLabel__emailAddress: "Correo electrónico",
   formFieldLabel__emailAddresses: "Direcciones de correo",
-  formFieldLabel__phoneNumber: "Numero telefónico",
+  formFieldLabel__phoneNumber: "Número telefónico",
   formFieldLabel__username: "Nombre de usuario",
   formFieldLabel__emailAddress_phoneNumber:
-    "Correo electrónico o numero de telefono",
+    "Correo electrónico o número de teléfono",
   formFieldLabel__emailAddress_username:
     "Correo electrónico o nombre de usuario",
-  formFieldLabel__phoneNumber_username: "numero telefónico o nombre de usuario",
+  formFieldLabel__phoneNumber_username: "número telefónico o nombre de usuario",
   formFieldLabel__emailAddress_phoneNumber_username:
-    "Correo electrónico, numero telefónico o nombre de usuario",
+    "Correo electrónico, número telefónico o nombre de usuario",
   formFieldLabel__password: "Contraseña",
   formFieldLabel__newPassword: "Nueva contraseña",
   formFieldLabel__confirmPassword: "Confirme la contraseña",
   formFieldLabel__firstName: "Nombre",
   formFieldLabel__lastName: "Apellidos",
   formFieldLabel__backupCode: "Código de respaldo",
-  formFieldLabel__organizationName: "Organization name",
+  formFieldLabel__organizationName: "Nombre de la Organización",
   formFieldLabel__role: "Rol",
   formFieldInputPlaceholder__emailAddress: "",
   formFieldInputPlaceholder__emailAddresses:
@@ -102,7 +102,7 @@ export const localization = {
       subtitle: "para continuar a {{applicationName}}",
       formTitle: "Código de verificación",
       formSubtitle:
-        "Enter the código de verificación sent to your email address",
+        "Introduzca el código de verificación enviado a su correo electrónico",
       resendButton: "Re-enviar código",
     },
     phoneCode: {
@@ -110,7 +110,7 @@ export const localization = {
       subtitle: "para continuar a {{applicationName}}",
       formTitle: "Código de verificación",
       formSubtitle:
-        "Introduzca el código de verificación enviado a su numero de teléfono",
+        "Introduzca el código de verificación enviado a su número de teléfono",
       resendButton: "Re-enviar código",
     },
     continue: {
@@ -137,7 +137,7 @@ export const localization = {
       subtitle: "para continuar a {{applicationName}}",
       formTitle: "Código de verificación",
       formSubtitle:
-        "Introduzca el Código de verificación enviado a su correo eléctronico",
+        "Introduzca el código de verificación enviado a su correo eléctronico",
       resendButton: "Re-enviar código",
     },
     emailLink: {
@@ -148,7 +148,7 @@ export const localization = {
         "Utilice el enlace de verificación enviado a su correo electrónico",
       resendButton: "Reenviar enlace",
       unusedTab: {
-        title: "Puedes cerrar esta pestaña",
+        title: "Puede cerrar esta pestaña",
       },
       verified: {
         title: "Inició sesión con éxito",
@@ -191,8 +191,8 @@ export const localization = {
       title: "Usa otro método",
       actionLink: "Consigue ayuda",
       blockButton__emailLink: "Enviar enlace a{{identifier}}",
-      blockButton__emailCode: "Enviar codigo a{{identifier}}",
-      blockButton__phoneCode: "Enviar codigo a{{identifier}}",
+      blockButton__emailCode: "Enviar código a{{identifier}}",
+      blockButton__phoneCode: "Enviar código a{{identifier}}",
       blockButton__password: "Entra con tu contraseña",
       blockButton__totp: "Usa tu aplicación de autenticación",
       blockButton__backupCode: "Usa un código de respaldo",
@@ -244,7 +244,7 @@ export const localization = {
         detailsSubtitle__unverified:
           "Esta dirección de correo electrónico no ha sido verificada y puede tener una funcionalidad limitada",
         detailsAction__unverified: "Completar la verificación",
-        destructiveActionTitle: "Quitar",
+        destructiveActionTitle: "Eliminar",
         destructiveActionSubtitle:
           "Elimine esta dirección de correo electrónico para borrarla de su cuenta",
         destructiveAction: "Eliminar dirección de correo electrónico",
@@ -585,11 +585,11 @@ export const localization = {
   dates: {
     previous6Days:
       "Último {{ date | weekday('es-ES','long') }} en {{ date | timeString('es-ES') }}",
-    lastDay: "Ayer a {{ date | timeString('es-ES') }}",
-    sameDay: "Hoy a {{ date | timeString('es-ES') }}",
-    nextDay: "Mañana a {{ date | timeString('es-ES') }}",
+    lastDay: "Ayer a las {{ date | timeString('es-ES') }}",
+    sameDay: "Hoy a las {{ date | timeString('es-ES') }}",
+    nextDay: "Mañana a las {{ date | timeString('es-ES') }}",
     next6Days:
-      "{{ date | weekday('es-ES','long') }} a {{ date | timeString('es-ES') }}",
+      "{{ date | weekday('es-ES','long') }} a las {{ date | timeString('es-ES') }}",
     numeric: "{{ date | numeric('es-ES') }}",
   },
 };
