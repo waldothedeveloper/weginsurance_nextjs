@@ -35,7 +35,7 @@ export const AppRoot = () => {
             </p>
             <div className="mt-10 flex items-center gap-x-6">
               <Link
-                href="/user/account"
+                href="/admin/dashboard"
                 className="rounded-md bg-cyan-700 px-6 py-3 text-base font-semibold leading-7 text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
               >
                 Entrar al sistema
