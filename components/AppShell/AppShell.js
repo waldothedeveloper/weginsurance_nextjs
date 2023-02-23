@@ -7,6 +7,7 @@ import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
 import { classNames } from "@/utils/classNames";
 import logo from "@/public/weg_logo.jpg";
+import { useFirebaseAuth } from "@/hooks/useFirebaseAuth";
 
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
@@ -17,6 +18,8 @@ const navigation = [
 ];
 
 export const AppShell = () => {
+  const firebaseUser = useFirebaseAuth();
+
   return (
     <>
       <div className="min-h-full">
