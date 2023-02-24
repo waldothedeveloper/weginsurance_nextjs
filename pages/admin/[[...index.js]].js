@@ -1,5 +1,7 @@
 import { Shell } from "@/components/shell";
 
-const AdminDashboard = () => <Shell />;
+const AdminDashboard = () => {
+  return <Shell />;
+};
 
 export default AdminDashboard;

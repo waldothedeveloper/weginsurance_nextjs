@@ -1,44 +1,27 @@
 import {
   Bars3Icon,
-  CalendarIcon,
-  ChatBubbleBottomCenterTextIcon,
-  HomeIcon,
-  MagnifyingGlassCircleIcon,
-  MapIcon,
-  MegaphoneIcon,
-  UserGroupIcon,
+  DevicePhoneMobileIcon,
+  UserIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 
+import { AsideComponent } from "@/components/dashboard/AsideComponent";
 import Image from "next/image";
+import { MainComponent } from "@/components/dashboard/MainComponent";
+import { NavigationLinks } from "@/components/navigation/links";
+import { Placeholder } from "@/components/placeholder";
 import { UserButton } from "@clerk/nextjs";
 import { UsersList } from "@/components/directory/UsersList";
-import { classNames } from "@/utils/classNames";
 import logo from "@/public/weg_logo.jpg";
-
-const navigation = [
-  {
-    name: "Mensajes",
-    href: "#",
-    icon: ChatBubbleBottomCenterTextIcon,
-    current: true,
-  },
-  {
-    name: "Directorio",
-    href: "#",
-    icon: MagnifyingGlassCircleIcon,
-    current: false,
-  },
-  { name: "Calendario", href: "#", icon: CalendarIcon, current: false },
-  { name: "Teams", href: "#", icon: UserGroupIcon, current: false },
-  { name: "Announcements", href: "#", icon: MegaphoneIcon, current: false },
-  { name: "Office Map", href: "#", icon: MapIcon, current: false },
-];
+import { useRenderComponent } from "@/hooks/useRenderComponent";
+import { useUser } from "@clerk/nextjs";
 
 export const Shell = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { user } = useUser();
+  const { navigation, handleChangeComponent } = useRenderComponent();
 
   return (
     <>
@@ -98,42 +81,33 @@ export const Shell = () => {
                   <div className="h-0 flex-1 overflow-y-auto pt-5 pb-4">
                     <div className="flex flex-shrink-0 items-center px-4">
                       <Image
-                        className="h-8 w-auto rounded-full"
-                        placeholder="blur"
+                        className="h-14 w-auto rounded-full"
                         src={logo}
                         alt="Your Company"
                       />
                     </div>
-                    <nav aria-label="Sidebar" className="mt-5">
-                      <div className="space-y-1 px-2">
-                        {navigation.map((item) => (
-                          <a
-                            key={item.name}
-                            href={item.href}
-                            className={classNames(
-                              item.current
-                                ? "bg-gray-200"
-                                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                              "group flex items-center px-2 py-2 text-base font-medium rounded-md"
-                            )}
-                          >
-                            <item.icon
-                              className={classNames(
-                                item.current
-                                  ? "text-gray-500"
-                                  : "text-gray-400 group-hover:text-gray-500",
-                                "mr-4 h-6 w-6"
-                              )}
-                              aria-hidden="true"
-                            />
-                            {item.name}
-                          </a>
-                        ))}
-                      </div>
-                    </nav>
+                    <NavigationLinks
+                      handleChange={handleChangeComponent}
+                      navigation={navigation}
+                    />
                   </div>
                   <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
-                    <UserButton />
+                    {/* TODO: it would be nice if the whole button can show the user profile */}
+                    <button className="group block w-full flex-shrink-0">
+                      <div className="flex items-center">
+                        <div>
+                          <UserButton />
+                        </div>
+                        <div className="ml-3">
+                          <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
+                            {user?.fullName}
+                          </p>
+                          <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
+                            View profile
+                          </p>
+                        </div>
+                      </div>
+                    </button>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -152,42 +126,33 @@ export const Shell = () => {
               <div className="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
                 <div className="flex flex-shrink-0 items-center px-4">
                   <Image
-                    className="h-8 w-auto rounded-full"
-                    placeholder="blur"
+                    className="h-14 w-auto rounded-full"
                     src={logo}
                     alt="Your Company"
                   />
                 </div>
-                <nav className="mt-5 flex-1" aria-label="Sidebar">
-                  <div className="space-y-1 px-2">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          item.current
-                            ? "bg-gray-200 text-gray-900"
-                            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                          "group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-                        )}
-                      >
-                        <item.icon
-                          className={classNames(
-                            item.current
-                              ? "text-gray-500"
-                              : "text-gray-400 group-hover:text-gray-500",
-                            "mr-3 h-6 w-6"
-                          )}
-                          aria-hidden="true"
-                        />
-                        {item.name}
-                      </a>
-                    ))}
-                  </div>
-                </nav>
+                <NavigationLinks
+                  handleChange={handleChangeComponent}
+                  navigation={navigation}
+                />
               </div>
               <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
-                <UserButton />
+                {/* TODO: it would be nice if the whole button can show the user profile */}
+                <button className="group block w-full flex-shrink-0">
+                  <div className="flex items-center">
+                    <div>
+                      <UserButton />
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
+                        {user?.fullName || `...Cargando`}
+                      </p>
+                      <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
+                        View profile
+                      </p>
+                    </div>
+                  </div>
+                </button>
               </div>
             </div>
           </div>
@@ -197,8 +162,7 @@ export const Shell = () => {
             <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-4 py-1.5">
               <div>
                 <Image
-                  className="h-8 w-auto rounded-full"
-                  placeholder="blur"
+                  className="h-10 w-auto rounded-full"
                   src={logo}
                   alt="Your Company"
                 />
@@ -215,17 +179,35 @@ export const Shell = () => {
               </div>
             </div>
           </div>
+
           <div className="relative z-0 flex flex-1 overflow-hidden">
-            <main className="relative z-0 flex-1 overflow-y-auto focus:outline-none xl:order-last">
-              {/* Start main chat area*/}
-              {/* here you will put your messages components */}
-              {/* End main area */}
-            </main>
-            <aside className="relative hidden w-96 flex-shrink-0 overflow-y-auto border-r border-gray-200 xl:order-first xl:flex xl:flex-col">
-              {/* Start secondary column (hidden on smaller screens) */}
+            {/* chat messages or user details */}
+            <MainComponent>
+              <div className="text-black text-4xl font-light grid justify-items-center">
+                {navigation.filter((elem) => elem.current)[0]?.href ===
+                `messages` ? (
+                  <Placeholder
+                    icon={
+                      <DevicePhoneMobileIcon className="h-24 w-24 mx-auto text-slate-400" />
+                    }
+                    title="Lista de Mensajes"
+                    message=" Selecione un usuario de la lista para ver los mensajes enviados y
+          recibidos."
+                  />
+                ) : (
+                  <Placeholder
+                    icon={
+                      <UserIcon className="h-24 w-24 mx-auto text-slate-400" />
+                    }
+                    title="Perfil de Usuario"
+                    message=" Selecione un usuario de la lista para editar, actualizar, o borrar un usuario."
+                  />
+                )}
+              </div>
+            </MainComponent>
+            <AsideComponent>
               <UsersList />
-              {/* End secondary column */}
-            </aside>
+            </AsideComponent>
           </div>
         </div>
       </div>

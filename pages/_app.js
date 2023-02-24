@@ -1,14 +1,11 @@
 import "@/styles/globals.css";
 
 import { ClerkProvider } from "@clerk/nextjs";
-import { localization } from "@/utils/localization";
-
-// import { esES } from "@clerk/localizations";
-
+import { esES } from "@clerk/localizations";
 
 export default function App({ Component, pageProps }) {
   return (
-    <ClerkProvider {...pageProps} localization={localization}>
+    <ClerkProvider {...pageProps} localization={esES}>
       <Component {...pageProps} />
     </ClerkProvider>
   );
