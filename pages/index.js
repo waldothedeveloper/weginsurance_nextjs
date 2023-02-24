@@ -1,4 +1,3 @@
-// import Login from "@/components/login";
 import { AppRoot } from "@/components/root";
 import Head from "next/head";
 //
