@@ -1,4 +1,4 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, onSnapshot, query } from "firebase/firestore";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
 import { useEffect, useState } from "react";
 
@@ -10,49 +10,58 @@ export const useFirebaseAuthAndGetUsers = () => {
   const { getToken } = useAuth();
   const [firebaseUsers, setFirebaseUsers] = useState([]);
   const [firebaseError, setFirebaseError] = useState(null);
+  const [firebaseAuth, setFirebaseAuth] = useState(false);
 
   useEffect(() => {
-    let users = [];
     const signInWithClerk = async () => {
       try {
         const auth = getAuth(firebaseApp);
         const token = await getToken({ template: "integration_firebase" });
+        //
 
         await signInWithCustomToken(auth, token);
 
         if (!token) {
-          return;
+          return false;
         }
+
+        return token;
       } catch (error) {
         setFirebaseError(error);
       }
     };
 
     signInWithClerk()
-      .then(() => {
-        const getFirebaseUsers = async () => {
-          try {
-            const querySnapshot = await getDocs(collection(db, "ChatRooms"));
-            querySnapshot.forEach((doc) => {
-              users.push(doc.data());
-            });
-
-            setFirebaseUsers(users);
-          } catch (error) {
-            setFirebaseError(error);
-          }
-        };
-
-        getFirebaseUsers().catch((err) => setFirebaseError(err));
+      .then((token) => {
+        if (token) setFirebaseAuth(true);
       })
       .catch((err) => setFirebaseError(err));
 
     return () => {
-      users = [];
       setFirebaseUsers([]);
+      setFirebaseAuth(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    let unsubscribe;
+    if (firebaseAuth) {
+      const q = query(collection(db, "ChatRooms"));
+      unsubscribe = onSnapshot(q, (querySnapshot) => {
+        let users = [];
+        querySnapshot.forEach((doc) => {
+          users.push(doc.data());
+        });
+
+        setFirebaseUsers(users);
+      });
+    }
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
+  }, [firebaseAuth]);
 
   return { firebaseUsers, firebaseError };
 };

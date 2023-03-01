@@ -93,17 +93,16 @@ export const Shell = () => {
                   {/* TODO: it would be nice if the whole button can show the user profile */}
                   <button className="group block w-full flex-shrink-0">
                     <div className="flex items-center">
-                      <div>
-                        <UserButton />
-                      </div>
-                      <div className="ml-3">
-                        <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
-                          {user?.fullName}
-                        </p>
-                        <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
-                          View profile
-                        </p>
-                      </div>
+                      <UserButton
+                        showName={true}
+                        appearance={{
+                          elements: {
+                            userButtonBox: "flex flex-row-reverse",
+                            userButtonOuterIdentifier:
+                              "text-sm font-medium text-gray-700 group-hover:text-gray-900",
+                          },
+                        }}
+                      />
                     </div>
                   </button>
                 </div>
@@ -139,15 +138,16 @@ export const Shell = () => {
               <button className="group block w-full flex-shrink-0">
                 <div className="flex items-center">
                   <div>
-                    <UserButton />
-                  </div>
-                  <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
-                      {user?.fullName || `...Cargando`}
-                    </p>
-                    <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
-                      View profile
-                    </p>
+                    <UserButton
+                      showName={true}
+                      appearance={{
+                        elements: {
+                          userButtonBox: "flex flex-row-reverse",
+                          userButtonOuterIdentifier:
+                            "text-sm font-medium text-gray-700 group-hover:text-gray-900",
+                        },
+                      }}
+                    />
                   </div>
                 </div>
               </button>
