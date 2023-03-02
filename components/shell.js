@@ -6,20 +6,24 @@ import {
 } from "@heroicons/react/24/outline";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
-import { UserButton, useUser } from "@clerk/nextjs";
 
 import { AsideComponent } from "@/components/dashboard/AsideComponent";
 import Image from "next/image";
 import { MainComponent } from "@/components/dashboard/MainComponent";
 import { NavigationLinks } from "@/components/navigation/links";
 import { Placeholder } from "@/components/placeholder";
+import { UserButton } from "@clerk/nextjs";
+import { UserDetails } from "@/components/directory/UserDetails";
 import { UsersList } from "@/components/directory/UsersList";
 import logo from "@/public/weg_logo.jpg";
+import { useFirebaseAuthAndGetUsers } from "@/hooks/useFirebaseAuthAndGetUsers";
+import { useFirebaseUserDetails } from "@/hooks/useFirebaseUserDetails";
 import { useRenderComponent } from "@/hooks/useRenderComponent";
 
 export const Shell = () => {
+  const { userDetails, handleUserDetails } = useFirebaseUserDetails();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { user } = useUser();
+  const { firebaseUsers, firebaseError } = useFirebaseAuthAndGetUsers();
   const { navigation, handleChangeComponent } = useRenderComponent();
 
   return (
@@ -192,6 +196,8 @@ export const Shell = () => {
                   message=" Selecione un usuario de la lista para ver los mensajes enviados y
           recibidos."
                 />
+              ) : userDetails ? (
+                <UserDetails selectedUser={userDetails} />
               ) : (
                 <Placeholder
                   icon={
@@ -203,8 +209,13 @@ export const Shell = () => {
               )}
             </div>
           </MainComponent>
+          {/* users list */}
           <AsideComponent>
-            <UsersList />
+            <UsersList
+              handleUserDetails={handleUserDetails}
+              firebaseUsers={firebaseUsers}
+              firebaseError={firebaseError}
+            />
           </AsideComponent>
         </div>
       </div>
