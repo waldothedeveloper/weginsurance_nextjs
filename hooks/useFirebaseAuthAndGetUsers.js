@@ -1,4 +1,4 @@
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
 import { useEffect, useState } from "react";
 
@@ -47,7 +47,7 @@ export const useFirebaseAuthAndGetUsers = () => {
   useEffect(() => {
     let unsubscribe;
     if (firebaseAuth) {
-      const q = query(collection(db, "ChatRooms"));
+      const q = query(collection(db, "ChatRooms"), orderBy("firstname"));
       unsubscribe = onSnapshot(q, (querySnapshot) => {
         let users = [];
         querySnapshot.forEach((doc) => {
