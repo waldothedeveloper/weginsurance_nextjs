@@ -36,5 +36,5 @@ export const NavigationLinks = ({ handleChange, navigation }) => {
 
 NavigationLinks.propTypes = {
   handleChange: PropTypes.func.isRequired,
-  navigation: PropTypes.array.isRequired,
+  navigation: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

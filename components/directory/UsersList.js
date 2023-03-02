@@ -112,7 +112,7 @@ export const UsersList = ({
 };
 
 UsersList.propTypes = {
-  firebaseUsers: PropTypes.array.isRequired,
+  firebaseUsers: PropTypes.arrayOf(PropTypes.object).isRequired,
   firebaseError: PropTypes.string,
   handleUserDetails: PropTypes.func.isRequired,
 };
