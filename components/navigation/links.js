@@ -36,5 +36,12 @@ export const NavigationLinks = ({ handleChange, navigation }) => {
 
 NavigationLinks.propTypes = {
   handleChange: PropTypes.func.isRequired,
-  navigation: PropTypes.arrayOf(PropTypes.object).isRequired,
+  navigation: PropTypes.arrayOf(
+    PropTypes.shape({
+      current: PropTypes.bool.isRequired,
+      href: PropTypes.string.isRequired,
+      icon: PropTypes.object.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
