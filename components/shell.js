@@ -106,7 +106,7 @@ export const Shell = () => {
                     <button className="group block w-full flex-shrink-0">
                       <div className="flex items-center">
                         <UserButton
-                          showName={true}
+                          showName
                           appearance={{
                             elements: {
                               userButtonBox: "flex flex-row-reverse",
