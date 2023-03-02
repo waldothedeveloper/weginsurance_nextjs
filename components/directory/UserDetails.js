@@ -8,7 +8,7 @@ import female_icon from "@/public/female_icon.png";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 import male_icon from "@/public/male_icon.png";
 
-export const UserDetails = ({ selectedUser }) => {
+export const UserDetails = ({ selectedUser, setOpenModal }) => {
   return (
     <article className="w-full relative">
       {/* Profile header */}
@@ -83,6 +83,7 @@ export const UserDetails = ({ selectedUser }) => {
                   <span>Editar</span>
                 </button>
                 <button
+                  onClick={() => setOpenModal(true)}
                   type="button"
                   className="inline-flex justify-center rounded-md border border-red-300 bg-red-500 px-4 py-2 text-sm font-medium text-red-50 shadow-sm hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                 >
@@ -217,4 +218,5 @@ export const UserDetails = ({ selectedUser }) => {
 
 UserDetails.propTypes = {
   selectedUser: PropTypes.object.isRequired,
+  setOpenModal: PropTypes.func.isRequired,
 };

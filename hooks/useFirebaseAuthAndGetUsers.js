@@ -1,9 +1,8 @@
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { db, firebaseApp } from "@/lib/firebaseConfig";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
 import { useEffect, useState } from "react";
 
-import { db } from "@/lib/firebaseConfig";
-import { firebaseApp } from "@/lib/firebaseConfig";
 import { useAuth } from "@clerk/nextjs";
 
 export const useFirebaseAuthAndGetUsers = () => {
@@ -19,21 +18,21 @@ export const useFirebaseAuthAndGetUsers = () => {
         const token = await getToken({ template: "integration_firebase" });
         //
 
-        await signInWithCustomToken(auth, token);
+        const authUser = await signInWithCustomToken(auth, token);
 
         if (!token) {
           return false;
         }
 
-        return token;
+        return authUser;
       } catch (error) {
         setFirebaseError(error);
       }
     };
 
     signInWithClerk()
-      .then((token) => {
-        if (token) setFirebaseAuth(true);
+      .then((authUser) => {
+        if (authUser) setFirebaseAuth(true);
       })
       .catch((err) => setFirebaseError(err));
 
@@ -45,10 +44,10 @@ export const useFirebaseAuthAndGetUsers = () => {
   }, []);
 
   useEffect(() => {
-    let unsubscribe;
+    let unsubscribe = null;
     if (firebaseAuth) {
-      const q = query(collection(db, "ChatRooms"), orderBy("firstname"));
-      unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const dbQuery = query(collection(db, "ChatRooms"), orderBy("firstname"));
+      unsubscribe = onSnapshot(dbQuery, (querySnapshot) => {
         let users = [];
         querySnapshot.forEach((doc) => {
           users.push(doc.data());
