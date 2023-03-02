@@ -100,7 +100,24 @@ export const DeleteUserModal = ({
 };
 
 DeleteUserModal.propTypes = {
-  selectedUser: PropTypes.object,
+  selectedUser: PropTypes.shape({
+    active: PropTypes.bool,
+    color: PropTypes.string,
+    company: PropTypes.string,
+    email: PropTypes.string,
+    firstname: PropTypes.string,
+    fullname: PropTypes.string.isRequired,
+    gender: PropTypes.string,
+    lastname: PropTypes.string,
+    notes: PropTypes.string,
+    phone: PropTypes.string.isRequired,
+    placeholder: PropTypes.string,
+    second_lastname: PropTypes.string,
+    second_name: PropTypes.string,
+    secondary_phone: PropTypes.string,
+    third_phone: PropTypes.string,
+    uniqueId: PropTypes.string,
+  }),
   handleDeleteUser: PropTypes.func.isRequired,
   openModal: PropTypes.bool.isRequired,
   setOpenModal: PropTypes.func.isRequired,

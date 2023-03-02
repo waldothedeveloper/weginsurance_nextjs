@@ -33,6 +33,8 @@ export const useFirebaseAuthAndGetUsers = () => {
     signInWithClerk()
       .then((authUser) => {
         if (authUser) setFirebaseAuth(true);
+
+        return authUser;
       })
       .catch((err) => setFirebaseError(err));
 
@@ -48,7 +50,7 @@ export const useFirebaseAuthAndGetUsers = () => {
     if (firebaseAuth) {
       const dbQuery = query(collection(db, "ChatRooms"), orderBy("firstname"));
       unsubscribe = onSnapshot(dbQuery, (querySnapshot) => {
-        let users = [];
+        const users = [];
         querySnapshot.forEach((doc) => {
           users.push(doc.data());
         });
