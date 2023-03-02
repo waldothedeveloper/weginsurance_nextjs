@@ -112,7 +112,26 @@ export const UsersList = ({
 };
 
 UsersList.propTypes = {
-  firebaseUsers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  firebaseUsers: PropTypes.arrayOf(
+    PropTypes.shape({
+      active: PropTypes.bool.isRequired,
+      color: PropTypes.string,
+      company: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+      firstname: PropTypes.string.isRequired,
+      fullname: PropTypes.string.isRequired,
+      gender: PropTypes.string.isRequired,
+      lastname: PropTypes.string.isRequired,
+      notes: PropTypes.string,
+      phone: PropTypes.string.isRequired,
+      placeholder: PropTypes.string,
+      second_lastname: PropTypes.string,
+      second_name: PropTypes.string,
+      secondary_phone: PropTypes.string,
+      third_phone: PropTypes.string,
+      uniqueId: PropTypes.string,
+    })
+  ).isRequired,
   firebaseError: PropTypes.string,
   handleUserDetails: PropTypes.func.isRequired,
 };
