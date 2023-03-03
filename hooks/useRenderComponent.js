@@ -1,6 +1,8 @@
 import {
+  BuildingOfficeIcon,
   ChatBubbleBottomCenterTextIcon,
   MagnifyingGlassCircleIcon,
+  UserPlusIcon,
 } from "@heroicons/react/24/outline";
 
 import { useState } from "react";
@@ -18,6 +20,18 @@ export const useRenderComponent = () => {
       name: "Directorio",
       href: "directory",
       icon: MagnifyingGlassCircleIcon,
+      current: false,
+    },
+    {
+      name: "Crear Usuario",
+      href: "new_user",
+      icon: UserPlusIcon,
+      current: false,
+    },
+    {
+      name: "Crear Compañia",
+      href: "new_company",
+      icon: BuildingOfficeIcon,
       current: false,
     },
   ]);

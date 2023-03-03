@@ -9,6 +9,7 @@ export const UsersList = ({
   firebaseError,
   firebaseUsers,
   handleUserDetails,
+  currentLink,
 }) => {
   if (firebaseError) {
     return (
@@ -69,7 +70,10 @@ export const UsersList = ({
                 </div>
                 <div className="min-w-0 flex-1">
                   <button
-                    onClick={() => handleUserDetails(person)}
+                    onClick={() => {
+                      if (currentLink === `directory`)
+                        handleUserDetails(person);
+                    }}
                     className="focus:outline-none w-full flex flex-col items-start space-y-1"
                   >
                     {/* Extend touch target to entire panel */}
@@ -134,4 +138,5 @@ UsersList.propTypes = {
   ).isRequired,
   firebaseError: PropTypes.string,
   handleUserDetails: PropTypes.func.isRequired,
+  currentLink: PropTypes.string.isRequired,
 };
