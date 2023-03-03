@@ -1,9 +1,9 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { deleteUser } from "@/lib/deleteUser";
 
 //
-export const useFirebaseUserDetails = () => {
+export const useFirebaseUserDetails = (navigation) => {
   const [userDetails, setUserDetails] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
@@ -13,6 +13,15 @@ export const useFirebaseUserDetails = () => {
   const handleUserDetails = useCallback((user) => {
     setUserDetails(user);
   }, []);
+
+  useEffect(() => {
+    // If we are in the Messages section, there's no need to keep the current selected User
+    const isDirectory =
+      navigation.filter((elem) => elem.current)[0]?.href === `messages`;
+    if (isDirectory) setUserDetails(null);
+    // equally, if this get's unmounted, clean up the selected user
+    return () => setUserDetails(null);
+  }, [navigation]);
 
   const handleDeleteUser = () => {
     const { phone } = userDetails;

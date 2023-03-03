@@ -1,18 +1,14 @@
-import {
-  Bars3Icon,
-  DevicePhoneMobileIcon,
-  UserIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 
 import { AsideComponent } from "@/components/dashboard/AsideComponent";
+import { ConditionalComponent } from "@/components/ConditionalComponent";
 import { DeleteUserModal } from "@/components/directory/DeleteUserModal";
 import Image from "next/image";
 import { MainComponent } from "@/components/dashboard/MainComponent";
 import { NavigationLinks } from "@/components/navigation/links";
-import { Placeholder } from "@/components/placeholder";
+// import { Placeholder } from "@/components/placeholder";
 import { UserButton } from "@clerk/nextjs";
 import { UserDetails } from "@/components/directory/UserDetails";
 import { UsersList } from "@/components/directory/UsersList";
@@ -22,6 +18,8 @@ import { useFirebaseUserDetails } from "@/hooks/useFirebaseUserDetails";
 import { useRenderComponent } from "@/hooks/useRenderComponent";
 
 export const Shell = () => {
+  const { navigation, handleChangeComponent } = useRenderComponent();
+  const currentLink = navigation.filter((elem) => elem.current)[0]?.href;
   const {
     userDetails,
     handleUserDetails,
@@ -29,10 +27,9 @@ export const Shell = () => {
     openModal,
     handleOpenModal,
     handleCloseModal,
-  } = useFirebaseUserDetails();
+  } = useFirebaseUserDetails(navigation);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { firebaseUsers, firebaseError } = useFirebaseAuthAndGetUsers();
-  const { navigation, handleChangeComponent } = useRenderComponent();
 
   const handleCloseSideBar = () => {
     setSidebarOpen(false);
@@ -203,28 +200,15 @@ export const Shell = () => {
             {/* chat messages or user details */}
             <MainComponent>
               <div className="text-black text-4xl font-light grid justify-items-center">
-                {navigation.filter((elem) => elem.current)[0]?.href ===
-                `messages` ? (
-                  <Placeholder
-                    icon={
-                      <DevicePhoneMobileIcon className="h-24 w-24 mx-auto text-slate-400" />
-                    }
-                    title="Lista de Mensajes"
-                    message=" Selecione un usuario de la lista para ver los mensajes enviados y
-          recibidos."
-                  />
-                ) : userDetails ? (
+                {userDetails ? (
                   <UserDetails
                     selectedUser={userDetails}
                     handleOpenModal={handleOpenModal}
                   />
                 ) : (
-                  <Placeholder
-                    icon={
-                      <UserIcon className="h-24 w-24 mx-auto text-slate-400" />
-                    }
-                    title="Perfil de Usuario"
-                    message=" Selecione un usuario de la lista para editar, actualizar, o borrar un usuario."
+                  <ConditionalComponent
+                    currentLink={currentLink}
+                    userDetails={userDetails}
                   />
                 )}
               </div>
@@ -232,6 +216,7 @@ export const Shell = () => {
             {/* users list */}
             <AsideComponent>
               <UsersList
+                currentLink={currentLink}
                 handleUserDetails={handleUserDetails}
                 firebaseUsers={firebaseUsers}
                 firebaseError={firebaseError}
