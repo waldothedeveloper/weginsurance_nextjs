@@ -9,11 +9,25 @@ export const useFirebaseUserDetails = () => {
     setUserDetails(user);
   };
 
-  const handleDeleteUser = (id) => {
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
+  const handleDeleteUser = () => {
+    const { phone } = userDetails;
     // each user is saved on the db by it's phone number, so that's the user ID.
-    deleteUser(id)
-      .then(() => setUserDetails(null))
-      .catch((err) => console.log(`Could not delete user`, err));
+    if (phone) {
+      deleteUser(phone)
+        .then(() => {
+          setOpenModal(false);
+          setUserDetails(null);
+        })
+        .catch((err) => {
+          // console.log(`Could not delete user`, err)
+          return err;
+        });
+    } else {
+      throw new Error(`The phone destructuring is undefined`, phone);
+    }
   };
 
   return {
@@ -21,6 +35,7 @@ export const useFirebaseUserDetails = () => {
     handleUserDetails,
     handleDeleteUser,
     openModal,
-    setOpenModal,
+    handleOpenModal,
+    handleCloseModal,
   };
 };
