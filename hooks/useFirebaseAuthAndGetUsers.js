@@ -33,7 +33,6 @@ export const useFirebaseAuthAndGetUsers = () => {
     signInWithClerk()
       .then((authUser) => {
         if (authUser) setFirebaseAuth(true);
-
         return authUser;
       })
       .catch((err) => setFirebaseError(err));

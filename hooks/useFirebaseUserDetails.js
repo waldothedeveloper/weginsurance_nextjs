@@ -1,16 +1,18 @@
+import { useCallback, useState } from "react";
+
 import { deleteUser } from "@/lib/deleteUser";
-import { useState } from "react";
+
 //
 export const useFirebaseUserDetails = () => {
   const [userDetails, setUserDetails] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
-  const handleUserDetails = (user) => {
-    setUserDetails(user);
-  };
+  const handleOpenModal = useCallback(() => setOpenModal(true), []);
+  const handleCloseModal = useCallback(() => setOpenModal(false), []);
 
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
+  const handleUserDetails = useCallback((user) => {
+    setUserDetails(user);
+  }, []);
 
   const handleDeleteUser = () => {
     const { phone } = userDetails;
