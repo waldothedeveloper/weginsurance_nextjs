@@ -27,7 +27,7 @@ export const PersonalUserInfo = ({ register, errors }) => {
                   register={register}
                   name="firstname"
                   placeholder="Jose"
-                  isRequired={true}
+                  isRequired
                   label="Nombre"
                   autoComplete="given-name"
                   type="text"
@@ -57,7 +57,7 @@ export const PersonalUserInfo = ({ register, errors }) => {
                   register={register}
                   name="lastname"
                   placeholder="Marti"
-                  isRequired={true}
+                  isRequired
                   label="Primer Apellido"
                   autoComplete="family-name"
                   type="text"
@@ -88,7 +88,7 @@ export const PersonalUserInfo = ({ register, errors }) => {
                   register={register}
                   name="phone"
                   placeholder="(305) 555-5555"
-                  isRequired={true}
+                  isRequired
                   label="Telefono"
                   autoComplete="tel"
                   type="text"
