@@ -8,7 +8,7 @@ export const CreateUserForm = () => {
         <div className="pt-8">
           <div>
             <h3 className="text-base font-semibold leading-6 text-gray-900">
-              Personal Information
+              Crear Nuevo Usuario
             </h3>
             <p className="mt-1 text-sm text-gray-500">
               Use a permanent address where you can receive mail.
@@ -20,7 +20,7 @@ export const CreateUserForm = () => {
                 htmlFor="first-name"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                First name
+                Primer Nombre
               </label>
               <div className="mt-2">
                 <input
@@ -28,7 +28,43 @@ export const CreateUserForm = () => {
                   name="first-name"
                   id="first-name"
                   autoComplete="given-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="second-name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Segundo Nombre
+              </label>
+              <div className="mt-2">
+                <input
+                  type="text"
+                  name="second-name"
+                  id="second-name"
+                  autoComplete="given-name"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="first-last-name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Primer Apellido
+              </label>
+              <div className="mt-2">
+                <input
+                  type="text"
+                  name="first-last-name"
+                  id="first-last-name"
+                  autoComplete="family-name"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -38,7 +74,7 @@ export const CreateUserForm = () => {
                 htmlFor="last-name"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Last name
+                Segundo Apellido
               </label>
               <div className="mt-2">
                 <input
@@ -46,7 +82,7 @@ export const CreateUserForm = () => {
                   name="last-name"
                   id="last-name"
                   autoComplete="family-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -60,104 +96,71 @@ export const CreateUserForm = () => {
               </label>
               <div className="mt-2">
                 <input
+                  placeholder="correo@electronico.com"
                   id="email"
                   name="email"
                   type="email"
                   autoComplete="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="genre"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Genero
+              </label>
+              <select
+                id="genre"
+                name="genre"
+                className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-cyan-600 sm:text-sm sm:leading-6"
+                defaultValue="Canada"
+              >
+                <option>Masculino</option>
+                <option>Femenino</option>
+              </select>
+            </div>
+
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="insurance-company"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Compañia de Seguros
+              </label>
+              <div className="mt-2">
+                <input
+                  id="insurance-company"
+                  name="insurance-company"
+                  type="insurance-company"
+                  autoComplete="insurance-company"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
 
             <div className="sm:col-span-3">
               <label
-                htmlFor="country"
+                htmlFor="phone-number"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Country
+                Numero de Telefono
               </label>
-              <div className="mt-2">
-                <select
-                  id="country"
-                  name="country"
-                  autoComplete="country-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                >
-                  <option>United States</option>
-                  <option>Canada</option>
-                  <option>Mexico</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="sm:col-span-6">
-              <label
-                htmlFor="street-address"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Street address
-              </label>
-              <div className="mt-2">
+              <div className="relative mt-2 rounded-md shadow-sm">
+                <div className="absolute inset-y-0 left-0 flex items-center">
+                  <label htmlFor="phone" className="sr-only">
+                    Telefono
+                  </label>
+                </div>
                 <input
                   type="text"
-                  name="street-address"
-                  id="street-address"
-                  autoComplete="street-address"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="city"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                City
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="city"
-                  id="city"
-                  autoComplete="address-level2"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="region"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                State / Province
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="region"
-                  id="region"
-                  autoComplete="address-level1"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="postal-code"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                ZIP / Postal code
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="postal-code"
-                  id="postal-code"
-                  autoComplete="postal-code"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  name="phone-number"
+                  id="phone-number"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+                  placeholder="+1 (555) 987-6543"
                 />
               </div>
             </div>
@@ -171,13 +174,13 @@ export const CreateUserForm = () => {
             type="button"
             className="rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
           >
-            Cancel
+            Cancelar
           </button>
           <button
             type="submit"
-            className="ml-3 inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="ml-3 inline-flex justify-center rounded-md bg-cyan-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
           >
-            Save
+            Guardar Usuario
           </button>
         </div>
       </div>

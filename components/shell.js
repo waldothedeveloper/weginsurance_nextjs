@@ -20,6 +20,7 @@ import { useRenderComponent } from "@/hooks/useRenderComponent";
 export const Shell = () => {
   const { navigation, handleChangeComponent } = useRenderComponent();
   const currentLink = navigation.filter((elem) => elem.current)[0]?.href;
+
   const {
     userDetails,
     handleUserDetails,
@@ -214,14 +215,16 @@ export const Shell = () => {
               </div>
             </MainComponent>
             {/* users list */}
-            <AsideComponent>
-              <UsersList
-                currentLink={currentLink}
-                handleUserDetails={handleUserDetails}
-                firebaseUsers={firebaseUsers}
-                firebaseError={firebaseError}
-              />
-            </AsideComponent>
+            {currentLink !== "new_user" && currentLink !== "new_company" && (
+              <AsideComponent>
+                <UsersList
+                  currentLink={currentLink}
+                  handleUserDetails={handleUserDetails}
+                  firebaseUsers={firebaseUsers}
+                  firebaseError={firebaseError}
+                />
+              </AsideComponent>
+            )}
           </div>
         </div>
       </div>
