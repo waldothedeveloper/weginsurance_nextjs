@@ -1,8 +1,8 @@
 import { DevicePhoneMobileIcon, UserIcon } from "@heroicons/react/24/outline";
 
-import { CreateUserForm } from "@/components/directory/CreateUserForm";
 import { Placeholder } from "@/components/placeholder";
 import PropTypes from "prop-types";
+import { UserFormWrapper } from "@/components/directory/UserFormWrapper";
 
 //
 export const ConditionalComponent = ({ currentLink }) => {
@@ -27,7 +27,7 @@ export const ConditionalComponent = ({ currentLink }) => {
         />
       );
     case "new_user":
-      return <CreateUserForm />;
+      return <UserFormWrapper />;
     case "new_company":
       return <div>I will be the NEW COMPANY component</div>;
     default:
