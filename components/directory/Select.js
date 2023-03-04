@@ -8,6 +8,7 @@ const okClass =
 export const Select = React.forwardRef(
   (
     { errors, htmlFor, errorMessage, options, onChange, onBlur, name, label },
+
     ref
   ) => (
     <>
@@ -24,11 +25,14 @@ export const Select = React.forwardRef(
         onChange={onChange}
         onBlur={onBlur}
       >
-        {options.map((value, idx) => (
-          <option key={idx} value={value}>
-            {value}
-          </option>
-        ))}
+        {options.map((elem) => {
+          const { value, id } = elem;
+          return (
+            <option key={id} value={value}>
+              {elem.value}
+            </option>
+          );
+        })}
       </select>
       {errors[name]?.type === "required" && (
         <p className="mt-2 text-sm text-red-600">{errorMessage}</p>
