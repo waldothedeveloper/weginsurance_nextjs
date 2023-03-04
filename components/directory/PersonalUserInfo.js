@@ -115,7 +115,11 @@ export const PersonalUserInfo = ({ register, errors }) => {
                   errors={errors}
                   htmlFor="insurance_company"
                   errorMessage="Por favor elija una compañia"
-                  options={["", "Ambetter", "Friday"]}
+                  options={[
+                    { value: "", id: 0 },
+                    { value: "Ambetter", id: 1 },
+                    { value: "Friday", id: 2 },
+                  ]}
                   name="insurance_company"
                   label="Compañia"
                 />
@@ -127,7 +131,11 @@ export const PersonalUserInfo = ({ register, errors }) => {
                   errors={errors}
                   htmlFor="genre"
                   errorMessage="Es obligatorio el genero del nuevo usuario"
-                  options={["", "Masculino", "Femenino"]}
+                  options={[
+                    { value: "", id: 0 },
+                    { value: "Masculino", id: 1 },
+                    { value: "Femenino", id: 2 },
+                  ]}
                   name="genre"
                   label="Genero"
                 />
@@ -138,7 +146,10 @@ export const PersonalUserInfo = ({ register, errors }) => {
                   {...register("active_user")}
                   errors={errors}
                   htmlFor="active_user"
-                  options={["Si", "No"]}
+                  options={[
+                    { value: "Si", id: 0 },
+                    { value: "No", id: 1 },
+                  ]}
                   name="active_user"
                   label="Usuario Activo"
                 />
