@@ -127,16 +127,16 @@ export const PersonalUserInfo = ({ register, errors }) => {
               {/* Genero */}
               <div className="col-span-6 sm:col-span-3">
                 <Select
-                  {...register("genre", { required: true })}
+                  {...register("gender", { required: true })}
                   errors={errors}
-                  htmlFor="genre"
+                  htmlFor="gender"
                   errorMessage="Es obligatorio el genero del nuevo usuario"
                   options={[
                     { value: "", id: 0 },
                     { value: "Masculino", id: 1 },
                     { value: "Femenino", id: 2 },
                   ]}
-                  name="genre"
+                  name="gender"
                   label="Genero"
                 />
               </div>
