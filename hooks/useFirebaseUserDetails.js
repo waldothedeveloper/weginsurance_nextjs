@@ -24,10 +24,9 @@ export const useFirebaseUserDetails = (navigation) => {
   }, [navigation]);
 
   const handleDeleteUser = () => {
-    const { phone } = userDetails;
-    // each user is saved on the db by it's phone number, so that's the user ID.
-    if (phone) {
-      deleteUser(phone)
+    const { id } = userDetails;
+    if (id) {
+      deleteUser(id)
         .then(() => {
           setOpenModal(false);
           setUserDetails(null);
@@ -37,7 +36,7 @@ export const useFirebaseUserDetails = (navigation) => {
           return err;
         });
     } else {
-      throw new Error(`The phone destructuring is undefined`, phone);
+      throw new Error(`The id destructuring is undefined`, id);
     }
   };
 
