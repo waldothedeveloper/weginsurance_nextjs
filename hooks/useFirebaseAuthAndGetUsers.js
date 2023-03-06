@@ -47,11 +47,13 @@ export const useFirebaseAuthAndGetUsers = () => {
   useEffect(() => {
     let unsubscribe = null;
     if (firebaseAuth) {
-      const dbQuery = query(collection(db, "ChatRooms"), orderBy("firstname"));
+      const dbQuery = query(collection(db, "Users"), orderBy("firstname"));
       unsubscribe = onSnapshot(dbQuery, (querySnapshot) => {
         const users = [];
         querySnapshot.forEach((doc) => {
-          users.push(doc.data());
+          const tempUser = doc.data();
+          tempUser.id = doc?.id;
+          users.push(tempUser);
         });
 
         setFirebaseUsers(users);

@@ -3,10 +3,10 @@ import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 
 import Image from "next/image";
 import PropTypes from "prop-types";
-import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 import female_icon from "@/public/female_icon.png";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 import male_icon from "@/public/male_icon.png";
+import { normalizeString } from "@/utils/normalizeString";
 
 export const UserDetails = ({ selectedUser, handleOpenModal }) => {
   return (
@@ -62,13 +62,7 @@ export const UserDetails = ({ selectedUser, handleOpenModal }) => {
             <div className="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
               <div className="mt-6 min-w-0 flex-1 sm:hidden 2xl:block">
                 <h1 className="truncate text-2xl font-bold text-gray-900">
-                  {selectedUser?.fullname
-                    .split(" ")
-                    .map((name) => {
-                      const tempName = name.toLowerCase();
-                      return capitalizeFirstLetter(tempName);
-                    })
-                    .join(" ")}
+                  {normalizeString(selectedUser?.fullname)}
                 </h1>
               </div>
               <div className="justify-stretch mt-6 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
@@ -98,13 +92,7 @@ export const UserDetails = ({ selectedUser, handleOpenModal }) => {
           </div>
           <div className="mt-6 hidden min-w-0 flex-1 sm:block 2xl:hidden">
             <h1 className="truncate text-2xl font-bold text-gray-900">
-              {selectedUser?.fullname
-                .split(" ")
-                .map((name) => {
-                  const tempName = name.toLowerCase();
-                  return capitalizeFirstLetter(tempName);
-                })
-                .join(" ")}
+              {normalizeString(selectedUser?.fullname)}
             </h1>
           </div>
         </div>
@@ -117,13 +105,7 @@ export const UserDetails = ({ selectedUser, handleOpenModal }) => {
           <div className="sm:col-span-1">
             <dt className="text-sm font-medium text-gray-500">Nombre</dt>
             <dd className="mt-1 text-sm text-gray-900">
-              {selectedUser?.firstname
-                .split(" ")
-                .map((name) => {
-                  const tempName = name.toLowerCase();
-                  return capitalizeFirstLetter(tempName);
-                })
-                .join(" ")}
+              {normalizeString(selectedUser?.firstname)}
             </dd>
           </div>
           {/* Segundo nombre */}
@@ -132,13 +114,7 @@ export const UserDetails = ({ selectedUser, handleOpenModal }) => {
               Segundo Nombre
             </dt>
             <dd className="mt-1 text-sm text-gray-900">
-              {selectedUser?.second_name
-                .split(" ")
-                .map((name) => {
-                  const tempName = name.toLowerCase();
-                  return capitalizeFirstLetter(tempName);
-                })
-                .join(" ")}
+              {normalizeString(selectedUser?.second_name)}
             </dd>
           </div>
           {/* Last name */}
@@ -147,13 +123,7 @@ export const UserDetails = ({ selectedUser, handleOpenModal }) => {
               Primer Apellido
             </dt>
             <dd className="mt-1 text-sm text-gray-900">
-              {selectedUser?.lastname
-                .split(" ")
-                .map((name) => {
-                  const tempName = name.toLowerCase();
-                  return capitalizeFirstLetter(tempName);
-                })
-                .join(" ")}
+              {normalizeString(selectedUser?.lastname)}
             </dd>
           </div>
           {/* Segundo Apellido */}
@@ -162,13 +132,7 @@ export const UserDetails = ({ selectedUser, handleOpenModal }) => {
               Segundo Apellido
             </dt>
             <dd className="mt-1 text-sm text-gray-900">
-              {selectedUser?.second_lastname
-                .split(" ")
-                .map((name) => {
-                  const tempName = name.toLowerCase();
-                  return capitalizeFirstLetter(tempName);
-                })
-                .join(" ")}
+              {normalizeString(selectedUser?.second_lastname)}
             </dd>
           </div>
           {/* Correo electronico */}
@@ -186,7 +150,7 @@ export const UserDetails = ({ selectedUser, handleOpenModal }) => {
               Compañia de Seguros
             </dt>
             <dd className="mt-1 text-sm text-gray-900">
-              {selectedUser?.company}
+              {selectedUser?.insurance_company}
             </dd>
           </div>
           {/* Phone */}
@@ -218,9 +182,9 @@ export const UserDetails = ({ selectedUser, handleOpenModal }) => {
 
 UserDetails.propTypes = {
   selectedUser: PropTypes.shape({
-    active: PropTypes.bool.isRequired,
-    color: PropTypes.string,
-    company: PropTypes.string.isRequired,
+    active_user: PropTypes.bool,
+    id: PropTypes.string.isRequired,
+    insurance_company: PropTypes.string.isRequired,
     email: PropTypes.string,
     firstname: PropTypes.string.isRequired,
     fullname: PropTypes.string.isRequired,
@@ -228,12 +192,8 @@ UserDetails.propTypes = {
     lastname: PropTypes.string.isRequired,
     notes: PropTypes.string,
     phone: PropTypes.string.isRequired,
-    placeholder: PropTypes.string,
     second_lastname: PropTypes.string,
     second_name: PropTypes.string,
-    secondary_phone: PropTypes.string,
-    third_phone: PropTypes.string,
-    uniqueId: PropTypes.string,
   }),
   handleOpenModal: PropTypes.func.isRequired,
 };

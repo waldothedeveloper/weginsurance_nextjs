@@ -2,8 +2,8 @@ import { FunnelIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 import PropTypes from "prop-types";
 import { Spinning } from "@/components/spinning";
-import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
+import { normalizeString } from "@/utils/normalizeString";
 
 export const UsersList = ({
   firebaseError,
@@ -18,7 +18,7 @@ export const UsersList = ({
       </div>
     );
   }
-  if (firebaseUsers.length === 0) {
+  if (firebaseUsers?.length === 0) {
     return <Spinning />;
   }
 
@@ -27,7 +27,7 @@ export const UsersList = ({
       <div className="px-6 pt-6 pb-4">
         <h2 className="text-lg font-medium text-gray-900">Directorio</h2>
         <p className="mt-1 text-sm text-gray-600">
-          Directorio de búsqueda de {firebaseUsers.length + 1} usuarios
+          Directorio de búsqueda de {firebaseUsers?.length + 1} usuarios
         </p>
         <form className="mt-6 flex space-x-4" action="#">
           <div className="min-w-0 flex-1">
@@ -63,7 +63,7 @@ export const UsersList = ({
       <nav className="min-h-0 flex-1 overflow-y-auto" aria-label="Directory">
         <ul className="relative z-0 divide-y divide-gray-200">
           {firebaseUsers.map((person) => (
-            <li key={person?.uniqueId}>
+            <li key={person?.phone}>
               <div className="relative flex items-center space-x-3 px-6 py-5 focus-within:ring-2 focus-within:ring-inset focus-within:ring-cyan-500 hover:bg-gray-50">
                 <div className="flex-shrink-0">
                   <div className="h-10 w-10 rounded-full bg-gray-300" />
@@ -80,13 +80,7 @@ export const UsersList = ({
                     <span className="absolute inset-0" aria-hidden="true" />
                     <div className="flex">
                       <p className="text-sm font-medium text-gray-900">
-                        {person?.fullname
-                          .split(" ")
-                          .map((name) => {
-                            const tempName = name.toLowerCase();
-                            return capitalizeFirstLetter(tempName);
-                          })
-                          .join(" ")}
+                        {normalizeString(person?.fullname)}
                       </p>
                       <div className="ml-2 relative inline-flex items-center rounded-full border border-gray-300 px-2 py-0.5 text-sm">
                         <span className="absolute flex flex-shrink-0 items-center justify-center">
@@ -96,7 +90,7 @@ export const UsersList = ({
                           />
                         </span>
                         <span className="text-xs text-gray-500">
-                          {person?.company}
+                          {person?.insurance_company}
                         </span>
                       </div>
                     </div>
@@ -118,9 +112,9 @@ export const UsersList = ({
 UsersList.propTypes = {
   firebaseUsers: PropTypes.arrayOf(
     PropTypes.shape({
-      active: PropTypes.bool.isRequired,
-      color: PropTypes.string,
-      company: PropTypes.string.isRequired,
+      active_user: PropTypes.bool,
+      id: PropTypes.string.isRequired,
+      insurance_company: PropTypes.string.isRequired,
       email: PropTypes.string,
       firstname: PropTypes.string.isRequired,
       fullname: PropTypes.string.isRequired,
@@ -128,12 +122,8 @@ UsersList.propTypes = {
       lastname: PropTypes.string.isRequired,
       notes: PropTypes.string,
       phone: PropTypes.string.isRequired,
-      placeholder: PropTypes.string,
       second_lastname: PropTypes.string,
       second_name: PropTypes.string,
-      secondary_phone: PropTypes.string,
-      third_phone: PropTypes.string,
-      uniqueId: PropTypes.string,
     })
   ).isRequired,
   firebaseError: PropTypes.string,
