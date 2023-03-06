@@ -8,7 +8,6 @@ import { DeleteUserModal } from "@/components/directory/DeleteUserModal";
 import Image from "next/image";
 import { MainComponent } from "@/components/dashboard/MainComponent";
 import { NavigationLinks } from "@/components/navigation/links";
-// import { Placeholder } from "@/components/placeholder";
 import { UserButton } from "@clerk/nextjs";
 import { UserDetails } from "@/components/directory/UserDetails";
 import { UsersList } from "@/components/directory/UsersList";
@@ -22,12 +21,19 @@ export const Shell = () => {
   const currentLink = navigation.filter((elem) => elem.current)[0]?.href;
 
   const {
+    submitUpdateUser,
+    register,
+    errors,
+    handleSubmit,
+    updateUser,
     userDetails,
     handleUserDetails,
+    handleUpdateUser,
     handleDeleteUser,
     openModal,
     handleOpenModal,
     handleCloseModal,
+    isSubmitting,
   } = useFirebaseUserDetails(navigation);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { firebaseUsers, firebaseError } = useFirebaseAuthAndGetUsers();
@@ -203,8 +209,15 @@ export const Shell = () => {
               <div className="text-black text-4xl font-light grid justify-items-center">
                 {userDetails ? (
                   <UserDetails
+                    submitUpdateUser={submitUpdateUser}
+                    register={register}
+                    errors={errors}
+                    handleSubmit={handleSubmit}
+                    updateUser={updateUser}
+                    handleUpdateUser={handleUpdateUser}
                     selectedUser={userDetails}
                     handleOpenModal={handleOpenModal}
+                    isSubmitting={isSubmitting}
                   />
                 ) : (
                   <ConditionalComponent
@@ -229,6 +242,7 @@ export const Shell = () => {
         </div>
       </div>
       <DeleteUserModal
+        isSubmitting={isSubmitting}
         selectedUser={userDetails}
         handleDeleteUser={handleDeleteUser}
         openModal={openModal}

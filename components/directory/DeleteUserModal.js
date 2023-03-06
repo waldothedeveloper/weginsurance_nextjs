@@ -9,6 +9,7 @@ export const DeleteUserModal = ({
   handleDeleteUser,
   openModal,
   handleCloseModal,
+  isSubmitting,
 }) => {
   const cancelButtonRef = useRef(null);
 
@@ -72,8 +73,13 @@ export const DeleteUserModal = ({
                 </div>
                 <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                   <button
+                    disabled={isSubmitting || false}
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                    className={
+                      isSubmitting
+                        ? "inline-flex w-full justify-center rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-400 sm:ml-3 sm:w-auto"
+                        : "inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                    }
                     onClick={handleDeleteUser}
                   >
                     Si, eliminar
@@ -118,4 +124,5 @@ DeleteUserModal.propTypes = {
   handleDeleteUser: PropTypes.func.isRequired,
   openModal: PropTypes.bool.isRequired,
   handleCloseModal: PropTypes.func.isRequired,
+  isSubmitting: PropTypes.bool.isRequired,
 };
