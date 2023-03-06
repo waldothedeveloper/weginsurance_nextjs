@@ -17,7 +17,7 @@ export const useNewUserForm = () => {
     createUser(normalizedUser)
       .then(() => reset())
       .catch((err) => {
-        console.log(`Error trying to CREATE the new user`, err);
+        
         return err;
       });
   };
