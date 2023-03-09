@@ -7,18 +7,28 @@ import { ConditionalComponent } from "@/components/ConditionalComponent";
 import { DeleteUserModal } from "@/components/directory/DeleteUserModal";
 import Image from "next/image";
 import { MainComponent } from "@/components/dashboard/MainComponent";
+import { NavBar } from "@/components/notifications/NavBar";
 import { NavigationLinks } from "@/components/navigation/links";
+import { NovuNotificationsCenter } from "@/components/notifications/NovuConfig";
 import { UserButton } from "@clerk/nextjs";
 import { UserDetails } from "@/components/directory/UserDetails";
 import { UsersList } from "@/components/directory/UsersList";
 import logo from "@/public/weg_logo.jpg";
+// import { useCreateNovuSubscriber } from "@/hooks/useNovuSubscriber";
 import { useFirebaseAuthAndGetUsers } from "@/hooks/useFirebaseAuthAndGetUsers";
 import { useFirebaseUserDetails } from "@/hooks/useFirebaseUserDetails";
 import { useRenderComponent } from "@/hooks/useRenderComponent";
 
+//
 export const Shell = () => {
+  const { firebaseUsers, firebaseError } = useFirebaseAuthAndGetUsers();
+
   const { navigation, handleChangeComponent } = useRenderComponent();
   const currentLink = navigation.filter((elem) => elem.current)[0]?.href;
+
+  // const { novuSubscriber, novuSubscriberError } = useCreateNovuSubscriber();
+  // console.log("novuSubscriber: ", novuSubscriber);
+  // console.log("novuSubscriberError: ", novuSubscriberError);
 
   const {
     submitUpdateUser,
@@ -36,7 +46,6 @@ export const Shell = () => {
     isSubmitting,
   } = useFirebaseUserDetails(navigation);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { firebaseUsers, firebaseError } = useFirebaseAuthAndGetUsers();
 
   const handleCloseSideBar = () => {
     setSidebarOpen(false);
@@ -48,7 +57,7 @@ export const Shell = () => {
 
   return (
     <>
-      <div className="flex h-screen text-white">
+      <div className="flex h-screen">
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as="div"
@@ -115,21 +124,19 @@ export const Shell = () => {
                     />
                   </div>
                   <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
-                    {/* TODO: it would be nice if the whole button can show the user profile */}
-                    <button className="group block w-full flex-shrink-0">
-                      <div className="flex items-center">
-                        <UserButton
-                          showName
-                          appearance={{
-                            elements: {
-                              userButtonBox: "flex flex-row-reverse",
-                              userButtonOuterIdentifier:
-                                "text-sm font-medium text-gray-700 group-hover:text-gray-900",
-                            },
-                          }}
-                        />
-                      </div>
-                    </button>
+                    <div className="w-full flex items-center justify-between">
+                      <UserButton
+                        showName
+                        appearance={{
+                          elements: {
+                            userButtonBox: "flex flex-row-reverse",
+                            userButtonOuterIdentifier:
+                              "text-sm font-medium text-gray-700 group-hover:text-gray-900",
+                          },
+                        }}
+                      />
+                      <NovuNotificationsCenter />
+                    </div>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -202,7 +209,7 @@ export const Shell = () => {
               </div>
             </div>
           </div>
-
+          <NavBar />
           <div className="relative z-0 flex flex-1 overflow-hidden">
             {/* chat messages or user details */}
             <MainComponent>

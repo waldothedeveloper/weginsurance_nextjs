@@ -5,65 +5,67 @@ import { useEffect, useState } from "react";
 
 import { useAuth } from "@clerk/nextjs";
 
+//
 export const useFirebaseAuthAndGetUsers = () => {
   const { getToken } = useAuth();
+
   const [firebaseUsers, setFirebaseUsers] = useState([]);
   const [firebaseError, setFirebaseError] = useState(null);
-  const [firebaseAuth, setFirebaseAuth] = useState(false);
 
   useEffect(() => {
     const signInWithClerk = async () => {
+      const auth = getAuth(firebaseApp);
+      let token;
       try {
-        const auth = getAuth(firebaseApp);
-        const token = await getToken({ template: "integration_firebase" });
-        //
-
-        const authUser = await signInWithCustomToken(auth, token);
-
-        if (!token) {
-          return false;
+        try {
+          token = await getToken({ template: "integration_firebase" });
+        } catch (error) {
+          setFirebaseError(JSON.stringify(error, null, 2));
         }
 
-        return authUser;
+        try {
+          const userCredentials = await signInWithCustomToken(auth, token);
+          return userCredentials;
+        } catch (error) {
+          return error;
+        }
       } catch (error) {
-        setFirebaseError(error);
+        setFirebaseError(JSON.stringify(error, null, 2));
       }
+
+      if (!token) {
+        return;
+      }
+
+      return token;
     };
 
-    signInWithClerk()
-      .then((authUser) => {
-        if (authUser) setFirebaseAuth(true);
-        return authUser;
-      })
-      .catch((err) => setFirebaseError(err));
+    signInWithClerk().catch((error) =>
+      setFirebaseError(JSON.stringify(error, null, 2))
+    );
 
     return () => {
       setFirebaseUsers([]);
-      setFirebaseAuth(false);
+      setFirebaseError(null);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    let unsubscribe = null;
-    if (firebaseAuth) {
-      const dbQuery = query(collection(db, "Users"), orderBy("firstname"));
-      unsubscribe = onSnapshot(dbQuery, (querySnapshot) => {
-        const users = [];
-        querySnapshot.forEach((doc) => {
-          const tempUser = doc.data();
-          tempUser.id = doc?.id;
-          users.push(tempUser);
-        });
-
-        setFirebaseUsers(users);
+    const dbQuery = query(collection(db, "Users"), orderBy("firstname"));
+    const unsubscribe = onSnapshot(dbQuery, (querySnapshot) => {
+      const users = [];
+      querySnapshot.forEach((doc) => {
+        const tempUser = doc.data();
+        tempUser.id = doc?.id;
+        users.push(tempUser);
       });
-    }
 
-    return () => {
-      if (unsubscribe) unsubscribe();
-    };
-  }, [firebaseAuth]);
+      setFirebaseUsers(users);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return { firebaseUsers, firebaseError };
 };
