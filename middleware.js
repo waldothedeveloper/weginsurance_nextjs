@@ -3,7 +3,7 @@ import { getAuth, withClerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 // Set the paths that don't require the user to be signed in
-const publicPaths = ["/", "/sign-in*"];
+const publicPaths = ["/", "/sign-in*", "/sign-up*"];
 
 const isPublic = (path) => {
   return publicPaths.find((x) =>
@@ -27,8 +27,7 @@ export default withClerkMiddleware((request) => {
   return NextResponse.next();
 });
 
-// old regex that didn't allow images to run
-// export const config = { matcher: "/((?!.*\\.).*)" };
 export const config = {
   matcher: "/((?!_next/image|_next/static|favicon.ico).*)",
 };
+//   return { props: { ...buildClerkProps(req) } };

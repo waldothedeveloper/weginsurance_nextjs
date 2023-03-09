@@ -4,7 +4,8 @@ import { UserNotes } from "@/components/directory/UserNotes";
 import { useNewUserForm } from "@/hooks/useNewUserForm";
 //
 export const UserFormWrapper = () => {
-  const { register, handleSubmit, errors, onSubmit } = useNewUserForm();
+  const { register, handleSubmit, errors, onSubmit, isSubmitting } =
+    useNewUserForm();
 
   return (
     <div className="py-16 px-12">
@@ -30,8 +31,13 @@ export const UserFormWrapper = () => {
                 <div className="pt-12 px-2">
                   <div className="flex justify-end">
                     <button
+                      disabled={isSubmitting ?? false}
                       type="submit"
-                      className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-cyan-700 hover:bg-cyan-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                      className={
+                        isSubmitting
+                          ? "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-400 bg-gray-300"
+                          : "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-cyan-700 hover:bg-cyan-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                      }
                     >
                       Guardar
                     </button>

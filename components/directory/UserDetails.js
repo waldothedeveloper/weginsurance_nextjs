@@ -106,7 +106,7 @@ export const UserDetails = ({
           {/* background profile cover image */}
           <Image
             className="object-cover"
-            src="https://images.unsplash.com/photo-1517265853097-ba300fc3c4d9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80"
+            src="https://images.unsplash.com/photo-1444628838545-ac4016a5418a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
             alt="background profile image"
             sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
@@ -118,7 +118,7 @@ export const UserDetails = ({
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
             <div className="relative h-24 w-24 sm:h-32 sm:w-32">
-              {selectedUser?.gender === "masculino" ? (
+              {selectedUser?.gender === "Masculino" ? (
                 <Image
                   className="rounded-full ring-4 ring-white"
                   src={male_icon}

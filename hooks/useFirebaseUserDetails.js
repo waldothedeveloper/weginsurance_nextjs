@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { deleteUser } from "@/lib/deleteUser";
+import { fetcherPost } from "@/utils/fetcherPost";
 import { getFirebaseUser } from "@/lib/getFirebaseUser";
 import { normalizeFirebaseUser } from "@/lib/normalizeFirebaseUser";
+import { novuSubscriberId } from "@/utils/novuSubscriberId";
 import { updateFirebaseUser } from "@/lib/updateFirebaseUser";
 import { useForm } from "react-hook-form";
 
@@ -59,6 +61,24 @@ export const useFirebaseUserDetails = (navigation) => {
       setIsSubmitting(true);
       deleteUser(id)
         .then(() => {
+          // notify of user deleted ok!
+          fetcherPost(
+            `/api/notifications/notification`,
+            `El usuario ${userDetails?.fullname} ha sido eliminado exitosamente.`,
+            novuSubscriberId,
+            `success-notification`
+          )
+            .then((data) => {
+              // console.log("Notification user deleted sent! : ", data);
+              reset();
+              return data;
+            })
+            .catch((err) => {
+              // console.log(`err`, err);
+              return err;
+            });
+
+          //
           setOpenModal(false);
           setUserDetails(null);
           setIsSubmitting(false);
@@ -66,6 +86,21 @@ export const useFirebaseUserDetails = (navigation) => {
         .catch((err) => {
           setIsSubmitting(false);
           // console.log(`Could not delete user`, err)
+          // notify of not being able to delete the user
+          fetcherPost(
+            `/api/notifications/notification`,
+            `Ha ocurrido un error trantando de eliminar al usuario ${userDetails?.fullname}`,
+            novuSubscriberId,
+            `error-notification`
+          )
+            .then((data) => {
+              reset();
+              return data;
+            })
+            .catch((err) => {
+              // console.log(`err`, err);
+              return err;
+            });
           return err;
         });
     } else {
@@ -89,7 +124,25 @@ export const useFirebaseUserDetails = (navigation) => {
 
           getFirebaseUser(id)
             .then((u) => {
-              if (u) setUserDetails(u);
+              if (u) {
+                setUserDetails(u);
+                // notify of user successfuly updated!
+                fetcherPost(
+                  `/api/notifications/notification`,
+                  `El usuario ${userDetails?.fullname} ha sido actualizado correctamente.`,
+                  novuSubscriberId,
+                  `success-notification`
+                )
+                  .then((data) => {
+                    // console.log("Notification user updated ok! : ", data);
+                    reset();
+                    return data;
+                  })
+                  .catch((err) => {
+                    // console.log(`err`, err);
+                    return err;
+                  });
+              }
               setUpdateUser(false);
 
               return true;
