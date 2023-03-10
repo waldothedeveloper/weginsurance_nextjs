@@ -11,13 +11,13 @@ import { useState } from "react";
 export const useRenderComponent = () => {
   const [navigation, setNavigation] = useState([
     {
-      name: "Mensajes",
+      name: "Mensajes SMS",
       href: "messages",
       icon: ChatBubbleBottomCenterTextIcon,
       current: true,
     },
     {
-      name: "Directorio",
+      name: "Directorio de Usuarios",
       href: "directory",
       icon: MagnifyingGlassCircleIcon,
       current: false,
@@ -29,8 +29,8 @@ export const useRenderComponent = () => {
       current: false,
     },
     {
-      name: "Crear Compañia",
-      href: "new_company",
+      name: "Compañias de Seguros",
+      href: "insurance_company",
       icon: BuildingOfficeIcon,
       current: false,
     },
