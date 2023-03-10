@@ -49,7 +49,7 @@ export default async function handler(req, res) {
     }
 
     if (data?.acknowledged && data?.status === "processed") {
-      return res.status(200).json({ message: message, status: data?.status });
+      return res.status(200).json({ message, status: data?.status });
     } else {
       return res.status(500).json({
         message: `Hemos detectado un error inesperado. Intentelo nuevamente.`,

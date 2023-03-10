@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       });
     } else {
       return res.status(400).json({
-        message: { status: status, message: statusText, subscriberId },
+        message: { status, message: statusText, subscriberId },
       });
     }
   } catch (error) {
