@@ -32,10 +32,10 @@ export default async function handler(req, res) {
   try {
     const result = await novu.trigger(notificationName, {
       to: {
-        subscriberId: subscriberId,
+        subscriberId,
       },
       payload: {
-        message: message,
+        message,
       },
     });
 
