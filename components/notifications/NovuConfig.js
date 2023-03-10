@@ -10,7 +10,7 @@ import { novuSubscriberId } from "@/utils/novuSubscriberId";
 export const NovuNotificationsCenter = () => {
   // your logic to handle the notification click
   function onNotificationClick(message) {
-    console.log("this runs when you click the notification message: ", message);
+    
   }
 
   return (
