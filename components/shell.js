@@ -6,6 +6,7 @@ import { AsideComponent } from "@/components/dashboard/AsideComponent";
 import { ConditionalComponent } from "@/components/ConditionalComponent";
 import { DeleteUserModal } from "@/components/directory/DeleteUserModal";
 import Image from "next/image";
+import { InsuranceCompanyList } from "@/components/companies/InsuranceCompanyList";
 import { MainComponent } from "@/components/dashboard/MainComponent";
 import { NavBar } from "@/components/notifications/NavBar";
 import { NavigationLinks } from "@/components/navigation/links";
@@ -235,7 +236,8 @@ export const Shell = () => {
               </div>
             </MainComponent>
             {/* users list */}
-            {currentLink !== "new_user" && currentLink !== "new_company" && (
+            {currentLink !== "new_user" &&
+            currentLink !== "insurance_company" ? (
               <AsideComponent>
                 <UsersList
                   currentLink={currentLink}
@@ -243,6 +245,10 @@ export const Shell = () => {
                   firebaseUsers={firebaseUsers}
                   firebaseError={firebaseError}
                 />
+              </AsideComponent>
+            ) : (
+              <AsideComponent>
+                <InsuranceCompanyList />
               </AsideComponent>
             )}
           </div>

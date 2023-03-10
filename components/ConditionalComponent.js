@@ -28,7 +28,7 @@ export const ConditionalComponent = ({ currentLink }) => {
       );
     case "new_user":
       return <UserFormWrapper />;
-    case "new_company":
+    case "insurance_company":
       return <div>I will be the NEW COMPANY component</div>;
     default:
       return null;
