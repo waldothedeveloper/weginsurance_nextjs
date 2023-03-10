@@ -15,75 +15,71 @@ import { normalizeString } from "@/utils/normalizeString";
 
 const SelectedUser = ({ selectedUser }) => {
   return (
-    <>
-      <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-        {/* First name */}
-        <div className="sm:col-span-1">
-          <dt className="text-sm font-medium text-gray-500">Nombre</dt>
-          <dd className="mt-1 text-sm text-gray-900">
-            {normalizeString(selectedUser?.firstname)}
-          </dd>
-        </div>
-        {/* Segundo nombre */}
-        <div className="sm:col-span-1">
-          <dt className="text-sm font-medium text-gray-500">Segundo Nombre</dt>
-          <dd className="mt-1 text-sm text-gray-900">
-            {normalizeString(selectedUser?.second_name)}
-          </dd>
-        </div>
-        {/* Last name */}
-        <div className="sm:col-span-1">
-          <dt className="text-sm font-medium text-gray-500">Primer Apellido</dt>
-          <dd className="mt-1 text-sm text-gray-900">
-            {normalizeString(selectedUser?.lastname)}
-          </dd>
-        </div>
-        {/* Segundo Apellido */}
-        <div className="sm:col-span-1">
-          <dt className="text-sm font-medium text-gray-500">
-            Segundo Apellido
-          </dt>
-          <dd className="mt-1 text-sm text-gray-900">
-            {normalizeString(selectedUser?.second_lastname)}
-          </dd>
-        </div>
-        {/* Correo electronico */}
-        <div className="sm:col-span-1">
-          <dt className="text-sm font-medium text-gray-500">
-            Correo electronico
-          </dt>
-          <dd className="mt-1 text-sm text-gray-900">{selectedUser?.email}</dd>
-        </div>
-        {/* Compañia de seguros */}
-        <div className="sm:col-span-1">
-          <dt className="text-sm font-medium text-gray-500">
-            Compañia de Seguros
-          </dt>
-          <dd className="mt-1 text-sm text-gray-900">
-            {selectedUser?.insurance_company}
-          </dd>
-        </div>
-        {/* Phone */}
-        <div className="sm:col-span-1">
-          <dt className="text-sm font-medium text-gray-500">Telefono</dt>
-          <dd className="mt-1 text-sm text-gray-900">
-            {formatPhoneNumber(selectedUser?.phone)}
-          </dd>
-        </div>
-        {/* Genero */}
-        <div className="sm:col-span-1">
-          <dt className="text-sm font-medium text-gray-500">Genero</dt>
-          <dd className="mt-1 text-sm text-gray-900">{selectedUser?.gender}</dd>
-        </div>
+    <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+      {/* First name */}
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium text-gray-500">Nombre</dt>
+        <dd className="mt-1 text-sm text-gray-900">
+          {normalizeString(selectedUser?.firstname)}
+        </dd>
+      </div>
+      {/* Segundo nombre */}
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium text-gray-500">Segundo Nombre</dt>
+        <dd className="mt-1 text-sm text-gray-900">
+          {normalizeString(selectedUser?.second_name)}
+        </dd>
+      </div>
+      {/* Last name */}
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium text-gray-500">Primer Apellido</dt>
+        <dd className="mt-1 text-sm text-gray-900">
+          {normalizeString(selectedUser?.lastname)}
+        </dd>
+      </div>
+      {/* Segundo Apellido */}
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium text-gray-500">Segundo Apellido</dt>
+        <dd className="mt-1 text-sm text-gray-900">
+          {normalizeString(selectedUser?.second_lastname)}
+        </dd>
+      </div>
+      {/* Correo electronico */}
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium text-gray-500">
+          Correo electronico
+        </dt>
+        <dd className="mt-1 text-sm text-gray-900">{selectedUser?.email}</dd>
+      </div>
+      {/* Compañia de seguros */}
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium text-gray-500">
+          Compañia de Seguros
+        </dt>
+        <dd className="mt-1 text-sm text-gray-900">
+          {selectedUser?.insurance_company}
+        </dd>
+      </div>
+      {/* Phone */}
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium text-gray-500">Telefono</dt>
+        <dd className="mt-1 text-sm text-gray-900">
+          {formatPhoneNumber(selectedUser?.phone)}
+        </dd>
+      </div>
+      {/* Genero */}
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium text-gray-500">Genero</dt>
+        <dd className="mt-1 text-sm text-gray-900">{selectedUser?.gender}</dd>
+      </div>
 
-        <div className="sm:col-span-2">
-          <dt className="text-sm font-medium text-gray-500">Notas</dt>
-          <dd className="mt-1 max-w-prose space-y-5 text-sm text-gray-900">
-            {selectedUser?.notes}
-          </dd>
-        </div>
-      </dl>
-    </>
+      <div className="sm:col-span-2">
+        <dt className="text-sm font-medium text-gray-500">Notas</dt>
+        <dd className="mt-1 max-w-prose space-y-5 text-sm text-gray-900">
+          {selectedUser?.notes}
+        </dd>
+      </div>
+    </dl>
   );
 };
 
