@@ -15,7 +15,7 @@ export const useFirebaseAuthAndGetUsers = () => {
   useEffect(() => {
     const signInWithClerk = async () => {
       const auth = getAuth(firebaseApp);
-      let token;
+      let token = null;
       try {
         try {
           token = await getToken({ template: "integration_firebase" });
