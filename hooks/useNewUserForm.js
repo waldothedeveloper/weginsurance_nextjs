@@ -15,8 +15,8 @@ export const useNewUserForm = () => {
   } = useForm();
 
   // handle form submit
-  const onSubmit = (data) => {
-    const normalizedUser = normalizeFirebaseUser(data);
+  const onSubmit = (formInputs) => {
+    const normalizedUser = normalizeFirebaseUser(formInputs);
     setIsSubmitting(true);
 
     createUser(normalizedUser)
@@ -34,12 +34,11 @@ export const useNewUserForm = () => {
             reset();
             return data;
           })
-          .catch((err) => {
-            // console.log(`err`, err);
-            return err;
+          .catch((fetcherPostError) => {
+            return fetcherPostError;
           });
       })
-      .catch((err) => {
+      .catch((error) => {
         setIsSubmitting(false);
 
         // notify of error creating a user!
@@ -49,15 +48,14 @@ export const useNewUserForm = () => {
           novuSubscriberId,
           `error-notification`
         )
-          .then((data) => {
+          .then((fetcherPostData) => {
             reset();
-            return data;
+            return fetcherPostData;
           })
-          .catch((err) => {
-            // console.log(`err`, err);
-            return err;
+          .catch((fetcherPostError) => {
+            return fetcherPostError;
           });
-        return err;
+        return error;
       });
   };
 

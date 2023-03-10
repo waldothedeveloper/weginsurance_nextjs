@@ -83,7 +83,7 @@ export const useFirebaseUserDetails = (navigation) => {
           setUserDetails(null);
           setIsSubmitting(false);
         })
-        .catch((err) => {
+        .catch((error) => {
           setIsSubmitting(false);
           // console.log(`Could not delete user`, err)
           // notify of not being able to delete the user
@@ -97,11 +97,10 @@ export const useFirebaseUserDetails = (navigation) => {
               reset();
               return data;
             })
-            .catch((err) => {
-              // console.log(`err`, err);
-              return err;
+            .catch((fetcherPostError) => {
+              return fetcherPostError;
             });
-          return err;
+          return error;
         });
     } else {
       setIsSubmitting(false);
