@@ -7,14 +7,15 @@ import { normalizeFirebaseUser } from "@/lib/normalizeFirebaseUser";
 import { novuSubscriberId } from "@/utils/novuSubscriberId";
 import { updateFirebaseUser } from "@/lib/updateFirebaseUser";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
 
 //
-export const useFirebaseUserDetails = (navigation) => {
+export const useFirebaseUserDetails = () => {
+  const router = useRouter();
   const [userDetails, setUserDetails] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [updateUser, setUpdateUser] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const handleOpenModal = useCallback(() => setOpenModal(true), []);
   const handleCloseModal = useCallback(() => setOpenModal(false), []);
 
@@ -30,13 +31,10 @@ export const useFirebaseUserDetails = (navigation) => {
   }, []);
 
   useEffect(() => {
-    // If we are in the Messages section, there's no need to keep the current selected User
-    const isDirectory =
-      navigation.filter((elem) => elem.current)[0]?.href === `messages`;
-    if (isDirectory) setUserDetails(null);
+    if (!router.asPath.includes("messages")) setUserDetails(null);
     // equally, if this get's unmounted, clean up the selected user
     return () => setUserDetails(null);
-  }, [navigation]);
+  }, [router]);
 
   useEffect(() => {
     if (userDetails) {

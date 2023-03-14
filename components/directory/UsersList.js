@@ -4,13 +4,11 @@ import PropTypes from "prop-types";
 import { Spinning } from "@/components/spinning";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 import { normalizeString } from "@/utils/normalizeString";
+import { useFirebaseUsers } from "@/hooks/useFirebaseUsers";
 
-export const UsersList = ({
-  firebaseError,
-  firebaseUsers,
-  handleUserDetails,
-  currentLink,
-}) => {
+export const UsersList = ({ handleUserDetails }) => {
+  const { firebaseUsers, firebaseError } = useFirebaseUsers();
+
   if (firebaseError) {
     return (
       <div>
@@ -19,7 +17,7 @@ export const UsersList = ({
     );
   }
   if (firebaseUsers?.length === 0) {
-    return <Spinning />;
+    return <Spinning message="Cargando Usuarios" />;
   }
 
   return (
@@ -63,17 +61,14 @@ export const UsersList = ({
       <nav className="min-h-0 flex-1 overflow-y-auto" aria-label="Directory">
         <ul className="relative z-0 divide-y divide-gray-200">
           {firebaseUsers.map((person) => (
-            <li key={person?.phone}>
+            <li key={person?.id}>
               <div className="relative flex items-center space-x-3 px-6 py-5 focus-within:ring-2 focus-within:ring-inset focus-within:ring-cyan-500 hover:bg-gray-50">
                 <div className="flex-shrink-0">
                   <div className="h-10 w-10 rounded-full bg-gray-300" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <button
-                    onClick={() => {
-                      if (currentLink === `directory`)
-                        handleUserDetails(person);
-                    }}
+                    onClick={() => handleUserDetails(person)}
                     className="focus:outline-none w-full flex flex-col items-start space-y-1"
                   >
                     {/* Extend touch target to entire panel */}
@@ -110,23 +105,5 @@ export const UsersList = ({
 };
 
 UsersList.propTypes = {
-  firebaseUsers: PropTypes.arrayOf(
-    PropTypes.shape({
-      active_user: PropTypes.bool,
-      id: PropTypes.string.isRequired,
-      insurance_company: PropTypes.string.isRequired,
-      email: PropTypes.string,
-      firstname: PropTypes.string.isRequired,
-      fullname: PropTypes.string.isRequired,
-      gender: PropTypes.string,
-      lastname: PropTypes.string.isRequired,
-      notes: PropTypes.string,
-      phone: PropTypes.string.isRequired,
-      second_lastname: PropTypes.string,
-      second_name: PropTypes.string,
-    })
-  ).isRequired,
-  firebaseError: PropTypes.string,
   handleUserDetails: PropTypes.func.isRequired,
-  currentLink: PropTypes.string.isRequired,
 };

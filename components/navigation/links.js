@@ -1,17 +1,68 @@
-import PropTypes from "prop-types";
+import {
+  BuildingOfficeIcon,
+  ChatBubbleBottomCenterTextIcon,
+  ComputerDesktopIcon,
+  MagnifyingGlassCircleIcon,
+  UserPlusIcon,
+} from "@heroicons/react/24/outline";
+
+import Link from "next/link";
 import { classNames } from "@/utils/classNames";
+import { useRouter } from "next/router";
 
 //
-export const NavigationLinks = ({ handleChange, navigation }) => {
+
+const navigation = [
+  {
+    name: "Dashboard",
+    href: "dashboard",
+    link: "/admin/dashboard",
+    icon: ComputerDesktopIcon,
+    current: true,
+  },
+  {
+    name: "Mensajes SMS",
+    href: "messages",
+    link: "/admin/messages",
+    icon: ChatBubbleBottomCenterTextIcon,
+    current: false,
+  },
+  {
+    name: "Directorio de Usuarios",
+    href: "directory",
+    link: "/admin/directory",
+    icon: MagnifyingGlassCircleIcon,
+    current: false,
+  },
+  {
+    name: "Crear Usuario",
+    href: "new_user",
+    link: "/admin/new_user",
+    icon: UserPlusIcon,
+    current: false,
+  },
+  {
+    name: "Compañias de Seguros",
+    href: "insurance_company",
+    link: "/admin/insurance_company",
+    icon: BuildingOfficeIcon,
+    current: false,
+  },
+];
+
+//
+export const NavigationLinks = () => {
+  const router = useRouter();
+
   return (
     <nav className="mt-5 flex-1" aria-label="Sidebar">
       <div className="space-y-1 px-2">
         {navigation.map((item) => (
-          <button
+          <Link
+            href={item?.link}
             key={item.name}
-            onClick={() => handleChange(item.href)}
             className={classNames(
-              item.current
+              router?.query?.dashboard?.includes(item?.href)
                 ? "bg-gray-200 text-gray-900"
                 : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
               "group flex items-center px-2 py-2 text-sm font-medium rounded-md w-full"
@@ -19,7 +70,7 @@ export const NavigationLinks = ({ handleChange, navigation }) => {
           >
             <item.icon
               className={classNames(
-                item.current
+                router?.query?.dashboard?.includes(item?.href)
                   ? "text-gray-500"
                   : "text-gray-400 group-hover:text-gray-500",
                 "mr-3 h-6 w-6"
@@ -27,21 +78,9 @@ export const NavigationLinks = ({ handleChange, navigation }) => {
               aria-hidden="true"
             />
             {item.name}
-          </button>
+          </Link>
         ))}
       </div>
     </nav>
   );
-};
-
-NavigationLinks.propTypes = {
-  handleChange: PropTypes.func.isRequired,
-  navigation: PropTypes.arrayOf(
-    PropTypes.shape({
-      current: PropTypes.bool.isRequired,
-      href: PropTypes.string.isRequired,
-      icon: PropTypes.object.isRequired,
-      name: PropTypes.string.isRequired,
-    })
-  ).isRequired,
 };

@@ -30,4 +30,3 @@ export default withClerkMiddleware((request) => {
 export const config = {
   matcher: "/((?!_next/image|_next/static|favicon.ico).*)",
 };
-//   return { props: { ...buildClerkProps(req) } };

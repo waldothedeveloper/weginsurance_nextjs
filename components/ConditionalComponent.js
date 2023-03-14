@@ -2,10 +2,14 @@ import { DevicePhoneMobileIcon, UserIcon } from "@heroicons/react/24/outline";
 
 import { Placeholder } from "@/components/placeholder";
 import PropTypes from "prop-types";
+import { SelectedInsuranceCompany } from "@/components/companies/SelectedInsuranceCompany";
 import { UserFormWrapper } from "@/components/directory/UserFormWrapper";
 
 //
-export const ConditionalComponent = ({ currentLink }) => {
+export const ConditionalComponent = ({
+  currentLink,
+  selectedInsuranceCompany,
+}) => {
   switch (currentLink) {
     case "messages":
       return (
@@ -29,7 +33,9 @@ export const ConditionalComponent = ({ currentLink }) => {
     case "new_user":
       return <UserFormWrapper />;
     case "insurance_company":
-      return <div>I will be the NEW COMPANY component</div>;
+      return (
+        <SelectedInsuranceCompany selectedCompany={selectedInsuranceCompany} />
+      );
     default:
       return null;
   }
@@ -37,4 +43,9 @@ export const ConditionalComponent = ({ currentLink }) => {
 
 ConditionalComponent.propTypes = {
   currentLink: PropTypes.string.isRequired,
+  selectedInsuranceCompany: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    logo_url: PropTypes.string,
+  }),
 };
