@@ -1,7 +1,3 @@
-export const MainComponent = ({ children }) => {
-  return (
-    <main className="relative z-0 flex-1 overflow-y-auto focus:outline-none xl:order-last">
-      {children}
-    </main>
-  );
+export const MainComponent = ({ children, className }) => {
+  return <main className={className}>{children}</main>;
 };

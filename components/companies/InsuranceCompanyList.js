@@ -1,31 +1,14 @@
 import { FunnelIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { useEffect, useState } from "react";
 
 import Image from "next/image";
+import PropTypes from "prop-types";
 import { Spinning } from "@/components/spinning";
-import { db } from "@/lib/firebaseConfig";
 
 //
-export const InsuranceCompanyList = () => {
-  const [insuranceCompanies, setInsuranceCompanies] = useState(null);
-
-  useEffect(() => {
-    const dbQuery = query(collection(db, "Insurance_Company"), orderBy("name"));
-    const unsubscribe = onSnapshot(dbQuery, (querySnapshot) => {
-      const companies = [];
-      querySnapshot.forEach((doc) => {
-        const tempCompany = doc.data();
-        tempCompany.id = doc?.id;
-        companies.push(tempCompany);
-      });
-
-      setInsuranceCompanies(companies);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
+export const InsuranceCompanyList = ({
+  insuranceCompanies,
+  handleInsuranceCompanyDetails,
+}) => {
   if (!insuranceCompanies) {
     return <Spinning />;
   }
@@ -77,18 +60,21 @@ export const InsuranceCompanyList = () => {
                 <div className="flex-shrink-0">
                   {company?.logo_url ? (
                     <div className="relative bg-gray-100 rounded-full p-0.5">
-                      <div className="relative h-16 w-16 rounded-full bg-white p-5">
+                      <div className="relative h-14 w-14 rounded-full bg-white p-5">
                         <Image
                           className="object-contain p-0.5"
                           src={company?.logo_url}
                           alt="insurance company logo"
                           fill
+                          sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
                         />
                       </div>
                     </div>
                   ) : (
                     <div className="relative bg-gray-100 rounded-full p-0.5">
-                      <div className="relative h-16 w-16 rounded-full bg-white p-5">
+                      <div className="relative h-14 w-14 rounded-full bg-white p-5">
                         <div className="object-contain p-0.5" />
                       </div>
                     </div>
@@ -97,6 +83,7 @@ export const InsuranceCompanyList = () => {
                 <div className="min-w-0 flex-1">
                   <button
                     type="button"
+                    onClick={() => handleInsuranceCompanyDetails(company)}
                     className="focus:outline-none w-full flex flex-col items-start space-y-1"
                   >
                     {/* Extend touch target to entire panel */}
@@ -115,4 +102,8 @@ export const InsuranceCompanyList = () => {
       </nav>
     </>
   );
+};
+
+InsuranceCompanyList.propTypes = {
+  handleInsuranceCompanyDetails: PropTypes.func.isRequired,
 };
