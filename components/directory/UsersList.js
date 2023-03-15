@@ -1,12 +1,11 @@
 import { FunnelIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
-import PropTypes from "prop-types";
 import { Spinning } from "@/components/spinning";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 import { normalizeString } from "@/utils/normalizeString";
 import { useFirebaseUsers } from "@/hooks/useFirebaseUsers";
 
-export const UsersList = ({ handleUserDetails }) => {
+export const UsersList = () => {
   const { firebaseUsers, firebaseError } = useFirebaseUsers();
 
   if (firebaseError) {
@@ -67,17 +66,14 @@ export const UsersList = ({ handleUserDetails }) => {
                   <div className="h-10 w-10 rounded-full bg-gray-300" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <button
-                    onClick={() => handleUserDetails(person)}
-                    className="focus:outline-none w-full flex flex-col items-start space-y-1"
-                  >
+                  <button className="flex w-full flex-col items-start space-y-1 focus:outline-none">
                     {/* Extend touch target to entire panel */}
                     <span className="absolute inset-0" aria-hidden="true" />
                     <div className="flex">
                       <p className="text-sm font-medium text-gray-900">
                         {normalizeString(person?.fullname)}
                       </p>
-                      <div className="ml-2 relative inline-flex items-center rounded-full border border-gray-300 px-2 py-0.5 text-sm">
+                      <div className="relative ml-2 inline-flex items-center rounded-full border border-gray-300 px-2 py-0.5 text-sm">
                         <span className="absolute flex flex-shrink-0 items-center justify-center">
                           <span
                             className="h-1 w-1 rounded-full"
@@ -102,8 +98,4 @@ export const UsersList = ({ handleUserDetails }) => {
       </nav>
     </>
   );
-};
-
-UsersList.propTypes = {
-  handleUserDetails: PropTypes.func.isRequired,
 };

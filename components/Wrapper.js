@@ -1,31 +1,13 @@
 import { AsideComponent } from "@/components/dashboard/AsideComponent";
-import { DeleteUserModal } from "@/components/directory/DeleteUserModal";
 import { InsuranceCompanyTable } from "@/components/companies/InsuranceCompanyTable";
 import { MainComponent } from "@/components/dashboard/MainComponent";
-import { UserDetails } from "@/components/directory/UserDetails";
 import { UserFormWrapper } from "@/components/directory/UserFormWrapper";
 import { UsersList } from "@/components/directory/UsersList";
 import { UsersTable } from "@/components/directory/UsersTable";
-import { useFirebaseUserDetails } from "@/hooks/useFirebaseUserDetails";
 import { useRouter } from "next/router";
 //
 export const Wrapper = () => {
   const router = useRouter();
-  const {
-    submitUpdateUser,
-    register,
-    errors,
-    handleSubmit,
-    updateUser,
-    userDetails,
-    handleUserDetails,
-    handleUpdateUser,
-    handleDeleteUser,
-    openModal,
-    handleOpenModal,
-    handleCloseModal,
-    isSubmitting,
-  } = useFirebaseUserDetails();
 
   return (
     <>
@@ -55,36 +37,12 @@ export const Wrapper = () => {
         </MainComponent>
       )}
 
-      {userDetails && (
-        <MainComponent className="relative z-0 flex-1 overflow-y-auto focus:outline-none xl:order-last">
-          <div className="grid justify-items-center text-4xl font-light text-black">
-            <UserDetails
-              submitUpdateUser={submitUpdateUser}
-              register={register}
-              errors={errors}
-              handleSubmit={handleSubmit}
-              updateUser={updateUser}
-              handleUpdateUser={handleUpdateUser}
-              selectedUser={userDetails}
-              handleOpenModal={handleOpenModal}
-              isSubmitting={isSubmitting}
-            />
-          </div>
-        </MainComponent>
-      )}
       {/* left side */}
       {router?.query?.dashboard?.includes("messages") && (
         <AsideComponent>
-          <UsersList handleUserDetails={handleUserDetails} />
+          <UsersList />
         </AsideComponent>
       )}
-      <DeleteUserModal
-        isSubmitting={isSubmitting}
-        selectedUser={userDetails}
-        handleDeleteUser={handleDeleteUser}
-        openModal={openModal}
-        handleCloseModal={handleCloseModal}
-      />
     </>
   );
 };

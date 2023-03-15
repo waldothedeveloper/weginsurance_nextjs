@@ -16,7 +16,10 @@ export const useFirebaseUserDetails = () => {
   const [openModal, setOpenModal] = useState(false);
   const [updateUser, setUpdateUser] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const handleOpenModal = useCallback(() => setOpenModal(true), []);
+  const handleOpenModal = useCallback((currUser) => {
+    setUserDetails(currUser);
+    setOpenModal(true);
+  }, []);
   const handleCloseModal = useCallback(() => setOpenModal(false), []);
 
   const {

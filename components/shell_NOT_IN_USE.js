@@ -4,7 +4,6 @@ import { Fragment, useState } from "react";
 
 import { AsideComponent } from "@/components/dashboard/AsideComponent";
 import { ConditionalComponent } from "@/components/ConditionalComponent";
-import { DeleteUserModal } from "@/components/directory/DeleteUserModal";
 import Image from "next/image";
 // import { InsuranceCompanyList } from "@/components/companies/InsuranceCompanyList";
 import { InsuranceCompanyTable } from "@/components/companies/InsuranceCompanyTable";
@@ -94,7 +93,7 @@ export const Shell = () => {
           <div className="relative z-0 flex flex-1 overflow-hidden">
             {/* chat messages or user details */}
             <MainComponent>
-              <div className="text-black text-4xl font-light grid justify-items-center">
+              <div className="grid justify-items-center text-4xl font-light text-black">
                 {userDetails ? (
                   <UserDetails
                     submitUpdateUser={submitUpdateUser}
@@ -143,13 +142,13 @@ export const Shell = () => {
           </div>
         </div>
       </div>
-      <DeleteUserModal
+      {/* <DeleteUserModal
         isSubmitting={isSubmitting}
         selectedUser={userDetails}
         handleDeleteUser={handleDeleteUser}
         openModal={openModal}
         handleCloseModal={handleCloseModal}
-      />
+      /> */}
     </>
   );
 };
