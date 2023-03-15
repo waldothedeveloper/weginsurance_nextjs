@@ -2,7 +2,7 @@ import { NovuNotificationsCenter } from "@/components/notifications/NovuConfig";
 
 export const NavBar = () => {
   return (
-    <div className="bg-gray-200 sticky z-50 hidden lg:block">
+    <div className="sticky z-10 hidden bg-gray-200 lg:block">
       <div>
         <div className="mx-auto max-w-full px-2 sm:px-6 lg:px-8">
           <div className="relative flex h-16 items-center justify-end">

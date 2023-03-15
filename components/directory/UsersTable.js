@@ -4,8 +4,10 @@ import {
   TrashIcon,
 } from "@heroicons/react/20/solid";
 
+import { DeleteUserActions } from "@/components/directory/DeleteUserActions";
 import { Modal } from "@/components/directory/Modal";
 import { Spinning } from "@/components/spinning";
+import { UpdateUserForm } from "@/components/directory/UpdateUserForm";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 import { useFirebaseUserDetails } from "@/hooks/useFirebaseUserDetails";
 import { useFirebaseUsers } from "@/hooks/useFirebaseUsers";
@@ -15,17 +17,16 @@ export const UsersTable = () => {
   const { firebaseUsers, firebaseError } = useFirebaseUsers();
 
   const {
+    openUpdateUserModal,
     submitUpdateUser,
     register,
     errors,
     handleSubmit,
-    updateUser,
-    userDetails,
-    handleUserDetails,
-    handleUpdateUser,
+    selectedUser,
+    handleUpdateModal,
     handleDeleteUser,
-    openModal,
-    handleOpenModal,
+    openDeleteUserModal,
+    handleDeleteModal,
     handleCloseModal,
     isSubmitting,
   } = useFirebaseUserDetails();
@@ -132,6 +133,7 @@ export const UsersTable = () => {
                         <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                           <div className="flex justify-end">
                             <button
+                              onClick={() => handleUpdateModal(person)}
                               type="button"
                               className="inline-flex items-center gap-x-2 rounded-md bg-cyan-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                             >
@@ -142,7 +144,7 @@ export const UsersTable = () => {
                               Editar usuario
                             </button>
                             <button
-                              onClick={() => handleOpenModal(person)}
+                              onClick={() => handleDeleteModal(person)}
                               type="button"
                               className="ml-4 inline-flex items-center gap-x-2 rounded-md bg-red-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                             >
@@ -163,13 +165,36 @@ export const UsersTable = () => {
           </div>
         </div>
       </div>
-      <Modal
-        openModal={openModal}
-        handleDeleteUser={handleDeleteUser}
-        handleOpenModal={handleOpenModal}
-        handleCloseModal={handleCloseModal}
-        isSubmitting={isSubmitting}
-      />
+      {openUpdateUserModal && (
+        <Modal
+          openModal={openUpdateUserModal}
+          handleCloseModal={handleCloseModal}
+          action="update"
+        >
+          <UpdateUserForm
+            register={register}
+            errors={errors}
+            handleSubmit={handleSubmit}
+            submitUpdateUser={submitUpdateUser}
+            handleCloseModal={handleCloseModal}
+          />
+        </Modal>
+      )}
+
+      {openDeleteUserModal && (
+        <Modal
+          openModal={openDeleteUserModal}
+          handleCloseModal={handleCloseModal}
+          action="delete"
+        >
+          <DeleteUserActions
+            user={selectedUser?.fullname}
+            isSubmitting={isSubmitting}
+            handleDeleteUser={handleDeleteUser}
+            handleCloseModal={handleCloseModal}
+          />
+        </Modal>
+      )}
     </>
   );
 };

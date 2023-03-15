@@ -7,20 +7,13 @@ import { normalizeFirebaseUser } from "@/lib/normalizeFirebaseUser";
 import { novuSubscriberId } from "@/utils/novuSubscriberId";
 import { updateFirebaseUser } from "@/lib/updateFirebaseUser";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
 
 //
 export const useFirebaseUserDetails = () => {
-  const router = useRouter();
-  const [userDetails, setUserDetails] = useState(null);
-  const [openModal, setOpenModal] = useState(false);
-  const [updateUser, setUpdateUser] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [openDeleteUserModal, setOpenDeleteUserModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const handleOpenModal = useCallback((currUser) => {
-    setUserDetails(currUser);
-    setOpenModal(true);
-  }, []);
-  const handleCloseModal = useCallback(() => setOpenModal(false), []);
+  const [openUpdateUserModal, setOpenUpdateUserModal] = useState(false);
 
   const {
     register,
@@ -29,35 +22,44 @@ export const useFirebaseUserDetails = () => {
     formState: { errors },
   } = useForm();
 
-  const handleUserDetails = useCallback((user) => {
-    setUserDetails(user);
+  // open modal for deleting users
+  const handleDeleteModal = useCallback((currUser) => {
+    setSelectedUser(currUser);
+    setOpenDeleteUserModal(true);
+  }, []);
+
+  // open modal for updating users
+  const handleUpdateModal = useCallback((currUser) => {
+    setOpenUpdateUserModal(true);
+    setSelectedUser(currUser);
+  }, []);
+
+  // when you are closing the modal make sure that updating or deleting booleans will be false
+  const handleCloseModal = useCallback(() => {
+    setOpenDeleteUserModal(false);
+    setOpenUpdateUserModal(false);
+    setSelectedUser(null);
   }, []);
 
   useEffect(() => {
-    if (!router.asPath.includes("messages")) setUserDetails(null);
-    // equally, if this get's unmounted, clean up the selected user
-    return () => setUserDetails(null);
-  }, [router]);
-
-  useEffect(() => {
-    if (userDetails) {
+    if (selectedUser) {
       reset({
-        firstname: userDetails?.firstname,
-        second_name: userDetails?.second_name,
-        lastname: userDetails?.lastname,
-        second_lastname: userDetails?.second_lastname,
-        phone: userDetails?.phone,
-        email: userDetails?.email,
-        insurance_company: userDetails?.insurance_company,
-        gender: userDetails?.gender,
-        active_user: userDetails?.active_user === true ? "Si" : "No",
-        notes: userDetails?.notes,
+        firstname: selectedUser?.firstname,
+        second_name: selectedUser?.second_name,
+        lastname: selectedUser?.lastname,
+        second_lastname: selectedUser?.second_lastname,
+        phone: selectedUser?.phone,
+        email: selectedUser?.email,
+        insurance_company: selectedUser?.insurance_company,
+        gender: selectedUser?.gender,
+        active_user: selectedUser?.active_user === true ? "Si" : "No",
+        notes: selectedUser?.notes,
       });
     }
-  }, [reset, userDetails]);
+  }, [reset, selectedUser]);
 
   const handleDeleteUser = () => {
-    const { id } = userDetails;
+    const { id } = selectedUser;
     if (id) {
       setIsSubmitting(true);
       deleteUser(id)
@@ -65,7 +67,7 @@ export const useFirebaseUserDetails = () => {
           // notify of user deleted ok!
           fetcherPost(
             `/api/notifications/notification`,
-            `El usuario ${userDetails?.fullname} ha sido eliminado exitosamente.`,
+            `El usuario ${selectedUser?.fullname} ha sido eliminado exitosamente.`,
             novuSubscriberId,
             `success-notification`
           )
@@ -79,18 +81,16 @@ export const useFirebaseUserDetails = () => {
               return err;
             });
 
-          //
-          setOpenModal(false);
-          setUserDetails(null);
+          handleCloseModal();
           setIsSubmitting(false);
         })
         .catch((error) => {
           setIsSubmitting(false);
-          // console.log(`Could not delete user`, err)
+
           // notify of not being able to delete the user
           fetcherPost(
             `/api/notifications/notification`,
-            `Ha ocurrido un error trantando de eliminar al usuario ${userDetails?.fullname}`,
+            `Ha ocurrido un error trantando de eliminar al usuario ${selectedUser?.fullname}`,
             novuSubscriberId,
             `error-notification`
           )
@@ -109,10 +109,8 @@ export const useFirebaseUserDetails = () => {
     }
   };
 
-  const handleUpdateUser = () => setUpdateUser(!updateUser);
-
   const submitUpdateUser = (user) => {
-    const { id } = userDetails;
+    const { id } = selectedUser;
 
     const updatedUser = normalizeFirebaseUser(user);
 
@@ -120,60 +118,57 @@ export const useFirebaseUserDetails = () => {
       setIsSubmitting(true);
       updateFirebaseUser(updatedUser, id)
         .then(() => {
+          handleCloseModal();
           setIsSubmitting(false);
 
-          getFirebaseUser(id)
-            .then((u) => {
-              if (u) {
-                setUserDetails(u);
-                // notify of user successfuly updated!
-                fetcherPost(
-                  `/api/notifications/notification`,
-                  `El usuario ${userDetails?.fullname} ha sido actualizado correctamente.`,
-                  novuSubscriberId,
-                  `success-notification`
-                )
-                  .then((data) => {
-                    // console.log("Notification user updated ok! : ", data);
-                    reset();
-                    return data;
-                  })
-                  .catch((err) => {
-                    // console.log(`err`, err);
-                    return err;
-                  });
-              }
-              setUpdateUser(false);
-
-              return true;
+          // notify of user successfuly updated!
+          fetcherPost(
+            `/api/notifications/notification`,
+            `El usuario ha sido actualizado correctamente.`,
+            novuSubscriberId,
+            `success-notification`
+          )
+            .then((data) => {
+              reset();
+              return data;
             })
             .catch((err) => {
-              setIsSubmitting(false);
               return err;
-              // console.log("Error trying to get a single user: ", err);
             });
           return true;
         })
         .catch((err) => {
           setIsSubmitting(false);
-          // console.log(`Could not update the user`, err);
+          // notify of not being able to update the user
+          fetcherPost(
+            `/api/notifications/notification`,
+            `Ha ocurrido un error trantando de actualizar al usuario ${selectedUser?.fullname}`,
+            novuSubscriberId,
+            `error-notification`
+          )
+            .then((data) => {
+              reset();
+              return data;
+            })
+            .catch((fetcherPostError) => {
+              return fetcherPostError;
+            });
           return err;
         });
     }
   };
 
   return {
+    openUpdateUserModal,
     submitUpdateUser,
     register,
     errors,
     handleSubmit,
-    updateUser,
-    userDetails,
-    handleUserDetails,
-    handleUpdateUser,
+    selectedUser,
+    handleUpdateModal,
     handleDeleteUser,
-    openModal,
-    handleOpenModal,
+    openDeleteUserModal,
+    handleDeleteModal,
     handleCloseModal,
     isSubmitting,
   };
