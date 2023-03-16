@@ -4,32 +4,51 @@ import {
   TrashIcon,
 } from "@heroicons/react/20/solid";
 
+import { CreateUserForm } from "@/components/directory/CreateUserForm";
 import { DeleteUserActions } from "@/components/directory/DeleteUserActions";
 import { Modal } from "@/components/directory/Modal";
 import { Spinning } from "@/components/spinning";
 import { UpdateUserForm } from "@/components/directory/UpdateUserForm";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
-import { useFirebaseUserDetails } from "@/hooks/useFirebaseUserDetails";
+import { useDeleteUserForm } from "@/hooks/useDeleteUserForm";
 import { useFirebaseUsers } from "@/hooks/useFirebaseUsers";
+import { useNewUserForm } from "@/hooks/useNewUserForm";
+import { useUpdateUserForm } from "@/hooks/useUpdateUserForm";
 
 //
 export const UsersTable = () => {
   const { firebaseUsers, firebaseError } = useFirebaseUsers();
-
+  // new user
   const {
-    openUpdateUserModal,
+    registerNewUserForm,
+    handleSubmitNewUserForm,
+    errorsNewUserForm,
+    onSubmitNewUserForm,
+    isSubmittingNewUserForm,
+    openCreateUserModal,
+    handleCreateUserModal,
+    handleCloseCreateUserModal,
+  } = useNewUserForm();
+  // update user
+  const {
+    registerUpdateUserForm,
+    handleUpdateUserForm,
+    setOpenUpdateUserModal,
+    errorsUpdateUserForm,
     submitUpdateUser,
-    register,
-    errors,
-    handleSubmit,
-    selectedUser,
     handleUpdateModal,
-    handleDeleteUser,
+    isSubmittingUpdateUserForm,
+    openUpdateUserModal,
+  } = useUpdateUserForm();
+  // delete user
+  const {
     openDeleteUserModal,
+    userToDelete,
+    handleDeleteUser,
     handleDeleteModal,
-    handleCloseModal,
-    isSubmitting,
-  } = useFirebaseUserDetails();
+    handleDeleteCloseModal,
+    isSubmittingUserDelete,
+  } = useDeleteUserForm();
 
   if (firebaseError) {
     return (
@@ -55,9 +74,9 @@ export const UsersTable = () => {
           </div>
           <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
             <button
-              onClick={() => console.log(`Crear usuario nuevo`)}
+              onClick={handleCreateUserModal}
               type="button"
-              className="ml-4 inline-flex items-center gap-x-2 rounded-md bg-cyan-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
+              className="inline-flex items-center gap-x-2 rounded-md bg-cyan-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600 lg:ml-4"
             >
               <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
               Crear usuario
@@ -75,7 +94,7 @@ export const UsersTable = () => {
                         scope="col"
                         className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
                       >
-                        Nombre y Apellidos
+                        Nombres
                       </th>
                       <th
                         scope="col"
@@ -97,9 +116,15 @@ export const UsersTable = () => {
                       </th>
                       <th
                         scope="col"
+                        className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
+                      >
+                        Estado
+                      </th>
+                      <th
+                        scope="col"
                         className="relative py-3.5 pl-3 pr-4 sm:pr-0"
                       >
-                        <span className="sr-only">Edit</span>
+                        <span className="sr-only">Editar</span>
                       </th>
                     </tr>
                   </thead>
@@ -109,7 +134,7 @@ export const UsersTable = () => {
                         <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-0">
                           {person.fullname}
                           <dl className="font-normal lg:hidden">
-                            <dt className="sr-only">Fullname</dt>
+                            <dt className="sr-only">Nombres</dt>
                             <dd className="mt-1 truncate text-gray-700">
                               {formatPhoneNumber(person.phone)}
                             </dd>
@@ -129,6 +154,18 @@ export const UsersTable = () => {
                         </td>
                         <td className="px-3 py-4 text-sm text-gray-500">
                           {person.email}
+                        </td>
+                        <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                          <div className="flex items-center">
+                            <span
+                              className={
+                                person.active_user
+                                  ? "mr-2 mt-0.5 h-3 w-3 rounded-full bg-green-500"
+                                  : "mr-2 mt-0.5 h-3 w-3 rounded-full bg-red-500"
+                              }
+                            />
+                            {person.active_user ? "Activo" : "Inactivo"}
+                          </div>
                         </td>
                         <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                           <div className="flex justify-end">
@@ -165,33 +202,52 @@ export const UsersTable = () => {
           </div>
         </div>
       </div>
-      {openUpdateUserModal && (
-        <Modal
-          openModal={openUpdateUserModal}
-          handleCloseModal={handleCloseModal}
-          action="update"
-        >
-          <UpdateUserForm
-            register={register}
-            errors={errors}
-            handleSubmit={handleSubmit}
-            submitUpdateUser={submitUpdateUser}
-            handleCloseModal={handleCloseModal}
-          />
-        </Modal>
-      )}
-
+      {/* delete action */}
       {openDeleteUserModal && (
         <Modal
           openModal={openDeleteUserModal}
-          handleCloseModal={handleCloseModal}
+          handleCloseModal={handleDeleteCloseModal}
           action="delete"
         >
           <DeleteUserActions
-            user={selectedUser?.fullname}
-            isSubmitting={isSubmitting}
+            user={userToDelete?.fullname}
+            isSubmitting={isSubmittingUserDelete}
             handleDeleteUser={handleDeleteUser}
-            handleCloseModal={handleCloseModal}
+            handleCloseModal={handleDeleteCloseModal}
+          />
+        </Modal>
+      )}
+      {/* update action */}
+      {openUpdateUserModal && (
+        <Modal
+          openModal={openUpdateUserModal}
+          handleCloseModal={setOpenUpdateUserModal}
+          action="update"
+        >
+          <UpdateUserForm
+            register={registerUpdateUserForm}
+            errors={errorsUpdateUserForm}
+            handleSubmit={handleUpdateUserForm}
+            submitUpdateUser={submitUpdateUser}
+            handleCloseModal={setOpenUpdateUserModal}
+            isSubmitting={isSubmittingUpdateUserForm}
+          />
+        </Modal>
+      )}
+      {/* create action */}
+      {openCreateUserModal && (
+        <Modal
+          openModal={openCreateUserModal}
+          handleCloseModal={handleCloseCreateUserModal}
+          action="create"
+        >
+          <CreateUserForm
+            register={registerNewUserForm}
+            errors={errorsNewUserForm}
+            handleSubmit={handleSubmitNewUserForm}
+            submitCreateUser={onSubmitNewUserForm}
+            isSubmitting={isSubmittingNewUserForm}
+            handleCloseModal={handleCloseCreateUserModal}
           />
         </Modal>
       )}

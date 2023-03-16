@@ -35,13 +35,6 @@ const navigation = [
     current: false,
   },
   {
-    name: "Crear Usuario",
-    href: "new_user",
-    link: "/admin/new_user",
-    icon: UserPlusIcon,
-    current: false,
-  },
-  {
     name: "Compañias de Seguros",
     href: "insurance_company",
     link: "/admin/insurance_company",
@@ -65,7 +58,7 @@ export const NavigationLinks = () => {
               router?.query?.dashboard?.includes(item?.href)
                 ? "bg-gray-200 text-gray-900"
                 : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-              "group flex items-center px-2 py-2 text-sm font-medium rounded-md w-full"
+              "group flex w-full items-center rounded-md px-2 py-2 text-sm font-medium"
             )}
           >
             <item.icon

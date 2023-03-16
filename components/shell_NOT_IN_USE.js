@@ -14,7 +14,7 @@ import { UserButton } from "@clerk/nextjs";
 import { UserDetails } from "@/components/directory/UserDetails";
 import { UsersList } from "@/components/directory/UsersList";
 import logo from "@/public/weg_logo.jpg";
-import { useFirebaseUserDetails } from "@/hooks/useFirebaseUserDetails";
+import { useFirebaseCRUD } from "@/hooks/useDeleteUserForm";
 // import { useCreateNovuSubscriber } from "@/hooks/useNovuSubscriber";
 import { useFirebaseUsers } from "@/hooks/useFirebaseUsers";
 import { useInsuranceCompany } from "@/hooks/insurance_company/useHandleInsuranceCompany";
@@ -45,7 +45,7 @@ export const Shell = () => {
     handleOpenModal,
     handleCloseModal,
     isSubmitting,
-  } = useFirebaseUserDetails(navigation);
+  } = useFirebaseCRUD(navigation);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleCloseSideBar = () => {
