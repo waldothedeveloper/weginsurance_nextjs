@@ -3,7 +3,6 @@ import {
   ChatBubbleBottomCenterTextIcon,
   ComputerDesktopIcon,
   MagnifyingGlassCircleIcon,
-  UserPlusIcon,
 } from "@heroicons/react/24/outline";
 
 import Link from "next/link";
