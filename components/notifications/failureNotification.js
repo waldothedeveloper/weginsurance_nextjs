@@ -2,10 +2,14 @@ import { fetcherPost } from "@/utils/fetcherPost";
 import { novuSubscriberId } from "@/utils/novuSubscriberId";
 
 //
-export const failureNotification = (name) => {
+export const failureNotification = (message) => {
+  if (!message || typeof message !== "string")
+    throw new Error(
+      `Please provide a message to the success notification system`
+    );
   fetcherPost(
     `/api/notifications/notification`,
-    `Ha ocurrido un error al crear la compañia ${name}. Intentelo nuevamente. Si el error persiste, contacte al soporte.`,
+    message,
     novuSubscriberId,
     `error-notification`
   ).catch((fetcherPostError) => {

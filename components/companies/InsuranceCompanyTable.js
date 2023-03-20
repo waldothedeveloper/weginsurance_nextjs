@@ -1,23 +1,42 @@
-import { useCallback, useState } from "react";
+import {
+  PencilSquareIcon,
+  PlusIcon,
+  TrashIcon,
+} from "@heroicons/react/20/solid";
 
 import { CreateCompany } from "@/components/companies/CreateCompany";
+import { DeleteCompanyActions } from "@/components/companies/DeleteCompanyActions";
 import Image from "next/image";
 import { Modal } from "@/components/companies/Modal";
 import { Spinning } from "@/components/spinning";
+import { useCreateNewCompany } from "@/hooks/insurance_company/useCreateNewCompany";
+import { useDeleteCompany } from "@/hooks/insurance_company/useDeleteCompany";
 import { useInsuranceCompany } from "@/hooks/insurance_company/useHandleInsuranceCompany";
 
 //
 export const InsuranceCompanyTable = () => {
   const { insuranceCompanies, insuranceCompanyError } = useInsuranceCompany();
-  const [openCreateNewCompany, setCreateNewCompany] = useState(false);
 
-  const handleCreateNewCompanyModal = useCallback(() => {
-    setCreateNewCompany(true);
-  }, []);
+  const {
+    isSubmittingCreateNewCompany,
+    registerNewCompany,
+    handleSubmitNewCompany,
+    errorsNewCompany,
+    onSubmitCreateNewCompany,
+    uploadProgress,
+    handleOpenNewCompanyModal,
+    handleCloseNewCompanyModal,
+    openNewCompanyModal,
+  } = useCreateNewCompany();
 
-  const handleCloseCreateNewCompanyModal = useCallback(() => {
-    setCreateNewCompany(false);
-  }, []);
+  const {
+    openDeleteModal,
+    handleCloseDeleteModal,
+    handleOpenDeleteModal,
+    handleDeleteCompany,
+    isSubmittingDeleteCompany,
+    companyToDelete,
+  } = useDeleteCompany();
 
   if (insuranceCompanyError) {
     return (
@@ -46,10 +65,11 @@ export const InsuranceCompanyTable = () => {
           </div>
           <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
             <button
-              onClick={handleCreateNewCompanyModal}
+              onClick={handleOpenNewCompanyModal}
               type="button"
-              className="block rounded-md bg-cyan-600 py-2 px-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
+              className="inline-flex items-center gap-x-2 rounded-md bg-cyan-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600 lg:ml-4"
             >
+              <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
               Crear compañia
             </button>
           </div>
@@ -93,7 +113,7 @@ export const InsuranceCompanyTable = () => {
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                           <div className="flex items-center">
                             <div className="h-16 w-16 flex-shrink-0 rounded-full">
-                              {company?.logo_url ? (
+                              {company?.logo_url?.length > 0 ? (
                                 <Image
                                   className="h-16 w-16 object-contain"
                                   src={company?.logo_url}
@@ -122,14 +142,31 @@ export const InsuranceCompanyTable = () => {
                           </div>
                         </td>
 
-                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                          <a
-                            href="#"
-                            className="text-cyan-600 hover:text-cyan-900"
-                          >
-                            Editar
-                            <span className="sr-only">, {company?.name}</span>
-                          </a>
+                        <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                          <div className="flex justify-end">
+                            <button
+                              // onClick={() => handleUpdateModal(person)}
+                              type="button"
+                              className="inline-flex items-center gap-x-2 rounded-md bg-cyan-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
+                            >
+                              <PencilSquareIcon
+                                className="-ml-0.5 h-5 w-5"
+                                aria-hidden="true"
+                              />
+                              Editar
+                            </button>
+                            <button
+                              onClick={() => handleOpenDeleteModal(company)}
+                              type="button"
+                              className="ml-4 inline-flex items-center gap-x-2 rounded-md bg-red-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                            >
+                              <TrashIcon
+                                className="-ml-0.5 h-5 w-5"
+                                aria-hidden="true"
+                              />
+                              Eliminar
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -141,11 +178,31 @@ export const InsuranceCompanyTable = () => {
         </div>
       </div>
       <Modal
-        openModal={openCreateNewCompany}
-        handleCloseModal={handleCloseCreateNewCompanyModal}
+        openModal={openNewCompanyModal}
+        handleCloseModal={handleCloseNewCompanyModal}
         action="create"
       >
-        <CreateCompany handleCloseModal={handleCloseCreateNewCompanyModal} />
+        <CreateCompany
+          isSubmitting={isSubmittingCreateNewCompany}
+          register={registerNewCompany}
+          handleSubmit={handleSubmitNewCompany}
+          errors={errorsNewCompany}
+          onSubmit={onSubmitCreateNewCompany}
+          progress={uploadProgress}
+          closeModal={handleCloseNewCompanyModal}
+        />
+      </Modal>
+      <Modal
+        openModal={openDeleteModal}
+        handleCloseModal={handleCloseDeleteModal}
+        action="delete"
+      >
+        <DeleteCompanyActions
+          company={companyToDelete}
+          isSubmitting={isSubmittingDeleteCompany}
+          handleDeleteCompany={handleDeleteCompany}
+          handleCloseModal={handleCloseDeleteModal}
+        />
       </Modal>
     </>
   );
