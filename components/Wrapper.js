@@ -12,7 +12,6 @@ export const Wrapper = () => {
   return (
     <>
       {/* right side */}
-
       {router?.query?.dashboard?.includes("directory") && (
         <MainComponent className="relative z-0 flex-1 overflow-y-hidden focus:outline-none xl:order-last">
           <div className="py-12">
@@ -31,7 +30,7 @@ export const Wrapper = () => {
 
       {router?.query?.dashboard?.includes("insurance_company") && (
         <MainComponent className="relative z-0 flex-1 focus:outline-none xl:order-last">
-          <div className="mx-auto max-w-7xl py-12">
+          <div className="py-12">
             <InsuranceCompanyTable />
           </div>
         </MainComponent>
