@@ -5,10 +5,9 @@ import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import PropTypes from "prop-types";
 import { UploadProgressBar } from "@/components/companies/UploadProgressBar";
 import { companyFormLabels } from "@/utils/companyFormLabels";
-// import { useCreateNewCompany } from "@/hooks/insurance_company/useCreateNewCompany";
 import { useDragNDrop } from "@/hooks/insurance_company/useDragNDrop";
 //
-export const CreateCompany = ({
+export const UpdateCompany = ({
   isSubmitting,
   register,
   handleSubmit,
@@ -16,16 +15,17 @@ export const CreateCompany = ({
   onSubmit,
   progress,
   closeModal,
+  selectedCompany,
 }) => {
   // drap n drop hook
   const {
+    handleSetFiles,
     files,
     getRootProps,
     getInputProps,
     isDragAccept,
     isDragActive,
     isDragReject,
-    handleSetFiles,
   } = useDragNDrop();
 
   return (
@@ -45,7 +45,7 @@ export const CreateCompany = ({
               as="h3"
               className="text-base font-semibold leading-6 text-gray-900"
             >
-              Crear Compañia
+              Actualizar Compañia
             </Dialog.Title>
           </div>
         </div>
@@ -76,10 +76,11 @@ export const CreateCompany = ({
             files={files}
             getRootProps={getRootProps}
             getInputProps={getInputProps}
-            isDragActive={isDragActive}
             handleSetFiles={handleSetFiles}
+            isDragActive={isDragActive}
             isDragReject={isDragReject}
             isDragAccept={isDragAccept}
+            logo_url={selectedCompany?.logo_url || ""}
           />
 
           {/* notes about the user */}
@@ -117,7 +118,7 @@ export const CreateCompany = ({
                 : "inline-flex w-full justify-center rounded-md bg-cyan-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 sm:ml-3 sm:w-auto"
             }
           >
-            Crear
+            Actualizar
           </button>
           <button
             type="button"
@@ -132,12 +133,19 @@ export const CreateCompany = ({
   );
 };
 
-CreateCompany.propTypes = {
+UpdateCompany.propTypes = {
   isSubmitting: PropTypes.bool.isRequired,
   register: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  progress: PropTypes.number.isRequired,
+  progress: PropTypes.number,
   closeModal: PropTypes.func.isRequired,
+  selectedCompany: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    notes: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    logo_url: PropTypes.string,
+    fileName: PropTypes.string,
+  }),
 };

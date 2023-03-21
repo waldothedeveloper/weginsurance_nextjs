@@ -40,10 +40,10 @@ export const useDragNDrop = () => {
 
   return {
     files,
-    handleSetFiles,
     getRootProps,
     getInputProps,
     isDragAccept,
+    handleSetFiles,
     isDragActive,
     isDragReject,
   };
