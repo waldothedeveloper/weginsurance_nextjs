@@ -9,9 +9,11 @@ import { DeleteCompanyActions } from "@/components/companies/DeleteCompanyAction
 import Image from "next/image";
 import { Modal } from "@/components/companies/Modal";
 import { Spinning } from "@/components/spinning";
+import { UpdateCompany } from "@/components/companies/UpdateCompanyActions";
 import { useCreateNewCompany } from "@/hooks/insurance_company/useCreateNewCompany";
 import { useDeleteCompany } from "@/hooks/insurance_company/useDeleteCompany";
 import { useInsuranceCompany } from "@/hooks/insurance_company/useHandleInsuranceCompany";
+import { useUpdateCompany } from "@/hooks/insurance_company/useUpdateCompany";
 
 //
 export const InsuranceCompanyTable = () => {
@@ -37,6 +39,19 @@ export const InsuranceCompanyTable = () => {
     isSubmittingDeleteCompany,
     companyToDelete,
   } = useDeleteCompany();
+
+  const {
+    isSubmittingUpdateCompany,
+    registerUpdateCompany,
+    errorsUpdateCompany,
+    openUpdateCompanyModal,
+    handleOpenUpdateCompanyModal,
+    handleCloseUpdateCompanyModal,
+    onSubmitUpdateCompany,
+    handleSubmitUpdateCompany,
+    selectedCompanyToUpdate,
+    progressUpdateCompany,
+  } = useUpdateCompany();
 
   if (insuranceCompanyError) {
     return (
@@ -109,20 +124,23 @@ export const InsuranceCompanyTable = () => {
                   </thead>
                   <tbody className="h-96 divide-y divide-gray-200 overflow-y-auto bg-white">
                     {insuranceCompanies.map((company) => (
-                      <tr key={company.id}>
+                      <tr key={company?.id}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                           <div className="flex items-center">
-                            <div className="h-16 w-16 flex-shrink-0 rounded-full">
-                              {company?.logo_url?.length > 0 ? (
+                            <div className="h-16 w-16 flex-shrink-0">
+                              {company?.logo_url &&
+                              company?.logo_url?.length > 0 ? (
                                 <Image
                                   className="h-16 w-16 object-contain"
-                                  src={company?.logo_url}
+                                  src={company.logo_url}
                                   alt="insurance company logo"
                                   width={64}
                                   height={64}
                                   priority
                                 />
-                              ) : null}
+                              ) : (
+                                <div className="h-full w-full bg-gray-100" />
+                              )}
                             </div>
                           </div>
                         </td>
@@ -145,7 +163,9 @@ export const InsuranceCompanyTable = () => {
                         <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                           <div className="flex justify-end">
                             <button
-                              // onClick={() => handleUpdateModal(person)}
+                              onClick={() =>
+                                handleOpenUpdateCompanyModal(company)
+                              }
                               type="button"
                               className="inline-flex items-center gap-x-2 rounded-md bg-cyan-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                             >
@@ -177,6 +197,7 @@ export const InsuranceCompanyTable = () => {
           </div>
         </div>
       </div>
+      {/* create */}
       <Modal
         openModal={openNewCompanyModal}
         handleCloseModal={handleCloseNewCompanyModal}
@@ -192,6 +213,24 @@ export const InsuranceCompanyTable = () => {
           closeModal={handleCloseNewCompanyModal}
         />
       </Modal>
+      {/* update */}
+      <Modal
+        openModal={openUpdateCompanyModal}
+        handleCloseModal={handleCloseUpdateCompanyModal}
+        action="update"
+      >
+        <UpdateCompany
+          isSubmitting={isSubmittingUpdateCompany}
+          register={registerUpdateCompany}
+          handleSubmit={handleSubmitUpdateCompany}
+          errors={errorsUpdateCompany}
+          onSubmit={onSubmitUpdateCompany}
+          progress={progressUpdateCompany}
+          closeModal={handleCloseUpdateCompanyModal}
+          selectedCompany={selectedCompanyToUpdate}
+        />
+      </Modal>
+      {/* delete */}
       <Modal
         openModal={openDeleteModal}
         handleCloseModal={handleCloseDeleteModal}

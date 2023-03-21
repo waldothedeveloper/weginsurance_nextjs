@@ -13,21 +13,79 @@ export const useCreateNewCompany = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [progresspercent, setProgresspercent] = useState(0);
   const [openModal, setOpenModal] = useState(false);
-
-  const handleOpenModal = useCallback(() => {
-    setOpenModal(true);
-  }, []);
-
-  const handleCloseModal = useCallback(() => {
-    setOpenModal(false);
-  }, []);
-
   const {
     register,
     reset,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  //
+  const handleOpenModal = useCallback(() => {
+    setOpenModal(true);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setOpenModal(false);
+    reset();
+  }, [reset]);
+
+  const createCompany = (...args) => {
+    if (args.length === 1) {
+      const { notes, name } = args[0];
+      const normalizedCompanyName = normalizeString(name);
+      //
+      const newCompany = {
+        notes,
+        name: normalizedCompanyName,
+      };
+
+      createInsuranceCompany(newCompany)
+        .then(() => {
+          reset();
+          handleCloseModal();
+          setIsSubmitting(false);
+          successNotification(
+            `La compañia ${name} ha sido creada exitosamente!`
+          );
+        })
+        .catch((err) => {
+          handleCloseModal();
+          setIsSubmitting(false);
+          failureNotification(
+            `Ha ocurrido un error al intentar crear la compañia ${name}. Si el error persiste contacte al soporte tecnico.`
+          );
+          return err;
+        });
+    } else {
+      const { name, notes } = args[1];
+      const normalizedCompanyName = normalizeString(name);
+      const newCompany = {
+        name: normalizedCompanyName,
+        notes,
+        logo_url: args[0],
+        fileName: args[2],
+      };
+
+      createInsuranceCompany(newCompany)
+        .then(() => {
+          reset();
+          handleCloseModal();
+          setIsSubmitting(false);
+          successNotification(
+            `La compañia ${name} ha sido creada exitosamente!`
+          );
+        })
+        .catch((err) => {
+          handleCloseModal();
+          setIsSubmitting(false);
+          failureNotification(
+            `Ha ocurrido un error al intentar crear la compañia ${name}. Si el error persiste contacte al soporte tecnico.`
+          );
+          throw err;
+        });
+    }
+  };
 
   // the file is optional
   const handleUpload = (file, values) => {
@@ -64,47 +122,13 @@ export const useCreateNewCompany = () => {
     );
   };
 
-  const createCompany = (url, values, file_name) => {
-    const { name, notes } = values;
-    const normalizedCompanyName = normalizeString(name);
-    const newCompany = {
-      name: normalizedCompanyName,
-      notes,
-      logo_url: url ?? "",
-      /*
-      this is important to have because when we delete a company we need to have the filename of the actual logo to have it as a reference of the bucket
-      if there's no logo of the insurance company there will be no filename to save
-      */
-      fileName: file_name ?? "",
-    };
-
-    createInsuranceCompany(newCompany)
-      .then(() => {
-        reset();
-        handleCloseModal();
-        setIsSubmitting(false);
-        successNotification(`La compañia ${name} ha sido creada exitosamente!`);
-      })
-      .catch((err) => {
-        handleCloseModal();
-        setIsSubmitting(false);
-        failureNotification(
-          `Ha ocurrido un error al intentar crear la compañia ${name}. Si el error persiste contacte al soporte tecnico.`
-        );
-
-        return err;
-      });
-  };
-
   const onSubmit = (values, files) => {
     const fileName = files[0]?.name;
 
     // if there is no logo to upload then just create the insurance company
-    if (!files) {
-      setIsSubmitting(true);
-      createCompany(null, values, fileName);
+    if (files?.length === 0) {
+      createCompany(values);
     } else {
-      setIsSubmitting(true);
       handleUpload(new File(files, fileName), values);
     }
   };
