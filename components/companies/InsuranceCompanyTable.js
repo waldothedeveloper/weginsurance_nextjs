@@ -8,7 +8,7 @@ import { CreateCompany } from "@/components/companies/CreateCompany";
 import { DeleteCompanyActions } from "@/components/companies/DeleteCompanyActions";
 import Image from "next/image";
 import { Modal } from "@/components/companies/Modal";
-import { Spinning } from "@/components/spinning";
+import { Spinning } from "@/components/Spinning";
 import { UpdateCompany } from "@/components/companies/UpdateCompanyActions";
 import { useCreateNewCompany } from "@/hooks/insurance_company/useCreateNewCompany";
 import { useDeleteCompany } from "@/hooks/insurance_company/useDeleteCompany";

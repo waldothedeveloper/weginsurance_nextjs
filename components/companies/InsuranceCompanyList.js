@@ -2,7 +2,7 @@ import { FunnelIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 import Image from "next/image";
 import PropTypes from "prop-types";
-import { Spinning } from "@/components/spinning";
+import { Spinning } from "@/components/Spinning";
 
 //
 export const InsuranceCompanyList = ({
@@ -59,7 +59,7 @@ export const InsuranceCompanyList = ({
               <div className="relative flex items-center space-x-3 px-6 py-5 focus-within:ring-2 focus-within:ring-inset focus-within:ring-cyan-500 hover:bg-gray-50">
                 <div className="flex-shrink-0">
                   {company?.logo_url ? (
-                    <div className="relative bg-gray-100 rounded-full p-0.5">
+                    <div className="relative rounded-full bg-gray-100 p-0.5">
                       <div className="relative h-14 w-14 rounded-full bg-white p-5">
                         <Image
                           className="object-contain p-0.5"
@@ -73,7 +73,7 @@ export const InsuranceCompanyList = ({
                       </div>
                     </div>
                   ) : (
-                    <div className="relative bg-gray-100 rounded-full p-0.5">
+                    <div className="relative rounded-full bg-gray-100 p-0.5">
                       <div className="relative h-14 w-14 rounded-full bg-white p-5">
                         <div className="object-contain p-0.5" />
                       </div>
@@ -84,7 +84,7 @@ export const InsuranceCompanyList = ({
                   <button
                     type="button"
                     onClick={() => handleInsuranceCompanyDetails(company)}
-                    className="focus:outline-none w-full flex flex-col items-start space-y-1"
+                    className="flex w-full flex-col items-start space-y-1 focus:outline-none"
                   >
                     {/* Extend touch target to entire panel */}
                     <span className="absolute inset-0" aria-hidden="true" />
