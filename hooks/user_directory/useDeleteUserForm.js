@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
 
-import { deleteUser } from "@/lib/deleteUser";
-import { fetcherPost } from "@/utils/fetcherPost";
-import { novuSubscriberId } from "@/utils/novuSubscriberId";
+import { deleteUser } from "@/lib/user_directory/deleteUser";
+import { failureNotification } from "@/components/notifications/failureNotification";
+import { successNotification } from "@/components/notifications/successNotification";
 
 //
 export const useDeleteUserForm = () => {
@@ -27,31 +27,23 @@ export const useDeleteUserForm = () => {
       deleteUser(id)
         .then(() => {
           // notify of user deleted ok!
-          fetcherPost(
-            `/api/notifications/notification`,
-            `El usuario ${userToDelete?.fullname} ha sido eliminado exitosamente.`,
-            novuSubscriberId,
-            `success-notification`
-          ).catch((err) => {
-            return err;
-          });
+          successNotification(
+            `El usuario ${userToDelete?.fullname} ha sido eliminado exitosamente.`
+          );
 
           handleDeleteCloseModal();
           setIsSubmittingUserDelete(false);
+          return id;
         })
         .catch((error) => {
           setIsSubmittingUserDelete(false);
 
           // notify of not being able to delete the user
-          fetcherPost(
-            `/api/notifications/notification`,
-            `Ha ocurrido un error trantando de eliminar al usuario ${userToDelete?.fullname}`,
-            novuSubscriberId,
-            `error-notification`
-          ).catch((fetcherPostError) => {
-            return fetcherPostError;
-          });
-          return error;
+          failureNotification(
+            `Ha ocurrido un error trantando de eliminar al usuario ${userToDelete?.fullname}`
+          );
+
+          throw new Error(`Error deleting user`, error);
         });
     } else {
       setIsSubmittingUserDelete(false);

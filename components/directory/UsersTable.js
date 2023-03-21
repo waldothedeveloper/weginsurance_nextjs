@@ -7,13 +7,13 @@ import {
 import { CreateUserForm } from "@/components/directory/CreateUserForm";
 import { DeleteUserActions } from "@/components/directory/DeleteUserActions";
 import { Modal } from "@/components/directory/Modal";
-import { Spinning } from "@/components/spinning";
+import { Spinning } from "@/components/Spinning";
 import { UpdateUserForm } from "@/components/directory/UpdateUserForm";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
-import { useDeleteUserForm } from "@/hooks/useDeleteUserForm";
-import { useFirebaseUsers } from "@/hooks/useFirebaseUsers";
-import { useNewUserForm } from "@/hooks/useNewUserForm";
-import { useUpdateUserForm } from "@/hooks/useUpdateUserForm";
+import { useDeleteUserForm } from "@/hooks/user_directory/useDeleteUserForm";
+import { useFirebaseUsers } from "@/hooks/user_directory/useFirebaseUsers";
+import { useNewUserForm } from "@/hooks/user_directory/useNewUserForm";
+import { useUpdateUserForm } from "@/hooks/user_directory/useUpdateUserForm";
 
 //
 export const UsersTable = () => {

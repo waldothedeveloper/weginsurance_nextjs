@@ -1,4 +1,4 @@
-import { Container } from "@/components/container";
+import { Container } from "@/components/Container";
 import { CreateOrganization } from "@clerk/nextjs";
 
 export default function CreateOrganizationPage() {

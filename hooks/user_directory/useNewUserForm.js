@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react";
 
-import { createFirebaseUser } from "@/lib/createFirebaseUser";
-import { fetcherPost } from "@/utils/fetcherPost";
-import { normalizeFirebaseUser } from "@/lib/normalizeFirebaseUser";
-import { novuSubscriberId } from "@/utils/novuSubscriberId";
+import { createFirebaseUser } from "@/lib/user_directory/createFirebaseUser";
+import { failureNotification } from "@/components/notifications/failureNotification";
+import { normalizeFirebaseUser } from "@/lib/user_directory/normalizeFirebaseUser";
+import { successNotification } from "@/components/notifications/successNotification";
 import { useForm } from "react-hook-form";
 
 //
@@ -36,29 +36,21 @@ export const useNewUserForm = () => {
         setOpenCreateUserModal(false);
         reset();
         // notify of user created ok!
-        fetcherPost(
-          `/api/notifications/notification`,
-          `El usuario ${normalizedUser?.fullname} ha sido creado exitosamente.`,
-          novuSubscriberId,
-          `success-notification`
-        ).catch((fetcherPostError) => {
-          return fetcherPostError;
-        });
+        successNotification(
+          `El usuario ${normalizedUser?.fullname} ha sido creado exitosamente.`
+        );
+        return normalizedUser;
       })
       .catch((error) => {
         setIsSubmitting(false);
         setOpenCreateUserModal(false);
         reset();
         // notify of error creating a user!
-        fetcherPost(
-          `/api/notifications/notification`,
-          `Ha ocurrido un error al crear al usuario ${normalizedUser?.fullname}. Intentelo nuevamente. Si el error persiste, contacte al soporte.`,
-          novuSubscriberId,
-          `error-notification`
-        ).catch((fetcherPostError) => {
-          return fetcherPostError;
-        });
-        return error;
+        failureNotification(
+          `Ha ocurrido un error al crear al usuario ${normalizedUser?.fullname}. Intentelo nuevamente. Si el error persiste, contacte al soporte.`
+        );
+
+        throw new Error(`Error creating user`, error);
       });
   };
 

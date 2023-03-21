@@ -1,10 +1,9 @@
-// import { getFirebaseUser } from "@/lib/getFirebaseUser";
 import { useCallback, useEffect, useState } from "react";
 
-import { fetcherPost } from "@/utils/fetcherPost";
-import { normalizeFirebaseUser } from "@/lib/normalizeFirebaseUser";
-import { novuSubscriberId } from "@/utils/novuSubscriberId";
-import { updateFirebaseUser } from "@/lib/updateFirebaseUser";
+import { failureNotification } from "@/components/notifications/failureNotification";
+import { normalizeFirebaseUser } from "@/lib/user_directory/normalizeFirebaseUser";
+import { successNotification } from "@/components/notifications/successNotification";
+import { updateFirebaseUser } from "@/lib/user_directory/updateFirebaseUser";
 import { useForm } from "react-hook-form";
 
 //
@@ -58,38 +57,20 @@ export const useUpdateUserForm = () => {
           setIsSubmitting(false);
 
           // notify of user successfuly updated!
-          fetcherPost(
-            `/api/notifications/notification`,
-            `El usuario ${updatedUser?.fullname} ha sido actualizado correctamente.`,
-            novuSubscriberId,
-            `success-notification`
-          )
-            .then((data) => {
-              reset();
-              return data;
-            })
-            .catch((err) => {
-              return err;
-            });
-          return true;
+          successNotification(
+            `El usuario ${updatedUser?.fullname} ha sido actualizado correctamente.`
+          );
+
+          return updatedUser;
         })
         .catch((err) => {
           setIsSubmitting(false);
           // notify of not being able to update the user
-          fetcherPost(
-            `/api/notifications/notification`,
-            `Ha ocurrido un error trantando de actualizar al usuario ${updatedUser?.fullname}`,
-            novuSubscriberId,
-            `error-notification`
-          )
-            .then((data) => {
-              reset();
-              return data;
-            })
-            .catch((fetcherPostError) => {
-              return fetcherPostError;
-            });
-          return err;
+          failureNotification(
+            `Ha ocurrido un error trantando de actualizar al usuario ${updatedUser?.fullname}`
+          );
+
+          throw new Error(`Error updating user`, err);
         });
     }
   };

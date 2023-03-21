@@ -1,9 +1,9 @@
 import { FunnelIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
-import { Spinning } from "@/components/spinning";
+import { Spinning } from "@/components/Spinning";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 import { normalizeString } from "@/utils/normalizeString";
-import { useFirebaseUsers } from "@/hooks/useFirebaseUsers";
+import { useFirebaseUsers } from "@/hooks/user_directory/useFirebaseUsers";
 
 export const UsersList = () => {
   const { firebaseUsers, firebaseError } = useFirebaseUsers();
