@@ -18,7 +18,7 @@ export const createRandomUser = () => {
   return {
     id: faker.datatype.uuid(),
     fullname,
-    active_user: active_user,
+    active_user,
     avatar: faker.image.avatar(),
     email,
     firstname,
