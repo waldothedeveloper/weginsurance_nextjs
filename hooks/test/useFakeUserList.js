@@ -8,7 +8,7 @@ export const useFakeUserList = () => {
 
   useEffect(() => {
     function generateUsers() {
-      let users = [];
+      const users = [];
       for (let id = 1; id <= 1000; id++) {
         users.push(createRandomUser());
       }
