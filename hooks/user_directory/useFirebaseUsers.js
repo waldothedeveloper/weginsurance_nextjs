@@ -11,6 +11,11 @@ export const useFirebaseUsers = () => {
   useEffect(() => {
     let unsubscribe = null;
     try {
+      /* 
+      you can use this db name collection to test large database of users (for testing only): 
+       const dbQuery = query(collection(db, "Large_User_DB"), orderBy("firstname"));
+      
+      */
       const dbQuery = query(collection(db, "Users"), orderBy("firstname"));
       unsubscribe = onSnapshot(dbQuery, (querySnapshot) => {
         const users = [];

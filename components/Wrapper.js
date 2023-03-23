@@ -2,9 +2,12 @@ import { AsideComponent } from "@/components/dashboard/AsideComponent";
 import { InsuranceCompanyTable } from "@/components/companies/InsuranceCompanyTable";
 import { MainComponent } from "@/components/dashboard/MainComponent";
 import { UserFormWrapper } from "@/components/directory/UserFormWrapper";
-import { UsersList } from "@/components/directory/UsersList";
-import { UsersTable } from "@/components/directory/UsersTable";
+// import { UsersList } from "@/components/directory/UsersList";
+import { VirtualizedUserList } from "@/components/directory/VirtualizedUserList";
+import { VirtualizedUserTable } from "@/components/directory/VirtualizedUserTable";
 import { useRouter } from "next/router";
+// import { UsersTable } from "@/components/directory/UsersTable";
+
 //
 export const Wrapper = () => {
   const router = useRouter();
@@ -15,7 +18,8 @@ export const Wrapper = () => {
       {router?.query?.dashboard?.includes("directory") && (
         <MainComponent className="relative z-0 flex-1 overflow-y-hidden focus:outline-none xl:order-last">
           <div className="py-12">
-            <UsersTable />
+            <VirtualizedUserTable />
+            {/* <UsersTable /> */}
           </div>
         </MainComponent>
       )}
@@ -39,7 +43,8 @@ export const Wrapper = () => {
       {/* left side */}
       {router?.query?.dashboard?.includes("messages") && (
         <AsideComponent>
-          <UsersList />
+          <VirtualizedUserList />
+          {/* <UsersList /> */}
         </AsideComponent>
       )}
     </>
