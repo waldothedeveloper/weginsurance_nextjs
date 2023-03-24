@@ -6,6 +6,11 @@ import {
 
 import { novuSubscriberId } from "@/utils/novuSubscriberId";
 
+const appIdentified =
+  process.env.NODE_ENV === "development"
+    ? process.env.NEXT_PUBLIC_DEVELOPMENT_applicationIdentifier
+    : process.env.NEXT_PUBLIC_PRODUCTION_applicationIdentifier;
+
 //
 export const NovuNotificationsCenter = () => {
   // your logic to handle the notification click
@@ -16,9 +21,7 @@ export const NovuNotificationsCenter = () => {
   return (
     <NovuProvider
       subscriberId={novuSubscriberId}
-      applicationIdentifier={
-        process.env.NEXT_PUBLIC_DEVELOPMENT_applicationIdentifier
-      }
+      applicationIdentifier={appIdentified}
       initialFetchingStrategy={{
         fetchNotifications: true,
       }}
