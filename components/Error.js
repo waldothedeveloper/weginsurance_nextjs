@@ -1,4 +1,5 @@
 import Link from "next/link";
+import PropTypes from "prop-types";
 
 export const Error = ({ error_message }) => {
   return (
@@ -29,4 +30,8 @@ export const Error = ({ error_message }) => {
       </div>
     </div>
   );
+};
+
+Error.propTypes = {
+  error_message: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
