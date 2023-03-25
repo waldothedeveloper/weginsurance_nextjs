@@ -76,7 +76,7 @@ export const VirtualizedUserTable = () => {
               Usuarios
             </h1>
             <p className="mt-2 text-sm text-gray-700">
-              Directorio de busqueda de{` `}
+              Directorio de busqueda de{" "}
               {totalUserCount} usuarios
             </p>
           </div>

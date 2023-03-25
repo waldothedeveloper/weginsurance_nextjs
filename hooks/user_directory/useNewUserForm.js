@@ -51,7 +51,7 @@ export const useNewUserForm = () => {
           `Ha ocurrido un error al crear al usuario ${normalizedUser?.fullname}. Intentelo nuevamente. Si el error persiste, contacte al soporte.`
         );
 
-        throw new Error(`Error creating user`, error);
+        throw new Error("Error creating user", error);
       });
   };
 
