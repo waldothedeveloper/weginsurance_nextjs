@@ -1,4 +1,5 @@
 import { Dialog } from "@headlessui/react";
+import { Error } from "@/components/Error";
 import { Input } from "@/components/directory/Input";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { PropTypes } from "prop-types";
@@ -7,6 +8,8 @@ import { userFormLabels } from "@/utils/userFormLabels";
 
 //
 export const UpdateUserForm = ({
+  companies,
+  companiesError,
   register,
   errors,
   isSubmitting,
@@ -14,6 +17,16 @@ export const UpdateUserForm = ({
   submitUpdateUser,
   handleCloseModal,
 }) => {
+  if (companiesError) {
+    return (
+      <Error
+        error_message={
+          companiesError ||
+          "Ha ocurrido un error inesperado. Intentelo nuevamente."
+        }
+      />
+    );
+  }
   return (
     <>
       <div className="px-4 py-5 sm:px-6">
@@ -59,11 +72,7 @@ export const UpdateUserForm = ({
               errors={errors}
               htmlFor="insurance_company"
               errorMessage="Por favor elija una compañia"
-              options={[
-                { value: "", id: 0 },
-                { value: "Ambetter", id: 1 },
-                { value: "Friday", id: 2 },
-              ]}
+              options={companies}
               name="insurance_company"
               label="Compañia"
             />

@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 export const useNewUserForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [openCreateUserModal, setOpenCreateUserModal] = useState(false);
+
   const {
     register,
     reset,

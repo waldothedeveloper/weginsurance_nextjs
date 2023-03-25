@@ -9,10 +9,16 @@ import { UpdateUserForm } from "@/components/directory/UpdateUserForm";
 import { UserTableUtilities } from "@/lib/table/user_table_utilities";
 import { flexRender } from "@tanstack/react-table";
 import { useDeleteUserForm } from "@/hooks/user_directory/useDeleteUserForm";
+import { useInsuranceCompany } from "@/hooks/insurance_company/useHandleInsuranceCompany";
 import { useNewUserForm } from "@/hooks/user_directory/useNewUserForm";
 import { useUpdateUserForm } from "@/hooks/user_directory/useUpdateUserForm";
 //
 export const VirtualizedUserTable = () => {
+  const { insuranceCompanies, insuranceCompanyError } = useInsuranceCompany();
+  const comp = insuranceCompanies?.map((company) => {
+    return { value: company.name, id: company.id };
+  });
+
   // new user
   const {
     registerNewUserForm,
@@ -170,6 +176,8 @@ export const VirtualizedUserTable = () => {
           action="update"
         >
           <UpdateUserForm
+            companiesError={insuranceCompanyError}
+            companies={comp}
             register={registerUpdateUserForm}
             errors={errorsUpdateUserForm}
             handleSubmit={handleUpdateUserForm}
@@ -187,6 +195,8 @@ export const VirtualizedUserTable = () => {
           action="create"
         >
           <CreateUserForm
+            companiesError={insuranceCompanyError}
+            companies={comp}
             register={registerNewUserForm}
             errors={errorsNewUserForm}
             handleSubmit={handleSubmitNewUserForm}
