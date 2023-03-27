@@ -15,7 +15,7 @@ import { useUpdateUserForm } from "@/hooks/user_directory/useUpdateUserForm";
 //
 export const VirtualizedUserTable = () => {
   const { insuranceCompanies, insuranceCompanyError } = useInsuranceCompany();
-  const comp = insuranceCompanies?.map((company) => {
+  const filteredInsuranceCompanies = insuranceCompanies?.map((company) => {
     return { value: company.name, id: company.id };
   });
 
@@ -69,15 +69,14 @@ export const VirtualizedUserTable = () => {
   }
   return (
     <>
-      <div>
+      <div className="overflow-hidden">
         <div className="flex flex-col justify-center px-4 sm:px-6">
           <div className="sm:flex-auto">
             <h1 className="text-base font-semibold leading-6 text-gray-900">
               Usuarios
             </h1>
             <p className="mt-2 text-sm text-gray-700">
-              Directorio de busqueda de{" "}
-              {totalUserCount} usuarios
+              Directorio de busqueda de {totalUserCount} usuarios
             </p>
           </div>
           {/* Search bar */}
@@ -177,7 +176,7 @@ export const VirtualizedUserTable = () => {
         >
           <UpdateUserForm
             companiesError={insuranceCompanyError}
-            companies={comp}
+            companies={filteredInsuranceCompanies}
             register={registerUpdateUserForm}
             errors={errorsUpdateUserForm}
             handleSubmit={handleUpdateUserForm}
@@ -196,7 +195,7 @@ export const VirtualizedUserTable = () => {
         >
           <CreateUserForm
             companiesError={insuranceCompanyError}
-            companies={comp}
+            companies={filteredInsuranceCompanies}
             register={registerNewUserForm}
             errors={errorsNewUserForm}
             handleSubmit={handleSubmitNewUserForm}
