@@ -112,7 +112,7 @@ export const useCreateNewCompany = () => {
         setIsSubmitting(false);
         failureNotification(normalizedCompanyName);
         handleCloseModal();
-        throw new Error(`Error trying to upload the logo file`, error);
+        return error;
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {

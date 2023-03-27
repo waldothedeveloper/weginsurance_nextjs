@@ -52,7 +52,7 @@ export const useUpdateCompany = () => {
     if (!values) return null;
 
     const storageRef = ref(storage, `insurance_company_logos/${file?.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+    const uploadTask = await uploadBytesResumable(storageRef, file, metadata);
 
     uploadTask.on(
       "state_changed",
@@ -69,7 +69,6 @@ export const useUpdateCompany = () => {
           `La compañia ${normalizedCompanyName} no pudo ser actualizada. Por favor, intente de nuevo. ${error}`
         );
         handleCloseModal();
-        throw new Error(`Error trying to upload the logo file`, error);
       },
       async () => {
         try {
@@ -98,7 +97,7 @@ export const useUpdateCompany = () => {
         } catch (err) {
           setIsSubmitting(false);
           handleCloseModal();
-          throw new Error(`Error trying to upload the logo file`, err);
+          return err;
         }
       }
     );
@@ -126,7 +125,6 @@ export const useUpdateCompany = () => {
         failureNotification(
           `La compañia ${name} no pudo ser actualizada. Por favor, intente de nuevo.`
         );
-        throw err;
       }
     } else {
       // we should have an updated logo
@@ -138,7 +136,6 @@ export const useUpdateCompany = () => {
         } catch (err) {
           setIsSubmitting(false);
           handleCloseModal();
-          throw err;
         }
       }
     }

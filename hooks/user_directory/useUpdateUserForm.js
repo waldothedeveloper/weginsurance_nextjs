@@ -70,7 +70,7 @@ export const useUpdateUserForm = () => {
             `Ha ocurrido un error trantando de actualizar al usuario ${updatedUser?.fullname}`
           );
 
-          throw new Error(`Error updating user`, err);
+          return err;
         });
     }
   };
