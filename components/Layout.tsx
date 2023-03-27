@@ -1,5 +1,5 @@
+import { ReactNode, useEffect, useState } from "react";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
-import { useEffect, useState } from "react";
 
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { DesktopSideBar } from "@/components/DesktopSideBar";
@@ -11,8 +11,12 @@ import { firebaseApp } from "@/lib/firebaseConfig";
 import logo from "@/public/weg_logo.jpg";
 import { useAuth } from "@clerk/nextjs";
 
+type Props = {
+  children?: ReactNode;
+};
+
 //
-export const Layout = ({ children }) => {
+export const Layout = ({ children }: Props) => {
   const { getToken } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const handleCloseSideBar = () => setSidebarOpen(false);
@@ -22,12 +26,17 @@ export const Layout = ({ children }) => {
     const signInWithClerk = async () => {
       try {
         const auth = getAuth(firebaseApp);
-        const token = await getToken({ template: "integration_firebase" });
-        const userCredentials = await signInWithCustomToken(auth, token);
+        const token = await getToken({
+          template: "integration_firebase",
+        });
 
-        return userCredentials.user;
+        if (token) {
+          const userCredentials = await signInWithCustomToken(auth, token);
+          return userCredentials.user;
+        }
+        return null;
       } catch (error) {
-        // console.log("general error firebase auth: ", error);
+        return error;
       }
     };
 
