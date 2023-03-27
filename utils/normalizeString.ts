@@ -1,6 +1,6 @@
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 
-export const normalizeString = (string) => {
+export const normalizeString = (string: string): string => {
   return string
     .trim()
     .split(" ")

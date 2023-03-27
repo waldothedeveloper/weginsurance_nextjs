@@ -1,3 +1,4 @@
+// TODO: This can become a type of an interface in the future
 export const companyFormLabels = [
   {
     errorMessage: "El nombre de la compañia es obligatorio",
