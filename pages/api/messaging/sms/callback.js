@@ -1,8 +1,8 @@
 export default function handler(req, res) {
-  if (req.method !== `POST`) {
+  if (req.method !== "POST") {
     return res
       .status(404)
-      .json({ message: `This endpoint requires a POST request!` });
+      .json({ message: "This endpoint requires a POST request!" });
   }
 
   try {
@@ -10,7 +10,7 @@ export default function handler(req, res) {
 
     if (!SmsStatus || !MessageStatus || !To || !From) {
       return res.status(404).json({
-        message: `A valid SMS status is required!`,
+        message: "A valid SMS status is required!",
         status: 400,
       });
     } else {
@@ -24,7 +24,7 @@ export default function handler(req, res) {
   } catch (error) {
     // console.log("ERROR ON CALLBACK SMS MESSAGE: ", error);
     return res.status(500).json({
-      message: `Our system has detected an unexpected error.`,
+      message: "Our system has detected an unexpected error.",
       status: error?.status || 500,
       error: error,
     });

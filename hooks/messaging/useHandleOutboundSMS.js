@@ -28,7 +28,7 @@ export const useHandleOutboundSMS = (editor) => {
         return;
       } else if (!e164Regex.test(phone)) {
         // console.log(`THIS PHONE NUMBER DOESN'T MATCH THE E164 FORMAT`);
-        throw new Error(`THIS PHONE NUMBER DOESN'T MATCH THE E164 FORMAT`);
+        throw new Error("THIS PHONE NUMBER DOESN'T MATCH THE E164 FORMAT");
         //
       } else {
         return sendOutboundSMS(smsMessage)
@@ -38,7 +38,7 @@ export const useHandleOutboundSMS = (editor) => {
           })
           .catch((err) => {
             failureNotification(
-              `Ha ocurrido un error al intentar enviar el SMS. Intentelo nuevamente. Si el error persiste contacte al soporte tecnico.`
+              "Ha ocurrido un error al intentar enviar el SMS. Intentelo nuevamente. Si el error persiste contacte al soporte tecnico."
             );
             return err;
           });
@@ -46,7 +46,7 @@ export const useHandleOutboundSMS = (editor) => {
     } catch (error) {
       // TODO: PLEASE MAKE SURE TO HANDLE THIS ERROR PROPERLY!!!!!!!!!! I WOULD LIKE SOMETHING LIKE AN ALERT BOX TO POP UP AND TELL THE USER THAT THE PHONE NUMBER IS NOT VALID
       failureNotification(
-        `Ha ocurrido un error al intentar enviar el SMS. Intentelo nuevamente. Si el error persiste contacte al soporte tecnico.`
+        "Ha ocurrido un error al intentar enviar el SMS. Intentelo nuevamente. Si el error persiste contacte al soporte tecnico."
       );
       return error;
     }

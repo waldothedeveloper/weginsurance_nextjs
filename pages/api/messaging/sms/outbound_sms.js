@@ -6,12 +6,12 @@ export default async function handler(req, res) {
   if (!message_body) {
     return res
       .status(404)
-      .json({ message: `A valid message body is required!`, status: 400 });
+      .json({ message: "A valid message body is required!", status: 400 });
   }
 
   if (!user_phone) {
     return res.status(404).json({
-      message: `A valid client user phone number is required!`,
+      message: "A valid client user phone number is required!",
       status: 400,
     });
   }
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
   } catch (error) {
     // console.log("ERROR SENDING SMS MESSAGE: ", error);
     return res.status(500).json({
-      message: `Our system has detected an unexpected error.`,
+      message: "Our system has detected an unexpected error.",
       status: error?.status || 500,
       error: error,
     });
