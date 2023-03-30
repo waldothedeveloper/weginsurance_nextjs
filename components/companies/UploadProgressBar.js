@@ -5,8 +5,8 @@ export const UploadProgressBar = ({ progress }) => {
     <div className="my-6">
       <p className="p-0.5 text-xs text-gray-700">
         {progress < 100
-          ? `Subiendo el archivo...`
-          : `El archivo subio con exito!`}
+          ? "Subiendo el archivo..."
+          : "El archivo subio con exito!"}
       </p>
       <div className="w-full rounded-full bg-gray-200 dark:bg-gray-700">
         <div
