@@ -19,7 +19,7 @@ export const AppRoot = () => {
                 Notificaciones futuras.{" "}
                 <Link
                   href="/"
-                  className="whitespace-nowrap font-semibold text-cyan-600"
+                  className="whitespace-nowrap font-semibold text-blue-600"
                 >
                   <span className="absolute inset-0" aria-hidden="true" />
                   Leer mas <span aria-hidden="true">&rarr;</span>
@@ -36,7 +36,7 @@ export const AppRoot = () => {
             <div className="mt-10 flex items-center gap-x-6">
               <Link
                 href="/admin/dashboard"
-                className="rounded-md bg-cyan-700 px-6 py-3 text-base font-semibold leading-7 text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
+                className="rounded-md bg-blue-700 px-6 py-3 text-base font-semibold leading-7 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
               >
                 Entrar al sistema
               </Link>
@@ -51,7 +51,7 @@ export const AppRoot = () => {
         </div>
         <div className="relative lg:col-span-5 lg:-mr-8 xl:absolute xl:inset-0 xl:left-1/2 xl:mr-0">
           <Image
-            className="aspect-[3/2] w-full object-cover lg:absolute lg:inset-0 lg:aspect-auto lg:h-full"
+            className="lg:aspect-auto aspect-[3/2] w-full object-cover lg:absolute lg:inset-0 lg:h-full"
             src="https://images.unsplash.com/photo-1562664377-709f2c337eb2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
             alt="picture of a beautiful office"
             fill

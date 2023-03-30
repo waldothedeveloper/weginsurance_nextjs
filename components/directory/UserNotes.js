@@ -12,8 +12,8 @@ export const UserNotes = ({ register }) => {
             </p>
           </div>
         </div>
-        <div className="mt-5 md:mt-0 md:col-span-2">
-          <div className="px-4 py-5 sm:p-6 rounded-md">
+        <div className="mt-5 md:col-span-2 md:mt-0">
+          <div className="rounded-md px-4 py-5 sm:p-6">
             <div className="sm:col-span-6">
               <label
                 htmlFor="notes"
@@ -28,7 +28,7 @@ export const UserNotes = ({ register }) => {
                   id="notes"
                   name="notes"
                   rows={3}
-                  className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border border-gray-300 rounded-md"
+                  className="block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                   defaultValue={""}
                 />
               </div>

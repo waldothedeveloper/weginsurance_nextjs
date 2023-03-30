@@ -82,7 +82,7 @@ export const InsuranceCompanyTable = () => {
             <button
               onClick={handleOpenNewCompanyModal}
               type="button"
-              className="inline-flex items-center gap-x-2 rounded-md bg-cyan-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600 lg:ml-4"
+              className="inline-flex items-center gap-x-2 rounded-md bg-blue-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 lg:ml-4"
             >
               <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
               Crear compañia
@@ -167,7 +167,7 @@ export const InsuranceCompanyTable = () => {
                                 handleOpenUpdateCompanyModal(company)
                               }
                               type="button"
-                              className="inline-flex items-center gap-x-2 rounded-md bg-cyan-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
+                              className="inline-flex items-center gap-x-2 rounded-md bg-blue-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                             >
                               <PencilSquareIcon
                                 className="-ml-0.5 h-5 w-5"

@@ -1,9 +1,10 @@
+import { PlusIcon, UserPlusIcon } from "@heroicons/react/20/solid";
+
 import { CreateUserForm } from "@/components/directory/CreateUserForm";
 import { DeleteUserActions } from "@/components/directory/DeleteUserActions";
 import { Error } from "@/components/Error";
 import { Modal } from "@/components/directory/Modal";
 import { Pagination } from "@/components/directory/user_pagination/pagination";
-import { PlusIcon } from "@heroicons/react/20/solid";
 import { Spinning } from "@/components/Spinning";
 import { UpdateUserForm } from "@/components/directory/UpdateUserForm";
 import { UserTableUtilities } from "@/lib/table/user_table_utilities";
@@ -12,6 +13,7 @@ import { useDeleteUserForm } from "@/hooks/user_directory/useDeleteUserForm";
 import { useInsuranceCompany } from "@/hooks/insurance_company/useHandleInsuranceCompany";
 import { useNewUserForm } from "@/hooks/user_directory/useNewUserForm";
 import { useUpdateUserForm } from "@/hooks/user_directory/useUpdateUserForm";
+
 //
 export const VirtualizedUserTable = () => {
   const { insuranceCompanies, insuranceCompanyError } = useInsuranceCompany();
@@ -88,7 +90,7 @@ export const VirtualizedUserTable = () => {
                   type="text"
                   name="search"
                   id="search"
-                  className="block w-full rounded-md border-0 py-1.5 pr-32 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 pr-32 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                 />
                 <div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
                   <kbd className="inline-flex items-center rounded border border-gray-200 px-1 font-sans text-xs text-gray-400">
@@ -98,15 +100,27 @@ export const VirtualizedUserTable = () => {
               </div>
             </div>
             {/* Create user button */}
-            <div className="">
+            <div>
               <button
                 onClick={handleCreateUserModal}
                 type="button"
-                className="inline-flex items-center gap-x-2 rounded-md bg-cyan-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600 lg:ml-4"
+                className="hidden items-center gap-x-2 rounded-md bg-blue-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:inline-flex lg:ml-4"
               >
                 <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
                 Crear usuario
               </button>
+              <span className="inline-flex md:hidden">
+                <button
+                  onClick={handleCreateUserModal}
+                  type="button"
+                  className="ml-4 inline-flex items-center gap-x-2 rounded-md bg-blue-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                >
+                  <UserPlusIcon
+                    className="-ml-0.5 h-5 w-5"
+                    aria-hidden="true"
+                  />
+                </button>
+              </span>
             </div>
           </div>
         </div>

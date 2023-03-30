@@ -30,7 +30,7 @@ export const MobileSideBar = ({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-75" />
+          <div className="fixed inset-0 bg-gray-600/75 backdrop-blur-sm" />
         </Transition.Child>
 
         <div className="fixed inset-0 z-40 flex">
@@ -43,7 +43,7 @@ export const MobileSideBar = ({
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-white focus:outline-none">
+            <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-blue-700 focus:outline-none">
               <Transition.Child
                 as={Fragment}
                 enter="ease-in-out duration-300"
@@ -78,14 +78,14 @@ export const MobileSideBar = ({
                 <NavigationLinks />
               </div>
               <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
-                <div className="w-full flex items-center justify-between">
+                <div className="flex w-full items-center justify-between">
                   <UserButton
                     showName
                     appearance={{
                       elements: {
                         userButtonBox: "flex flex-row-reverse",
                         userButtonOuterIdentifier:
-                          "text-sm font-medium text-gray-700 group-hover:text-gray-900",
+                          "text-sm font-medium text-gray-50",
                       },
                     }}
                   />

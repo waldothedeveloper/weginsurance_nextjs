@@ -36,7 +36,7 @@ export const CreateCompany = ({
         <div className="flex items-center space-x-3">
           <div className="flex-shrink-0">
             <PencilSquareIcon
-              className="h-8 w-8 rounded-full text-cyan-600"
+              className="h-8 w-8 rounded-full text-blue-600"
               aria-hidden="true"
             />
           </div>
@@ -99,7 +99,7 @@ export const CreateCompany = ({
                     placeholder="ejemplo: La poliza de Ambetter tiene que ser renovada en 6 meses."
                     name="notes"
                     rows={3}
-                    className="block w-full rounded-md border border-gray-300 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm"
+                    className="block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     defaultValue={""}
                   />
                 </div>
@@ -114,7 +114,7 @@ export const CreateCompany = ({
             className={
               isSubmitting
                 ? "inline-flex w-full justify-center rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-400 shadow-sm sm:ml-3 sm:w-auto"
-                : "inline-flex w-full justify-center rounded-md bg-cyan-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 sm:ml-3 sm:w-auto"
+                : "inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
             }
           >
             Crear

@@ -4,7 +4,7 @@ const errorClass =
   "mt-1 block w-full rounded-md border-0 text-red-900 ring-1 ring-inset ring-red-400 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6";
 
 const okClass =
-  "mt-1 focus:ring-cyan-500 focus:border-cyan-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md";
+  "mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md";
 
 export const Input = ({
   errorMessage,

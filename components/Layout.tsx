@@ -18,7 +18,7 @@ type Props = {
 //
 export const Layout = ({ children }: Props) => {
   const { getToken } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const handleCloseSideBar = () => setSidebarOpen(false);
   const handleOpenSideBar = () => setSidebarOpen(true);
 
