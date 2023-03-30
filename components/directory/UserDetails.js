@@ -95,7 +95,7 @@ export const UserDetails = ({
   isSubmitting,
 }) => {
   return (
-    <article className="w-full relative">
+    <article className="relative w-full">
       {/* Profile header */}
       <div>
         <div className="relative h-32 w-full lg:h-48">
@@ -139,9 +139,9 @@ export const UserDetails = ({
               )}
 
               {selectedUser?.active_user ? (
-                <CheckBadgeIcon className="absolute bottom-0 right-0 block h-8 w-8 rounded-full text-white bg-green-400" />
+                <CheckBadgeIcon className="absolute bottom-0 right-0 block h-8 w-8 rounded-full bg-green-400 text-white" />
               ) : (
-                <XMarkIcon className="absolute bottom-0 right-0 block h-8 w-8 rounded-full text-white bg-red-400 p-0.5" />
+                <XMarkIcon className="absolute bottom-0 right-0 block h-8 w-8 rounded-full bg-red-400 p-0.5 text-white" />
               )}
             </div>
             <div className="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
@@ -160,7 +160,7 @@ export const UserDetails = ({
                       className={
                         isSubmitting
                           ? "inline-flex justify-center rounded-md border border-gray-300 bg-gray-300 px-4 py-2 text-sm text-gray-400"
-                          : "inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                          : "inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                       }
                     >
                       <XMarkIcon
@@ -173,7 +173,7 @@ export const UserDetails = ({
                     <button
                       onClick={handleUpdateUser}
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                      className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     >
                       <PencilSquareIcon
                         className="-ml-1 mr-2 h-5 w-5 text-gray-400"
@@ -189,11 +189,11 @@ export const UserDetails = ({
                       className={
                         isSubmitting
                           ? "inline-flex justify-center rounded-md border border-gray-300 bg-gray-300 px-4 py-2 text-sm text-gray-400"
-                          : "inline-flex justify-center rounded-md border border-cyan-600 bg-cyan-500 px-4 py-2 text-sm font-medium text-gray-50 shadow-sm hover:bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                          : "inline-flex justify-center rounded-md border border-blue-600 bg-blue-500 px-4 py-2 text-sm font-medium text-gray-50 shadow-sm hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                       }
                     >
                       <CheckIcon
-                        className="-ml-1 mr-2 h-5 w-5 text-cyan-50"
+                        className="-ml-1 mr-2 h-5 w-5 text-blue-50"
                         aria-hidden="true"
                       />
                       <span>Guardar</span>

@@ -25,6 +25,6 @@
       "@/interfaces/*": ["interfaces/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/twilio/config.js"],
   "exclude": ["node_modules"]
 }

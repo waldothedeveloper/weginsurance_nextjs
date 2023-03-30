@@ -55,16 +55,16 @@ export const NavigationLinks = () => {
             key={item.name}
             className={classNames(
               router?.query?.dashboard?.includes(item?.href)
-                ? "bg-gray-200 text-gray-900"
-                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                ? "bg-gray-50 text-gray-900"
+                : "text-gray-50 hover:bg-blue-400 hover:text-gray-50",
               "group flex w-full items-center rounded-md px-2 py-2 text-sm font-medium"
             )}
           >
             <item.icon
               className={classNames(
                 router?.query?.dashboard?.includes(item?.href)
-                  ? "text-gray-500"
-                  : "text-gray-400 group-hover:text-gray-500",
+                  ? "text-gray-900"
+                  : "text-gray-50 group-hover:text-gray-50",
                 "mr-3 h-6 w-6"
               )}
               aria-hidden="true"
@@ -76,3 +76,4 @@ export const NavigationLinks = () => {
     </nav>
   );
 };
+//  "bg-blue-400 text-gray-50"

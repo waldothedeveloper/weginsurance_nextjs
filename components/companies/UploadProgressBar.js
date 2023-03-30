@@ -12,7 +12,7 @@ export const UploadProgressBar = ({ progress }) => {
         <div
           className={
             progress < 100
-              ? "rounded-full bg-cyan-600 py-px text-center text-xs font-medium leading-none text-cyan-100"
+              ? "rounded-full bg-blue-600 py-px text-center text-xs font-medium leading-none text-blue-100"
               : "rounded-full bg-green-600 py-px text-center text-xs font-medium leading-none text-green-100"
           }
           style={{ width: `${progress}%` }}

@@ -1,4 +1,5 @@
 import { AsideComponent } from "@/components/dashboard/AsideComponent";
+import { Conversation } from "@/components/messaging/Conversation";
 import { InsuranceCompanyTable } from "@/components/companies/InsuranceCompanyTable";
 import { MainComponent } from "@/components/dashboard/MainComponent";
 import { UserFormWrapper } from "@/components/directory/UserFormWrapper";
@@ -13,6 +14,13 @@ export const Wrapper = () => {
   return (
     <>
       {/* right side */}
+      {router?.query?.dashboard?.includes("messages") && (
+        <MainComponent className="relative z-0 flex-1 overflow-hidden focus:outline-none xl:order-last">
+          <div className="mx-auto">
+            <Conversation />
+          </div>
+        </MainComponent>
+      )}
       {router?.query?.dashboard?.includes("directory") && (
         <MainComponent className="relative z-0 flex-1 overflow-y-hidden focus:outline-none xl:order-last">
           <div className="py-12">
