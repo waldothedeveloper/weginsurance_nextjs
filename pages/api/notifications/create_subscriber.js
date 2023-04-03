@@ -26,7 +26,6 @@ export default async function handler(req, res) {
       });
     }
   } catch (error) {
-    // console.log("ERROR CREATING A NOVU SUBSCRIBER: ", error);
     return res.status(500).json({
       message: `Our system has detected an unexpected error.`,
       status: error?.status || 500,

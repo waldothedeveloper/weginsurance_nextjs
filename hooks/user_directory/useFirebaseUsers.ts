@@ -1,12 +1,13 @@
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
+import { RealUser } from "@/interfaces/index";
 import { db } from "@/lib/firebaseConfig";
 
 //
 export const useFirebaseUsers = () => {
-  const [firebaseUsers, setFirebaseUsers] = useState([]);
-  const [firebaseError, setFirebaseError] = useState(null);
+  const [firebaseUsers, setFirebaseUsers] = useState<RealUser[] | []>([]);
+  const [firebaseError, setFirebaseError] = useState<{} | null>(null);
 
   useEffect(() => {
     let unsubscribe = null;
@@ -18,7 +19,7 @@ export const useFirebaseUsers = () => {
       */
       const dbQuery = query(collection(db, "Users"), orderBy("firstname"));
       unsubscribe = onSnapshot(dbQuery, (querySnapshot) => {
-        const users = [];
+        const users: RealUser[] = [];
         querySnapshot.forEach((doc) => {
           const tempUser = doc.data();
           tempUser.id = doc?.id;
@@ -27,7 +28,7 @@ export const useFirebaseUsers = () => {
 
         setFirebaseUsers(users);
       });
-    } catch (error) {
+    } catch (error: any) {
       setFirebaseError(JSON.stringify(error, null, 2));
     }
 

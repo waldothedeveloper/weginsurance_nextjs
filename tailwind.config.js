@@ -5,11 +5,7 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {
-      boxShadow: {
-        neumorphism_shadow: "20px 20px 60px #adb5bf, -20px -20px 60px #e9f5ff",
-      },
-    },
+    extend: {},
   },
   plugins: [
     require("@tailwindcss/typography"),

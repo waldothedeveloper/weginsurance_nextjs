@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { SignIn } from "@clerk/nextjs";
 import office2 from "@/public/office_2.avif";
-//
+
 export const SignInComponent = () => {
   return (
     <div className="grid overflow-hidden">
@@ -17,7 +17,7 @@ export const SignInComponent = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-white" />
       </div>
 
-      <div className="relative -mt-24 mx-auto max-w-7xl px-4 pb-16 sm:px-6 sm:pb-24 lg:px-8">
+      <div className="relative mx-auto -mt-24 max-w-7xl px-4 pb-16 sm:px-6 sm:pb-24 lg:px-8">
         <div className="mx-auto max-w-2xl text-center lg:max-w-4xl">
           <SignIn
             appearance={{
