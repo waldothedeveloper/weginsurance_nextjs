@@ -1,10 +1,13 @@
+import { FakeUser, RealUser } from "@/interfaces/index";
 import { FunnelIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { forwardRef, useEffect } from "react";
 
 import { Spinning } from "@/components/Spinning";
 import { Virtuoso } from "react-virtuoso";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
-import { forwardRef } from "react";
 import { normalizeString } from "@/utils/normalizeString";
+import { selectedUserAtom } from "@/lib/state/atoms";
+import { useAtomValue } from "jotai";
 import { useFakeUserList } from "@/hooks/test/useFakeUserList";
 import { useFirebaseUsers } from "@/hooks/user_directory/useFirebaseUsers";
 import { useSetAtom } from "jotai";
@@ -20,16 +23,26 @@ const Footer = () => (
 // eslint-disable-next-line react/display-name
 const List = forwardRef((props, ref) => {
   return (
-    <ul {...props} ref={ref} className="z-0 w-full divide-y divide-gray-200" />
+    <ul {...props} ref={ref} className="z-0 w-full divide-y divide-gray-300" />
   );
 });
 
 export const VirtualizedUserList = () => {
   const setUserPhone = useSetAtom(userPhoneAtom);
+  const setSelectedUser = useSetAtom(selectedUserAtom);
+  const selectedUser = useAtomValue<RealUser | null>(selectedUserAtom);
+
+  useEffect(() => {
+    return () => {
+      setSelectedUser(null);
+      setUserPhone("");
+    };
+  }, [setSelectedUser, setUserPhone]);
+
   //! make sure to change this test = false when you're done testing
   const test = false;
   const { firebaseUsers, firebaseError } = useFirebaseUsers();
-  const fakeUserList = useFakeUserList();
+  const fakeUserList: FakeUser[] = useFakeUserList();
 
   if (firebaseError) {
     return (
@@ -45,13 +58,16 @@ export const VirtualizedUserList = () => {
 
   return (
     <>
-      <div className="px-6 pt-6 pb-4">
+      <div className="bg-gray-100 px-6 pt-6 pb-6">
         <h2 className="text-lg font-medium text-gray-900">Directorio</h2>
         <p className="mt-1 text-sm text-gray-600">
           Directorio de búsqueda de{" "}
           {test ? fakeUserList?.length : firebaseUsers.length} usuarios
         </p>
-        <form className="mt-6 flex space-x-4" action="#">
+        <form
+          className="mt-6 flex space-x-4"
+          onSubmit={(event) => event.preventDefault()}
+        >
           <div className="min-w-0 flex-1">
             <label htmlFor="search" className="sr-only">
               Search
@@ -83,43 +99,83 @@ export const VirtualizedUserList = () => {
       </div>
       {/* Directory list */}
       <nav
-        className="max-h-[75vh] flex-1 overflow-y-auto"
+        className="max-h-[80vh] flex-1 overflow-y-auto bg-gray-100"
         aria-label="Directory"
       >
         <Virtuoso
           components={{ List, Footer }}
           data={test ? fakeUserList : firebaseUsers}
-          itemContent={(index, user) => (
+          itemContent={(index, user: RealUser) => (
             <>
-              <li className="flex items-center space-x-3 px-6 py-5 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500 hover:bg-blue-50">
+              <li
+                className={
+                  selectedUser?.fullname === user.fullname
+                    ? "flex items-center space-x-3 bg-blue-600 px-6 py-5 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500"
+                    : "flex items-center space-x-3 px-6 py-5 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500 hover:bg-white"
+                }
+              >
                 <div className="flex-shrink-0">
-                  <div className="h-10 w-10 rounded-full bg-gray-300" />
+                  <div
+                    className={
+                      selectedUser?.fullname === user.fullname
+                        ? "h-10 w-10 rounded-full bg-blue-50"
+                        : "h-10 w-10 rounded-full bg-gray-400"
+                    }
+                  />
                 </div>
                 <div className="min-w-0 flex-1">
                   <button
                     type="button"
-                    onClick={() => setUserPhone(user?.phone)}
+                    onClick={() => {
+                      try {
+                        setUserPhone(user?.phone);
+                        setSelectedUser(user);
+                      } catch (error) {
+                        // console.log(
+                        //   "error on VirtualizedList onCLick: ",
+                        //   error
+                        // );
+                        return error;
+                      }
+                    }}
                     className="flex w-full flex-col items-start space-y-1 focus:outline-none"
                   >
-                    {/* <span className="absolute inset-0" aria-hidden="true" /> */}
                     <div className="flex w-full justify-between">
-                      <p className="whitespace-normal text-sm font-medium text-gray-900">
+                      <p
+                        className={
+                          selectedUser?.fullname === user.fullname
+                            ? "whitespace-normal text-sm font-medium text-white"
+                            : "whitespace-normal text-sm font-medium text-gray-900"
+                        }
+                      >
                         {normalizeString(user?.fullname)}
                       </p>
-                      <div className="relative inline-flex items-center rounded-full border border-gray-300 px-2 py-0.5 text-sm">
+                      <div className="relative inline-flex items-center rounded-full border border-white px-2 py-0.5 text-sm">
                         <span className="absolute flex flex-shrink-0 items-center justify-center">
                           <span
                             className="h-1 w-1 rounded-full"
                             aria-hidden="true"
                           />
                         </span>
-                        <span className="text-xs text-gray-500">
+                        <span
+                          className={
+                            selectedUser?.fullname === user.fullname
+                              ? "text-xs text-white"
+                              : "text-xs text-gray-500"
+                          }
+                        >
                           {user?.insurance_company}
                         </span>
                       </div>
                     </div>
 
-                    <p className="truncate text-sm text-gray-500">
+                    <p
+                      className={
+                        selectedUser?.fullname === user.fullname
+                          ? "truncate text-sm text-white"
+                          : "truncate text-sm text-gray-500"
+                      }
+                    >
                       {formatPhoneNumber(user?.phone)}
                     </p>
                   </button>

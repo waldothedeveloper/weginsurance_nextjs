@@ -1,3 +1,5 @@
+import { NextRouter, useRouter } from "next/router";
+
 import { AsideComponent } from "@/components/dashboard/AsideComponent";
 import { Conversation } from "@/components/messaging/Conversation";
 import { InsuranceCompanyTable } from "@/components/companies/InsuranceCompanyTable";
@@ -5,11 +7,9 @@ import { MainComponent } from "@/components/dashboard/MainComponent";
 import { UserFormWrapper } from "@/components/directory/UserFormWrapper";
 import { VirtualizedUserList } from "@/components/directory/VirtualizedUserList";
 import { VirtualizedUserTable } from "@/components/directory/VirtualizedUserTable";
-import { useRouter } from "next/router";
 
-//
 export const Wrapper = () => {
-  const router = useRouter();
+  const router: NextRouter = useRouter();
 
   return (
     <>
@@ -17,6 +17,7 @@ export const Wrapper = () => {
       {router?.query?.dashboard?.includes("messages") && (
         <MainComponent className="relative z-0 flex-1 overflow-hidden focus:outline-none xl:order-last">
           <div className="mx-auto">
+            {/* data={data} error={error} isMutating={isMutating} */}
             <Conversation />
           </div>
         </MainComponent>

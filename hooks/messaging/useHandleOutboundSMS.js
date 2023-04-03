@@ -1,11 +1,34 @@
+import { sendingSMSAtom, userPhoneAtom } from "@/lib/state/atoms";
+
 import { e164Regex } from "@/utils/e164Regex";
 import { failureNotification } from "@/components/notifications/failureNotification";
 import { smsFetcherPost } from "@/utils/smsFetcherPost";
 import { useAtomValue } from "jotai";
-import { userPhoneAtom } from "@/lib/state/atoms";
+import { useSetAtom } from "jotai";
+
 //
-export const useHandleOutboundSMS = (editor) => {
+export const useHandleOutboundSMS = (
+  editor,
+  updateLocalMessagesCache,
+  data
+) => {
   const phone = useAtomValue(userPhoneAtom);
+  const setIsNotSendingSMS = useSetAtom(sendingSMSAtom);
+
+  const newSMSSentToUpdateLocalCache = (smsMessage) => {
+    const dateSent = new Date().toUTCString().substring(0, 16).toString();
+    const newSMSSent = {
+      dateCreated: new Date().toUTCString(),
+      body: smsMessage,
+      from: phone,
+      status: "sent",
+    };
+
+    const newData = { ...data };
+    newData.messages[dateSent] = [...newData.messages[dateSent], newSMSSent];
+
+    return newData;
+  };
 
   // handle the outbout sms
   const sendOutboundSMS = async (smsMessage) => {
@@ -27,16 +50,24 @@ export const useHandleOutboundSMS = (editor) => {
       if (!smsMessage || smsMessage.trim().length === 0) {
         return;
       } else if (!e164Regex.test(phone)) {
-        // console.log(`THIS PHONE NUMBER DOESN'T MATCH THE E164 FORMAT`);
         throw new Error("THIS PHONE NUMBER DOESN'T MATCH THE E164 FORMAT");
-        //
       } else {
+        setIsNotSendingSMS(false);
+        // step 1. it it's crucial to sent the message first and then update the local cache after the message has been sent
         return sendOutboundSMS(smsMessage)
           .then((data) => {
             editor.commands.clearContent();
+            // step 2. update the local cache => this fn is just calling the trigger from SWR useSWRMutation() hook
+            updateLocalMessagesCache(phone, {
+              optimisticData: newSMSSentToUpdateLocalCache(smsMessage),
+              rollbackOnError: true,
+              onSuccess: () => setIsNotSendingSMS(true),
+              onError: () => setIsNotSendingSMS(true),
+            });
             return data;
           })
           .catch((err) => {
+            setIsNotSendingSMS(true);
             failureNotification(
               "Ha ocurrido un error al intentar enviar el SMS. Intentelo nuevamente. Si el error persiste contacte al soporte tecnico."
             );

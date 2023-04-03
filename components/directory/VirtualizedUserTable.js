@@ -2,7 +2,7 @@ import { PlusIcon, UserPlusIcon } from "@heroicons/react/20/solid";
 
 import { CreateUserForm } from "@/components/directory/CreateUserForm";
 import { DeleteUserActions } from "@/components/directory/DeleteUserActions";
-import { Error } from "@/components/Error";
+import { ErrorComponent } from "@/components/Error";
 import { Modal } from "@/components/directory/Modal";
 import { Pagination } from "@/components/directory/user_pagination/pagination";
 import { Spinning } from "@/components/Spinning";
@@ -58,7 +58,7 @@ export const VirtualizedUserTable = () => {
 
   if (firebaseError) {
     return (
-      <Error
+      <ErrorComponent
         error_message={
           firebaseError ||
           "Hemos encontrado un error inesperado. Intentelo nuevamente o contacte al soporte tecnico si el error persiste."

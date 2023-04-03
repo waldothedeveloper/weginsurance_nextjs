@@ -1,5 +1,5 @@
 import { Dialog } from "@headlessui/react";
-import { Error } from "@/components/Error";
+import { ErrorComponent } from "@/components/Error";
 import { Input } from "@/components/directory/Input";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { PropTypes } from "prop-types";
@@ -19,7 +19,7 @@ export const UpdateUserForm = ({
 }) => {
   if (companiesError) {
     return (
-      <Error
+      <ErrorComponent
         error_message={
           companiesError ||
           "Ha ocurrido un error inesperado. Intentelo nuevamente."
