@@ -43,7 +43,7 @@ export default async function handler(req, res) {
 
     if (!data) {
       return res.status(500).json({
-        message: `Our system has detected an unexpected error.`,
+        message: `Hemos detectado un error inesperado. Intentelo nuevamente.`,
         status: 500,
       });
     }
@@ -56,10 +56,10 @@ export default async function handler(req, res) {
       });
     }
   } catch (error) {
-    // console.log("ERROR ON NOTIFICATION: ", error);
     return res.status(500).json({
-      message: `Our system has detected an unexpected error.`,
+      message: `Hemos detectado un error inesperado. Intentelo nuevamente.`,
       status: error?.status || 500,
+      error: error,
     });
   }
 }

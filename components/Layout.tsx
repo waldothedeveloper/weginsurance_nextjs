@@ -11,17 +11,23 @@ import { firebaseApp } from "@/lib/firebaseConfig";
 import logo from "@/public/weg_logo.jpg";
 import { useAuth } from "@clerk/nextjs";
 
+// import { useIdentifyIncomingUserbyPhone } from "@/hooks/messaging/useIdentifyIncomingUserbyPhone";
+
 type Props = {
   children?: ReactNode;
 };
 
-//
 export const Layout = ({ children }: Props) => {
   const { getToken } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const handleCloseSideBar = () => setSidebarOpen(false);
   const handleOpenSideBar = () => setSidebarOpen(true);
 
+  // TODO: identify who is more likely to benefit from this hook, probably the Wrapper component
+  // const { identifiedUser, inboundSMSMessageError, errorIdentifyingUser } =
+  //   useIdentifyIncomingUserbyPhone();
+
+  //
   useEffect(() => {
     const signInWithClerk = async () => {
       try {
