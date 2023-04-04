@@ -1,3 +1,5 @@
+// TODO: Make sure to add Twilio webhook security verification, so that only Twilio can send requests to this endpoint
+
 export default function handler(req, res) {
   if (req.method !== "POST") {
     return res

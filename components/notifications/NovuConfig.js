@@ -20,6 +20,10 @@ export const NovuNotificationsCenter = () => {
 
   return (
     <NovuProvider
+      stores={[
+        { storeId: "mensajes", query: { feedIdentifier: "mensajes" } },
+        { storeId: "general", query: { feedIdentifier: "general" } },
+      ]}
       subscriberId={novuSubscriberId}
       applicationIdentifier={appIdentified}
       initialFetchingStrategy={{
@@ -28,6 +32,10 @@ export const NovuNotificationsCenter = () => {
       i18n={"es"}
     >
       <PopoverNotificationCenter
+        tabs={[
+          { name: "Mensajes", storeId: "mensajes" },
+          { name: "General", storeId: "general" },
+        ]}
         showUserPreferences={false}
         colorScheme={"light"}
         onNotificationClick={onNotificationClick}

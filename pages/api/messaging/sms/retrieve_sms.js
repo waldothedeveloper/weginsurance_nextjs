@@ -2,7 +2,8 @@ import { groupBy, sortBy } from "underscore";
 
 import { client } from "@/lib/twilio/config";
 
-//
+// TODO: Make sure to add Twilio webhook security verification, so that only Twilio can send requests to this endpoint
+
 export default async function handler(req, res) {
   const { user_phone } = req?.body || null;
 
