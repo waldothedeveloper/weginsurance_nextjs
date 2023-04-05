@@ -33,7 +33,7 @@ export default async function handler(req, res) {
     return res.status(404).json({ message: "No inbound sms details found!" });
   }
 
-  pusher
+  await pusher
     .trigger("sms", "inbound-sms", {
       body: twilioIncomingMessage.Body,
       from: twilioIncomingMessage.From,
