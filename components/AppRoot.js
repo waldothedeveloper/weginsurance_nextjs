@@ -15,7 +15,7 @@ export const AppRoot = () => {
             />
 
             <div className="hidden sm:mt-32 sm:flex lg:mt-16">
-              <div className="relative rounded-full py-1 px-3 text-sm leading-6 text-gray-500 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+              <div className="relative rounded-full py-1 px-3 text-sm leading-6 text-slate-500 ring-1 ring-slate-900/10 hover:ring-slate-900/20">
                 Notificaciones futuras.{" "}
                 <Link
                   href="/"
@@ -26,10 +26,10 @@ export const AppRoot = () => {
                 </Link>
               </div>
             </div>
-            <h1 className="mt-24 text-4xl font-bold tracking-tight text-gray-900 sm:mt-10 sm:text-6xl">
+            <h1 className="mt-24 text-4xl font-bold tracking-tight text-slate-900 sm:mt-10 sm:text-6xl">
               Bienvenido a Weg Insurance SMS
             </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
+            <p className="mt-6 text-lg leading-8 text-slate-600">
               El sistema ideal para comunicarse con todos sus clientes. <br />A
               toda hora. En cualquier circunstancia.
             </p>
@@ -42,7 +42,7 @@ export const AppRoot = () => {
               </Link>
               <Link
                 href="/"
-                className="text-base font-semibold leading-7 text-gray-900"
+                className="text-base font-semibold leading-7 text-slate-900"
               >
                 Soporte <span aria-hidden="true">→</span>
               </Link>

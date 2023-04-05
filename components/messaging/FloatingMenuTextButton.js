@@ -16,14 +16,14 @@ export const FloatingMenuTextButton = ({ editor }) => {
         type="button"
         className={
           editor.isActive("bold")
-            ? "relative -ml-px inline-flex items-center bg-white px-3 py-2 text-xs text-gray-900 ring-1 ring-inset ring-gray-300 focus:z-10"
-            : "relative -ml-px inline-flex items-center bg-gray-100 px-3 py-2 text-xs font-semibold text-gray-500 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 focus:z-10"
+            ? "relative -ml-px inline-flex items-center bg-white px-3 py-2 text-xs text-slate-900 ring-1 ring-inset ring-slate-300 focus:z-10"
+            : "relative -ml-px inline-flex items-center bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-500 ring-1 ring-inset ring-slate-300 hover:bg-slate-100 focus:z-10"
         }
       >
-        <PaperClipIcon className="h-4 w-4 text-gray-500" aria-hidden="true" />
+        <PaperClipIcon className="h-4 w-4 text-slate-500" aria-hidden="true" />
       </button>
       <Menu as="div" className="relative -ml-px block">
-        <Menu.Button className="relative inline-flex items-center bg-gray-100 px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10">
+        <Menu.Button className="relative inline-flex items-center bg-slate-100 px-2 py-2 text-slate-400 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 focus:z-10">
           <span className="sr-only">Open options</span>
           <ChevronUpIcon className="h-5 w-5" aria-hidden="true" />
         </Menu.Button>
@@ -48,8 +48,8 @@ export const FloatingMenuTextButton = ({ editor }) => {
                       }
                       className={
                         editor.isActive("heading", { level: 1 }) && active
-                          ? "w-full bg-gray-100 px-4 py-2 text-sm text-gray-900"
-                          : "w-full px-4 py-2 text-sm text-gray-700"
+                          ? "w-full bg-slate-100 px-4 py-2 text-sm text-slate-900"
+                          : "w-full px-4 py-2 text-sm text-slate-700"
                       }
                     >
                       Heading 1

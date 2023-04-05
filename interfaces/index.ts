@@ -41,9 +41,7 @@ export type Messages = {
 };
 
 export type ConversationProps = {
-  messages: {
-    [key: string]: Messages[];
-  };
+  [key: string]: Messages[];
 };
 
 export type RealUser = {

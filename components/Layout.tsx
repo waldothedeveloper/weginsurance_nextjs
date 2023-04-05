@@ -1,11 +1,10 @@
-import { ReactNode, useEffect, useState } from "react";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
+import { useEffect, useState } from "react";
 
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { DesktopSideBar } from "@/components/DesktopSideBar";
 import Image from "next/image";
 import { MobileSideBar } from "@/components/MobileSideBar";
-import { NavBar } from "@/components/notifications/NavBar";
 import { Wrapper } from "@/components/Wrapper";
 import { firebaseApp } from "@/lib/firebaseConfig";
 import logo from "@/public/weg_logo.jpg";
@@ -13,11 +12,7 @@ import { useAuth } from "@clerk/nextjs";
 
 // import { useIdentifyIncomingUserbyPhone } from "@/hooks/messaging/useIdentifyIncomingUserbyPhone";
 
-type Props = {
-  children?: ReactNode;
-};
-
-export const Layout = ({ children }: Props) => {
+export const Layout = () => {
   const { getToken } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const handleCloseSideBar = () => setSidebarOpen(false);
@@ -26,6 +21,9 @@ export const Layout = ({ children }: Props) => {
   // TODO: identify who is more likely to benefit from this hook, probably the Wrapper component
   // const { identifiedUser, inboundSMSMessageError, errorIdentifyingUser } =
   //   useIdentifyIncomingUserbyPhone();
+  // console.log("errorIdentifyingUser: ", errorIdentifyingUser);
+  // console.log("inboundSMSMessageError: ", inboundSMSMessageError);
+  // console.log("identifiedUser: ", identifiedUser);
 
   //
   useEffect(() => {
@@ -62,7 +60,7 @@ export const Layout = ({ children }: Props) => {
         <DesktopSideBar />
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
           <div className="lg:hidden">
-            <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-4 py-1.5">
+            <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-4 py-1.5">
               <div>
                 <Image
                   className="h-10 w-auto rounded-full"
@@ -73,7 +71,7 @@ export const Layout = ({ children }: Props) => {
               <div>
                 <button
                   type="button"
-                  className="-mr-3 inline-flex h-12 w-12 items-center justify-center rounded-md text-gray-500 hover:text-gray-900"
+                  className="-mr-3 inline-flex h-12 w-12 items-center justify-center rounded-md text-slate-500 hover:text-slate-900"
                   onClick={handleOpenSideBar}
                 >
                   <span className="sr-only">Open sidebar</span>
@@ -82,12 +80,11 @@ export const Layout = ({ children }: Props) => {
               </div>
             </div>
           </div>
-          <NavBar />
-          <div className="relative z-0 flex flex-1 overflow-hidden">
+
+          <div className="relative z-0 mx-auto flex w-full overflow-hidden">
             <Wrapper />
           </div>
         </div>
-        <main>{children}</main>
       </div>
     </>
   );

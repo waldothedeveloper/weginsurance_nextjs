@@ -11,7 +11,7 @@ export const useEditorHook = () => {
     extensions: [
       Underline.configure({
         HTMLAttributes: {
-          class: "underline underline-offset-1 text-gray-400 font-medium",
+          class: "underline underline-offset-1 text-slate-400 font-medium",
         },
       }),
       Link.configure({
@@ -29,7 +29,7 @@ export const useEditorHook = () => {
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm max-w-none rounded-xl px-6 py-3 max-h-[50vh] overflow-y-auto ring-2 ring-inset ring-gray-300 border-0 bg-gray-100 rounded-md text-gray-800 w-full flex-1 focus:outline-none",
+          "prose prose-sm max-w-none rounded-xl px-6 py-3 max-h-[50vh] overflow-y-auto ring-2 ring-inset ring-slate-300 border-0 bg-slate-100 rounded-md text-slate-800 w-full flex-1 focus:outline-none",
       },
     },
   });

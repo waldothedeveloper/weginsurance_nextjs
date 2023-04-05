@@ -16,7 +16,7 @@ export const EditorWrapper = ({ updateLocalMessagesCache, data }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="mb-16 px-2 pt-6">
+      <div className="px-2 pt-6">
         <div className="flex justify-between">
           <div className="mr-2 w-full">
             {editor && (

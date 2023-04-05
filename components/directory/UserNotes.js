@@ -4,10 +4,10 @@ export const UserNotes = ({ register }) => {
       <div className="md:grid md:grid-cols-3 md:gap-6">
         <div className="md:col-span-1">
           <div className="px-4 sm:px-0">
-            <h3 className="text-lg font-medium leading-6 text-gray-800">
+            <h3 className="text-lg font-medium leading-6 text-slate-800">
               Notas
             </h3>
-            <p className="mt-1 text-sm text-gray-700">
+            <p className="mt-1 text-sm text-slate-700">
               Aqui puede llenar cualquier nota importante sobre el cliente.
             </p>
           </div>
@@ -17,7 +17,7 @@ export const UserNotes = ({ register }) => {
             <div className="sm:col-span-6">
               <label
                 htmlFor="notes"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-slate-700"
               >
                 Notas
               </label>
@@ -28,7 +28,7 @@ export const UserNotes = ({ register }) => {
                   id="notes"
                   name="notes"
                   rows={3}
-                  className="block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  className="block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                   defaultValue={""}
                 />
               </div>

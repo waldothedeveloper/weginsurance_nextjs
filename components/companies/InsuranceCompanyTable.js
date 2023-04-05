@@ -70,10 +70,10 @@ export const InsuranceCompanyTable = () => {
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
-            <h1 className="text-base font-semibold leading-6 text-gray-900">
+            <h1 className="text-base font-semibold leading-6 text-slate-900">
               Compañias de Seguros
             </h1>
-            <p className="mt-2 text-sm text-gray-700">
+            <p className="mt-2 text-sm text-slate-700">
               Edite, elimine o actualize informacion sobre las compañias de
               seguros aqui en esta tabla.
             </p>
@@ -92,25 +92,25 @@ export const InsuranceCompanyTable = () => {
         <div className="mt-8 flow-root">
           <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-              <div className="max-h-[70vh]">
-                <table className="min-w-full table-fixed divide-y divide-gray-300">
-                  <thead className="sticky top-0 z-50 bg-gray-50">
+              <div className="max-h-[83vh]">
+                <table className="min-w-full table-fixed divide-y divide-slate-300">
+                  <thead className="sticky top-0 z-50 bg-slate-50">
                     <tr>
                       <th
                         scope="col"
-                        className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                        className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-slate-900 sm:pl-6"
                       >
                         Logo
                       </th>
                       <th
                         scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-slate-900"
                       >
                         Nombre
                       </th>
                       <th
                         scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-slate-900"
                       >
                         Notas
                       </th>
@@ -122,10 +122,10 @@ export const InsuranceCompanyTable = () => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="h-96 divide-y divide-gray-200 overflow-y-auto bg-white">
+                  <tbody className="h-96 divide-y divide-slate-200 overflow-y-auto bg-white">
                     {insuranceCompanies.map((company) => (
                       <tr key={company?.id}>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-slate-900 sm:pl-6">
                           <div className="flex items-center">
                             <div className="h-16 w-16 flex-shrink-0">
                               {company?.logo_url &&
@@ -139,22 +139,22 @@ export const InsuranceCompanyTable = () => {
                                   priority
                                 />
                               ) : (
-                                <div className="h-full w-full bg-gray-100" />
+                                <div className="h-full w-full bg-slate-100" />
                               )}
                             </div>
                           </div>
                         </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          <div className="text-gray-900">
-                            <div className="font-medium text-gray-900">
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-slate-500">
+                          <div className="text-slate-900">
+                            <div className="font-medium text-slate-900">
                               {company?.name}
                             </div>
                           </div>
                         </td>
 
-                        <td className="max-w-[12rem] px-3 py-4 text-sm text-gray-500">
-                          <div className="text-gray-900">
-                            <div className="font-medium text-gray-900">
+                        <td className="max-w-[12rem] px-3 py-4 text-sm text-slate-500">
+                          <div className="text-slate-900">
+                            <div className="font-medium text-slate-900">
                               {company?.notes}
                             </div>
                           </div>

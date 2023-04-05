@@ -1,5 +1,9 @@
 import { FakeUser, RealUser } from "@/interfaces/index";
-import { FunnelIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import {
+  FunnelIcon,
+  MagnifyingGlassIcon,
+  UserIcon,
+} from "@heroicons/react/24/outline";
 import { forwardRef, useEffect } from "react";
 
 import { Spinning } from "@/components/Spinning";
@@ -15,16 +19,14 @@ import { userPhoneAtom } from "@/lib/state/atoms";
 
 //
 const Footer = () => (
-  <div className="flex justify-center px-6 py-5 text-xs text-gray-400">
+  <div className="flex justify-center px-6 py-5 text-xs text-slate-400">
     Ha llegado al final de la lista.
   </div>
 );
 
 // eslint-disable-next-line react/display-name
 const List = forwardRef((props, ref) => {
-  return (
-    <ul {...props} ref={ref} className="z-0 w-full divide-y divide-gray-300" />
-  );
+  return <ul {...props} ref={ref} className="z-0 w-full px-6" />;
 });
 
 export const VirtualizedUserList = () => {
@@ -58,9 +60,9 @@ export const VirtualizedUserList = () => {
 
   return (
     <>
-      <div className="bg-gray-100 px-6 pt-6 pb-6">
-        <h2 className="text-lg font-medium text-gray-900">Directorio</h2>
-        <p className="mt-1 text-sm text-gray-600">
+      <div className="px-6 pt-6 pb-6">
+        <h2 className="text-lg font-medium text-slate-900">Directorio</h2>
+        <p className="mt-1 text-sm text-slate-600">
           Directorio de búsqueda de{" "}
           {test ? fakeUserList?.length : firebaseUsers.length} usuarios
         </p>
@@ -75,7 +77,7 @@ export const VirtualizedUserList = () => {
             <div className="relative rounded-md shadow-sm">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <MagnifyingGlassIcon
-                  className="h-5 w-5 text-gray-400"
+                  className="h-5 w-5 text-slate-400"
                   aria-hidden="true"
                 />
               </div>
@@ -83,23 +85,23 @@ export const VirtualizedUserList = () => {
                 type="search"
                 name="search"
                 id="search"
-                className="block w-full rounded-md border-gray-300 pl-10 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="block w-full rounded-md border-slate-300 bg-slate-50 pl-10 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                 placeholder="Search"
               />
             </div>
           </div>
           <button
             type="submit"
-            className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-3.5 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="inline-flex justify-center rounded-md border border-slate-300 bg-white px-3.5 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            <FunnelIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+            <FunnelIcon className="h-5 w-5 text-slate-400" aria-hidden="true" />
             <span className="sr-only">Search</span>
           </button>
         </form>
       </div>
       {/* Directory list */}
       <nav
-        className="max-h-[80vh] flex-1 overflow-y-auto bg-gray-100"
+        className="bg-secondary max-h-[80vh] flex-1 overflow-y-auto"
         aria-label="Directory"
       >
         <Virtuoso
@@ -110,16 +112,16 @@ export const VirtualizedUserList = () => {
               <li
                 className={
                   selectedUser?.fullname === user.fullname
-                    ? "flex items-center space-x-3 bg-blue-600 px-6 py-5 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500"
-                    : "flex items-center space-x-3 px-6 py-5 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500 hover:bg-white"
+                    ? "my-3 flex items-center space-x-3 rounded-2xl bg-slate-100 px-6 py-6 outline-none focus-within:ring-2 focus-within:ring-inset focus:ring-red-50"
+                    : "my-3 flex items-center space-x-3 rounded-2xl px-6 py-6 outline-none focus-within:ring-2 focus-within:ring-inset hover:bg-slate-50 focus:outline-none"
                 }
               >
                 <div className="flex-shrink-0">
-                  <div
+                  <UserIcon
                     className={
                       selectedUser?.fullname === user.fullname
-                        ? "h-10 w-10 rounded-full bg-blue-50"
-                        : "h-10 w-10 rounded-full bg-gray-400"
+                        ? "h-12 w-12 rounded-xl bg-slate-200 p-2 font-light text-slate-400"
+                        : "h-12 w-12 rounded-xl bg-slate-50 p-2 font-light text-slate-400"
                     }
                   />
                 </div>
@@ -131,10 +133,6 @@ export const VirtualizedUserList = () => {
                         setUserPhone(user?.phone);
                         setSelectedUser(user);
                       } catch (error) {
-                        // console.log(
-                        //   "error on VirtualizedList onCLick: ",
-                        //   error
-                        // );
                         return error;
                       }
                     }}
@@ -144,13 +142,19 @@ export const VirtualizedUserList = () => {
                       <p
                         className={
                           selectedUser?.fullname === user.fullname
-                            ? "whitespace-normal text-sm font-medium text-white"
-                            : "whitespace-normal text-sm font-medium text-gray-900"
+                            ? "whitespace-normal text-sm font-medium text-slate-900"
+                            : "whitespace-normal text-sm font-medium text-slate-600"
                         }
                       >
                         {normalizeString(user?.fullname)}
                       </p>
-                      <div className="relative inline-flex items-center rounded-full border border-white px-2 py-0.5 text-sm">
+                      <div
+                        className={
+                          selectedUser?.fullname === user.fullname
+                            ? "relative inline-flex items-center rounded-full border border-blue-600 px-2 py-0.5 text-sm"
+                            : "relative inline-flex items-center rounded-full border border-slate-200 px-2 py-0.5 text-sm"
+                        }
+                      >
                         <span className="absolute flex flex-shrink-0 items-center justify-center">
                           <span
                             className="h-1 w-1 rounded-full"
@@ -160,8 +164,8 @@ export const VirtualizedUserList = () => {
                         <span
                           className={
                             selectedUser?.fullname === user.fullname
-                              ? "text-xs text-white"
-                              : "text-xs text-gray-500"
+                              ? "text-xs font-medium text-blue-600"
+                              : "text-xs text-slate-400"
                           }
                         >
                           {user?.insurance_company}
@@ -172,8 +176,8 @@ export const VirtualizedUserList = () => {
                     <p
                       className={
                         selectedUser?.fullname === user.fullname
-                          ? "truncate text-sm text-white"
-                          : "truncate text-sm text-gray-500"
+                          ? "truncate text-xs text-slate-600"
+                          : "truncate text-xs text-slate-400"
                       }
                     >
                       {formatPhoneNumber(user?.phone)}

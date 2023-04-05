@@ -1,40 +1,38 @@
 import {
   BuildingOfficeIcon,
   ChatBubbleBottomCenterTextIcon,
-  ComputerDesktopIcon,
-  MagnifyingGlassCircleIcon,
+  Square3Stack3DIcon,
+  UsersIcon,
 } from "@heroicons/react/24/outline";
 
 import Link from "next/link";
 import { classNames } from "@/utils/classNames";
 import { useRouter } from "next/router";
 
-//
-
 const navigation = [
   {
-    name: "Dashboard",
+    name: "Panel",
     href: "dashboard",
     link: "/admin/dashboard",
-    icon: ComputerDesktopIcon,
+    icon: Square3Stack3DIcon,
     current: true,
   },
   {
-    name: "Mensajes SMS",
+    name: "Mensajes",
     href: "messages",
     link: "/admin/messages",
     icon: ChatBubbleBottomCenterTextIcon,
     current: false,
   },
   {
-    name: "Directorio de Usuarios",
+    name: "Directorio",
     href: "directory",
     link: "/admin/directory",
-    icon: MagnifyingGlassCircleIcon,
+    icon: UsersIcon,
     current: false,
   },
   {
-    name: "Compañias de Seguros",
+    name: "Compañias",
     href: "insurance_company",
     link: "/admin/insurance_company",
     icon: BuildingOfficeIcon,
@@ -47,24 +45,24 @@ export const NavigationLinks = () => {
   const router = useRouter();
 
   return (
-    <nav className="mt-5 flex-1" aria-label="Sidebar">
-      <div className="space-y-1 px-2">
+    <nav className="mt-16 flex-1" aria-label="Sidebar">
+      <div className="space-y-3 pl-5">
         {navigation.map((item) => (
           <Link
-            href={item?.link}
             key={item.name}
+            href={item?.link}
             className={classNames(
               router?.query?.dashboard?.includes(item?.href)
-                ? "bg-gray-50 text-gray-900"
-                : "text-gray-50 hover:bg-blue-400 hover:text-gray-50",
-              "group flex w-full items-center rounded-md px-2 py-2 text-sm font-medium"
+                ? "border-r-[5px] border-orange-600 bg-white py-4 text-blue-600"
+                : " text-slate-900 hover:bg-blue-50",
+              "group flex w-full items-center rounded-tl-md rounded-bl-md py-4 pl-3 text-sm font-medium"
             )}
           >
             <item.icon
               className={classNames(
                 router?.query?.dashboard?.includes(item?.href)
-                  ? "text-gray-900"
-                  : "text-gray-50 group-hover:text-gray-50",
+                  ? "text-blue-600"
+                  : "text-slate-400",
                 "mr-3 h-6 w-6"
               )}
               aria-hidden="true"
@@ -76,4 +74,3 @@ export const NavigationLinks = () => {
     </nav>
   );
 };
-//  "bg-blue-400 text-gray-50"

@@ -12,10 +12,10 @@ export const UserFormWrapper = () => {
       <div className="space-y-8 divide-y sm:space-y-5">
         <div className="space-y-6 sm:space-y-5">
           <div>
-            <h3 className="text-base font-semibold leading-6 text-gray-900">
+            <h3 className="text-base font-semibold leading-6 text-slate-900">
               Crear Usuario Nuevo
             </h3>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">
+            <p className="mt-1 max-w-2xl text-sm text-slate-500">
               Llene este formulario para crear un usuario nuevo. Revise bien las
               instruciones.
             </p>
@@ -35,7 +35,7 @@ export const UserFormWrapper = () => {
                       type="submit"
                       className={
                         isSubmitting
-                          ? "ml-3 inline-flex justify-center rounded-md border border-transparent bg-gray-300 py-2 px-4 text-sm font-medium text-gray-400 shadow-sm"
+                          ? "ml-3 inline-flex justify-center rounded-md border border-transparent bg-slate-300 py-2 px-4 text-sm font-medium text-slate-400 shadow-sm"
                           : "ml-3 inline-flex justify-center rounded-md border border-transparent bg-blue-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                       }
                     >

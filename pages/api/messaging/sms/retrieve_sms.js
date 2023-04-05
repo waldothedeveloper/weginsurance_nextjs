@@ -62,19 +62,19 @@ export default async function handler(req, res) {
     const finalMessagesArrayNotSorted =
       smsFromApptoUser.concat(smsFromUserToApp);
 
+    // this will return an array of objects, sorted by dateCreated, each object is an sms message
     const sortedMessages = sortBy(finalMessagesArrayNotSorted, (elem) => {
-      return elem.dateCreated;
+      return new Date(elem.dateCreated + " UTC");
     });
 
-    const messagesGroupedByDate = groupBy(sortedMessages, (elem) => {
-      return new Date(elem.dateCreated).toUTCString().substring(0, 16);
+    // now we are grouping them by date
+    const messagesGroupedByDate = groupBy(sortedMessages, (message) => {
+      const date = new Date(message.dateCreated) + "UTC";
+      return date.toString().slice(0, 16);
     });
 
-    return res.status(200).json({
-      messages: messagesGroupedByDate,
-    });
+    return res.status(200).json(messagesGroupedByDate);
   } catch (error) {
-    // console.log("ERROR RETRIEVING SMS MESSAGES FROM THIS USER: ", error);
     return res.status(500).json({
       message: "Our system has detected an unexpected error.",
       status: error?.status || 500,

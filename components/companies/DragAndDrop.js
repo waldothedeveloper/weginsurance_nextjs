@@ -51,7 +51,9 @@ export const DragAndDrop = ({
         <span>Logo de la compañia</span>
         <input {...getInputProps()} />
       </label>
-      <p className="text-xs text-gray-500">Arrastre y suelte el archivo aqui</p>
+      <p className="text-xs text-slate-500">
+        Arrastre y suelte el archivo aqui
+      </p>
     </div>
   );
 
@@ -61,14 +63,14 @@ export const DragAndDrop = ({
       <div className="col-span-1 col-start-2">
         <label
           htmlFor="cover-photo"
-          className="block text-sm font-medium leading-6 text-gray-900"
+          className="block text-sm font-medium leading-6 text-slate-900"
         >
           Foto/Logo de la compañia
         </label>
         <div className="sm:col-span-2">
           <div
             {...getRootProps()}
-            className="flex max-w-lg justify-center rounded-md border-2 border-dashed border-gray-300 pt-5 pb-6"
+            className="flex max-w-lg justify-center rounded-md border-2 border-dashed border-slate-300 pt-5 pb-6"
           >
             <div className="space-y-1 text-center">
               {ifUserUploadsALogo ||
