@@ -1,10 +1,9 @@
 import { sendingSMSAtom, userPhoneAtom } from "@/lib/state/atoms";
+import { useAtomValue, useSetAtom } from "jotai";
 
 import { e164Regex } from "@/utils/e164Regex";
 import { failureNotification } from "@/components/notifications/failureNotification";
 import { smsFetcherPost } from "@/utils/smsFetcherPost";
-import { useAtomValue } from "jotai";
-import { useSetAtom } from "jotai";
 
 //
 export const useHandleOutboundSMS = (

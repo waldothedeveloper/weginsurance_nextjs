@@ -46,7 +46,7 @@ export default async function handler(req, res) {
     return res.status(500).json({
       message: "Our system has detected an unexpected error.",
       status: error?.status || 500,
-      error: error,
+      error,
     });
   }
 }

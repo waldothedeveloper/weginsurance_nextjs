@@ -64,12 +64,12 @@ export default async function handler(req, res) {
 
     // this will return an array of objects, sorted by dateCreated, each object is an sms message
     const sortedMessages = sortBy(finalMessagesArrayNotSorted, (elem) => {
-      return new Date(elem.dateCreated + " UTC");
+      return new Date(`${elem.dateCreated} UTC`);
     });
 
     // now we are grouping them by date
     const messagesGroupedByDate = groupBy(sortedMessages, (message) => {
-      const date = new Date(message.dateCreated) + "UTC";
+      const date = new Date(`${message.dateCreated} UTC`);
       return date.toString().slice(0, 16);
     });
 
@@ -78,7 +78,7 @@ export default async function handler(req, res) {
     return res.status(500).json({
       message: "Our system has detected an unexpected error.",
       status: error?.status || 500,
-      error: error,
+      error,
     });
   }
 }
