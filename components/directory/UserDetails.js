@@ -18,64 +18,64 @@ const SelectedUser = ({ selectedUser }) => {
     <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
       {/* First name */}
       <div className="sm:col-span-1">
-        <dt className="text-sm font-medium text-gray-500">Nombre</dt>
-        <dd className="mt-1 text-sm text-gray-900">
+        <dt className="text-sm font-medium text-slate-500">Nombre</dt>
+        <dd className="mt-1 text-sm text-slate-900">
           {normalizeString(selectedUser?.firstname)}
         </dd>
       </div>
       {/* Segundo nombre */}
       <div className="sm:col-span-1">
-        <dt className="text-sm font-medium text-gray-500">Segundo Nombre</dt>
-        <dd className="mt-1 text-sm text-gray-900">
+        <dt className="text-sm font-medium text-slate-500">Segundo Nombre</dt>
+        <dd className="mt-1 text-sm text-slate-900">
           {normalizeString(selectedUser?.second_name)}
         </dd>
       </div>
       {/* Last name */}
       <div className="sm:col-span-1">
-        <dt className="text-sm font-medium text-gray-500">Primer Apellido</dt>
-        <dd className="mt-1 text-sm text-gray-900">
+        <dt className="text-sm font-medium text-slate-500">Primer Apellido</dt>
+        <dd className="mt-1 text-sm text-slate-900">
           {normalizeString(selectedUser?.lastname)}
         </dd>
       </div>
       {/* Segundo Apellido */}
       <div className="sm:col-span-1">
-        <dt className="text-sm font-medium text-gray-500">Segundo Apellido</dt>
-        <dd className="mt-1 text-sm text-gray-900">
+        <dt className="text-sm font-medium text-slate-500">Segundo Apellido</dt>
+        <dd className="mt-1 text-sm text-slate-900">
           {normalizeString(selectedUser?.second_lastname)}
         </dd>
       </div>
       {/* Correo electronico */}
       <div className="sm:col-span-1">
-        <dt className="text-sm font-medium text-gray-500">
+        <dt className="text-sm font-medium text-slate-500">
           Correo electronico
         </dt>
-        <dd className="mt-1 text-sm text-gray-900">{selectedUser?.email}</dd>
+        <dd className="mt-1 text-sm text-slate-900">{selectedUser?.email}</dd>
       </div>
       {/* Compañia de seguros */}
       <div className="sm:col-span-1">
-        <dt className="text-sm font-medium text-gray-500">
+        <dt className="text-sm font-medium text-slate-500">
           Compañia de Seguros
         </dt>
-        <dd className="mt-1 text-sm text-gray-900">
+        <dd className="mt-1 text-sm text-slate-900">
           {selectedUser?.insurance_company}
         </dd>
       </div>
       {/* Phone */}
       <div className="sm:col-span-1">
-        <dt className="text-sm font-medium text-gray-500">Telefono</dt>
-        <dd className="mt-1 text-sm text-gray-900">
+        <dt className="text-sm font-medium text-slate-500">Telefono</dt>
+        <dd className="mt-1 text-sm text-slate-900">
           {formatPhoneNumber(selectedUser?.phone)}
         </dd>
       </div>
       {/* Genero */}
       <div className="sm:col-span-1">
-        <dt className="text-sm font-medium text-gray-500">Genero</dt>
-        <dd className="mt-1 text-sm text-gray-900">{selectedUser?.gender}</dd>
+        <dt className="text-sm font-medium text-slate-500">Genero</dt>
+        <dd className="mt-1 text-sm text-slate-900">{selectedUser?.gender}</dd>
       </div>
 
       <div className="sm:col-span-2">
-        <dt className="text-sm font-medium text-gray-500">Notas</dt>
-        <dd className="mt-1 max-w-prose space-y-5 text-sm text-gray-900">
+        <dt className="text-sm font-medium text-slate-500">Notas</dt>
+        <dd className="mt-1 max-w-prose space-y-5 text-sm text-slate-900">
           {selectedUser?.notes}
         </dd>
       </div>
@@ -146,7 +146,7 @@ export const UserDetails = ({
             </div>
             <div className="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
               <div className="mt-6 min-w-0 flex-1 sm:hidden 2xl:block">
-                <h1 className="truncate text-2xl font-bold text-gray-900">
+                <h1 className="truncate text-2xl font-bold text-slate-900">
                   {normalizeString(selectedUser?.fullname)}
                 </h1>
               </div>
@@ -159,12 +159,12 @@ export const UserDetails = ({
                       type="button"
                       className={
                         isSubmitting
-                          ? "inline-flex justify-center rounded-md border border-gray-300 bg-gray-300 px-4 py-2 text-sm text-gray-400"
-                          : "inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                          ? "inline-flex justify-center rounded-md border border-slate-300 bg-slate-300 px-4 py-2 text-sm text-slate-400"
+                          : "inline-flex justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                       }
                     >
                       <XMarkIcon
-                        className="-ml-1 mr-2 h-5 w-5 text-gray-400"
+                        className="-ml-1 mr-2 h-5 w-5 text-slate-400"
                         aria-hidden="true"
                       />
                       <span>Cancelar</span>
@@ -173,10 +173,10 @@ export const UserDetails = ({
                     <button
                       onClick={handleUpdateUser}
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                      className="inline-flex justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     >
                       <PencilSquareIcon
-                        className="-ml-1 mr-2 h-5 w-5 text-gray-400"
+                        className="-ml-1 mr-2 h-5 w-5 text-slate-400"
                         aria-hidden="true"
                       />
                       <span>Editar</span>
@@ -188,8 +188,8 @@ export const UserDetails = ({
                       type="submit"
                       className={
                         isSubmitting
-                          ? "inline-flex justify-center rounded-md border border-gray-300 bg-gray-300 px-4 py-2 text-sm text-gray-400"
-                          : "inline-flex justify-center rounded-md border border-blue-600 bg-blue-500 px-4 py-2 text-sm font-medium text-gray-50 shadow-sm hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                          ? "inline-flex justify-center rounded-md border border-slate-300 bg-slate-300 px-4 py-2 text-sm text-slate-400"
+                          : "inline-flex justify-center rounded-md border border-blue-600 bg-blue-500 px-4 py-2 text-sm font-medium text-slate-50 shadow-sm hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                       }
                     >
                       <CheckIcon
@@ -205,7 +205,7 @@ export const UserDetails = ({
                       type="button"
                       className={
                         isSubmitting
-                          ? "inline-flex justify-center rounded-md border border-gray-300 bg-gray-300 px-4 py-2 text-sm text-gray-400"
+                          ? "inline-flex justify-center rounded-md border border-slate-300 bg-slate-300 px-4 py-2 text-sm text-slate-400"
                           : "inline-flex justify-center rounded-md border border-red-300 bg-red-500 px-4 py-2 text-sm font-medium text-red-50 shadow-sm hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                       }
                     >
@@ -221,7 +221,7 @@ export const UserDetails = ({
             </div>
           </div>
           <div className="mt-6 hidden min-w-0 flex-1 sm:block 2xl:hidden">
-            <h1 className="truncate text-2xl font-bold text-gray-900">
+            <h1 className="truncate text-2xl font-bold text-slate-900">
               {normalizeString(selectedUser?.fullname)}
             </h1>
           </div>

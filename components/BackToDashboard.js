@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export const BackToDashboard = () => {
   return (
-    <div className="px-6 lg:px-8 my-12">
+    <div className="my-12 px-6 lg:px-8">
       <div className="flex items-center gap-x-6">
         <Link
           href="/user/account"
@@ -12,7 +12,7 @@ export const BackToDashboard = () => {
         </Link>
         <Link
           href="/"
-          className="text-base font-semibold leading-7 text-gray-900"
+          className="text-base font-semibold leading-7 text-slate-900"
         >
           Soporte <span aria-hidden="true">→</span>
         </Link>

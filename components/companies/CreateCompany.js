@@ -43,7 +43,7 @@ export const CreateCompany = ({
           <div className="min-w-0 flex-1">
             <Dialog.Title
               as="h3"
-              className="text-base font-semibold leading-6 text-gray-900"
+              className="text-base font-semibold leading-6 text-slate-900"
             >
               Crear Compañia
             </Dialog.Title>
@@ -88,7 +88,7 @@ export const CreateCompany = ({
               <div className="sm:col-span-6">
                 <label
                   htmlFor="notes"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-slate-700"
                 >
                   Notas
                 </label>
@@ -99,7 +99,7 @@ export const CreateCompany = ({
                     placeholder="ejemplo: La poliza de Ambetter tiene que ser renovada en 6 meses."
                     name="notes"
                     rows={3}
-                    className="block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    className="block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     defaultValue={""}
                   />
                 </div>
@@ -113,7 +113,7 @@ export const CreateCompany = ({
             disabled={isSubmitting}
             className={
               isSubmitting
-                ? "inline-flex w-full justify-center rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-400 shadow-sm sm:ml-3 sm:w-auto"
+                ? "inline-flex w-full justify-center rounded-md bg-slate-300 px-3 py-2 text-sm font-semibold text-slate-400 shadow-sm sm:ml-3 sm:w-auto"
                 : "inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
             }
           >
@@ -121,7 +121,7 @@ export const CreateCompany = ({
           </button>
           <button
             type="button"
-            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 sm:mt-0 sm:w-auto"
             onClick={closeModal}
           >
             Cancelar

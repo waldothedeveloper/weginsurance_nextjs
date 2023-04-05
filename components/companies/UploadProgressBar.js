@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 export const UploadProgressBar = ({ progress }) => {
   return (
     <div className="my-6">
-      <p className="p-0.5 text-xs text-gray-700">
+      <p className="p-0.5 text-xs text-slate-700">
         {progress < 100
           ? "Subiendo el archivo..."
           : "El archivo subio con exito!"}
       </p>
-      <div className="w-full rounded-full bg-gray-200 dark:bg-gray-700">
+      <div className="w-full rounded-full bg-slate-200 dark:bg-slate-700">
         <div
           className={
             progress < 100

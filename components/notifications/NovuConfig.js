@@ -20,6 +20,17 @@ export const NovuNotificationsCenter = () => {
 
   return (
     <NovuProvider
+      // TODO: check how to change this
+      styles={{
+        root: {
+          bellButton: {
+            ":firstChild": {
+              width: "12px !important",
+              height: "12px !important",
+            },
+          },
+        },
+      }}
       stores={[
         { storeId: "mensajes", query: { feedIdentifier: "mensajes" } },
         { storeId: "general", query: { feedIdentifier: "general" } },

@@ -30,7 +30,7 @@ export const MobileSideBar = ({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-600/75 backdrop-blur-sm" />
+          <div className="fixed inset-0 bg-slate-600/75 backdrop-blur-sm" />
         </Transition.Child>
 
         <div className="fixed inset-0 z-40 flex">
@@ -77,7 +77,7 @@ export const MobileSideBar = ({
                 </div>
                 <NavigationLinks />
               </div>
-              <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
+              <div className="flex flex-shrink-0 border-t border-slate-200 p-4">
                 <div className="flex w-full items-center justify-between">
                   <UserButton
                     showName
@@ -85,7 +85,7 @@ export const MobileSideBar = ({
                       elements: {
                         userButtonBox: "flex flex-row-reverse",
                         userButtonOuterIdentifier:
-                          "text-sm font-medium text-gray-50",
+                          "text-sm font-medium text-slate-50",
                       },
                     }}
                   />

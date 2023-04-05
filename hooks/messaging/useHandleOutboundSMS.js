@@ -16,18 +16,18 @@ export const useHandleOutboundSMS = (
   const setIsNotSendingSMS = useSetAtom(sendingSMSAtom);
 
   const newSMSSentToUpdateLocalCache = (smsMessage) => {
-    const dateSent = new Date().toUTCString().substring(0, 16).toString();
+    const dateSent = new Date().toUTCString().slice(0, -10).toString();
     const newSMSSent = {
-      dateCreated: new Date().toUTCString(),
+      dateCreated: dateSent,
       body: smsMessage,
       from: phone,
       status: "sent",
     };
 
-    const newData = { ...data };
-    newData.messages[dateSent] = [...newData.messages[dateSent], newSMSSent];
+    const newLocalMessages = data;
+    newLocalMessages[dateSent] = [newSMSSent];
 
-    return newData;
+    return newLocalMessages;
   };
 
   // handle the outbout sms

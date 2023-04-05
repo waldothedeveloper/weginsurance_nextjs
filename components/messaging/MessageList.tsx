@@ -3,131 +3,119 @@ import {
   ExclamationTriangleIcon,
   PaperAirplaneIcon,
 } from "@heroicons/react/24/outline";
-import { ConversationProps, Messages, RealUser } from "@/interfaces/index";
+import { useEffect, useRef } from "react";
 
+import { ConversationProps } from "@/interfaces/index";
 import { TimeDivider } from "@/components/messaging/TimeDivider";
 import { messageStatus } from "@/utils/messageStatus";
-import { selectedUserAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
 import { userPhoneAtom } from "@/lib/state/atoms";
 
 //
 export const MessageList = ({ data }: { data: ConversationProps }) => {
   const userPhoneNumber: string = useAtomValue(userPhoneAtom);
-  const selectedUser: RealUser | any = useAtomValue(selectedUserAtom);
+  const messagesEndRef = useRef<null | HTMLDivElement>(null);
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      scrollToBottom();
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [data]);
+
+  //
   return (
-    <ul className="grid h-full grid-cols-1 space-y-4 overflow-y-auto bg-white py-6 px-1">
-      {Object.keys(data.messages).map((value: string) => {
+    <div className="grid h-full grid-cols-1 overflow-y-auto overflow-x-hidden">
+      {Object.keys(data).map((timestampKey) => {
         return (
-          <li className="block h-full w-full" key={value}>
-            <TimeDivider time={value} />
-
-            {data.messages[value].map((message: Messages) => {
-              return message.from === userPhoneNumber ? (
-                <div
-                  key={message.dateCreated}
-                  className="flex flex-row py-2 px-3 hover:bg-gray-100"
-                >
-                  <h3 className="mr-1 flex flex-col text-sm">
-                    <div>
-                      <span className="whitespace-nowrap text-[10px] font-medium text-gray-600">
-                        <time
-                          dateTime={new Date(message.dateCreated).toString()}
-                        >
-                          {new Date(message.dateCreated).toLocaleTimeString(
-                            "en-US",
-                            {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            }
-                          )}
-                        </time>
-                      </span>
-                      <span className="ml-1 whitespace-nowrap font-medium text-blue-500">
-                        {selectedUser
-                          ? selectedUser?.fullname
-                          : "Usuario desconocido"}
-                      </span>
-                    </div>
-                  </h3>
-                  <p className="whitespace-pre-wrap px-2 py-0.5 text-sm font-medium text-gray-800">
-                    {message.body}
-                  </p>
-                </div>
-              ) : (
+          <div key={timestampKey}>
+            <TimeDivider time={data[timestampKey][0].dateCreated} />
+            <div className="grid grid-cols-1 space-y-2 px-5">
+              {data[timestampKey].map((message) => (
                 <div
                   key={message.dateCreated}
                   className={
-                    message.status === "undelivered" ||
-                    message.status === "failed"
-                      ? "flex flex-row bg-red-50 py-2 px-3 hover:bg-red-100"
-                      : "flex flex-row py-2 px-3 hover:bg-gray-50"
+                    message.from === userPhoneNumber
+                      ? "max-w-md place-self-end"
+                      : "max-w-lg place-self-start"
                   }
                 >
-                  <h3 className="mr-1 flex flex-col text-sm">
-                    <div>
-                      <span className="whitespace-nowrap text-[10px] font-medium text-gray-600">
-                        <time
-                          dateTime={new Date(message.dateCreated).toString()}
-                        >
-                          {new Date(message.dateCreated).toLocaleTimeString(
-                            "en-US",
-                            {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            }
-                          )}
-                        </time>
-                      </span>
-                      <span className="ml-1 whitespace-nowrap font-medium text-orange-600">
-                        Weg Insurance
-                      </span>
+                  <div>
+                    <div className="ml-2 text-xs font-medium text-slate-400">
+                      {new Date(message.dateCreated).toLocaleTimeString("en", {
+                        hour: "numeric",
+                        minute: "numeric",
+                        // hour12: true,
+                      })}
                     </div>
-                    <span className="self-end text-xs">
-                      {message.status === "delivered" && (
-                        <span className="flex">
-                          <span className="text-green-600">
-                            {messageStatus(message.status)?.status}
-                          </span>
-                          <CheckIcon className="h-4 w-4 font-semibold text-green-600" />
-                          <CheckIcon className="-ml-3 h-4 w-4 font-semibold text-green-600" />
-                        </span>
-                      )}
-                      {(message.status === "queued" ||
-                        message.status === "sent") && (
-                        <span className="flex">
-                          <span>{messageStatus(message.status)?.status}</span>
-                          <PaperAirplaneIcon className="ml-2 h-4 w-4 font-semibold text-blue-600" />
-                        </span>
-                      )}
-                      {(message.status === "undelivered" ||
-                        message.status === "failed") && (
-                        <span className="flex">
-                          <span className="animate-pulse text-red-600">
-                            {messageStatus(message.status)?.status}
-                          </span>
-                          <ExclamationTriangleIcon className="ml-2 h-4 w-4 animate-pulse font-semibold text-red-600" />
-                        </span>
-                      )}
-                    </span>
-                  </h3>
-                  <p
-                    className={
-                      message.status === "undelivered" ||
-                      message.status === "failed"
-                        ? "whitespace-pre-wrap px-2 py-0.5 text-sm font-medium text-red-800"
-                        : "whitespace-pre-wrap px-2 py-0.5 text-sm font-medium text-gray-800"
-                    }
-                  >
-                    {message.body}
-                  </p>
+                    <div
+                      ref={messagesEndRef}
+                      key={message.dateCreated}
+                      className={
+                        message.from === userPhoneNumber
+                          ? "mt-1 rounded-2xl rounded-br-none bg-blue-600 p-3"
+                          : message.status === "undelivered" ||
+                            message.status === "failed"
+                          ? "mt-1 rounded-2xl rounded-br-none bg-red-50 p-3"
+                          : "mt-1 rounded-2xl rounded-bl-none bg-slate-100 p-3"
+                      }
+                    >
+                      <p
+                        className={
+                          message.from === userPhoneNumber
+                            ? "whitespace-pre-wrap text-white"
+                            : message.status === "undelivered" ||
+                              message.status === "failed"
+                            ? "whitespace-pre-wrap text-red-700"
+                            : "whitespace-pre-wrap text-slate-900"
+                        }
+                      >
+                        {message.body}
+                      </p>
+                    </div>
+                    {message.from !== userPhoneNumber && (
+                      <div className="mt-1 flex items-center justify-end">
+                        <p
+                          className={
+                            message.status === "undelivered" ||
+                            message.status === "failed"
+                              ? "animate-pulse text-xs font-medium text-red-600"
+                              : "text-xs font-medium text-gray-400"
+                          }
+                        >
+                          {messageStatus(message.status).status}
+                        </p>
+                        {message.status === "delivered" && (
+                          <div className="flex">
+                            <CheckIcon className="h-5 w-5 text-green-500" />
+                            <CheckIcon className="-ml-4 h-5 w-5 text-green-500" />
+                          </div>
+                        )}
+                        {message.status === "undelivered" && (
+                          <div className="flex">
+                            <ExclamationTriangleIcon className="ml-2 h-5 w-5 animate-pulse text-red-500" />
+                          </div>
+                        )}
+                        {message.status === "sent" && (
+                          <div className="flex">
+                            <PaperAirplaneIcon className="ml-0.5 h-5 w-5 -rotate-12 text-slate-400" />
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              );
-            })}
-          </li>
+              ))}
+            </div>
+          </div>
         );
       })}
-    </ul>
+    </div>
   );
 };
