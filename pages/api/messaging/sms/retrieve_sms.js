@@ -7,10 +7,10 @@ import { client } from "@/lib/twilio/config";
 export default async function handler(req, res) {
   const { user_phone } = req?.body || null;
 
-  if (req.method !== `POST`) {
+  if (req.method !== "POST") {
     return res
       .status(404)
-      .json({ message: `This endpoint requires a POST request!` });
+      .json({ message: "This endpoint requires a POST request!" });
   }
 
   if (!user_phone) {

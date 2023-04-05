@@ -11,10 +11,10 @@ const pusher = new Pusher({
 // TODO: Make sure to add Twilio webhook security verification, so that only Twilio can send requests to this endpoint
 
 export default async function handler(req, res) {
-  if (req.method !== `POST`) {
+  if (req.method !== "POST") {
     return res
       .status(404)
-      .json({ message: `This endpoint requires a POST request!` });
+      .json({ message: "This endpoint requires a POST request!" });
   }
 
   const { Body, From, FromCity, FromCountry, FromState, FromZip, To } =
@@ -30,7 +30,7 @@ export default async function handler(req, res) {
   };
 
   if (!twilioIncomingMessage) {
-    return res.status(404).json({ message: `No inbound sms details found!` });
+    return res.status(404).json({ message: "No inbound sms details found!" });
   }
 
   pusher
