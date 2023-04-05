@@ -59,7 +59,7 @@ export default async function handler(req, res) {
     return res.status(500).json({
       message: "Hemos detectado un error inesperado. Intentelo nuevamente.",
       status: error?.status || 500,
-      error: error,
+      error,
     });
   }
 }
