@@ -24,13 +24,13 @@ export const useIdentifyIncomingUserbyPhone = () => {
         // TODO: if we have a firebase user, lets give this user to the novu notification system for now, there might be others things to do with this user such as providing them to the unread notifications sort algo.
       } catch (error) {
         setErrorIdentifyingUser({
-          error: `No hemos podido identificar al usuario`,
+          error: "No hemos podido identificar al usuario",
           errorDetails: error,
           message: data.body,
         });
 
         return {
-          error: `No hemos podido identificar al usuario`,
+          error: "No hemos podido identificar al usuario",
           errorDetails: error,
         };
       }

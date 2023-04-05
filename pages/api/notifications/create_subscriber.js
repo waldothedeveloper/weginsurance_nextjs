@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   const { subscriberId } = req?.body || null;
 
   if (!subscriberId) {
-    return res.status(404).json({ message: `A valid user ID is required!` });
+    return res.status(404).json({ message: "A valid user ID is required!" });
   }
   try {
     const result = await novu.subscribers.identify(subscriberId, {});
@@ -27,7 +27,7 @@ export default async function handler(req, res) {
     }
   } catch (error) {
     return res.status(500).json({
-      message: `Our system has detected an unexpected error.`,
+      message: "Our system has detected an unexpected error.",
       status: error?.status || 500,
       subscriberId,
     });
