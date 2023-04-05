@@ -55,7 +55,7 @@ export const useHandleOutboundSMS = (
         setIsNotSendingSMS(false);
         // step 1. it it's crucial to sent the message first and then update the local cache after the message has been sent
         return sendOutboundSMS(smsMessage)
-          .then((data) => {
+          .then((message) => {
             editor.commands.clearContent();
             // step 2. update the local cache => this fn is just calling the trigger from SWR useSWRMutation() hook
             updateLocalMessagesCache(phone, {
@@ -64,7 +64,7 @@ export const useHandleOutboundSMS = (
               onSuccess: () => setIsNotSendingSMS(true),
               onError: () => setIsNotSendingSMS(true),
             });
-            return data;
+            return message;
           })
           .catch((err) => {
             setIsNotSendingSMS(true);

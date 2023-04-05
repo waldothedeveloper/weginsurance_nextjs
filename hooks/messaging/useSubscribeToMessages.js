@@ -5,12 +5,12 @@ import useSWRSubscription from "swr/subscription";
 export const useSubscribeToMessages = () => {
   const { data, error } = useSWRSubscription("sms", (key, { next }) => {
     const channel = pusher.subscribe(key);
-    channel.bind("inbound-sms", (data) => {
-      next(null, data);
+    channel.bind("inbound-sms", (incomingSMSData) => {
+      next(null, incomingSMSData);
     });
 
-    channel.bind("pusher:subscription_error", (error) => {
-      next(error);
+    channel.bind("pusher:subscription_error", (pusherSubsError) => {
+      next(pusherSubsError);
     });
 
     return () => {
