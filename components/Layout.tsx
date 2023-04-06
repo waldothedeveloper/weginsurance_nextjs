@@ -3,14 +3,12 @@ import { useEffect, useState } from "react";
 
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { DesktopSideBar } from "@/components/DesktopSideBar";
-import Image from "next/image";
+import Link from "next/link";
 import { MobileSideBar } from "@/components/MobileSideBar";
 import { Wrapper } from "@/components/Wrapper";
 import { firebaseApp } from "@/lib/firebaseConfig";
-import logo from "@/public/weg_logo.jpg";
 import { useAuth } from "@clerk/nextjs";
-
-// import { useIdentifyIncomingUserbyPhone } from "@/hooks/messaging/useIdentifyIncomingUserbyPhone";
+import { useIdentifyIncomingUserbyPhone } from "@/hooks/messaging/useIdentifyIncomingUserbyPhone";
 
 export const Layout = () => {
   const { getToken } = useAuth();
@@ -19,11 +17,10 @@ export const Layout = () => {
   const handleOpenSideBar = () => setSidebarOpen(true);
 
   // TODO: identify who is more likely to benefit from this hook, probably the Wrapper component
-  // const { identifiedUser, inboundSMSMessageError, errorIdentifyingUser } =
-  //   useIdentifyIncomingUserbyPhone();
+  const { inboundSMSMessageError, errorIdentifyingUser } =
+    useIdentifyIncomingUserbyPhone();
   // console.log("errorIdentifyingUser: ", errorIdentifyingUser);
   // console.log("inboundSMSMessageError: ", inboundSMSMessageError);
-  // console.log("identifiedUser: ", identifiedUser);
 
   //
   useEffect(() => {
@@ -62,11 +59,14 @@ export const Layout = () => {
           <div className="lg:hidden">
             <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-4 py-1.5">
               <div>
-                <Image
-                  className="h-10 w-auto rounded-full"
-                  src={logo}
-                  alt="Your Company"
-                />
+                <Link href="/admin/dashboard">
+                  <span className="text-xl font-bold uppercase tracking-tight text-blue-600">
+                    weg <br /> insurance
+                  </span>
+                  <span className="ml-2 self-end text-base font-extralight lowercase text-slate-500">
+                    sms
+                  </span>
+                </Link>
               </div>
               <div>
                 <button

@@ -1,12 +1,11 @@
 import { Dialog, Transition } from "@headlessui/react";
 
 import { Fragment } from "react";
-import Image from "next/image";
+import Link from "next/link";
+import { LoggedInUserButton } from "@/components/auth/LoggedInUserButton";
 import { NavigationLinks } from "@/components/navigation/links";
 import { NovuNotificationsCenter } from "@/components/notifications/NovuConfig";
-import { UserButton } from "@clerk/nextjs";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import logo from "@/public/weg_logo.jpg";
 
 //
 export const MobileSideBar = ({
@@ -43,7 +42,7 @@ export const MobileSideBar = ({
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-blue-700 focus:outline-none">
+            <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-slate-100 focus:outline-none">
               <Transition.Child
                 as={Fragment}
                 enter="ease-in-out duration-300"
@@ -53,7 +52,7 @@ export const MobileSideBar = ({
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <div className="absolute top-0 right-0 -mr-12 pt-2">
+                <div className="absolute right-0 top-0 -mr-12 pt-2">
                   <button
                     type="button"
                     className="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
@@ -67,28 +66,22 @@ export const MobileSideBar = ({
                   </button>
                 </div>
               </Transition.Child>
-              <div className="h-0 flex-1 overflow-y-auto pt-5 pb-4">
+              <div className="h-0 flex-1 overflow-y-auto pb-4 pt-5">
                 <div className="flex flex-shrink-0 items-center px-4">
-                  <Image
-                    className="h-14 w-auto rounded-full"
-                    src={logo}
-                    alt="Your Company"
-                  />
+                  <Link href="/admin/dashboard">
+                    <span className="text-xl font-bold uppercase tracking-tight text-blue-600">
+                      weg <br /> insurance
+                    </span>
+                    <span className="ml-2 self-end text-base font-extralight lowercase text-slate-500">
+                      sms
+                    </span>
+                  </Link>
                 </div>
                 <NavigationLinks />
               </div>
               <div className="flex flex-shrink-0 border-t border-slate-200 p-4">
                 <div className="flex w-full items-center justify-between">
-                  <UserButton
-                    showName
-                    appearance={{
-                      elements: {
-                        userButtonBox: "flex flex-row-reverse",
-                        userButtonOuterIdentifier:
-                          "text-sm font-medium text-slate-50",
-                      },
-                    }}
-                  />
+                  <LoggedInUserButton />
                   <NovuNotificationsCenter />
                 </div>
               </div>

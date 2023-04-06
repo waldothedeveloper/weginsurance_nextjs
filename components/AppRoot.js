@@ -1,21 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
-import logo from "@/public/weg_logo.jpg";
+
 //
 export const AppRoot = () => {
   return (
     <div className="relative bg-white">
       <div className="mx-auto max-w-7xl lg:grid lg:grid-cols-12 lg:gap-x-8 lg:px-8">
-        <div className="px-6 pt-10 pb-24 sm:pb-32 lg:col-span-7 lg:px-0 lg:pt-48 lg:pb-56 xl:col-span-6">
+        <div className="px-6 pb-24 pt-10 sm:pb-32 lg:col-span-7 lg:px-0 lg:pb-56 lg:pt-48 xl:col-span-6">
           <div className="mx-auto max-w-2xl lg:mx-0">
-            <Image
-              className="h-18 w-auto rounded-full"
-              src={logo}
-              alt="weginsurance logo"
-            />
+            <Link href="/">
+              <span className="text-xl font-bold uppercase tracking-tight text-blue-600">
+                weg <br /> insurance
+              </span>
+              <span className="ml-2 self-end text-sm font-medium lowercase text-slate-500">
+                sms
+              </span>
+            </Link>
 
             <div className="hidden sm:mt-32 sm:flex lg:mt-16">
-              <div className="relative rounded-full py-1 px-3 text-sm leading-6 text-slate-500 ring-1 ring-slate-900/10 hover:ring-slate-900/20">
+              <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-slate-500 ring-1 ring-slate-900/10 hover:ring-slate-900/20">
                 Notificaciones futuras.{" "}
                 <Link
                   href="/"

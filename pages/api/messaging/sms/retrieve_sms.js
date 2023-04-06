@@ -1,6 +1,11 @@
 import { groupBy, sortBy } from "underscore";
 
-import { client } from "@/lib/twilio/config";
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require("twilio")(accountSid, authToken, {
+  autoRetry: true,
+  maxRetries: 6,
+});
 
 // TODO: Make sure to add Twilio webhook security verification, so that only Twilio can send requests to this endpoint
 
@@ -24,7 +29,10 @@ export default async function handler(req, res) {
     // get me all messages SENT from WEG INSURANCE to this user
     const smsFromApptoUser = await client.messages
       .list({
-        from: process.env.WEG_INSURANCE_TWILIO_NUMBER,
+        from:
+          process.env.NODE_ENV === "production"
+            ? process.env.WEG_INSURANCE_TWILIO_PRODUCTION_NUMBER
+            : process.env.WEG_INSURANCE_DEVELOPMENT_TEST_NUMBER,
         to: user_phone,
       })
       .then((data) => data)
@@ -44,7 +52,10 @@ export default async function handler(req, res) {
     const smsFromUserToApp = await client.messages
       .list({
         from: user_phone,
-        to: process.env.WEG_INSURANCE_TWILIO_NUMBER,
+        to:
+          process.env.NODE_ENV === "production"
+            ? process.env.WEG_INSURANCE_TWILIO_PRODUCTION_NUMBER
+            : process.env.WEG_INSURANCE_DEVELOPMENT_TEST_NUMBER,
       })
       .then((data) => data)
       .catch((err) => {

@@ -6,12 +6,11 @@ import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { useEditorHook } from "@/hooks/messaging/useEditor";
 import { useHandleOutboundSMS } from "@/hooks/messaging/useHandleOutboundSMS";
 
-export const EditorWrapper = ({ updateLocalMessagesCache, data }) => {
+export const EditorWrapper = ({ updateLocalMessagesCache }) => {
   const editor = useEditorHook();
   const { handleSubmit } = useHandleOutboundSMS(
     editor,
-    updateLocalMessagesCache,
-    data
+    updateLocalMessagesCache
   );
 
   return (

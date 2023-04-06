@@ -33,7 +33,7 @@ export const ChatHeader = () => {
             {selectedUser?.fullname || "No hay usuario seleccionado"}
           </p>
           <p className="text-xs text-slate-500">
-            {formatPhoneNumber(selectedUser.phone)}
+            {formatPhoneNumber(selectedUser?.phone) || ""}
           </p>
         </div>
         <div className="flex flex-shrink-0 self-center">
