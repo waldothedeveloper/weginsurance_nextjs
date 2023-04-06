@@ -40,7 +40,7 @@ export type Messages = {
   uri: string;
 };
 
-export type ConversationProps = {
+export type Conversation = {
   [key: string]: Messages[];
 };
 

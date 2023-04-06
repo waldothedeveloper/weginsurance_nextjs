@@ -1,40 +1,18 @@
-import { sendingSMSAtom, userPhoneAtom } from "@/lib/state/atoms";
+import { messagesListAtom, sendingSMSAtom } from "@/lib/state/atoms";
 
 import { ChatHeader } from "@/components/messaging/ChatHeader";
 import { EditorWrapper } from "@/components/messaging/EditorWrapper";
 import { ErrorComponent } from "@/components/Error";
 import { MessageList } from "@/components/messaging/MessageList";
 import { Spinning } from "@/components/Spinning";
-import { fetcherPostPhoneNumber } from "@/utils/fetcherPostPhoneNumber";
 import { useAtomValue } from "jotai";
-import { useEffect } from "react";
-import useSWRMutation from "swr/mutation";
+import { useRetrieveMessages } from "@/hooks/messaging/useRetrieveMessages";
 
 //
 export const Conversation = () => {
-  const userPhone = useAtomValue<string>(userPhoneAtom);
-  const { data, error, isMutating, trigger, reset } = useSWRMutation(
-    "/api/messaging/sms/retrieve_sms",
-    fetcherPostPhoneNumber
-  );
-
+  const messagesList = useAtomValue(messagesListAtom);
   const isNotSendingSMS = useAtomValue<boolean>(sendingSMSAtom);
-
-  useEffect(() => {
-    const getSMS = async () => {
-      try {
-        await trigger(userPhone);
-      } catch (error) {
-        console.log(error);
-        return error;
-      }
-    };
-    if (userPhone) {
-      getSMS();
-    } else {
-      reset();
-    }
-  }, [userPhone, trigger, reset]);
+  const { error, isMutating, trigger } = useRetrieveMessages();
 
   if (isMutating && isNotSendingSMS) {
     return (
@@ -52,7 +30,7 @@ export const Conversation = () => {
     );
   }
 
-  if (!data) {
+  if (!messagesList) {
     return (
       <div className="grid h-screen place-items-center overflow-hidden">
         <div className="bg-white px-6 py-24 sm:py-32 lg:px-8">
@@ -70,7 +48,7 @@ export const Conversation = () => {
     );
   }
 
-  if (data && Object.keys(data).length === 0) {
+  if (messagesList && Object.keys(messagesList).length === 0) {
     return (
       <div className="grid h-screen place-items-center overflow-hidden">
         <div className="bg-white px-6 py-24 sm:py-32 lg:px-8">
@@ -91,8 +69,9 @@ export const Conversation = () => {
   return (
     <div className="flex h-screen flex-1 flex-col pb-6">
       <ChatHeader />
-      <MessageList data={data} />
-      <EditorWrapper updateLocalMessagesCache={trigger} data={data} />
+      {/* TODO: These two below need to receive the ATOM instead of the full data object */}
+      <MessageList />
+      <EditorWrapper updateLocalMessagesCache={trigger} />
     </div>
   );
 };

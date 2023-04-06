@@ -1,5 +1,9 @@
 import { Novu } from "@novu/node";
-import { novuAPIKEY } from "@/utils/novuAPI";
+
+const novuAPIKEY =
+  process.env.NODE_ENV === "development"
+    ? process.env.NOVU_DEVELOPMENT_API_KEY
+    : process.env.NOVU_PRODUCTION_API_KEY;
 
 const novu = new Novu(novuAPIKEY);
 

@@ -3,14 +3,13 @@ import { useAtomValue, useSetAtom } from "jotai";
 
 import { e164Regex } from "@/utils/e164Regex";
 import { failureNotification } from "@/components/notifications/failureNotification";
+import { messagesListAtom } from "@/lib/state/atoms";
+import { nanoid } from "nanoid";
 import { smsFetcherPost } from "@/utils/smsFetcherPost";
 
 //
-export const useHandleOutboundSMS = (
-  editor,
-  updateLocalMessagesCache,
-  data
-) => {
+export const useHandleOutboundSMS = (editor, updateLocalMessagesCache) => {
+  const messagesList = useAtomValue(messagesListAtom);
   const phone = useAtomValue(userPhoneAtom);
   const setIsNotSendingSMS = useSetAtom(sendingSMSAtom);
 
@@ -19,11 +18,12 @@ export const useHandleOutboundSMS = (
     const newSMSSent = {
       dateCreated: dateSent,
       body: smsMessage,
-      from: phone,
+      to: phone,
       status: "sent",
+      sid: nanoid(),
     };
 
-    const newLocalMessages = data;
+    const newLocalMessages = messagesList;
     newLocalMessages[dateSent] = [newSMSSent];
 
     return newLocalMessages;
