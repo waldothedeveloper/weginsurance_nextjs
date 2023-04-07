@@ -20,6 +20,7 @@ export const useHandleOutboundSMS = (editor, updateLocalMessagesCache) => {
       body: smsMessage,
       to: phone,
       status: "sent",
+      direction: "outbound-api",
       sid: nanoid(),
     };
 
