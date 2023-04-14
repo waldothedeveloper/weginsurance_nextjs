@@ -1,48 +1,22 @@
-import { sendingSMSAtom, userPhoneAtom } from "@/lib/state/atoms";
+import {
+  messagesListAtom,
+  sendingSMSAtom,
+  userPhoneAtom,
+} from "@/lib/state/atoms";
 import { useAtomValue, useSetAtom } from "jotai";
 
 import { e164Regex } from "@/utils/e164Regex";
 import { failureNotification } from "@/components/notifications/failureNotification";
-import { messagesListAtom } from "@/lib/state/atoms";
-import { nanoid } from "nanoid";
-import { smsFetcherPost } from "@/utils/smsFetcherPost";
+import { newOutboundSMSHandler } from "@/utils/newOutboundSMSHandler";
+import { sendOutboundSMS } from "@/utils/sendOutboundSMS";
 
 //
 export const useHandleOutboundSMS = (editor, updateLocalMessagesCache) => {
-  const messagesList = useAtomValue(messagesListAtom);
   const phone = useAtomValue(userPhoneAtom);
   const setIsNotSendingSMS = useSetAtom(sendingSMSAtom);
+  const setMessagesList = useSetAtom(messagesListAtom);
 
-  const newSMSSentToUpdateLocalCache = (smsMessage) => {
-    const dateSent = new Date().toUTCString().slice(0, -10).toString();
-    const newSMSSent = {
-      dateCreated: dateSent,
-      body: smsMessage,
-      to: phone,
-      status: "sent",
-      direction: "outbound-api",
-      sid: nanoid(),
-    };
-
-    const newLocalMessages = messagesList;
-    newLocalMessages[dateSent] = [newSMSSent];
-
-    return newLocalMessages;
-  };
-
-  // handle the outbout sms
-  const sendOutboundSMS = async (smsMessage) => {
-    const res = await smsFetcherPost(
-      "/api/messaging/sms/outbound_sms",
-      smsMessage,
-      phone
-    );
-
-    return res;
-  };
-
-  // handle the submit of the outbound sms
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     if (event) event.preventDefault();
     const smsMessage = editor?.view?.dom?.innerText;
 
@@ -54,13 +28,19 @@ export const useHandleOutboundSMS = (editor, updateLocalMessagesCache) => {
       } else {
         setIsNotSendingSMS(false);
         // step 1. it it's crucial to sent the message first and then update the local cache after the message has been sent
-        return sendOutboundSMS(smsMessage)
-          .then((message) => {
+        return await sendOutboundSMS(smsMessage, phone)
+          .then(async (message) => {
+            // clear the editor to have it ready for the next message
             editor.commands.clearContent();
             // step 2. update the local cache => this fn is just calling the trigger from SWR useSWRMutation() hook
-            updateLocalMessagesCache(phone, {
-              optimisticData: newSMSSentToUpdateLocalCache(smsMessage),
-              rollbackOnError: true,
+            await updateLocalMessagesCache(phone, {
+              optimisticData: (data) => {
+                const res = newOutboundSMSHandler(data, smsMessage, phone);
+                setMessagesList(res);
+                return res;
+              },
+              rollbackOnError: false,
+              populateCache: true,
               onSuccess: () => setIsNotSendingSMS(true),
               onError: () => setIsNotSendingSMS(true),
             });

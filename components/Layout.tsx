@@ -8,7 +8,8 @@ import { MobileSideBar } from "@/components/MobileSideBar";
 import { Wrapper } from "@/components/Wrapper";
 import { firebaseApp } from "@/lib/firebaseConfig";
 import { useAuth } from "@clerk/nextjs";
-import { useIdentifyIncomingUserbyPhone } from "@/hooks/messaging/useIdentifyIncomingUserbyPhone";
+import { useHandleNotifications } from "@/hooks/notifications/useHandleNotifications";
+import { useIdentifyIncomingUserFromInboundSMS } from "@/hooks/messaging/useIdentifyIncomingUserFromInboundSMS";
 
 export const Layout = () => {
   const { getToken } = useAuth();
@@ -18,9 +19,8 @@ export const Layout = () => {
 
   // TODO: identify who is more likely to benefit from this hook, probably the Wrapper component
   const { inboundSMSMessageError, errorIdentifyingUser } =
-    useIdentifyIncomingUserbyPhone();
-  // console.log("errorIdentifyingUser: ", errorIdentifyingUser);
-  // console.log("inboundSMSMessageError: ", inboundSMSMessageError);
+    useIdentifyIncomingUserFromInboundSMS();
+  const { notiError } = useHandleNotifications(errorIdentifyingUser);
 
   //
   useEffect(() => {
