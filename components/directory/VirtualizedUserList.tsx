@@ -5,16 +5,16 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import { forwardRef, useEffect } from "react";
+import { useAtomValue, useSetAtom } from "jotai";
 
 import { Spinning } from "@/components/Spinning";
 import { Virtuoso } from "react-virtuoso";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 import { normalizeString } from "@/utils/normalizeString";
 import { selectedUserAtom } from "@/lib/state/atoms";
-import { useAtomValue } from "jotai";
 import { useFakeUserList } from "@/hooks/test/useFakeUserList";
 import { useFirebaseUsers } from "@/hooks/user_directory/useFirebaseUsers";
-import { useSetAtom } from "jotai";
+import { useRouter } from "next/router";
 import { userPhoneAtom } from "@/lib/state/atoms";
 
 //
@@ -32,14 +32,17 @@ const List = forwardRef((props, ref) => {
 export const VirtualizedUserList = () => {
   const setUserPhone = useSetAtom(userPhoneAtom);
   const setSelectedUser = useSetAtom(selectedUserAtom);
-  const selectedUser = useAtomValue<RealUser | null>(selectedUserAtom);
+  const selectedUser = useAtomValue(selectedUserAtom);
+  const router = useRouter();
 
   useEffect(() => {
-    return () => {
-      setSelectedUser(null);
-      setUserPhone("");
-    };
-  }, [setSelectedUser, setUserPhone]);
+    if (selectedUser) {
+      router.push(`/admin/messages?userId=${selectedUser?.id}`, undefined, {
+        shallow: true,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedUser]);
 
   //! make sure to change this test = false when you're done testing
   const test = false;
@@ -60,7 +63,7 @@ export const VirtualizedUserList = () => {
 
   return (
     <>
-      <div className="px-6 pt-6 pb-6">
+      <div className="px-6 pb-6 pt-6">
         <h2 className="text-lg font-medium text-slate-900">Directorio</h2>
         <p className="mt-1 text-sm text-slate-600">
           Directorio de búsqueda de{" "}

@@ -10,7 +10,7 @@ export const Spinning = ({ message }: { message: string }) => {
         className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-slate-300 motion-reduce:animate-[spin_1.5s_linear_infinite]"
         role="status"
       />
-      <p className="ml-3 text-slate-400">{message}...</p>
+      <p className="ml-3 text-slate-400">{message}</p>
     </div>
   );
 };

@@ -6,7 +6,11 @@ import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { useEditorHook } from "@/hooks/messaging/useEditor";
 import { useHandleOutboundSMS } from "@/hooks/messaging/useHandleOutboundSMS";
 
-export const EditorWrapper = ({ updateLocalMessagesCache }) => {
+export const EditorWrapper = ({
+  updateLocalMessagesCache,
+}: {
+  updateLocalMessagesCache: any;
+}) => {
   const editor = useEditorHook();
   const { handleSubmit } = useHandleOutboundSMS(
     editor,
@@ -34,6 +38,7 @@ export const EditorWrapper = ({ updateLocalMessagesCache }) => {
             className="inline-flex h-12 items-center justify-center rounded-lg bg-blue-500 px-5 py-1.5 text-white transition duration-500 ease-in-out hover:bg-blue-400 focus:outline-none"
           >
             <PaperAirplaneIcon className="h-5 w-5 -rotate-45" />
+            <span className="sr-only">Send message</span>
           </button>
         </div>
       </div>

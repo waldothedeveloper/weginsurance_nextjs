@@ -1,4 +1,4 @@
-import { groupBy, sortBy } from "underscore";
+import dayjs from "dayjs";
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -59,10 +59,6 @@ export default async function handler(req, res) {
       })
       .then((data) => data)
       .catch((err) => {
-        // console.log(
-        //   "ERROR RETRIEVING SMS MESSAGES RECEIVED FROM USER TO APP: ",
-        //   err
-        // );
         return res.status(500).json({
           message: "Our system has detected an unexpected error.",
           status: err?.status || 500,
@@ -73,19 +69,35 @@ export default async function handler(req, res) {
     const finalMessagesArrayNotSorted =
       smsFromApptoUser.concat(smsFromUserToApp);
 
-    // this will return an array of objects, sorted by dateCreated, each object is an sms message
-    const sortedMessages = sortBy(finalMessagesArrayNotSorted, (elem) => {
-      return new Date(`${elem.dateCreated} UTC`);
-    });
+    const groupedDays = (messages) =>
+      messages.reduce((acc, el) => {
+        const messageDay = dayjs(el.dateCreated).format("YYYY-MM-DD");
+        if (acc[messageDay]) {
+          return { ...acc, [messageDay]: [...acc[messageDay], el] };
+        }
+        return { ...acc, [messageDay]: [el] };
+      }, {});
 
-    // now we are grouping them by date
-    const messagesGroupedByDate = groupBy(sortedMessages, (message) => {
-      const date = new Date(`${message.dateCreated} UTC`);
-      return date.toString().slice(0, 16);
-    });
+    const generateItems = (messages) => {
+      const days = groupedDays(messages);
+      const sortedDays = Object.keys(days).sort(
+        (x, y) => dayjs(y, "YYYY-MM-DD").unix() - dayjs(x, "YYYY-MM-DD").unix()
+      );
+      const items = sortedDays.reduce((acc, date) => {
+        const sortedMessages = days[date].sort(
+          (x, y) => dayjs(y.dateCreated).diff(dayjs(x.dateCreated))
+          // (x, y) => new Date(y.dateCreated) - new Date(x.dateCreated)
+        );
+        return acc.concat([...sortedMessages, { type: "day", date, id: date }]);
+      }, []);
+      return items;
+    };
 
-    return res.status(200).json(messagesGroupedByDate);
+    const allMsg = generateItems(finalMessagesArrayNotSorted).reverse();
+
+    return res.status(200).json(allMsg);
   } catch (error) {
+    // console.log("error: ", error);
     return res.status(500).json({
       message: "Our system has detected an unexpected error.",
       status: error?.status || 500,

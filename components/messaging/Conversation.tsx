@@ -1,18 +1,28 @@
-import { messagesListAtom, sendingSMSAtom } from "@/lib/state/atoms";
-
 import { ChatHeader } from "@/components/messaging/ChatHeader";
 import { EditorWrapper } from "@/components/messaging/EditorWrapper";
 import { ErrorComponent } from "@/components/Error";
-import { MessageList } from "@/components/messaging/MessageList";
+// import { MessageList } from "@/components/messaging/MessageList";
 import { Spinning } from "@/components/Spinning";
+import { VirtualizedConversation } from "@/components/messaging/VirtualizedConversation";
+import { VirtualizedConversationType } from "@/interfaces/index";
+import { sendingSMSAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
 import { useRetrieveMessages } from "@/hooks/messaging/useRetrieveMessages";
 
 //
 export const Conversation = () => {
-  const messagesList = useAtomValue(messagesListAtom);
   const isNotSendingSMS = useAtomValue<boolean>(sendingSMSAtom);
-  const { error, isMutating, trigger } = useRetrieveMessages();
+  const {
+    data,
+    error,
+    isMutating,
+    trigger,
+  }: {
+    data: VirtualizedConversationType;
+    error: Error;
+    isMutating: boolean;
+    trigger: any;
+  } = useRetrieveMessages();
 
   if (isMutating && isNotSendingSMS) {
     return (
@@ -30,7 +40,7 @@ export const Conversation = () => {
     );
   }
 
-  if (!messagesList) {
+  if (!data) {
     return (
       <div className="grid h-screen place-items-center overflow-hidden">
         <div className="bg-white px-6 py-24 sm:py-32 lg:px-8">
@@ -48,7 +58,7 @@ export const Conversation = () => {
     );
   }
 
-  if (messagesList && Object.keys(messagesList).length === 0) {
+  if (data && data.length === 0) {
     return (
       <div className="grid h-screen place-items-center overflow-hidden">
         <div className="bg-white px-6 py-24 sm:py-32 lg:px-8">
@@ -69,8 +79,10 @@ export const Conversation = () => {
   return (
     <div className="flex h-screen flex-1 flex-col pb-6">
       <ChatHeader />
-      {/* TODO: These two below need to receive the ATOM instead of the full data object */}
-      <MessageList />
+      <VirtualizedConversation />
+      {/* the MessageList should NOT be used anymore, pay attention please!  */}
+      {/* <MessageList messagesList={data} /> */}
+
       <EditorWrapper updateLocalMessagesCache={trigger} />
     </div>
   );

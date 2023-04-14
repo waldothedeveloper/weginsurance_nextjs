@@ -2,7 +2,7 @@ import { pusher } from "@/lib/pusher/config";
 import useSWRSubscription from "swr/subscription";
 
 //
-export const useSubscribeToMessages = () => {
+export const useHandleInboundSMS = () => {
   const { data, error } = useSWRSubscription("sms", (key, { next }) => {
     const channel = pusher.subscribe(key);
     channel.bind("inbound-sms", (incomingSMSData) => {
@@ -10,7 +10,7 @@ export const useSubscribeToMessages = () => {
     });
 
     channel.bind("pusher:subscription_error", (pusherSubsError) => {
-      next(pusherSubsError);
+      next(null, pusherSubsError);
     });
 
     return () => {

@@ -9,12 +9,13 @@ import { UserFormWrapper } from "@/components/directory/UserFormWrapper";
 import { VirtualizedUserList } from "@/components/directory/VirtualizedUserList";
 import { VirtualizedUserTable } from "@/components/directory/VirtualizedUserTable";
 
+//
 export const Wrapper = () => {
   const router: NextRouter = useRouter();
 
   return (
     <>
-      {/* right side */}
+      {/* right side components */}
       {router?.query?.dashboard?.includes("messages") && (
         <>
           <MainComponent className="relative z-0 flex-1 overflow-hidden focus:outline-none">
@@ -49,12 +50,13 @@ export const Wrapper = () => {
         </MainComponent>
       )}
 
-      {/* left side */}
+      {/* left side components*/}
       {router?.query?.dashboard?.includes("messages") && (
         <AsideComponent>
           <VirtualizedUserList />
         </AsideComponent>
       )}
+
       <aside className="sticky top-0 hidden w-20 shrink-0 border-l border-slate-200 pl-5 pr-3 lg:block xl:order-last">
         <div className="mt-4 flex w-full items-center justify-center">
           <div className="rounded-xl border-2 border-slate-200 p-1.5">

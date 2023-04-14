@@ -41,8 +41,7 @@ export default async function handler(req, res) {
   await pusher
     .trigger("sms", "inbound-sms", req?.body)
     .then((responseDataFromPusher) => {
-      console.log("responseDataFromPusher: ", responseDataFromPusher);
-      return res.status(200).json({ message: "success" });
+      return res.status(200).json(responseDataFromPusher);
     })
     .catch((error) => {
       return res.status(500).json({ message: error });

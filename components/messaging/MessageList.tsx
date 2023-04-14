@@ -5,23 +5,22 @@ import {
 } from "@heroicons/react/24/outline";
 import { useEffect, useRef } from "react";
 
-import { Messages } from "@/interfaces/index";
+import { ConversationInterface } from "@/interfaces/index";
 import { TimeDivider } from "@/components/messaging/TimeDivider";
 import { messageStatus } from "@/utils/messageStatus";
-import { messagesListAtom } from "@/lib/state/atoms";
-import { useAtomValue } from "jotai";
 
-export const MessageList = () => {
-  const messagesList = useAtomValue(messagesListAtom);
+type MessageListProps = { messagesList: ConversationInterface };
+
+export const MessageList = ({ messagesList }: MessageListProps) => {
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
   const scrollToBottom = () => {
-    if (messagesEndRef.current) {
+    if (messagesEndRef?.current) {
       messagesEndRef.current.scrollIntoView();
     }
   };
 
   useEffect(() => {
-    scrollToBottom();
+    if (messagesList) scrollToBottom();
   }, [messagesList]);
 
   //
@@ -35,8 +34,9 @@ export const MessageList = () => {
                 <TimeDivider time={messagesList[timestampKey][0].dateCreated} />
                 <div className="grid grid-cols-1 space-y-2 px-5">
                   {messagesList &&
-                    messagesList[timestampKey].map((message: Messages) => (
+                    messagesList[timestampKey].map((message) => (
                       <div
+                        ref={messagesEndRef}
                         key={message.sid}
                         className={
                           message.direction === "outbound-api"
@@ -56,7 +56,6 @@ export const MessageList = () => {
                             )}
                           </div>
                           <div
-                            ref={messagesEndRef}
                             key={message.dateCreated}
                             className={
                               message.direction === "outbound-api"
