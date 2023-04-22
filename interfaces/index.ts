@@ -125,3 +125,25 @@ export interface IdentifiedUser extends InboundMessage {
   user: RealUser;
   message: InboundMessage;
 }
+
+export type ImageType = {
+  "image/*": [".jpeg", ".png", ".jpg", ".gif", ".svg", ".webp"];
+};
+
+export type DocumentType = {
+  "application/pdf": [".pdf"];
+  "text/plain": [".txt"];
+  "application/msword": [".doc", ".docx"];
+  "application/vnd.ms-powerpoint": [".ppt", ".pptx"];
+  "application/rtf": [".rtf"];
+};
+
+export type FileLike = File & { preview?: string; id?: string };
+export type ImagesArray = [FileLike];
+export type Test =
+  | File
+  | {
+      preview?: string;
+      path?: string;
+      id?: string;
+    };

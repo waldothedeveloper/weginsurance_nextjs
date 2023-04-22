@@ -7,7 +7,7 @@ import { useEditor } from "@tiptap/react";
 
 export const useEditorHook = () => {
   const editor = useEditor({
-    // content: "",
+    content: "",
     extensions: [
       Underline.configure({
         HTMLAttributes: {
@@ -29,7 +29,7 @@ export const useEditorHook = () => {
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm max-w-none rounded-xl px-6 py-3 max-h-[50vh] overflow-y-auto ring-2 ring-inset ring-slate-300 border-0 bg-slate-100 rounded-md text-slate-800 w-full flex-1 focus:outline-none",
+          "max-w-none px-6 py-3 max-h-[50vh] overflow-y-auto border-t-4 border-slate-800 rounded-md bg-slate-100 text-slate-800 w-full flex-1 focus:outline-none",
       },
     },
   });
