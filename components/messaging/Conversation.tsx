@@ -1,16 +1,29 @@
+import { CarouselWrapper } from "@/components/messaging/carousel/CarouselWrapper";
 import { ChatHeader } from "@/components/messaging/ChatHeader";
 import { EditorWrapper } from "@/components/messaging/EditorWrapper";
 import { ErrorComponent } from "@/components/Error";
-// import { MessageList } from "@/components/messaging/MessageList";
 import { Spinning } from "@/components/Spinning";
+import { Transition } from "@headlessui/react";
 import { VirtualizedConversation } from "@/components/messaging/VirtualizedConversation";
 import { VirtualizedConversationType } from "@/interfaces/index";
 import { sendingSMSAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
+import { useDragNDrop } from "@/hooks/insurance_company/useDragNDrop";
 import { useRetrieveMessages } from "@/hooks/messaging/useRetrieveMessages";
 
 //
 export const Conversation = () => {
+  const {
+    allFiles,
+    handleSetFiles,
+    documentDropZone,
+    imageDropZone,
+    handleSelectedFile,
+    selectedImgId,
+    additionalImageDropZone,
+    additionalDocumentDropZone,
+    handleRemoveFile,
+  } = useDragNDrop();
   const isNotSendingSMS = useAtomValue<boolean>(sendingSMSAtom);
   const {
     data,
@@ -77,13 +90,40 @@ export const Conversation = () => {
   }
 
   return (
-    <div className="flex h-screen flex-1 flex-col pb-6">
-      <ChatHeader />
-      <VirtualizedConversation />
-      {/* the MessageList should NOT be used anymore, pay attention please!  */}
-      {/* <MessageList messagesList={data} /> */}
+    <div className="relative flex h-screen flex-1 flex-col pb-6">
+      <>
+        <ChatHeader />
 
-      <EditorWrapper updateLocalMessagesCache={trigger} />
+        <Transition
+          show={Boolean(allFiles && allFiles.length > 0)}
+          enter="transition-opacity duration-75"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity duration-150"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          {allFiles && allFiles.length > 0 && (
+            <CarouselWrapper
+              handleSetFiles={handleSetFiles}
+              files={allFiles}
+              handleSelectedFile={handleSelectedFile}
+              selectedImgId={selectedImgId}
+              handleRemoveFile={handleRemoveFile}
+              additionalImageDropZone={additionalImageDropZone}
+              additionalDocumentDropZone={additionalDocumentDropZone}
+            />
+          )}
+        </Transition>
+
+        <VirtualizedConversation />
+
+        <EditorWrapper
+          updateLocalMessagesCache={trigger}
+          documentDropZone={documentDropZone}
+          imageDropZone={imageDropZone}
+        />
+      </>
     </div>
   );
 };

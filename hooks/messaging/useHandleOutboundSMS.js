@@ -31,7 +31,7 @@ export const useHandleOutboundSMS = (editor, updateLocalMessagesCache) => {
         return await sendOutboundSMS(smsMessage, phone)
           .then(async (message) => {
             // clear the editor to have it ready for the next message
-            editor.commands.clearContent();
+            editor?.commands?.clearContent();
             // step 2. update the local cache => this fn is just calling the trigger from SWR useSWRMutation() hook
             await updateLocalMessagesCache(phone, {
               optimisticData: (data) => {

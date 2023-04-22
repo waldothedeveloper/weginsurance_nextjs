@@ -12,7 +12,7 @@ export const sendOutboundSMS = async (smsMessage: string, phone: string) => {
 
     return res;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return error;
   }
 };
