@@ -39,8 +39,8 @@ export const CarouselSlider = ({
               onClick={() => handleSelectedFile(file)}
               className={classNames(
                 file?.id === selectedImgId
-                  ? "ring ring-blue-500 ring-offset-0 hover:shadow-lg hover:shadow-blue-500/30"
-                  : "ring ring-slate-300 ring-offset-0 hover:shadow-lg",
+                  ? "ring ring-blue-500 ring-offset-0"
+                  : "ring ring-slate-300 ring-offset-0",
                 "relative block h-14 w-14 overflow-hidden rounded-sm duration-300 ease-in-out"
               )}
             >

@@ -11,7 +11,7 @@ export const useHandleNotifications = (errorIdentifyingUser) => {
   useEffect(() => {
     // send the notification to novu in-app
     const fireNotification = async (msg) => {
-      return await inboundMessageNotification(msg);
+      await inboundMessageNotification(msg);
     };
 
     if (identifiedUser) {
