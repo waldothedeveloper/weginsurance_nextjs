@@ -2,6 +2,7 @@ import { CarouselWrapper } from "@/components/messaging/carousel/CarouselWrapper
 import { ChatHeader } from "@/components/messaging/ChatHeader";
 import { EditorWrapper } from "@/components/messaging/EditorWrapper";
 import { ErrorComponent } from "@/components/Error";
+import { MyCustomEditor } from "@/components/messaging/MyCustomEditor";
 import { Spinning } from "@/components/Spinning";
 import { Transition } from "@headlessui/react";
 import { VirtualizedConversation } from "@/components/messaging/VirtualizedConversation";
@@ -9,8 +10,9 @@ import { VirtualizedConversationType } from "@/interfaces/index";
 import { sendingSMSAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
 import { useDragNDrop } from "@/hooks/insurance_company/useDragNDrop";
+import { useEditorHook } from "@/hooks/messaging/useEditorHook";
+import { useHandleOutboundSMS } from "@/hooks/messaging/useHandleOutboundSMS";
 import { useRetrieveMessages } from "@/hooks/messaging/useRetrieveMessages";
-
 //
 export const Conversation = () => {
   const {
@@ -24,6 +26,7 @@ export const Conversation = () => {
     additionalDocumentDropZone,
     handleRemoveFile,
   } = useDragNDrop();
+
   const isNotSendingSMS = useAtomValue<boolean>(sendingSMSAtom);
   const {
     data,
@@ -36,6 +39,15 @@ export const Conversation = () => {
     isMutating: boolean;
     trigger: any;
   } = useRetrieveMessages();
+
+  const [editorAtomValue, editorAtomValueWithImages] = useEditorHook(allFiles);
+
+  // you need to send the
+  const { handleSubmit } = useHandleOutboundSMS(
+    editorAtomValue,
+    editorAtomValueWithImages,
+    trigger
+  );
 
   if (isMutating && isNotSendingSMS) {
     return (
@@ -105,6 +117,7 @@ export const Conversation = () => {
         >
           {allFiles && allFiles.length > 0 && (
             <CarouselWrapper
+              handleSubmit={handleSubmit}
               handleSetFiles={handleSetFiles}
               files={allFiles}
               handleSelectedFile={handleSelectedFile}
@@ -112,17 +125,21 @@ export const Conversation = () => {
               handleRemoveFile={handleRemoveFile}
               additionalImageDropZone={additionalImageDropZone}
               additionalDocumentDropZone={additionalDocumentDropZone}
-            />
+            >
+              <MyCustomEditor editor={editorAtomValueWithImages} />
+            </CarouselWrapper>
           )}
         </Transition>
 
         <VirtualizedConversation />
 
         <EditorWrapper
-          updateLocalMessagesCache={trigger}
+          handleSubmit={handleSubmit}
           documentDropZone={documentDropZone}
           imageDropZone={imageDropZone}
-        />
+        >
+          <MyCustomEditor editor={editorAtomValue} />
+        </EditorWrapper>
       </>
     </div>
   );
