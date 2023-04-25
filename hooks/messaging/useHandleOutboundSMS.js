@@ -11,7 +11,11 @@ import { newOutboundSMSHandler } from "@/utils/newOutboundSMSHandler";
 import { sendOutboundSMS } from "@/utils/sendOutboundSMS";
 
 //
-export const useHandleOutboundSMS = (editor, updateLocalMessagesCache) => {
+export const useHandleOutboundSMS = (
+  editor,
+  editorAtomValueWithImages,
+  updateLocalMessagesCache
+) => {
   const phone = useAtomValue(userPhoneAtom);
   const setIsNotSendingSMS = useSetAtom(sendingSMSAtom);
   const setMessagesList = useSetAtom(messagesListAtom);
@@ -19,23 +23,41 @@ export const useHandleOutboundSMS = (editor, updateLocalMessagesCache) => {
   const handleSubmit = async (event) => {
     if (event) event.preventDefault();
     const smsMessage = editor?.view?.dom?.innerText;
+    const smsMessageWithAttachments =
+      editorAtomValueWithImages?.view?.dom?.innerText;
 
     try {
-      if (!smsMessage || smsMessage.trim().length === 0) {
+      if (
+        (!smsMessage || smsMessage.trim().length === 0) &&
+        (!smsMessageWithAttachments ||
+          smsMessageWithAttachments.trim().length === 0)
+      ) {
         return;
       } else if (!e164Regex.test(phone)) {
         throw new Error("THIS PHONE NUMBER DOESN'T MATCH THE E164 FORMAT");
       } else {
         setIsNotSendingSMS(false);
+
         // step 1. it it's crucial to sent the message first and then update the local cache after the message has been sent
-        return await sendOutboundSMS(smsMessage, phone)
+        return await sendOutboundSMS(
+          smsMessageWithAttachments.length > 0
+            ? smsMessageWithAttachments
+            : smsMessage,
+          phone
+        )
           .then(async (message) => {
             // clear the editor to have it ready for the next message
             editor?.commands?.clearContent();
             // step 2. update the local cache => this fn is just calling the trigger from SWR useSWRMutation() hook
             await updateLocalMessagesCache(phone, {
               optimisticData: (data) => {
-                const res = newOutboundSMSHandler(data, smsMessage, phone);
+                const res = newOutboundSMSHandler(
+                  data,
+                  smsMessageWithAttachments.length > 0
+                    ? smsMessageWithAttachments
+                    : smsMessage,
+                  phone
+                );
                 setMessagesList(res);
                 return res;
               },

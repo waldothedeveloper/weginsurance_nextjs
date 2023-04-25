@@ -1,44 +1,38 @@
 import { FaceSmileIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline";
 
 import { AttachmentDropDown } from "@/components/messaging/components/AttachmentDropDown";
-import { EditorContent } from "@tiptap/react";
 import React from "react";
-import { useEditorHook } from "@/hooks/messaging/useEditor";
-import { useHandleOutboundSMS } from "@/hooks/messaging/useHandleOutboundSMS";
 
-type DropZoneType = {
-  isFocused: boolean;
-  isFileDialogActive: boolean;
-  isDragActive: boolean;
-  isDragAccept: boolean;
-  isDragReject: boolean;
-  acceptedFiles: any[];
-  fileRejections: any[];
-  rootRef: {
-    current: any;
-  };
-  inputRef: {
-    current: any;
-  };
-};
+// import { ImagesArray } from "@/interfaces/index";
+
+// type DropZoneType = {
+//   isFocused: boolean;
+//   isFileDialogActive: boolean;
+//   isDragActive: boolean;
+//   isDragAccept: boolean;
+//   isDragReject: boolean;
+//   acceptedFiles: ImagesArray[];
+//   fileRejections: ImagesArray[];
+//   rootRef: {
+//     current: HTMLDivElement;
+//   };
+//   inputRef: {
+//     current: HTMLDivElement;
+//   };
+// };
 type EditorWrapperProps = {
-  updateLocalMessagesCache: any;
-  documentDropZone: DropZoneType;
-  imageDropZone: DropZoneType;
+  handleSubmit: () => void;
+  documentDropZone: any;
+  imageDropZone: any;
+  children: React.ReactNode;
 };
 
 export const EditorWrapper = ({
-  updateLocalMessagesCache,
   documentDropZone,
   imageDropZone,
+  handleSubmit,
+  children,
 }: EditorWrapperProps) => {
-  const editor = useEditorHook();
-
-  const { handleSubmit } = useHandleOutboundSMS(
-    editor,
-    updateLocalMessagesCache
-  );
-
   return (
     <form onSubmit={handleSubmit}>
       <div className="px-2 pt-2">
@@ -54,9 +48,7 @@ export const EditorWrapper = ({
             imageDropZone={imageDropZone}
           />
 
-          <div className="mr-2 w-full">
-            <EditorContent editor={editor} />
-          </div>
+          <div className="mr-2 w-full">{children}</div>
           <div className="flex">
             <button
               type="submit"

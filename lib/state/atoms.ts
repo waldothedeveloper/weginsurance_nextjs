@@ -4,6 +4,7 @@ import {
   VirtualizedConversationType,
 } from "@/interfaces/index";
 
+import { Editor } from "@tiptap/core";
 import { atom } from "jotai";
 import dayjs from "dayjs";
 
@@ -18,3 +19,6 @@ export const toDateAtom = atom(dayjs());
 export const fromDateAtom = atom((get) => {
   return get(toDateAtom).subtract(get(weeksAtom), "week");
 });
+
+export const editorAtom = atom<Editor | null>(null);
+export const editorAtomwithImages = atom<Editor | null>(null);
