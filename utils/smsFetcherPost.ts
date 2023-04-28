@@ -1,4 +1,9 @@
-export const smsFetcherPost = async (url, message, phone) => {
+export const smsFetcherPost = async (
+  url: string,
+  message: string,
+  phone: string,
+  attachmentsArray: string[] | null
+) => {
   const result = await fetch(url, {
     method: "POST",
     headers: {
@@ -8,10 +13,9 @@ export const smsFetcherPost = async (url, message, phone) => {
     body: JSON.stringify({
       message_body: message,
       user_phone: phone,
+      attachments: attachmentsArray,
     }),
   }).then((response) => response.json());
 
   return result;
 };
-
-//  message_body, user_phone

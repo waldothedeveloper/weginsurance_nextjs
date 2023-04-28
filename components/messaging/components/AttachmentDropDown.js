@@ -6,8 +6,11 @@ import {
 import { Menu, Transition } from "@headlessui/react";
 
 import { Fragment } from "react";
+import { useDropAndUploadFiles } from "@/hooks/fileUploader/useDropAndUploadFiles";
 
-export const AttachmentDropDown = ({ imageDropZone, documentDropZone }) => {
+export const AttachmentDropDown = () => {
+  const { imageDropZone, documentDropZone } = useDropAndUploadFiles();
+
   return (
     <Menu
       as="div"
@@ -42,6 +45,7 @@ export const AttachmentDropDown = ({ imageDropZone, documentDropZone }) => {
                 <input {...documentDropZone.getInputProps()} />
               </button>
             </Menu.Item>
+
             <Menu.Item {...imageDropZone.getRootProps()}>
               <button
                 type="button"

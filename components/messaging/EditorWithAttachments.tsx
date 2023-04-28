@@ -1,13 +1,10 @@
 import { FaceSmileIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline";
 
-import { ReactNode } from "react";
+import { Editor } from "@tiptap/react";
+import { MyCustomEditor } from "@/components/messaging/MyCustomEditor";
 
-//
-export const EditorWithAttachments = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+export const EditorWithAttachments = ({ editor }: { editor: Editor }) => {
+
   return (
     <div className="mt-12 px-2">
       <div className="flex justify-between">
@@ -17,7 +14,9 @@ export const EditorWithAttachments = ({
         >
           <FaceSmileIcon className="h-6 w-6 text-slate-400" />
         </button>
-        <div className="w-full">{children}</div>
+        <div className="w-full max-h-[7.35rem]">
+          <MyCustomEditor editor={editor} />
+        </div>
         <div className="ml-2 flex">
           <button
             type="submit"

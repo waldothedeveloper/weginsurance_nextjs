@@ -1,6 +1,8 @@
 import {
   IdentifiedUser,
+  ImagesArray,
   RealUser,
+  UploadedFile,
   VirtualizedConversationType,
 } from "@/interfaces/index";
 
@@ -22,3 +24,10 @@ export const fromDateAtom = atom((get) => {
 
 export const editorAtom = atom<Editor | null>(null);
 export const editorAtomwithImages = atom<Editor | null>(null);
+export const progressPercentageAtom = atom(0);
+export const numberOfFilesUploadedAtom = atom(0);
+export const uploadedFilesAtom = atom<UploadedFile[]>([]);
+export const fileOrImageAtom = atom<ImagesArray | []>([]);
+export const additionalFilesOrImagesAtom = atom<ImagesArray | []>([]);
+export const allFilesAtom = atom<ImagesArray | []>([]);
+export const selectedImageIdAtom = atom<string | null>(null);

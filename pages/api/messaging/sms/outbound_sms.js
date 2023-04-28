@@ -8,7 +8,7 @@ const client = require("twilio")(accountSid, authToken, {
 
 // TODO: Make sure to add Twilio webhook security verification, so that only Twilio can send requests to this endpoint
 export default async function handler(req, res) {
-  const { message_body, user_phone } = req?.body || null;
+  const { message_body, user_phone, attachments } = req?.body || null;
 
   if (req.method !== "POST") {
     return res
@@ -29,19 +29,35 @@ export default async function handler(req, res) {
     });
   }
   try {
+    const regularSMS = {
+      body: message_body,
+      from:
+        process.env.NODE_ENV === "production"
+          ? process.env.WEG_INSURANCE_TWILIO_PRODUCTION_NUMBER
+          : process.env.WEG_INSURANCE_DEVELOPMENT_TEST_NUMBER,
+      to: user_phone,
+      // statusCallback:
+      //   process.env.NODE_ENV !== "production"
+      //     ? process.env.TWILIO_SMS_CALLBACK_URL_DEVELOPMENT
+      //     : process.env.TWILIO_SMS_CALLBACK_URL_PRODUCTION,
+    };
+
+    const mms = {
+      body: message_body,
+      from:
+        process.env.NODE_ENV === "production"
+          ? process.env.WEG_INSURANCE_TWILIO_PRODUCTION_NUMBER
+          : process.env.WEG_INSURANCE_DEVELOPMENT_TEST_NUMBER,
+      to: user_phone,
+      mediaUrl: attachments,
+      // statusCallback:
+      //   process.env.NODE_ENV !== "production"
+      //     ? process.env.TWILIO_SMS_CALLBACK_URL_DEVELOPMENT
+      //     : process.env.TWILIO_SMS_CALLBACK_URL_PRODUCTION,
+    };
+
     const response = await client.messages
-      .create({
-        body: message_body,
-        from:
-          process.env.NODE_ENV === "production"
-            ? process.env.WEG_INSURANCE_TWILIO_PRODUCTION_NUMBER
-            : process.env.WEG_INSURANCE_DEVELOPMENT_TEST_NUMBER,
-        to: user_phone,
-        // statusCallback:
-        //   process.env.NODE_ENV !== "production"
-        //     ? process.env.TWILIO_SMS_CALLBACK_URL_DEVELOPMENT
-        //     : process.env.TWILIO_SMS_CALLBACK_URL_PRODUCTION,
-      })
+      .create(attachments ? mms : regularSMS)
       .then((message) => message);
 
     return res.status(200).json({

@@ -22,7 +22,6 @@ export const useRetrieveMessages = () => {
   useEffect(() => {
     //
     const getSMSList = async () => {
-      // console.log(`ABOUT TO GET THE SMS LIST FOR ${userPhone}`);
       try {
         const pulledData = await trigger(userPhone, {
           rollbackOnError: true,
@@ -56,7 +55,7 @@ export const useRetrieveMessages = () => {
           onError: (error) => error,
         });
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         return error;
       }
     };

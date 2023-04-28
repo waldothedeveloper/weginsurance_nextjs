@@ -1,13 +1,17 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { smsFetcherPost } from "@/utils/smsFetcherPost";
 
-//
-export const sendOutboundSMS = async (smsMessage: string, phone: string) => {
+export const sendOutboundSMS = async (
+  smsMessage: string | undefined,
+  phone: string,
+  uploadedFiles: string[] | null
+) => {
+  if (!smsMessage) throw new Error("NO SMS MESSAGE PROVIDED");
   try {
     const res = await smsFetcherPost(
       "/api/messaging/sms/outbound_sms",
       smsMessage,
-      phone
+      phone,
+      uploadedFiles
     );
 
     return res;

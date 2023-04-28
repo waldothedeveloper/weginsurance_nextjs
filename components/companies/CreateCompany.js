@@ -53,7 +53,7 @@ export const CreateCompany = ({
 
       <form
         onSubmit={handleSubmit((data) => onSubmit(data, files))}
-        className="mt-2 mb-6"
+        className="mb-6 mt-2"
       >
         <div className="m-6 grid grid-cols-2 items-start gap-6">
           {companyFormLabels.map((input) => (

@@ -5,8 +5,9 @@ import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import { useEditor } from "@tiptap/react";
 
-export const useEditorHook = () => {
-  const editor = useEditor({
+export const useEditorWithImages = () => {
+  //
+  const editorWithImages = useEditor({
     content: "",
     extensions: [
       Underline.configure({
@@ -29,10 +30,10 @@ export const useEditorHook = () => {
     editorProps: {
       attributes: {
         class:
-          "max-w-none px-6 py-3 max-h-[50vh] min-h-[1.47rem] overflow-y-auto rounded-md bg-slate-100 text-slate-800 w-full flex-1 focus:outline-none",
+          "max-w-none px-6 py-3 max-h-[7.35rem] min-h-[1.47rem] overflow-y-auto rounded-md bg-white text-slate-800 w-full flex-1 focus:outline-none",
       },
     },
   });
 
-  return editor;
+  return editorWithImages;
 };

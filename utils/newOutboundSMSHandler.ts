@@ -1,39 +1,51 @@
-import { VirtualizedConversationType } from "@/interfaces/index";
+import { Day, Message, VirtualizedConversationType } from "@/interfaces/index";
+
 import dayjs from "dayjs";
 import { getToday } from "@/utils/getToday";
 import { nanoid } from "nanoid";
 
 export const newOutboundSMSHandler = (
-  data: VirtualizedConversationType,
-  smsMessage: string,
+  data: VirtualizedConversationType | null,
+  smsMessage: string | undefined,
   phone: string
 ) => {
   // Output something like: "2023-04-12T00:00:00.000Z"
-  const todayISO = dayjs.utc().toISOString();
+  const todayISO: string = dayjs.utc().toISOString();
+  const todayTypeMessage: Day = {
+    type: "day",
+    date: getToday(),
+    id: getToday(),
+  };
 
   // this is the new message that will be added to the local cache
-  const newOutboundSMS = {
+  const newOutboundSMS: Message = {
     dateCreated: todayISO,
-    body: smsMessage,
+    body: smsMessage || "",
     to: phone,
     status: "sent",
     direction: "outbound-api",
     sid: nanoid(),
   };
 
-  // let's find if the message sent today already has a type = day in the local cache
-  const isTodayPresent = data.find((elem) => elem.date === getToday());
+  if (data !== null) {
+    // let's find if the message sent today already has a type = day in the local cache
+    const isTodayPresent = data.findLast((elem) => "date" in elem);
 
-  //  if the day object is not present in the local array, we need to add it
-  if (typeof isTodayPresent === "undefined") {
-    const newLocalMessages = [
-      ...data,
-      newOutboundSMS,
-      { type: "day", date: getToday(), id: getToday() },
-    ];
+    //  if the day object is not present in the local array, we need to add it
+    if (
+      isTodayPresent &&
+      "date" in isTodayPresent &&
+      isTodayPresent.date === getToday()
+    ) {
+      const newLocalMessages: VirtualizedConversationType = [
+        ...data,
+        newOutboundSMS,
+        todayTypeMessage,
+      ];
 
-    return newLocalMessages;
-  } else {
-    return [...data, newOutboundSMS];
+      return newLocalMessages;
+    } else {
+      return [...data, newOutboundSMS];
+    }
   }
 };

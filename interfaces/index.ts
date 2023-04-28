@@ -30,29 +30,30 @@ export interface RealUser {
 }
 
 export interface Message {
-  accoundSid: string;
-  apiVersion: string;
+  status: string;
   body: string;
   dateCreated: string;
-  dateSent: string;
-  dateUpdated: string;
-  direction: "inbound" | "outbound-api";
-  errorCode: string;
-  errorMessage: string;
-  from: string;
-  messagingServiceSid: string;
-  numMedia: string;
-  numSegments: string;
-  price: string;
-  priceUnit: string;
+  to: string;
   sid: string;
-  status: string;
-  subresourceUris: {
+  direction: "inbound" | "outbound-api";
+  mediaUrl?: UploadedFile[];
+  accoundSid?: string;
+  apiVersion?: string;
+  dateSent?: string;
+  dateUpdated?: string;
+  errorCode?: string;
+  errorMessage?: string;
+  from?: string;
+  messagingServiceSid?: string;
+  numMedia?: string;
+  numSegments?: string;
+  price?: string;
+  priceUnit?: string;
+  subresourceUris?: {
     media: string;
     feedback: string;
   };
-  to: string;
-  uri: string;
+  uri?: string;
 }
 
 export interface Day {
@@ -84,7 +85,7 @@ export interface RestAPIMessage {
   price_unit: string;
   api_version: string;
   subresource_uris: {
-    media: string;
+    media: string | string[];
     feedback: string;
   };
 }
@@ -138,12 +139,8 @@ export type DocumentType = {
   "application/rtf": [".rtf"];
 };
 
-export type FileLike = File & { preview?: string; id?: string };
-export type ImagesArray = [FileLike];
-export type Test =
-  | File
-  | {
-      preview?: string;
-      path?: string;
-      id?: string;
-    };
+export type FileLike = File & { preview?: string; id: string };
+export type ImagesArray = FileLike[];
+export type UploadedFile = FileLike & {
+  url: string;
+};
