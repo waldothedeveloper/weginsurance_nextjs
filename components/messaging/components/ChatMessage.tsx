@@ -18,6 +18,7 @@ type ChatMessageProps = { msg: Message };
 //
 export const ChatMessage = ({ msg }: ChatMessageProps) => {
   const { direction, status } = msg;
+
   const inboundMsg = direction === "inbound";
   const outboundMsg = direction === "outbound-api";
   const deliveredMsg = status === "delivered";
@@ -43,8 +44,8 @@ export const ChatMessage = ({ msg }: ChatMessageProps) => {
               outboundMsg && (undeliveredMsg || failedMsg)
                 ? "bg-red-50"
                 : inboundMsg
-                ? "rounded-bl-none bg-slate-100"
-                : "rounded-br-none bg-green-500 p-3",
+                  ? "rounded-bl-none bg-slate-100"
+                  : "rounded-br-none bg-green-500 p-3",
               "mt-1 rounded-2xl p-3"
             )}
           >
@@ -53,12 +54,13 @@ export const ChatMessage = ({ msg }: ChatMessageProps) => {
                 outboundMsg && (undeliveredMsg || failedMsg)
                   ? "text-red-700"
                   : inboundMsg
-                  ? "text-slate-900"
-                  : "text-slate-50",
+                    ? "text-slate-900"
+                    : "text-slate-50",
                 "whitespace-pre-wrap break-words"
               )}
             >
               {msg.body}
+
             </p>
           </div>
           {outboundMsg && (

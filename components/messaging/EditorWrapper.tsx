@@ -1,40 +1,16 @@
 import { FaceSmileIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline";
 
 import { AttachmentDropDown } from "@/components/messaging/components/AttachmentDropDown";
-import React from "react";
+import { MyCustomEditor } from "@/components/messaging/MyCustomEditor";
+import { useEditorHook } from "@/hooks/messaging/useEditorHook";
+import { useHandleOutboundSMS } from "@/hooks/messaging/useHandleOutboundSMS";
 
-// import { ImagesArray } from "@/interfaces/index";
+export const EditorWrapper = ({ trigger }) => {
+  const editor = useEditorHook()
+  const { handleSubmit } = useHandleOutboundSMS();
 
-// type DropZoneType = {
-//   isFocused: boolean;
-//   isFileDialogActive: boolean;
-//   isDragActive: boolean;
-//   isDragAccept: boolean;
-//   isDragReject: boolean;
-//   acceptedFiles: ImagesArray[];
-//   fileRejections: ImagesArray[];
-//   rootRef: {
-//     current: HTMLDivElement;
-//   };
-//   inputRef: {
-//     current: HTMLDivElement;
-//   };
-// };
-type EditorWrapperProps = {
-  handleSubmit: () => void;
-  documentDropZone: any;
-  imageDropZone: any;
-  children: React.ReactNode;
-};
-
-export const EditorWrapper = ({
-  documentDropZone,
-  imageDropZone,
-  handleSubmit,
-  children,
-}: EditorWrapperProps) => {
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(e) => handleSubmit(e, trigger, editor)}>
       <div className="px-2 pt-2">
         <div className="flex justify-between">
           <button
@@ -44,11 +20,11 @@ export const EditorWrapper = ({
             <FaceSmileIcon className="h-6 w-6 text-slate-400" />
           </button>
           <AttachmentDropDown
-            documentDropZone={documentDropZone}
-            imageDropZone={imageDropZone}
           />
 
-          <div className="mr-2 w-full">{children}</div>
+          <div className="mr-2 w-full max-h-[50vh]">
+            <MyCustomEditor editor={editor} />
+          </div>
           <div className="flex">
             <button
               type="submit"

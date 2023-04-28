@@ -84,9 +84,8 @@ export default async function handler(req, res) {
         (x, y) => dayjs(y, "YYYY-MM-DD").unix() - dayjs(x, "YYYY-MM-DD").unix()
       );
       const items = sortedDays.reduce((acc, date) => {
-        const sortedMessages = days[date].sort(
-          (x, y) => dayjs(y.dateCreated).diff(dayjs(x.dateCreated))
-          // (x, y) => new Date(y.dateCreated) - new Date(x.dateCreated)
+        const sortedMessages = days[date].sort((x, y) =>
+          dayjs(y.dateCreated).diff(dayjs(x.dateCreated))
         );
         return acc.concat([...sortedMessages, { type: "day", date, id: date }]);
       }, []);
@@ -97,7 +96,6 @@ export default async function handler(req, res) {
 
     return res.status(200).json(allMsg);
   } catch (error) {
-    // console.log("error: ", error);
     return res.status(500).json({
       message: "Our system has detected an unexpected error.",
       status: error?.status || 500,
