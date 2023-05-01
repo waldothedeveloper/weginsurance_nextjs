@@ -27,15 +27,18 @@ export interface RealUser {
   phone: string;
   second_lastname: string;
   second_name: string;
+  conversations?: VirtualizedConversationType;
 }
 
 export interface Message {
   status: string;
   body: string;
   dateCreated: string;
+  from: string;
   to: string;
-  sid: string;
   direction: "inbound" | "outbound-api";
+  sid?: string;
+  numMedia: string;
   mediaUrl?: UploadedFile[];
   accoundSid?: string;
   apiVersion?: string;
@@ -43,9 +46,7 @@ export interface Message {
   dateUpdated?: string;
   errorCode?: string;
   errorMessage?: string;
-  from?: string;
   messagingServiceSid?: string;
-  numMedia?: string;
   numSegments?: string;
   price?: string;
   priceUnit?: string;
@@ -54,10 +55,11 @@ export interface Message {
     feedback: string;
   };
   uri?: string;
+  accountSid?: string;
 }
 
 export interface Day {
-  type: string;
+  type: "day";
   id: string;
   date: string;
 }

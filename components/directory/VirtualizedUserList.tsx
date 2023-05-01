@@ -14,6 +14,7 @@ import { normalizeString } from "@/utils/normalizeString";
 import { selectedUserAtom } from "@/lib/state/atoms";
 import { useFakeUserList } from "@/hooks/test/useFakeUserList";
 import { useFirebaseUsers } from "@/hooks/user_directory/useFirebaseUsers";
+import { useGetMessagesFromDB } from "@/hooks/messaging/useGetMessagesFromDB";
 import { useRouter } from "next/router";
 import { userPhoneAtom } from "@/lib/state/atoms";
 
@@ -34,6 +35,11 @@ export const VirtualizedUserList = () => {
   const setSelectedUser = useSetAtom(selectedUserAtom);
   const selectedUser = useAtomValue(selectedUserAtom);
   const router = useRouter();
+
+  const { getMessages } = useGetMessagesFromDB()
+
+
+
 
   useEffect(() => {
     if (selectedUser) {
@@ -135,6 +141,7 @@ export const VirtualizedUserList = () => {
                       try {
                         setUserPhone(user?.phone);
                         setSelectedUser(user);
+                        getMessages(user?.id)
                       } catch (error) {
                         return error;
                       }
