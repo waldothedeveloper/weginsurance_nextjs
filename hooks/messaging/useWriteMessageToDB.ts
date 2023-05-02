@@ -1,5 +1,12 @@
 import { Day, Message, VirtualizedConversationType } from "@/interfaces/index";
-import { messagesAtom, userIdAtom, userPhoneAtom } from "@/lib/state/atoms";
+import {
+  messagesAtom,
+  numberOfFilesUploadedAtom,
+  uploadedFilesAtom,
+  userIdAtom,
+  userPhoneAtom,
+} from "@/lib/state/atoms";
+import { useAtomValue, useSetAtom } from "jotai";
 
 import { Editor } from "@tiptap/react";
 import React from "react";
@@ -8,7 +15,6 @@ import dayjs from "dayjs";
 import { failureNotification } from "@/components/notifications/failureNotification";
 import { getToday } from "@/utils/getToday";
 import { nanoid } from "nanoid";
-import { useAtomValue } from "jotai";
 
 const developmentNumber =
   process.env.NEXT_PUBLIC_WEG_INSURANCE_DEVELOPMENT_TEST_NUMBER || "";
@@ -16,40 +22,47 @@ const productionNumber =
   process.env.NEXT_PUBLIC_WEG_INSURANCE_PRODUCTION_NUMBER || "";
 
 export const useWriteMessageToDB = () => {
+  const setNumberOfFilesUploaded = useSetAtom(numberOfFilesUploadedAtom);
+  const setUploadedFiles = useSetAtom(uploadedFilesAtom);
+  const uploadedFiles = useAtomValue(uploadedFilesAtom);
   const phone = useAtomValue(userPhoneAtom);
   const userId = useAtomValue(userIdAtom);
   const messagesFromDB = useAtomValue(messagesAtom);
 
   const handleSubmitMessage = async (
     event: React.SyntheticEvent,
-    editor: Editor
+    editor: Editor | null
   ) => {
-    if (!editor) {
+    const messageHasAttachments = () =>
+      uploadedFiles?.length > 0 ? true : false;
+
+    if (messageHasAttachments() && !editor) {
       failureNotification(
-        `No hemos encontrado el editor. Intenta de nuevo por favor`
+        `Los mensajes con archivos adjuntos deben contener un mensaje de texto. `
+      );
+      return;
+    } else if (!editor) {
+      failureNotification(
+        `Ha ocurrido un error al cargar el editor de mensajes. Intenta de nuevo por favor`
       );
       return;
     }
+
     if (event) event.preventDefault();
-    const todayISO: string = dayjs.utc().toISOString();
     const {
       view: {
         dom: { innerText },
       },
     } = editor;
 
-    if (!innerText?.trim()) {
+    if (!innerText?.trim() && uploadedFiles.length === 0) {
       failureNotification(
-        `No hemos encontrado el mensaje a crear. Intenta de nuevo`
+        `Es posible que aun no hayas escrito nada. Intenta de nuevo por favor`
       );
       return;
     }
 
-    const todayTypeMessage: Day = {
-      type: "day",
-      dateCreated: getToday(),
-      id: getToday(),
-    };
+    const todayISO: string = dayjs.utc().toISOString();
 
     const newMessage: Message = {
       body: innerText,
@@ -62,6 +75,9 @@ export const useWriteMessageToDB = () => {
       sid: nanoid(),
       direction: "outbound-api",
       status: "sent",
+      mediaUrl: messageHasAttachments()
+        ? uploadedFiles.map((file) => file.url)
+        : [],
     };
 
     if (!userId) {
@@ -73,17 +89,48 @@ export const useWriteMessageToDB = () => {
 
     if (!messagesFromDB) {
       failureNotification(
-        `No hemos encontrado los mensajes del usuario. Intenta de nuevo`
+        `No hemos encontrado los mensajes asociados con este usuario. Intenta de nuevo`
       );
       return;
     }
 
-    const isTodayPresent = messagesFromDB.findLast(
+    const isDayTypeMessage = messagesFromDB.findLast(
       (elem: VirtualizedConversationType) => "type" in elem
     );
 
+    const isToday =
+      isDayTypeMessage && isDayTypeMessage.dateCreated === getToday();
+
+    const todayTypeMessage: Day = {
+      type: "day",
+      dateCreated: getToday(),
+      id: getToday(),
+    };
+
     try {
-      if (isTodayPresent && isTodayPresent.dateCreated === getToday()) {
+      if (messageHasAttachments()) {
+        if (isToday) {
+          await createMessage([newMessage], userId);
+          editor?.commands?.clearContent();
+          setNumberOfFilesUploaded(0);
+          setUploadedFiles([]);
+          return;
+        } else {
+          await createMessage([newMessage, todayTypeMessage], userId);
+          editor?.commands?.clearContent();
+          setUploadedFiles([]);
+          return;
+        }
+      }
+    } catch (error) {
+      failureNotification(
+        `Un error ocurrió al crear el mensaje en la base de datos ${error}`
+      );
+      return;
+    }
+
+    try {
+      if (isToday) {
         await createMessage([newMessage], userId);
         editor?.commands?.clearContent();
         return;

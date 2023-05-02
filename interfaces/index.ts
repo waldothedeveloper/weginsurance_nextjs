@@ -39,7 +39,7 @@ export interface Message {
   direction: "inbound" | "outbound-api";
   sid: string;
   numMedia?: string;
-  mediaUrl?: UploadedFile[];
+  mediaUrl?: string[];
   accoundSid?: string;
   apiVersion?: string;
   dateSent?: string;
