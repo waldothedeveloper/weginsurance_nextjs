@@ -1,36 +1,60 @@
 import {
   DocumentData,
   collection,
-  getDocs,
+  onSnapshot,
   orderBy,
   query,
 } from "firebase/firestore";
+import { messagesAtom, userIdAtom } from "@/lib/state/atoms";
+import { useAtomValue, useSetAtom } from "jotai";
+import { useEffect, useState } from "react";
 
 import { VirtualizedConversationType } from "@/interfaces/index";
 import { db } from "@/lib/firebaseConfig";
-import { messagesAtom } from "@/lib/state/atoms";
-import { useSetAtom } from "jotai";
 
 //
 export const useGetMessagesFromDB = () => {
   const setMessagesAtom = useSetAtom(messagesAtom);
+  const setUserId = useSetAtom(userIdAtom);
+  const userId = useAtomValue(userIdAtom);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null | unknown>(null);
 
   //
   const getMessages = async (userId: string) => {
     if (!userId || userId?.length === 0) throw new Error("userId is required");
-    const userMessages = query(
-      collection(db, `Users/${userId}/conversations`),
-      orderBy("dateCreated", "desc")
-    );
-    const messages: DocumentData | VirtualizedConversationType = [];
-    const querySnapshot = await getDocs(userMessages);
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-      messages.push(doc.data());
-    });
-
-    setMessagesAtom(messages);
+    setUserId(userId);
   };
 
-  return { getMessages };
+  useEffect(() => {
+    let unsubscribe: any = null;
+
+    if (userId && userId.length > 0) {
+      try {
+        const userMessages = query(
+          collection(db, `Users/${userId}/conversations`),
+          orderBy("dateCreated", "asc")
+        );
+
+        setIsLoading(true);
+        unsubscribe = onSnapshot(userMessages, (querySnapshot) => {
+          const messages: DocumentData | VirtualizedConversationType = [];
+          querySnapshot.forEach((doc) => {
+            messages.push(doc.data());
+          });
+          setIsLoading(false);
+          setMessagesAtom(messages);
+        });
+      } catch (error: Error | null | unknown) {
+        setIsLoading(false);
+        setError(error);
+      }
+    }
+    return () => {
+      // console.log(`about to unsubscribe from getMessages`);
+      if (unsubscribe) unsubscribe();
+    };
+  }, [userId, setMessagesAtom]);
+
+  return { getMessages, isLoading, error };
 };

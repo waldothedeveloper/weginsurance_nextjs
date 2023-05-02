@@ -22,12 +22,12 @@ import { useHandleOutboundSMS } from "@/hooks/messaging/useHandleOutboundSMS";
 import { useSelectedUploadedFile } from "@/hooks/fileUploader/useSelectedUploadedFile";
 
 //
-export const CarouselWrapper = ({ trigger }) => {
+export const CarouselWrapper = () => {
   const editorWithImages = useEditorWithImages();
   const uploadedImages = useAtomValue(uploadedFilesAtom);
   const handleDeleteAllFiles = useDeleteAllUploadedFiles();
   const { handleSelectedFile, selectedImage } = useSelectedUploadedFile();
-  const { handleSubmit } = useHandleOutboundSMS();
+  // const { handleSubmit } = useHandleOutboundSMS();
   const progress = useAtomValue(progressPercentageAtom);
   const numberOfFilesUploaded = useAtomValue(numberOfFilesUploadedAtom);
 
@@ -42,7 +42,8 @@ export const CarouselWrapper = ({ trigger }) => {
       leaveTo="opacity-0"
     >
       <form
-        onSubmit={(e) => handleSubmit(e, trigger, editorWithImages)}
+        onSubmit={(e) => e.preventDefault()}
+        // onSubmit={(e) => handleSubmit(e, trigger, editorWithImages)}
         className="absolute inset-0 z-50 flex h-full flex-1 flex-col"
       >
         <div className="relative flex flex-1 flex-col bg-slate-50 p-16">

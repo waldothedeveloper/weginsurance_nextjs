@@ -37,8 +37,8 @@ export interface Message {
   from: string;
   to: string;
   direction: "inbound" | "outbound-api";
-  sid?: string;
-  numMedia: string;
+  sid: string;
+  numMedia?: string;
   mediaUrl?: UploadedFile[];
   accoundSid?: string;
   apiVersion?: string;
@@ -61,7 +61,7 @@ export interface Message {
 export interface Day {
   type: "day";
   id: string;
-  date: string;
+  dateCreated: string;
 }
 
 export type VirtualizedConversationType = (Day | Message)[];

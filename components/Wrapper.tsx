@@ -8,10 +8,12 @@ import { NovuNotificationsCenter } from "@/components/notifications/NovuConfig";
 import { UserFormWrapper } from "@/components/directory/UserFormWrapper";
 import { VirtualizedUserList } from "@/components/directory/VirtualizedUserList";
 import { VirtualizedUserTable } from "@/components/directory/VirtualizedUserTable";
+import { useGetMessagesFromDB } from "@/hooks/messaging/useGetMessagesFromDB";
 
 //
 export const Wrapper = () => {
   const router: NextRouter = useRouter();
+  const { getMessages, isLoading, error } = useGetMessagesFromDB()
 
   return (
     <>
@@ -20,7 +22,7 @@ export const Wrapper = () => {
         <>
           <MainComponent className="relative z-0 flex-1 overflow-hidden focus:outline-none">
             <div className="mx-auto">
-              <Conversation />
+              <Conversation isLoading={isLoading} error={error} />
             </div>
           </MainComponent>
         </>
@@ -53,7 +55,7 @@ export const Wrapper = () => {
       {/* left side components*/}
       {router?.query?.dashboard?.includes("messages") && (
         <AsideComponent>
-          <VirtualizedUserList />
+          <VirtualizedUserList getMessages={getMessages} />
         </AsideComponent>
       )}
 

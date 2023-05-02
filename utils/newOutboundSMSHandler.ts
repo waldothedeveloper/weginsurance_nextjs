@@ -13,7 +13,7 @@ export const newOutboundSMSHandler = (
   const todayISO: string = dayjs.utc().toISOString();
   const todayTypeMessage: Day = {
     type: "day",
-    date: getToday(),
+    dateCreated: getToday(),
     id: getToday(),
   };
 
@@ -22,6 +22,7 @@ export const newOutboundSMSHandler = (
     dateCreated: todayISO,
     body: smsMessage || "",
     to: phone,
+    from: process.env.NEXT_PUBLIC_WEG_INSURANCE_DEVELOPMENT_TEST_NUMBER,
     status: "sent",
     direction: "outbound-api",
     sid: nanoid(),

@@ -6,6 +6,7 @@ dayjs.extend(utc);
 dayjs.locale(locale_es);
 
 export const TimeDivider = ({ time }: { time: string }) => {
+
   return (
     <div className="my-6">
       <div className="flex justify-center">
