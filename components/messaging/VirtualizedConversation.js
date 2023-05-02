@@ -1,15 +1,17 @@
+import { messagesAtom, messagesListAtom } from "@/lib/state/atoms";
 import { useEffect, useRef } from "react";
 
 import { ChatWindow } from "@/components/messaging/components/ChatWindow";
-import { messagesListAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
 import { useVirtualizer } from "@tanstack/react-virtual";
 
 export const VirtualizedConversation = () => {
   const parentRef = useRef(null);
-  const messagesAtom = useAtomValue(messagesListAtom);
+  //! this will not be used in the future
+  const messagesFromAPI = useAtomValue(messagesListAtom);
+  const messagesFromDB = useAtomValue(messagesAtom);
 
-  const count = (messagesAtom && messagesAtom.length) || 0;
+  const count = (messagesFromDB && messagesFromDB.length) || 0;
   const virtualizer = useVirtualizer({
     count,
     getScrollElement: () => parentRef.current,

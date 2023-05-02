@@ -33,9 +33,9 @@ export const useRetrieveMessages = () => {
       }
     };
 
-    if (userPhone) {
-      getSMSList();
-    }
+    // if (userPhone) {
+    //   getSMSList();
+    // }
   }, [userPhone, trigger, setMessagesList]);
 
   useEffect(() => {

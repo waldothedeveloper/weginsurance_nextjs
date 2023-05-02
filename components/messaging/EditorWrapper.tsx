@@ -3,14 +3,16 @@ import { FaceSmileIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { AttachmentDropDown } from "@/components/messaging/components/AttachmentDropDown";
 import { MyCustomEditor } from "@/components/messaging/MyCustomEditor";
 import { useEditorHook } from "@/hooks/messaging/useEditorHook";
-import { useHandleOutboundSMS } from "@/hooks/messaging/useHandleOutboundSMS";
+// import { useHandleOutboundSMS } from "@/hooks/messaging/useHandleOutboundSMS";
+import { useWriteMessageToDB } from "@/hooks/messaging/useWriteMessageToDB"
 
-export const EditorWrapper = ({ trigger }) => {
+export const EditorWrapper = () => {
   const editor = useEditorHook()
-  const { handleSubmit } = useHandleOutboundSMS();
+  // const { handleSubmit } = useHandleOutboundSMS();
+  const { handleSubmitMessage } = useWriteMessageToDB()
 
   return (
-    <form onSubmit={(e) => handleSubmit(e, trigger, editor)}>
+    <form onSubmit={(e) => handleSubmitMessage(e, editor)}>
       <div className="px-2 pt-2">
         <div className="flex justify-between">
           <button

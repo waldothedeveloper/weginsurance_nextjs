@@ -13,6 +13,7 @@ import dayjs from "dayjs";
 
 //
 export const userPhoneAtom = atom("");
+export const userIdAtom = atom<string | null>(null);
 export const selectedUserAtom = atom<RealUser | null>(null);
 export const sendingSMSAtom = atom(true);
 export const incomingSMSUserToIdentifyAtom = atom<IdentifiedUser | null>(null);

@@ -14,7 +14,6 @@ import { normalizeString } from "@/utils/normalizeString";
 import { selectedUserAtom } from "@/lib/state/atoms";
 import { useFakeUserList } from "@/hooks/test/useFakeUserList";
 import { useFirebaseUsers } from "@/hooks/user_directory/useFirebaseUsers";
-import { useGetMessagesFromDB } from "@/hooks/messaging/useGetMessagesFromDB";
 import { useRouter } from "next/router";
 import { userPhoneAtom } from "@/lib/state/atoms";
 
@@ -30,13 +29,13 @@ const List = forwardRef((props, ref) => {
   return <ul {...props} ref={ref} className="z-0 w-full px-6" />;
 });
 
-export const VirtualizedUserList = () => {
+export const VirtualizedUserList = ({ getMessages }: { getMessages: () => Promise<void> }) => {
   const setUserPhone = useSetAtom(userPhoneAtom);
   const setSelectedUser = useSetAtom(selectedUserAtom);
   const selectedUser = useAtomValue(selectedUserAtom);
   const router = useRouter();
 
-  const { getMessages } = useGetMessagesFromDB()
+
 
 
 

@@ -4,32 +4,33 @@ import { EditorWrapper } from "@/components/messaging/EditorWrapper";
 import { ErrorComponent } from "@/components/Error";
 import { Spinning } from "@/components/Spinning";
 import { VirtualizedConversation } from "@/components/messaging/VirtualizedConversation";
-import { VirtualizedConversationType } from "@/interfaces/index";
-import { sendingSMSAtom } from "@/lib/state/atoms";
+// import { VirtualizedConversationType } from "@/interfaces/index";
+import { messagesAtom } from "@/lib/state/atoms";
+// import { sendingSMSAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
-import { useRetrieveMessages } from "@/hooks/messaging/useRetrieveMessages";
+// import { useRetrieveMessages } from "@/hooks/messaging/useRetrieveMessages";
 
-export const Conversation = () => {
+// 
+export const Conversation = ({ isLoading, error }: { isLoading: boolean, error: Error | null | unknown }) => {
 
-  const isNotSendingSMS = useAtomValue<boolean>(sendingSMSAtom);
-  const {
-    data,
-    error,
-    isMutating,
-    trigger,
-  }: {
-    data: VirtualizedConversationType;
-    error: Error;
-    isMutating: boolean;
-    trigger: any;
-  } = useRetrieveMessages();
+  // const isNotSendingSMS = useAtomValue<boolean>(sendingSMSAtom);
+  // const {
+  //   data,
+  //   error,
+  //   isMutating,
+  //   trigger,
+  // }: {
+  //   data: VirtualizedConversationType;
+  //   error: Error;
+  //   isMutating: boolean;
+  //   trigger: any;
+  // } = useRetrieveMessages();
+
+  const messagesFromDB = useAtomValue(messagesAtom)
 
 
 
-
-
-
-  if (isMutating && isNotSendingSMS) {
+  if (isLoading) {
     return (
       <div className="grid h-screen place-items-center overflow-hidden">
         <Spinning message="Un momento por favor. Estamos cargando la conversacion..." />
@@ -45,7 +46,7 @@ export const Conversation = () => {
     );
   }
 
-  if (!data) {
+  if (!messagesFromDB) {
     return (
       <div className="grid h-screen place-items-center overflow-hidden">
         <div className="bg-white px-6 py-24 sm:py-32 lg:px-8">
@@ -68,9 +69,9 @@ export const Conversation = () => {
     <div className="relative flex h-screen flex-1 flex-col pb-6">
       <>
         <ChatHeader />
-        <CarouselWrapper trigger={trigger} />
+        <CarouselWrapper />
         <VirtualizedConversation />
-        <EditorWrapper trigger={trigger} />
+        <EditorWrapper />
       </>
     </div>
   );
