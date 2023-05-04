@@ -30,6 +30,7 @@ export const Conversation = ({ isLoading, error }: { isLoading: boolean, error: 
 
 
 
+
   if (isLoading) {
     return (
       <div className="grid h-screen place-items-center overflow-hidden">
