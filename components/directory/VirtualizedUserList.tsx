@@ -36,10 +36,6 @@ export const VirtualizedUserList = ({ getMessages }: { getMessages: () => Promis
   const router = useRouter();
 
 
-
-
-
-
   useEffect(() => {
     if (selectedUser) {
       router.push(`/admin/messages?userId=${selectedUser?.id}`, undefined, {
@@ -53,6 +49,7 @@ export const VirtualizedUserList = ({ getMessages }: { getMessages: () => Promis
   const test = false;
   const { firebaseUsers, firebaseError } = useFirebaseUsers();
   const fakeUserList: FakeUser[] = useFakeUserList();
+
 
   if (firebaseError) {
     return (
