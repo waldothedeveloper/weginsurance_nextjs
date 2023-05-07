@@ -3,13 +3,11 @@ import { FaceSmileIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { AttachmentDropDown } from "@/components/messaging/components/AttachmentDropDown";
 import { MyCustomEditor } from "@/components/messaging/MyCustomEditor";
 import { useEditorHook } from "@/hooks/messaging/useEditorHook";
-// import { useHandleOutboundSMS } from "@/hooks/messaging/useHandleOutboundSMS";
-import { useWriteMessageToDB } from "@/hooks/messaging/useWriteMessageToDB"
+import { useSendMessage } from "@/hooks/messaging/useSendMessage";
 
 export const EditorWrapper = () => {
   const editor = useEditorHook()
-  // const { handleSubmit } = useHandleOutboundSMS();
-  const { handleSubmitMessage } = useWriteMessageToDB()
+  const { handleSubmitMessage } = useSendMessage()
 
   return (
     <form onSubmit={(e) => handleSubmitMessage(e, editor)}>

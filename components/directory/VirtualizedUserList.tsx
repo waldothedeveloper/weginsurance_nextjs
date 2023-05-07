@@ -29,11 +29,14 @@ const List = forwardRef((props, ref) => {
   return <ul {...props} ref={ref} className="z-0 w-full px-6" />;
 });
 
-export const VirtualizedUserList = ({ getMessages }: { getMessages: () => Promise<void> }) => {
+// eslint-disable-next-line no-unused-vars
+export const VirtualizedUserList = ({ getMessages }: { getMessages: (userId: string) => Promise<void> }) => {
   const setUserPhone = useSetAtom(userPhoneAtom);
   const setSelectedUser = useSetAtom(selectedUserAtom);
   const selectedUser = useAtomValue(selectedUserAtom);
   const router = useRouter();
+
+
 
 
   useEffect(() => {

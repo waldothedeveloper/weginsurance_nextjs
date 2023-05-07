@@ -33,4 +33,6 @@ export type QueuePayload = {
   from: string;
   body: string;
   mediaUrl?: string[];
+  sid: string;
+  userId: string;
 };

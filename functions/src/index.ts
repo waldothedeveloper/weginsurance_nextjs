@@ -16,7 +16,6 @@ import { firestore as adminFirestore } from "firebase-admin";
 import config from "./config";
 
 const fv: FieldValue = FieldValue.serverTimestamp();
-
 const terminalStatuses = ["delivered", "undelivered", "failed"];
 
 exports.statusCallback = functions.https.onRequest(
@@ -50,7 +49,7 @@ exports.statusCallback = functions.https.onRequest(
         .status(403)
         .send("Twilio Request Validation Failed");
     }
-    const { MessageSid, MessageStatus } = req.body;
+    const { MessageSid, MessageStatus, To } = req.body;
 
     if (typeof MessageSid !== "string") {
       return res
@@ -59,15 +58,53 @@ exports.statusCallback = functions.https.onRequest(
         .send("Webhook error - No MessageSid found.");
     }
 
-    const firestore = adminFirestore();
-    const collection = firestore.collection(config.messageCollection);
+    const collection = adminFirestore().collection(config.messageCollection);
+    const userCollection = adminFirestore().collection("Users");
     functions.logger.log(`Attempting status update for message: ${MessageSid}`);
+
+    try {
+      const userQuery = await userCollection
+        .where("phone", "==", To)
+        .limit(1)
+        .get();
+
+      if (userQuery.empty) {
+        functions.logger.error(
+          `Could not find user document for message with SID: ${MessageSid} and To: ${To}`
+        );
+      }
+
+      const conversationsQuery = await adminFirestore()
+        .collection(`Users/${userQuery.docs[0].id}/conversations`)
+        .where("delivery.info.messageSid", "==", MessageSid)
+        .get();
+
+      if (conversationsQuery.empty) {
+        functions.logger.error(
+          `Could not find document on the user's conversation subcollection for message with SID: ${MessageSid}`
+        );
+      } else {
+        await adminFirestore().runTransaction((transaction) => {
+          // update the conversation subcollection with the message status
+          transaction.update(
+            conversationsQuery.docs[0].ref,
+            "delivery.info.status",
+            MessageStatus
+          );
+          return Promise.resolve();
+        });
+      }
+    } catch (error) {
+      functions.logger.error(error);
+    }
 
     try {
       const query = await collection
         .where("delivery.info.messageSid", "==", MessageSid)
         .limit(1)
         .get();
+
+      //
       if (query.docs.length === 0) {
         functions.logger.error(
           `Could not find document for message with SID: ${MessageSid}`
@@ -80,6 +117,7 @@ exports.statusCallback = functions.https.onRequest(
           )}`
         );
         const currentStatus = doc.get("delivery.info.status");
+
         if (terminalStatuses.includes(currentStatus)) {
           functions.logger.log(
             `Message ${MessageSid} with ref ${String(
@@ -123,8 +161,8 @@ async function deliverMessage(
       payload.from ||
       config.twilio.messagingServiceSid ||
       config.twilio.phoneNumber;
-    // don't forget to put mediaUrl back here
     const { to, body, mediaUrl } = payload;
+    // attempting to send the sms message
     const message = await twilioClient.messages.create({
       from,
       to,
@@ -132,10 +170,7 @@ async function deliverMessage(
       mediaUrl,
       statusCallback: getFunctionsUrl("statusCallback"),
     });
-    functions.logger.log(
-      "Functions callback?",
-      getFunctionsUrl("statusCallback")
-    );
+
     const info = {
       messageSid: message.sid,
       status: message.status,
@@ -159,28 +194,52 @@ async function deliverMessage(
     );
   } catch (error: any) {
     update["delivery.state"] = "ERROR";
-    update["delivery.errorCode"] = error.code.toString();
+    update["delivery.errorCode"] = `${error.code}`;
     update["delivery.errorMessage"] = `${error.message} ${error.moreInfo}`;
     functions.logger.error(
       `Error when delivering message: ${String(ref.path)}: ${String(error)}`
     );
   }
 
+  // this is a ref to the user's conversation sub-collection
+  const query = await adminFirestore()
+    .collection(`Users/${payload.userId}/conversations`)
+    .where("sid", "==", payload?.sid)
+    .limit(1)
+    .get();
+
   return adminFirestore().runTransaction((transaction) => {
     transaction.update(ref, update);
+    // update the conversation sub-collection with the same data for the user that received the message
+    transaction.update(adminFirestore().doc(query.docs[0].ref.path), update);
     return Promise.resolve();
   });
 }
 
-function processCreate(
-  snapshot: adminFirestore.DocumentSnapshot<adminFirestore.DocumentData>
+async function processCreate(
+  snapshot: functions.Change<FirebaseFirestore.DocumentSnapshot>
 ) {
+  const data = snapshot?.after?.data() as QueuePayload;
+  const conversationsRef = adminFirestore().collection(
+    `Users/${data.userId}/conversations`
+  );
+
+  const initialData = Object.assign({}, data, {
+    delivery: {
+      startTime: fv,
+      state: "PENDING",
+      errorCode: null,
+      errorMessage: null,
+      info: null,
+    },
+  });
+
   // In a transaction, store a delivery object that logs the time it was
   // updated, the initial state (PENDING), and empty properties for info about
   // the message or error codes and messages.
   return adminFirestore().runTransaction(
     (transaction: adminFirestore.Transaction) => {
-      transaction.update(snapshot.ref, {
+      transaction.update(snapshot.after.ref, {
         delivery: {
           startTime: fv,
           state: "PENDING",
@@ -189,6 +248,9 @@ function processCreate(
           info: null,
         },
       });
+      //  put the message in the user's conversation sub-collection
+      transaction.create(conversationsRef.doc(), initialData);
+
       return Promise.resolve();
     }
   );
@@ -199,6 +261,14 @@ async function processCases(
   change: functions.Change<FirebaseFirestore.DocumentSnapshot>
 ) {
   if (!payload.delivery) return;
+
+  // this is a ref to the user's conversation sub-collection
+  const query = await adminFirestore()
+    .collection(`Users/${payload.userId}/conversations`)
+    .where("sid", "==", payload?.sid)
+    .limit(1)
+    .get();
+
   switch (payload.delivery.state) {
     case "SUCCESS":
     case "ERROR":
@@ -210,8 +280,14 @@ async function processCases(
         payload.delivery.leaseExpireTime.toMillis() < Date.now()
       ) {
         // It has taken too long to process the message, mark it as an error.
-        return adminFirestore().runTransaction((transaction) => {
+        return adminFirestore().runTransaction(async (transaction) => {
           transaction.update(change.after.ref, {
+            "delivery.state": "ERROR",
+            errorMessage: "Message processing lease expired.",
+          });
+
+          //  update the conversation sub-collection with the same data for the user that received the message
+          transaction.update(adminFirestore().doc(query.docs[0].ref.path), {
             "delivery.state": "ERROR",
             errorMessage: "Message processing lease expired.",
           });
@@ -224,6 +300,11 @@ async function processCases(
       // run. Then call the deliver function.
       await adminFirestore().runTransaction((transaction) => {
         transaction.update(change.after.ref, {
+          "delivery.state": "PROCESSING",
+          "delivery.leaseExpireTime": Timestamp.fromMillis(Date.now() + 60000),
+        });
+        //  update the conversation sub-collection with the same data for the user that received the message
+        transaction.update(adminFirestore().doc(query.docs[0].ref.path), {
           "delivery.state": "PROCESSING",
           "delivery.leaseExpireTime": Timestamp.fromMillis(Date.now() + 60000),
         });
@@ -244,7 +325,7 @@ async function processWrite(
 
   if (!change.before.exists && change.after.exists) {
     // Document has been created, initialize the delivery state
-    return processCreate(change.after);
+    return processCreate(change);
   }
 
   // The document has been updated, so we fetch the data in the document to
@@ -260,11 +341,20 @@ async function processWrite(
     return;
   }
 
+  if (!payload.userId) {
+    functions.logger.error(
+      `message=${String(
+        change.after.ref.path
+      )} is missing 'userId' field. This field is needed for updating the conversation sub-collection in the selected user's collection.`
+    );
+    return;
+  }
+
   return processCases(payload, change);
 }
 
 exports.findMessage = functions.firestore
-  .document("messages/{messageID}")
+  .document("messages/{messageId}")
   .onWrite(
     // eslint-disable-next-line max-len
     async (change: functions.Change<FirebaseFirestore.DocumentSnapshot>) => {
