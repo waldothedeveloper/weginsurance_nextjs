@@ -1,7 +1,6 @@
-import { messagesAtom, messagesListAtom } from "@/lib/state/atoms";
-
 import { ChatMessage } from "@/components/messaging/components/ChatMessage";
 import { TimeDivider } from "@/components/messaging/TimeDivider";
+import { messagesAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
 
 //
@@ -20,7 +19,6 @@ type VirtualItem = {
 
 //
 export const ChatWindow = ({ virtualizer, items }: ChatWindowProps) => {
-  // const messagesAtom = useAtomValue(messagesListAtom);
   const messagesFromDB = useAtomValue(messagesAtom);
   //
   return (

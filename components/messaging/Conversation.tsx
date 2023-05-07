@@ -4,32 +4,12 @@ import { EditorWrapper } from "@/components/messaging/EditorWrapper";
 import { ErrorComponent } from "@/components/Error";
 import { Spinning } from "@/components/Spinning";
 import { VirtualizedConversation } from "@/components/messaging/VirtualizedConversation";
-// import { VirtualizedConversationType } from "@/interfaces/index";
 import { messagesAtom } from "@/lib/state/atoms";
-// import { sendingSMSAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
-// import { useRetrieveMessages } from "@/hooks/messaging/useRetrieveMessages";
 
 // 
 export const Conversation = ({ isLoading, error }: { isLoading: boolean, error: Error | null | unknown }) => {
-
-  // const isNotSendingSMS = useAtomValue<boolean>(sendingSMSAtom);
-  // const {
-  //   data,
-  //   error,
-  //   isMutating,
-  //   trigger,
-  // }: {
-  //   data: VirtualizedConversationType;
-  //   error: Error;
-  //   isMutating: boolean;
-  //   trigger: any;
-  // } = useRetrieveMessages();
-
   const messagesFromDB = useAtomValue(messagesAtom)
-
-
-
 
   if (isLoading) {
     return (

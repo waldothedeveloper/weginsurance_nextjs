@@ -31,6 +31,7 @@ export interface RealUser {
 }
 
 export interface Message {
+  userId: string | null;
   status: string;
   body: string;
   dateCreated: string;
