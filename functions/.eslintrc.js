@@ -26,5 +26,6 @@ module.exports = {
     quotes: ["warn", "double"],
     "import/no-unresolved": 0,
     indent: ["warn", 2],
+    "quote-props": "off",
   },
 };
