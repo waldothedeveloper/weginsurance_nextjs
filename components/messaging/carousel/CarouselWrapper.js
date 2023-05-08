@@ -18,18 +18,16 @@ import { uploadedFilesAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
 import { useDeleteAllUploadedFiles } from "@/hooks/fileUploader/useDeleteAllUploadedFiles";
 import { useEditorWithImages } from "@/hooks/messaging/useEditorWithImages";
-// import { useHandleOutboundSMS } from "@/hooks/messaging/useHandleOutboundSMS";
 import { useSelectedUploadedFile } from "@/hooks/fileUploader/useSelectedUploadedFile";
-import { useWriteMessageToDB } from "@/hooks/messaging/useWriteMessageToDB";
+import { useSendOutboundMessage } from "@/hooks/messaging/useSendOutboundMessage";
 
-//
 export const CarouselWrapper = () => {
   const editorWithImages = useEditorWithImages();
   const uploadedImages = useAtomValue(uploadedFilesAtom);
   const handleDeleteAllFiles = useDeleteAllUploadedFiles();
   const { handleSelectedFile, selectedImage } = useSelectedUploadedFile();
-  // const { handleSubmit } = useHandleOutboundSMS();
-  const { handleSubmitMessage } = useWriteMessageToDB();
+
+  const { handleSubmitMessage } = useSendOutboundMessage();
   const progress = useAtomValue(progressPercentageAtom);
   const numberOfFilesUploaded = useAtomValue(numberOfFilesUploadedAtom);
 
@@ -45,7 +43,6 @@ export const CarouselWrapper = () => {
     >
       <form
         onSubmit={(e) => handleSubmitMessage(e, editorWithImages)}
-        // onSubmit={(e) => handleSubmit(e, trigger, editorWithImages)}
         className="absolute inset-0 z-50 flex h-full flex-1 flex-col"
       >
         <div className="relative flex flex-1 flex-col bg-slate-50 p-16">

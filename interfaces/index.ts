@@ -1,3 +1,5 @@
+import { firebaseApp } from "@lib/firebaseConfig";
+
 export interface FakeUser {
   id: string;
   gender: "masculino" | "femenino";
@@ -30,33 +32,47 @@ export interface RealUser {
   conversations?: VirtualizedConversationType;
 }
 
+export type MessageStatus =
+  | "accepted"
+  | "queued"
+  | "sending"
+  | "sent"
+  | "failed"
+  | "delivered"
+  | "undelivered"
+  | "receiving"
+  | "received"
+  | "read";
+
+export type QueuePayload = {
+  startTime: firebaseApp.firestore.Timestamp;
+  endTime?: firebaseApp.firestore.Timestamp;
+  leaseExpireTime?: firebaseApp.firestore.Timestamp;
+  state: "PENDING" | "PROCESSING" | "SUCCESS" | "ERROR";
+  errorCode?: number;
+  errorMessage?: string;
+  info?: {
+    messageSid: string;
+    status?: MessageStatus;
+    dateCreated?: firebaseApp.firestore.Timestamp;
+    dateSent?: firebaseApp.firestore.Timestamp;
+    dateUpdated?: firebaseApp.firestore.Timestamp;
+    messagingServiceSid?: string;
+    numMedia?: string;
+    numSegments?: string;
+  };
+};
+
 export interface Message {
   userId: string | null;
-  status: string;
   body: string;
   dateCreated: string;
   from: string;
   to: string;
   direction: "inbound" | "outbound-api";
   sid: string;
-  numMedia?: string;
-  mediaUrl?: string[];
-  accoundSid?: string;
-  apiVersion?: string;
-  dateSent?: string;
-  dateUpdated?: string;
-  errorCode?: string;
-  errorMessage?: string;
-  messagingServiceSid?: string;
-  numSegments?: string;
-  price?: string;
-  priceUnit?: string;
-  subresourceUris?: {
-    media: string;
-    feedback: string;
-  };
-  uri?: string;
-  accountSid?: string;
+  delivery?: QueuePayload;
+  mediaUrl?: string[]
 }
 
 export interface Day {

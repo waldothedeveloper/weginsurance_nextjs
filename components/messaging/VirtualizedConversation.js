@@ -3,11 +3,12 @@ import { useEffect, useRef } from "react";
 import { ChatWindow } from "@/components/messaging/components/ChatWindow";
 import { messagesAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
+import { useUpdateUserConversations } from "@/hooks/messaging/useUpdateUserConversations";
 import { useVirtualizer } from "@tanstack/react-virtual";
 
 export const VirtualizedConversation = () => {
   const parentRef = useRef(null);
-
+  const { error } = useUpdateUserConversations();
   const messagesFromDB = useAtomValue(messagesAtom);
 
   const count = (messagesFromDB && messagesFromDB.length) || 0;
