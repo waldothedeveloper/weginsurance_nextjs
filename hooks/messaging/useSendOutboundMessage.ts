@@ -12,7 +12,7 @@ import React from "react";
 import dayjs from "dayjs";
 import { failureNotification } from "@/components/notifications/failureNotification";
 import { nanoid } from "nanoid";
-import { saveMessageInOutboundCollection } from "@/lib/messaging/saveMessageInOutboundCollection";
+import { saveMessageInSelectedUserConversations } from "@/lib/messaging/saveMessageInSelectedUserConversations";
 
 const developmentNumber =
   process.env.NEXT_PUBLIC_WEG_INSURANCE_DEVELOPMENT_TEST_NUMBER || "";
@@ -20,7 +20,7 @@ const productionNumber =
   process.env.NEXT_PUBLIC_WEG_INSURANCE_PRODUCTION_NUMBER || "";
 
 //
-export const useSendMessage = () => {
+export const useSendOutboundMessage = () => {
   const userId = useAtomValue(userIdAtom);
   const setNumberOfFilesUploaded = useSetAtom(numberOfFilesUploadedAtom);
   const setUploadedFiles = useSetAtom(uploadedFilesAtom);
@@ -68,7 +68,6 @@ export const useSendMessage = () => {
       dateCreated: todayISO,
       sid: nanoid(),
       direction: "outbound-api",
-      status: "sent",
       mediaUrl: messageHasAttachments()
         ? uploadedFiles.map((file) => file.url)
         : [],
@@ -76,7 +75,7 @@ export const useSendMessage = () => {
 
     try {
       if (userId) {
-        await saveMessageInOutboundCollection(newMessage);
+        await saveMessageInSelectedUserConversations(newMessage);
         editor?.commands?.clearContent();
         setNumberOfFilesUploaded(0);
         setUploadedFiles([]);

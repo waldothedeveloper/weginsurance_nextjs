@@ -5,7 +5,9 @@ import { db } from "@/lib/firebaseConfig";
 import { failureNotification } from "@/components/notifications/failureNotification";
 import { isValueAnObject } from "@/utils/isValueAnObject";
 
-export const saveMessageInOutboundCollection = async (newMessage: Message) => {
+export const saveMessageInSelectedUserConversations = async (
+  newMessage: Message
+) => {
   try {
     if (!newMessage || !isValueAnObject(newMessage)) {
       failureNotification(

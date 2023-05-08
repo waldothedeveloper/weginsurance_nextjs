@@ -8,12 +8,12 @@ import { NovuNotificationsCenter } from "@/components/notifications/NovuConfig";
 import { UserFormWrapper } from "@/components/directory/UserFormWrapper";
 import { VirtualizedUserList } from "@/components/directory/VirtualizedUserList";
 import { VirtualizedUserTable } from "@/components/directory/VirtualizedUserTable";
-import { useGetMessagesFromDB } from "@/hooks/messaging/useGetMessagesFromDB";
+import { useGetUserConversations } from "@/hooks/messaging/useGetUserConversations";
 
 //
 export const Wrapper = () => {
   const router: NextRouter = useRouter();
-  const { getMessages, isLoading, error } = useGetMessagesFromDB()
+  const { getMessages, isLoading, error } = useGetUserConversations()
 
   return (
     <>

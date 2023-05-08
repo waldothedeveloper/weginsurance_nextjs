@@ -70,7 +70,6 @@ export const useWriteMessageToDB = () => {
       dateCreated: todayISO,
       sid: nanoid(),
       direction: "outbound-api",
-      status: "sent",
       mediaUrl: messageHasAttachments()
         ? uploadedFiles.map((file) => file.url)
         : [],

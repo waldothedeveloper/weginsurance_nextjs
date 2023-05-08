@@ -18,14 +18,14 @@ dayjs.extend(timezone);
 type ChatMessageProps = { msg: Message };
 //
 export const ChatMessage = ({ msg }: ChatMessageProps) => {
-  const { direction, status } = msg;
+  const { direction, delivery } = msg;
 
   const inboundMsg = direction === "inbound";
   const outboundMsg = direction === "outbound-api";
-  const deliveredMsg = status === "delivered";
-  const undeliveredMsg = status === "undelivered";
-  const failedMsg = status === "failed";
-  const sentMsg = status === "sent";
+  const deliveredMsg = delivery?.info?.status === "delivered";
+  const undeliveredMsg = delivery?.info?.status === "undelivered";
+  const failedMsg = delivery?.info?.status === "failed";
+  const sentMsg = delivery?.info?.status === "sent" || delivery?.info?.status === "queued";
 
   return (
     <div className="grid grid-cols-1 space-y-2 px-5">
@@ -76,7 +76,7 @@ export const ChatMessage = ({ msg }: ChatMessageProps) => {
                     : "text-xs font-medium text-gray-400"
                 }
               >
-                {messageStatus(status).status}
+                {messageStatus(delivery?.info?.status || '').status}
               </p>
               {deliveredMsg && (
                 <div className="flex">

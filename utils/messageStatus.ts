@@ -30,12 +30,3 @@ export const messageStatus = (status: string): { status: string } => {
       };
   }
 };
-/*
-  queued
-  sent
-  failed
-  delivered
-  undelivered
-  received
-
-*/
