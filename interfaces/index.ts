@@ -1,4 +1,4 @@
-import { firebaseApp } from "@lib/firebaseConfig";
+import firestore from "firebase/firestore";
 
 export interface FakeUser {
   id: string;
@@ -45,18 +45,18 @@ export type MessageStatus =
   | "read";
 
 export type QueuePayload = {
-  startTime: firebaseApp.firestore.Timestamp;
-  endTime?: firebaseApp.firestore.Timestamp;
-  leaseExpireTime?: firebaseApp.firestore.Timestamp;
+  startTime: firestore.Timestamp;
+  endTime?: firestore.Timestamp;
+  leaseExpireTime?: firestore.Timestamp;
   state: "PENDING" | "PROCESSING" | "SUCCESS" | "ERROR";
   errorCode?: number;
   errorMessage?: string;
   info?: {
     messageSid: string;
     status?: MessageStatus;
-    dateCreated?: firebaseApp.firestore.Timestamp;
-    dateSent?: firebaseApp.firestore.Timestamp;
-    dateUpdated?: firebaseApp.firestore.Timestamp;
+    dateCreated?: firestore.Timestamp;
+    dateSent?: firestore.Timestamp;
+    dateUpdated?: firestore.Timestamp;
     messagingServiceSid?: string;
     numMedia?: string;
     numSegments?: string;
@@ -72,7 +72,7 @@ export interface Message {
   direction: "inbound" | "outbound-api";
   sid: string;
   delivery?: QueuePayload;
-  mediaUrl?: string[]
+  mediaUrl?: string[];
 }
 
 export interface Day {
@@ -81,33 +81,33 @@ export interface Day {
   dateCreated: string;
 }
 
-export type VirtualizedConversationType = (Day | Message)[];
-
-export interface RestAPIMessage {
+export interface TwilioAPIMessage {
   body: string;
-  num_segments: string;
+  numSegments: string;
   direction: "inbound" | "outbound-api";
   from: string;
-  date_updated: string;
-  price: string;
-  error_message: string | null;
-  uri: string;
-  account_sid: string;
-  num_media: string;
   to: string;
-  date_created: string;
-  status: string;
+  dateUpdated: string | Date;
+  price: string;
+  errorMessage: string | null;
+  uri: string;
+  accountSid: string;
+  numMedia: string;
+  status: MessageStatus;
+  messagingServiceSid: string;
   sid: string;
-  date_sent: string;
-  messaging_service_sid: string | null;
-  error_code: number | string | null;
-  price_unit: string;
-  api_version: string;
-  subresource_uris: {
-    media: string | string[];
+  dateSent: string | Date;
+  dateCreated: string;
+  errorCode: string | null;
+  priceUnit: string;
+  apiVersion: string;
+  subresourceUris: {
+    media: string;
     feedback: string;
   };
 }
+
+export type VirtualizedConversationType = (Day | Message)[];
 
 export interface ConversationInterface {
   [key: string]: Message[];

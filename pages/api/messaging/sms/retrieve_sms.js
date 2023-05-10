@@ -87,7 +87,10 @@ export default async function handler(req, res) {
         const sortedMessages = days[date].sort((x, y) =>
           dayjs(y.dateCreated).diff(dayjs(x.dateCreated))
         );
-        return acc.concat([...sortedMessages, { type: "day", date, id: date }]);
+        return acc.concat([
+          ...sortedMessages,
+          { type: "day", dateCreated: date, id: date },
+        ]);
       }, []);
       return items;
     };
