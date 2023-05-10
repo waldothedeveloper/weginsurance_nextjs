@@ -10,7 +10,6 @@ import { VirtualizedUserList } from "@/components/directory/VirtualizedUserList"
 import { VirtualizedUserTable } from "@/components/directory/VirtualizedUserTable";
 import { useGetUserConversations } from "@/hooks/messaging/useGetUserConversations";
 
-//
 export const Wrapper = () => {
   const router: NextRouter = useRouter();
   const { getMessages, isLoading, error } = useGetUserConversations()

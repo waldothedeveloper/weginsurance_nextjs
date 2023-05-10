@@ -1,6 +1,6 @@
 export const fetcherPostPhoneNumber = async (
   url: string,
-  { arg }: { arg: string }
+  phone: string | null
 ) => {
   return await fetch(url, {
     method: "POST",
@@ -9,7 +9,7 @@ export const fetcherPostPhoneNumber = async (
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      user_phone: arg,
+      user_phone: phone,
     }),
   }).then((res) => res.json());
 };
