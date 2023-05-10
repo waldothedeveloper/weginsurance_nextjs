@@ -4,6 +4,7 @@
 /* eslint-disable require-jsdoc */
 /* eslint-disable object-curly-spacing */
 /* eslint-disable quote-props */
+
 import * as functions from "firebase-functions";
 
 import { FieldValue, Timestamp } from "firebase-admin/firestore";
@@ -11,6 +12,7 @@ import { Request, Response } from "express";
 import { getFunctionsUrl, initialize, twilioClient } from "./utils";
 import { twiml, validateRequest } from "twilio";
 
+import { Novu } from "@novu/node";
 import { QueuePayload } from "./types";
 import { firestore as adminFirestore } from "firebase-admin";
 import config from "./config";
@@ -374,3 +376,220 @@ exports.findMessage = functions.firestore
       );
     }
   );
+
+exports.incomingMessage = functions.https.onRequest(
+  async (req: Request, res: Response): Promise<any> => {
+    initialize();
+    const {
+      twilio: { authToken },
+    } = config;
+    const signature = req.get("x-twilio-signature");
+    const url = getFunctionsUrl("incomingMessage");
+    const params = req.body;
+    if (!signature) {
+      return res
+        .type("text/plain")
+        .status(400)
+        .send(
+          "No signature header error - X-Twilio-Signature header does not exist, maybe this request is not coming from Twilio."
+        );
+    }
+    if (typeof authToken !== "string") {
+      return res
+        .type("text/plain")
+        .status(500)
+        .send(
+          "Webhook Error - we attempted to validate this request without first configuring our auth token."
+        );
+    }
+    if (!validateRequest(authToken, signature, url, params)) {
+      return res
+        .type("text/plain")
+        .status(403)
+        .send("Twilio Request Validation Failed");
+    }
+    const {
+      MessageSid,
+      From,
+      To,
+      Body,
+      NumSegments,
+      SmsStatus,
+      NumMedia,
+      FromCity,
+      FromState,
+      FromZip,
+    } = req.body;
+
+    if (typeof MessageSid !== "string") {
+      return res
+        .type("text/plain")
+        .status(400)
+        .send("Webhook error - No MessageSid found.");
+    }
+
+    const incomingMessage = {
+      mediaUrl: [],
+      from: From,
+      direction: "inbound",
+      body: Body,
+      delivery: {
+        state: SmsStatus,
+        startTime: {
+          seconds: null,
+          nanoseconds: 0,
+        },
+        info: {
+          dateSent: null,
+          numSegments: NumSegments,
+          dateUpdated: {
+            seconds: null,
+            nanoseconds: 0,
+          },
+          numMedia: NumMedia,
+          status: SmsStatus,
+          messagingServiceSid: null,
+          messageSid: MessageSid,
+          dateCreated: {
+            seconds: new Date().getTime() / 1000,
+            nanoseconds: 0,
+          },
+        },
+        errorCode: null,
+        leaseExpireTime: null,
+        endTime: {
+          seconds: null,
+          nanoseconds: 0,
+        },
+        errorMessage: null,
+      },
+      to: To,
+      sid: MessageSid,
+      userId: "",
+      dateCreated: new Date().toISOString(),
+    };
+
+    const userCollection = adminFirestore().collection("Users");
+    functions.logger.log(
+      `Attempting to identify the user who sent the message from phone number: ${From}`
+    );
+
+    // notify the application client using NOVU notifications
+    const novu = new Novu(process.env.NOVU_API_KEY || "");
+    // ! remember that for development testing you need to keep the NOVU_DEVELOPMENT_SUBSCRIBER environment variable set, and NEVER use the production subscriber
+    const novuSubscriber = process.env.IS_FIREBASE_CLI
+      ? process.env.NOVU_DEVELOPMENT_SUBSCRIBER
+      : process.env.NOVU_PRODUCTION_SUBSCRIBER;
+
+    try {
+      const user = await userCollection
+        .where("phone", "==", From)
+        .limit(1)
+        .get();
+
+      if (user.empty) {
+        functions.logger.warn(
+          `Could not find user document for message with SID: ${MessageSid} and From: ${From}`
+        );
+
+        try {
+          await novu.trigger("inbound-sms", {
+            to: {
+              subscriberId: novuSubscriber ?? "",
+            },
+            payload: {
+              message: `${From}: ${Body} - ${FromCity}, ${FromState}, ${FromZip}`,
+            },
+          });
+        } catch (error) {
+          functions.logger.error(
+            "There was an error trying to send the notification of a new message to the client"
+          );
+          return Promise.reject(error);
+        }
+
+        // create a user document for the incoming message
+        const newUser = {
+          active_user: true,
+          email: null,
+          firstname: "Usuario",
+          fullname: "Usuario Desconocido",
+          gender: "Masculino",
+          insurance_company: null,
+          lastname: "Desconocido",
+          notes: "",
+          phone: From,
+          second_lastname: "",
+          second_name: "",
+        };
+
+        try {
+          const userRef = adminFirestore().collection("Users").doc();
+          const conversationRef = userRef.collection("conversations").doc();
+
+          await adminFirestore().runTransaction(async (transaction) => {
+            transaction.set(userRef, newUser);
+            incomingMessage.userId = userRef.id;
+            transaction.set(conversationRef, incomingMessage);
+            return Promise.resolve();
+          });
+        } catch (error) {
+          functions.logger.error(
+            "There was an error trying to save the unknown user and user message in the database"
+          );
+          return Promise.reject(error);
+        }
+      } else {
+        functions.logger.log(`Found user: ${user.docs[0].id}`);
+
+        try {
+          await novu.trigger("inbound-sms", {
+            to: {
+              subscriberId: novuSubscriber ?? "",
+            },
+            payload: {
+              message: `${
+                user.docs[0].data().fullname
+              }:  ${Body} - ${FromCity}, ${FromState}, ${FromZip}`,
+            },
+          });
+        } catch (error) {
+          functions.logger.error(
+            "There was an error trying to send the notification of a new message to the client"
+          );
+          return Promise.reject(error);
+        }
+
+        incomingMessage.userId = user.docs[0].id;
+
+        try {
+          // save the message in the user's conversation sub-collection
+          await adminFirestore().runTransaction((transaction) => {
+            transaction.set(
+              adminFirestore()
+                .collection("Users")
+                .doc(user.docs[0].id)
+                .collection("conversations")
+                .doc(incomingMessage.sid),
+              incomingMessage
+            );
+            return Promise.resolve();
+          });
+        } catch (error) {
+          functions.logger.error(
+            "There was an error trying to save the message in the user's conversation sub-collection"
+          );
+          return Promise.reject(error);
+        }
+      }
+      functions.logger.log("End of incomingMessage processing function.");
+    } catch (error) {
+      functions.logger.error(error);
+      return Promise.reject(error);
+    }
+
+    res.contentType("text/xml");
+    res.send(new twiml.MessagingResponse().toString());
+    return;
+  }
+);

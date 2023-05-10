@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 
 import { db } from "@/lib/firebaseConfig";
 import { fetcherPostPhoneNumber } from "@/utils/fetcherPostPhoneNumber";
+import { isTodayPresentInArray } from "@/utils/isTodayPresentInArray";
+import { saveDayTypeMessage } from "@/utils/saveDayTypeMessage";
 import { saveMessagesToClientConversations } from "@/utils/saveMessagesToClientConversations";
 import useSWR from "swr";
 
@@ -31,11 +33,17 @@ export const useGetUserConversations = () => {
     if (!userId || userId?.length === 0) throw new Error("userId is required");
     setUserId(userId);
   };
-  //
+  const messagesFromDB = useAtomValue(messagesAtom);
   const { data: messagesFromTwilioAPI, error: errorFromTwilioAPI } = useSWR(
     key,
     (url) => fetcherPostPhoneNumber(url[0], selectedUser?.phone || null)
   );
+
+  useEffect(() => {
+    if (!isTodayPresentInArray(messagesFromDB) && messagesFromDB.length > 0) {
+      saveDayTypeMessage(userId);
+    }
+  }, [messagesFromDB, userId]);
 
   useEffect(() => {
     if (!router?.query?.dashboard?.includes("messages")) {
@@ -58,13 +66,13 @@ export const useGetUserConversations = () => {
   }, [messagesFromTwilioAPI, userId]);
 
   useEffect(() => {
-    const q = query(
-      collection(db, `Users/${userId}/conversations`),
-      orderBy("dateCreated", "asc")
-    );
     let unsubscribe: Unsubscribe | null = null;
     try {
       setIsLoading(true);
+      const q = query(
+        collection(db, `Users/${userId}/conversations`),
+        orderBy("dateCreated", "asc")
+      );
       unsubscribe = onSnapshot(q, (querySnapshot) => {
         if (!querySnapshot.empty) {
           setMessagesAtom(
@@ -73,13 +81,12 @@ export const useGetUserConversations = () => {
             })
           );
           setKey(null);
-          setIsLoading(false);
         } else {
           if (userId && userId.length > 0) {
             setKey(["/api/messaging/sms/retrieve_sms", userId]);
           }
-          setIsLoading(false);
         }
+        setIsLoading(false);
       });
     } catch (error) {
       setIsLoading(false);
@@ -94,22 +101,5 @@ export const useGetUserConversations = () => {
     };
   }, [userId, setMessagesAtom]);
 
-  return { getMessages, isLoading, error };
+  return { getMessages, isLoading, error, errorFromTwilioAPI };
 };
-
-// import { isTodayPresentInArray } from "@/utils/isTodayPresentInArray";
-// import { saveDayTypeMessage } from "@/utils/saveDayTypeMessage";
-
-// // this will ALWAYS make sure to put today if today is not present in the user's conversation array
-// useEffect(() => {
-//   if (!isTodayPresentInArray(messagesFromDB)) {
-//     if (messagesFromDB.length === 1) {
-//       const dayType: Day = messagesFromDB[0];
-//       // if the user has only one message in their conversation array, then it's a day type message probably from the previous day
-//       saveDayTypeMessage(selectedUser, dayType);
-//     } else {
-//       // save the day type message to the user's conversation sub-collection and save the message to the messages collection
-//       saveDayTypeMessage(selectedUser, null);
-//     }
-//   }
-// }, [messagesFromDB, selectedUser]);
