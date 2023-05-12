@@ -9,7 +9,7 @@ import { DeleteCompanyActions } from "@/components/companies/DeleteCompanyAction
 import Image from "next/image";
 import { Modal } from "@/components/companies/Modal";
 import { Spinning } from "@/components/Spinning";
-import { UpdateCompany } from "@/components/companies/UpdateCompanyActions";
+import { UpdateCompany } from "@/components/companies/UpdateCompany";
 import { useCreateNewCompany } from "@/hooks/insurance_company/useCreateNewCompany";
 import { useDeleteCompany } from "@/hooks/insurance_company/useDeleteCompany";
 import { useInsuranceCompany } from "@/hooks/insurance_company/useHandleInsuranceCompany";
@@ -25,7 +25,6 @@ export const InsuranceCompanyTable = () => {
     handleSubmitNewCompany,
     errorsNewCompany,
     onSubmitCreateNewCompany,
-    uploadProgress,
     handleOpenNewCompanyModal,
     handleCloseNewCompanyModal,
     openNewCompanyModal,
@@ -49,8 +48,6 @@ export const InsuranceCompanyTable = () => {
     handleCloseUpdateCompanyModal,
     onSubmitUpdateCompany,
     handleSubmitUpdateCompany,
-    selectedCompanyToUpdate,
-    progressUpdateCompany,
   } = useUpdateCompany();
 
   if (insuranceCompanyError) {
@@ -78,11 +75,11 @@ export const InsuranceCompanyTable = () => {
               seguros aqui en esta tabla.
             </p>
           </div>
-          <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+          <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
             <button
               onClick={handleOpenNewCompanyModal}
               type="button"
-              className="inline-flex items-center gap-x-2 rounded-md bg-blue-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 lg:ml-4"
+              className="inline-flex items-center gap-x-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 lg:ml-4"
             >
               <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
               Crear compañia
@@ -90,7 +87,7 @@ export const InsuranceCompanyTable = () => {
           </div>
         </div>
         <div className="mt-8 flow-root">
-          <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
               <div className="max-h-[83vh]">
                 <table className="min-w-full table-fixed divide-y divide-slate-300">
@@ -167,7 +164,7 @@ export const InsuranceCompanyTable = () => {
                                 handleOpenUpdateCompanyModal(company)
                               }
                               type="button"
-                              className="inline-flex items-center gap-x-2 rounded-md bg-blue-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                              className="inline-flex items-center gap-x-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                             >
                               <PencilSquareIcon
                                 className="-ml-0.5 h-5 w-5"
@@ -178,7 +175,7 @@ export const InsuranceCompanyTable = () => {
                             <button
                               onClick={() => handleOpenDeleteModal(company)}
                               type="button"
-                              className="ml-4 inline-flex items-center gap-x-2 rounded-md bg-red-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                              className="ml-4 inline-flex items-center gap-x-2 rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                             >
                               <TrashIcon
                                 className="-ml-0.5 h-5 w-5"
@@ -209,7 +206,6 @@ export const InsuranceCompanyTable = () => {
           handleSubmit={handleSubmitNewCompany}
           errors={errorsNewCompany}
           onSubmit={onSubmitCreateNewCompany}
-          progress={uploadProgress}
           closeModal={handleCloseNewCompanyModal}
         />
       </Modal>
@@ -225,9 +221,7 @@ export const InsuranceCompanyTable = () => {
           handleSubmit={handleSubmitUpdateCompany}
           errors={errorsUpdateCompany}
           onSubmit={onSubmitUpdateCompany}
-          progress={progressUpdateCompany}
           closeModal={handleCloseUpdateCompanyModal}
-          selectedCompany={selectedCompanyToUpdate}
         />
       </Modal>
       {/* delete */}

@@ -163,3 +163,11 @@ export type ImagesArray = FileLike[];
 export type UploadedFile = FileLike & {
   url: string;
 };
+
+export type InsuranceCompany = {
+  notes: string;
+  name: string;
+  logo_url?: string;
+  id?: string;
+  fileName?: string;
+};

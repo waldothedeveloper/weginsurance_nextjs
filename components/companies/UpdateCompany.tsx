@@ -1,33 +1,34 @@
+import { FieldErrors, FieldValues, UseFormHandleSubmit, UseFormRegister } from "react-hook-form"
+
 import { Dialog } from "@headlessui/react";
 import { DragAndDrop } from "@/components/companies/DragAndDrop";
 import { Input } from "@/components/directory/Input";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import PropTypes from "prop-types";
 import { UploadProgressBar } from "@/components/companies/UploadProgressBar";
 import { companyFormLabels } from "@/utils/companyFormLabels";
-// import { useCreateNewCompany } from "@/hooks/insurance_company/useCreateNewCompany";
-import { useDragNDrop } from "@/hooks/insurance_company/useDragNDrop";
-//
-export const CreateCompany = ({
+import { progressPercentageAtom } from "@/lib/state/atoms";
+import { useAtomValue } from "jotai";
+
+type CreateCompanyProps = {
+  isSubmitting: boolean,
+  register: UseFormRegister<FieldValues>,
+  errors: FieldErrors<FieldValues>,
+  // eslint-disable-next-line no-unused-vars
+  onSubmit: (data: FieldValues) => (data: FieldValues) => void,
+  handleSubmit: UseFormHandleSubmit<FieldValues>,
+  closeModal: () => void,
+}
+
+export const UpdateCompany = ({
   isSubmitting,
   register,
-  handleSubmit,
   errors,
   onSubmit,
-  progress,
+  handleSubmit,
   closeModal,
-}) => {
-  // drap n drop hook
-  const {
-    files,
-    getRootProps,
-    getInputProps,
-    isDragAccept,
-    isDragActive,
-    isDragReject,
-    handleSetFiles,
-  } = useDragNDrop();
+}: CreateCompanyProps) => {
 
+  const progress = useAtomValue(progressPercentageAtom);
   return (
     <>
       <div className="px-4 py-5 sm:px-6">
@@ -45,14 +46,14 @@ export const CreateCompany = ({
               as="h3"
               className="text-base font-semibold leading-6 text-slate-900"
             >
-              Crear Compañia
+              Actualizar Compañia
             </Dialog.Title>
           </div>
         </div>
       </div>
 
       <form
-        onSubmit={handleSubmit((data) => onSubmit(data, files))}
+        onSubmit={handleSubmit((data) => onSubmit(data))}
         className="mb-6 mt-2"
       >
         <div className="m-6 grid grid-cols-2 items-start gap-6">
@@ -72,15 +73,7 @@ export const CreateCompany = ({
             </div>
           ))}
 
-          <DragAndDrop
-            files={files}
-            getRootProps={getRootProps}
-            getInputProps={getInputProps}
-            isDragActive={isDragActive}
-            handleSetFiles={handleSetFiles}
-            isDragReject={isDragReject}
-            isDragAccept={isDragAccept}
-          />
+          <DragAndDrop />
 
           {/* notes about the user */}
           <div className="col-span-2">
@@ -117,7 +110,7 @@ export const CreateCompany = ({
                 : "inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
             }
           >
-            Crear
+            Actualizar
           </button>
           <button
             type="button"
@@ -132,12 +125,3 @@ export const CreateCompany = ({
   );
 };
 
-CreateCompany.propTypes = {
-  isSubmitting: PropTypes.bool.isRequired,
-  register: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  progress: PropTypes.number.isRequired,
-  closeModal: PropTypes.func.isRequired,
-};
