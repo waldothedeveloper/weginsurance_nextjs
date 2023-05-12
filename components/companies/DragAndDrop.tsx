@@ -1,40 +1,42 @@
+import { progressPercentageAtom, selectedInsuranceCompanyAtom, uploadedFilesAtom } from "@/lib/state/atoms"
+import { useEffect, useState } from "react"
+
 import Image from "next/image";
-import PropTypes from "prop-types";
-//
-export const DragAndDrop = ({
-  handleSetFiles,
-  files,
-  getRootProps,
-  getInputProps,
-  isDragActive,
-  isDragReject,
-  isDragAccept,
-  logo_url,
-}) => {
+import spin from "@/public/spin.svg";
+import { useAtomValue } from "jotai"
+import { useDeleteAllUploadedFiles } from "@/hooks/fileUploader/useDeleteAllUploadedFiles"
+import { useDropAndUploadFiles } from "@/hooks/fileUploader/useDropAndUploadFiles"
+
+// 
+export const DragAndDrop = () => {
+  const progress = useAtomValue(progressPercentageAtom);
+  const selectedInsuranceCompany = useAtomValue(selectedInsuranceCompanyAtom);
+  const { insuranceLogoDropZone } = useDropAndUploadFiles();
+  const handleDeleteAllFiles = useDeleteAllUploadedFiles()
+  const uploadedImages = useAtomValue(uploadedFilesAtom);
   const ifUserUploadsALogo =
-    !isDragActive &&
-    files &&
-    files.length > 0 &&
-    files.map((file) => (
+    !insuranceLogoDropZone.isDragActive &&
+    uploadedImages &&
+    uploadedImages.length > 0 &&
+    uploadedImages.map((file) => (
       <div className="relative h-auto w-full" key={file.name}>
         <Image
-          className="h-32 w-48 object-contain"
-          src={file.preview}
+          className="h-full w-full object-contain"
+          src={file?.url}
           alt="file preview"
           width={192}
           height={128}
-          onLoadingComplete={() => URL.revokeObjectURL(file.preview)}
+
         />
       </div>
     ));
 
-  const ifCompanyHasLogo = !isDragActive &&
-    logo_url &&
-    logo_url?.length > 0 && (
+  const ifCompanyHasLogo = !insuranceLogoDropZone.isDragActive &&
+    selectedInsuranceCompany?.logo_url && (
       <div className="relative h-full w-full">
         <Image
           className="h-32 w-48 object-contain"
-          src={logo_url}
+          src={selectedInsuranceCompany.logo_url}
           alt="file preview"
           width={192}
           height={128}
@@ -49,13 +51,23 @@ export const DragAndDrop = ({
         className="relative cursor-pointer rounded-md bg-white font-medium text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 hover:text-blue-500"
       >
         <span>Logo de la compañia</span>
-        <input {...getInputProps()} />
+        <input {...insuranceLogoDropZone.getInputProps()} />
       </label>
       <p className="text-xs text-slate-500">
         Arrastre y suelte el archivo aqui
       </p>
     </div>
   );
+
+  const [isUploading, setIsUploading] = useState(false);
+
+  useEffect(() => {
+    if (progress > 0 && progress < 100) {
+      setIsUploading(true);
+    } else {
+      setIsUploading(false);
+    }
+  }, [progress]);
 
   //
   return (
@@ -69,29 +81,36 @@ export const DragAndDrop = ({
         </label>
         <div className="sm:col-span-2">
           <div
-            {...getRootProps()}
+            {...insuranceLogoDropZone.getRootProps()}
             className="flex max-w-lg justify-center rounded-md border-2 border-dashed border-slate-300 pt-5 pb-6"
           >
             <div className="space-y-1 text-center">
-              {ifUserUploadsALogo ||
-                ifCompanyHasLogo ||
-                ifNoLogoAndNoFileUpload}
 
-              {isDragReject && (
+
+              {isUploading ? (<Image
+                src={spin}
+                alt="file preview"
+
+              />) : ifUserUploadsALogo ||
+              ifCompanyHasLogo ||
+              ifNoLogoAndNoFileUpload}
+
+
+              {insuranceLogoDropZone.isDragReject && (
                 <p className="text-xs text-red-500">
                   Este archivo no esta permitido!
                 </p>
               )}
-              {isDragAccept && (
+              {insuranceLogoDropZone.isDragAccept && (
                 <p className="text-xs text-green-600">
                   Este fichero es aceptado!
                 </p>
               )}
             </div>
           </div>
-          {!isDragActive && files && files.length > 0 && (
+          {!insuranceLogoDropZone.isDragActive && uploadedImages && uploadedImages.length > 0 && (
             <button
-              onClick={handleSetFiles}
+              onClick={handleDeleteAllFiles}
               type="button"
               className="py-px text-xs text-red-500"
             >
@@ -102,14 +121,4 @@ export const DragAndDrop = ({
       </div>
     </>
   );
-};
-
-DragAndDrop.propTypes = {
-  handleSetFiles: PropTypes.func.isRequired,
-  files: PropTypes.array.isRequired,
-  getRootProps: PropTypes.func.isRequired,
-  isDragActive: PropTypes.bool.isRequired,
-  isDragReject: PropTypes.bool.isRequired,
-  isDragAccept: PropTypes.bool.isRequired,
-  logo_url: PropTypes.string,
 };

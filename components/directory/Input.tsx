@@ -1,3 +1,5 @@
+import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form"
+
 import { ExclamationCircleIcon } from "@heroicons/react/20/solid";
 
 const errorClass =
@@ -5,6 +7,18 @@ const errorClass =
 
 const okClass =
   "mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-slate-300 rounded-md";
+type InputProps = {
+  errorMessage: string,
+  register: UseFormRegister<FieldValues>,
+  name: string,
+  placeholder?: string,
+  isRequired: boolean,
+  autoComplete: string,
+  type: string,
+  errors: FieldErrors<FieldValues>,
+  label: string,
+  htmlFor: string,
+}
 
 export const Input = ({
   errorMessage,
@@ -18,7 +32,7 @@ export const Input = ({
   label,
   htmlFor,
   ...rest
-}) => {
+}: InputProps) => {
   return (
     <>
       <label

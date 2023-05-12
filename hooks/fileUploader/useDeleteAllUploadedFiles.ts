@@ -22,10 +22,22 @@ export const useDeleteAllUploadedFiles = () => {
         const filePromises: any = [];
         const files = get(uploadedFilesAtom);
 
+        if (!files) return;
+        if (files.length === 0) return;
+
         files.forEach((file) => {
-          !file.type.startsWith("image/")
-            ? filePromises.push(deleteStorageFile(file?.name, "documents"))
-            : filePromises.push(deleteStorageFile(file?.name, "images"));
+          if (
+            file.type.startsWith("image/") &&
+            file?.url?.includes("insurance_company_logos")
+          ) {
+            filePromises.push(
+              deleteStorageFile(file?.name, "insurance_company_logos")
+            );
+          } else {
+            !file.type.startsWith("image/")
+              ? filePromises.push(deleteStorageFile(file?.name, "documents"))
+              : filePromises.push(deleteStorageFile(file?.name, "images"));
+          }
         });
         await Promise.all(filePromises);
         setUploadedImages([]);

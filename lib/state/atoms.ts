@@ -1,6 +1,7 @@
 import {
   IdentifiedUser,
   ImagesArray,
+  InsuranceCompany,
   RealUser,
   UploadedFile,
   VirtualizedConversationType,
@@ -36,3 +37,6 @@ export const fileOrImageAtom = atom<ImagesArray | []>([]);
 export const additionalFilesOrImagesAtom = atom<ImagesArray | []>([]);
 export const allFilesAtom = atom<ImagesArray | []>([]);
 export const selectedImageIdAtom = atom<string | null>(null);
+export const selectedInsuranceCompanyAtom = atom<InsuranceCompany | null>(null);
+export const isSubmittingAtom = atom<boolean>(false);
+export const openModalAtom = atom<boolean>(false);

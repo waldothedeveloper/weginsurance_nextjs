@@ -57,5 +57,21 @@ export const useDropAndUploadFiles = () => {
     },
   });
 
-  return { imageDropZone, documentDropZone };
+  const insuranceLogoDropZone = useDropzone({
+    maxFiles: 1,
+    accept: {
+      "image/*": [".jpeg", ".png", ".jpg", ".gif"],
+    },
+    multiple: false,
+    onDrop: (acceptedFiles) => {
+      return onDrop(
+        acceptedFiles,
+        setUploadedFile,
+        "insurance_company_logos",
+        uploadFilesToCloud
+      );
+    },
+  });
+
+  return { imageDropZone, documentDropZone, insuranceLogoDropZone };
 };

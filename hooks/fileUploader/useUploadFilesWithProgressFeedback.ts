@@ -5,6 +5,7 @@ import {
   progressPercentageAtom,
 } from "@/lib/state/atoms";
 
+import { failureNotification } from "@/components/notifications/failureNotification";
 import { storage } from "@/lib/firebaseConfig";
 import { useSetAtom } from "jotai";
 
@@ -41,17 +42,21 @@ export const useUploadFilesWithProgressFeedback = () => {
               (error) => {
                 switch (error.code) {
                   case "storage/unauthorized":
-                    // console.log("storage/unauthorized", error);
+                    failureNotification(
+                      `El usuario no esta autorizado a subir archivos`
+                    );
                     reject(
                       `User doesn't have permission to access the object ${error}`
                     );
                     break;
                   case "storage/canceled":
-                    // console.log("storage/canceled", error);
+                    failureNotification(
+                      `Se ha cancelado la subida del archivo`
+                    );
                     reject(`User canceled the upload ${error}`);
                     break;
                   case "storage/unknown":
-                    // console.log("storage/unknown", error);
+                    failureNotification(`Ha ocurrido un error desconocido`);
                     reject(
                       `Unknown error occurred, inspect error.serverResponse ${error}`
                     );
