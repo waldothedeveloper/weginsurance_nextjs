@@ -17,7 +17,7 @@ export interface FakeUser {
 }
 
 export interface RealUser {
-  active_user: boolean;
+  active_user: boolean | "Si" | "No";
   email: string;
   firstname: string;
   fullname: string;
@@ -170,4 +170,14 @@ export type InsuranceCompany = {
   logo_url?: string;
   id?: string;
   fileName?: string;
+};
+
+export type Gender = {
+  value: "" | "Masculino" | "Femenino";
+  id: number;
+};
+
+export type ActiveUser = {
+  value: "" | "Si" | "No";
+  id: number;
 };

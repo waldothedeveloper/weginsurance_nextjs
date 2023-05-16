@@ -9,7 +9,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 
 import { Spinning } from "@/components/Spinning";
 import { Virtuoso } from "react-virtuoso";
-import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
+import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
 import { normalizeString } from "@/utils/normalizeString";
 import { selectedUserAtom } from "@/lib/state/atoms";
 import { useFakeUserList } from "@/hooks/test/useFakeUserList";
@@ -189,7 +189,7 @@ export const VirtualizedUserList = ({ getMessages }: { getMessages: (userId: str
                           : "truncate text-xs text-slate-400"
                       }
                     >
-                      {formatPhoneNumber(user?.phone)}
+                      {formatPhoneNumberToNationalUSAformat(user?.phone)}
                     </p>
                   </button>
                 </div>

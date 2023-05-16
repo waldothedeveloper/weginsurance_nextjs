@@ -1,12 +1,27 @@
+import { FieldErrors, FieldValues, SubmitHandler, UseFormRegister, UseFormSetValue } from "react-hook-form";
+
 import { Dialog } from "@headlessui/react";
 import { ErrorComponent } from "@/components/Error";
 import { Input } from "@/components/directory/Input";
+import { InsuranceCompany } from "@/interfaces/index"
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import PropTypes from "prop-types";
 import { Select } from "@/components/directory/Select";
 import { userFormLabels } from "@/utils/userFormLabels";
+
+type CreateUserFormProps = {
+  setValue: UseFormSetValue<FieldValues>,
+  register: UseFormRegister<FieldValues>,
+  errors: FieldErrors<FieldValues>,
+  handleSubmit: SubmitHandler<FieldValues>,
+  submitCreateUser: () => void,
+  isSubmitting: boolean,
+  handleCloseModal: () => void,
+  companies: InsuranceCompany[],
+  companiesError: unknown,
+}
 //
 export const CreateUserForm = ({
+  setValue,
   register,
   errors,
   handleSubmit,
@@ -15,7 +30,7 @@ export const CreateUserForm = ({
   handleCloseModal,
   companies,
   companiesError,
-}) => {
+}: CreateUserFormProps) => {
   if (companiesError) {
     return (
       <ErrorComponent
@@ -47,11 +62,12 @@ export const CreateUserForm = ({
         </div>
       </div>
 
-      <form onSubmit={handleSubmit(submitCreateUser)} className="mt-2 mb-6">
+      <form onSubmit={handleSubmit(submitCreateUser)} className="mb-6 mt-2">
         <div className="m-6 grid grid-cols-2 gap-6">
           {userFormLabels.map((input) => (
             <div key={input.name} className="col-span-1">
               <Input
+                setValue={setValue}
                 errors={errors}
                 errorMessage={input.errorMessage}
                 htmlFor={input.htmlFor}
@@ -154,11 +170,3 @@ export const CreateUserForm = ({
   );
 };
 
-CreateUserForm.propTypes = {
-  register: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  submitCreateUser: PropTypes.func.isRequired,
-  isSubmitting: PropTypes.bool.isRequired,
-  handleCloseModal: PropTypes.func.isRequired,
-};

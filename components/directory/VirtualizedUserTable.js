@@ -23,6 +23,7 @@ export const VirtualizedUserTable = () => {
 
   // new user
   const {
+    setValueNewUserForm,
     registerNewUserForm,
     handleSubmitNewUserForm,
     errorsNewUserForm,
@@ -34,9 +35,10 @@ export const VirtualizedUserTable = () => {
   } = useNewUserForm();
   // update user
   const {
+    setValueUpdateUserForm,
     registerUpdateUserForm,
     handleUpdateUserForm,
-    setOpenUpdateUserModal,
+    handleCloseUpdateModal,
     errorsUpdateUserForm,
     submitUpdateUser,
     handleUpdateModal,
@@ -104,7 +106,7 @@ export const VirtualizedUserTable = () => {
               <button
                 onClick={handleCreateUserModal}
                 type="button"
-                className="hidden items-center gap-x-2 rounded-md bg-blue-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:inline-flex lg:ml-4"
+                className="hidden items-center gap-x-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:inline-flex lg:ml-4"
               >
                 <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
                 Crear usuario
@@ -113,7 +115,7 @@ export const VirtualizedUserTable = () => {
                 <button
                   onClick={handleCreateUserModal}
                   type="button"
-                  className="ml-4 inline-flex items-center gap-x-2 rounded-md bg-blue-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                  className="ml-4 inline-flex items-center gap-x-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                 >
                   <UserPlusIcon
                     className="-ml-0.5 h-5 w-5"
@@ -185,17 +187,18 @@ export const VirtualizedUserTable = () => {
       {openUpdateUserModal && (
         <Modal
           openModal={openUpdateUserModal}
-          handleCloseModal={setOpenUpdateUserModal}
+          handleCloseModal={handleCloseUpdateModal}
           action="update"
         >
           <UpdateUserForm
+            setValue={setValueUpdateUserForm}
             companiesError={insuranceCompanyError}
             companies={filteredInsuranceCompanies}
             register={registerUpdateUserForm}
             errors={errorsUpdateUserForm}
             handleSubmit={handleUpdateUserForm}
             submitUpdateUser={submitUpdateUser}
-            handleCloseModal={setOpenUpdateUserModal}
+            handleCloseModal={handleCloseUpdateModal}
             isSubmitting={isSubmittingUpdateUserForm}
           />
         </Modal>
@@ -208,6 +211,7 @@ export const VirtualizedUserTable = () => {
           action="create"
         >
           <CreateUserForm
+            setValue={setValueNewUserForm}
             companiesError={insuranceCompanyError}
             companies={filteredInsuranceCompanies}
             register={registerNewUserForm}
