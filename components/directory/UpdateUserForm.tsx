@@ -1,22 +1,45 @@
+import { FieldErrors, FieldValues, SubmitHandler, UseFormRegister, UseFormSetValue } from "react-hook-form";
+
 import { Dialog } from "@headlessui/react";
 import { ErrorComponent } from "@/components/Error";
 import { Input } from "@/components/directory/Input";
+import { InsuranceCompany } from "@/interfaces/index"
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import { PropTypes } from "prop-types";
 import { Select } from "@/components/directory/Select";
 import { userFormLabels } from "@/utils/userFormLabels";
 
-//
+type UpdateUserFormProps = {
+  setValue: UseFormSetValue<FieldValues>,
+  register: UseFormRegister<FieldValues>,
+  errors: FieldErrors<FieldValues>,
+  handleSubmit: SubmitHandler<FieldValues>,
+  submitUpdateUser: () => void,
+  isSubmitting: boolean,
+  handleCloseModal: () => void,
+  companies: InsuranceCompany[],
+  companiesError: unknown,
+}
+
+
+
+
 export const UpdateUserForm = ({
-  companies,
-  companiesError,
+  setValue,
   register,
   errors,
-  isSubmitting,
   handleSubmit,
   submitUpdateUser,
+  isSubmitting,
   handleCloseModal,
-}) => {
+  companies,
+  companiesError,
+}: UpdateUserFormProps) => {
+
+
+
+
+
+
   if (companiesError) {
     return (
       <ErrorComponent
@@ -48,11 +71,12 @@ export const UpdateUserForm = ({
         </div>
       </div>
 
-      <form onSubmit={handleSubmit(submitUpdateUser)} className="mt-2 mb-6">
+      <form onSubmit={handleSubmit(submitUpdateUser)} className="mb-6 mt-2">
         <div className="m-6 grid grid-cols-2 gap-6">
           {userFormLabels.map((input) => (
             <div key={input.name} className="col-span-1">
               <Input
+                setValue={setValue}
                 errors={errors}
                 errorMessage={input.errorMessage}
                 htmlFor={input.htmlFor}
@@ -133,10 +157,10 @@ export const UpdateUserForm = ({
         <div className="px-4 sm:flex sm:flex-row-reverse sm:px-6">
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || Object.keys(errors).length > 0}
             className={
-              isSubmitting
-                ? "inline-flex w-full justify-center rounded-md bg-slate-300 px-3 py-2 text-sm font-semibold text-slate-400 shadow-sm sm:ml-3 sm:w-auto"
+              isSubmitting || Object.keys(errors).length > 0
+                ? "inline-flex w-full justify-center rounded-md bg-slate-200 px-3 py-2 text-sm font-semibold text-slate-400 shadow-sm sm:ml-3 sm:w-auto"
                 : "inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
             }
           >
@@ -145,7 +169,7 @@ export const UpdateUserForm = ({
           <button
             type="button"
             className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 sm:mt-0 sm:w-auto"
-            onClick={() => handleCloseModal(false)}
+            onClick={handleCloseModal}
           >
             Cancelar
           </button>
@@ -155,11 +179,3 @@ export const UpdateUserForm = ({
   );
 };
 
-UpdateUserForm.propTypes = {
-  register: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  isSubmitting: PropTypes.bool.isRequired,
-  submitUpdateUser: PropTypes.func.isRequired,
-  handleCloseModal: PropTypes.func.isRequired,
-};

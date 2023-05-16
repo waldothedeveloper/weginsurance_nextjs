@@ -41,6 +41,7 @@ export const userFormLabels = [
     name: "phone",
     label: "Telefono",
     autoComplete: "tel",
+    placeholder: "(305) 555-5555",
     type: "text",
     isRequired: true,
   },

@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 
+import { RealUser } from "@/interfaces/index";
 import { createFirebaseUser } from "@/lib/user_directory/createFirebaseUser";
 import { failureNotification } from "@/components/notifications/failureNotification";
 import { normalizeFirebaseUser } from "@/lib/user_directory/normalizeFirebaseUser";
@@ -12,6 +13,7 @@ export const useNewUserForm = () => {
   const [openCreateUserModal, setOpenCreateUserModal] = useState(false);
 
   const {
+    setValue,
     register,
     reset,
     handleSubmit,
@@ -24,19 +26,20 @@ export const useNewUserForm = () => {
 
   const handleCloseCreateUserModal = useCallback(() => {
     setOpenCreateUserModal(false);
+    setIsSubmitting(false);
   }, []);
 
   // handle form submit
-  const onSubmit = (formInputs) => {
+  const onSubmit = async (formInputs: RealUser) => {
     const normalizedUser = normalizeFirebaseUser(formInputs);
+
     setIsSubmitting(true);
 
-    createFirebaseUser(normalizedUser)
+    await createFirebaseUser(normalizedUser)
       .then(() => {
         setIsSubmitting(false);
         setOpenCreateUserModal(false);
         reset();
-        // notify of user created ok!
         successNotification(
           `El usuario ${normalizedUser?.fullname} ha sido creado exitosamente.`
         );
@@ -46,7 +49,6 @@ export const useNewUserForm = () => {
         setIsSubmitting(false);
         setOpenCreateUserModal(false);
         reset();
-        // notify of error creating a user!
         failureNotification(
           `Ha ocurrido un error al crear al usuario ${normalizedUser?.fullname}. Intentelo nuevamente. Si el error persiste, contacte al soporte.`
         );
@@ -56,6 +58,7 @@ export const useNewUserForm = () => {
   };
 
   return {
+    setValueNewUserForm: setValue,
     registerNewUserForm: register,
     handleSubmitNewUserForm: handleSubmit,
     errorsNewUserForm: errors,

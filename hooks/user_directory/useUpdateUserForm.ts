@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 
+import { RealUser } from "@/interfaces/index";
 import { failureNotification } from "@/components/notifications/failureNotification";
+import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
 import { normalizeFirebaseUser } from "@/lib/user_directory/normalizeFirebaseUser";
 import { successNotification } from "@/components/notifications/successNotification";
 import { updateFirebaseUser } from "@/lib/user_directory/updateFirebaseUser";
@@ -8,12 +10,13 @@ import { useForm } from "react-hook-form";
 
 //
 export const useUpdateUserForm = () => {
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState<RealUser | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [openUpdateUserModal, setOpenUpdateUserModal] = useState(false);
 
   //
   const {
+    setValue,
     register,
     reset,
     handleSubmit,
@@ -27,7 +30,7 @@ export const useUpdateUserForm = () => {
         second_name: selectedUser?.second_name,
         lastname: selectedUser?.lastname,
         second_lastname: selectedUser?.second_lastname,
-        phone: selectedUser?.phone,
+        phone: formatPhoneNumberToNationalUSAformat(selectedUser?.phone),
         email: selectedUser?.email,
         insurance_company: selectedUser?.insurance_company,
         gender: selectedUser?.gender,
@@ -35,15 +38,22 @@ export const useUpdateUserForm = () => {
         notes: selectedUser?.notes,
       });
     }
+
+    return () => reset();
   }, [reset, selectedUser]);
 
   // open modal for updating users
-  const handleUpdateModal = useCallback((currUser) => {
+  const handleUpdateModal = useCallback((currUser: RealUser) => {
     setOpenUpdateUserModal(true);
     setSelectedUser(currUser);
   }, []);
+
+  const handleCloseUpdateModal = () => {
+    setSelectedUser(null);
+    setOpenUpdateUserModal(false);
+  };
   //
-  const submitUpdateUser = (user) => {
+  const submitUpdateUser = async (user: RealUser) => {
     //TODO:  I think you can take the id from the user prop being passed to this function...
     const { id } = selectedUser;
 
@@ -51,12 +61,10 @@ export const useUpdateUserForm = () => {
 
     if (id && updatedUser) {
       setIsSubmitting(true);
-      updateFirebaseUser(updatedUser, id)
+      await updateFirebaseUser(updatedUser, id)
         .then(() => {
           setOpenUpdateUserModal(false);
           setIsSubmitting(false);
-
-          // notify of user successfuly updated!
           successNotification(
             `El usuario ${updatedUser?.fullname} ha sido actualizado correctamente.`
           );
@@ -65,7 +73,6 @@ export const useUpdateUserForm = () => {
         })
         .catch((err) => {
           setIsSubmitting(false);
-          // notify of not being able to update the user
           failureNotification(
             `Ha ocurrido un error trantando de actualizar al usuario ${updatedUser?.fullname}`
           );
@@ -76,6 +83,7 @@ export const useUpdateUserForm = () => {
   };
 
   return {
+    setValueUpdateUserForm: setValue,
     registerUpdateUserForm: register,
     handleUpdateUserForm: handleSubmit,
     errorsUpdateUserForm: errors,
@@ -83,6 +91,6 @@ export const useUpdateUserForm = () => {
     handleUpdateModal,
     isSubmittingUpdateUserForm: isSubmitting,
     openUpdateUserModal,
-    setOpenUpdateUserModal,
+    handleCloseUpdateModal,
   };
 };

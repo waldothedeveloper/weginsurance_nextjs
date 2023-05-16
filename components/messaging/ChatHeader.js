@@ -10,7 +10,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { classNames } from "@/utils/classNames";
-import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
+import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
 import { selectedUserAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
 
@@ -33,7 +33,7 @@ export const ChatHeader = () => {
             {selectedUser?.fullname || "No hay usuario seleccionado"}
           </p>
           <p className="text-xs text-slate-500">
-            {formatPhoneNumber(selectedUser?.phone) || ""}
+            {formatPhoneNumberToNationalUSAformat(selectedUser?.phone) || ""}
           </p>
         </div>
         <div className="flex flex-shrink-0 self-center">
