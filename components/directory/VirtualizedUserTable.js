@@ -55,7 +55,7 @@ export const VirtualizedUserTable = () => {
     isSubmittingUserDelete,
   } = useDeleteUserForm();
 
-  const { totalUserCount, table, firebaseError, firebaseUsers } =
+  const { totalUserCount, table, firebaseError, firebaseUsers, rowSelection } =
     UserTableUtilities({ handleDeleteModal, handleUpdateModal });
 
   if (firebaseError) {
@@ -73,69 +73,75 @@ export const VirtualizedUserTable = () => {
   }
   return (
     <>
-      <div className="overflow-hidden">
-        <div className="flex flex-col justify-center px-4 sm:px-6">
-          <div className="sm:flex-auto">
-            <h1 className="text-base font-semibold leading-6 text-slate-900">
-              Usuarios
-            </h1>
-            <p className="mt-2 text-sm text-slate-700">
-              Directorio de busqueda de {totalUserCount} usuarios
-            </p>
-          </div>
-          {/* Search bar */}
-          <div className="mt-6 flex items-end justify-between">
-            <div>
-              <div className="relative mt-2 flex items-center">
-                <input
-                  placeholder="Buscar usuario"
-                  type="text"
-                  name="search"
-                  id="search"
-                  className="block w-full rounded-md border-0 py-1.5 pr-32 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
-                />
-                <div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
-                  <kbd className="inline-flex items-center rounded border border-slate-200 px-1 font-sans text-xs text-slate-400">
-                    ⌘K
-                  </kbd>
-                </div>
+      <div className="flex flex-col justify-center px-4 sm:px-6">
+        <div className="sm:flex-auto">
+          <h1 className="text-base font-semibold leading-6 text-slate-900">
+            Usuarios
+          </h1>
+          <p className="mt-2 text-sm text-slate-700">
+            {Object.keys(rowSelection).length > 0
+              ? `Ha seleccionado ${
+                  Object.keys(rowSelection).length
+                } de un total de ${
+                  table.getPreFilteredRowModel().rows.length
+                } usuarios`
+              : `Directorio de busqueda de ${totalUserCount} usuarios`}
+          </p>
+        </div>
+        {/* Search bar */}
+        <div className="mt-6 flex items-end justify-between">
+          <div>
+            <div className="relative mt-2 flex items-center">
+              <input
+                placeholder="Buscar usuario"
+                type="text"
+                name="search"
+                id="search"
+                className="block w-full rounded-md border-0 py-1.5 pr-32 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+              />
+              <div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
+                <kbd className="inline-flex items-center rounded border border-slate-200 px-1 font-sans text-xs text-slate-400">
+                  Ctrl+K
+                </kbd>
               </div>
             </div>
-            {/* Create user button */}
-            <div>
+          </div>
+          {/* Create user button */}
+          <div>
+            <button
+              onClick={handleCreateUserModal}
+              type="button"
+              className="hidden items-center gap-x-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:inline-flex lg:ml-4"
+            >
+              <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+              Crear usuario
+            </button>
+            <span className="inline-flex md:hidden">
               <button
                 onClick={handleCreateUserModal}
                 type="button"
-                className="hidden items-center gap-x-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:inline-flex lg:ml-4"
+                className="ml-4 inline-flex items-center gap-x-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
               >
-                <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
-                Crear usuario
+                <UserPlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
               </button>
-              <span className="inline-flex md:hidden">
-                <button
-                  onClick={handleCreateUserModal}
-                  type="button"
-                  className="ml-4 inline-flex items-center gap-x-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                >
-                  <UserPlusIcon
-                    className="-ml-0.5 h-5 w-5"
-                    aria-hidden="true"
-                  />
-                </button>
-              </span>
-            </div>
+            </span>
           </div>
         </div>
+
         <div className="mt-8 flow-root">
-          <div className="-mb-2 overflow-x-auto sm:-mx-6">
-            <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-              <div className="max-h-[77vh] overflow-y-auto">
-                <table className="w-full text-left text-sm text-slate-500">
-                  <thead className="sticky top-0 z-20 bg-slate-100  text-xs uppercase text-slate-700">
+          <div className="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
+            <div className="py-2 sm:px-6 lg:px-8">
+              <div className="max-h-[43rem] overflow-y-auto align-middle">
+                <table className="min-w-full border-separate border-spacing-0">
+                  <thead className="w-full">
                     {table.getHeaderGroups().map((headerGroup) => (
                       <tr key={headerGroup.id}>
                         {headerGroup.headers.map((header) => (
-                          <th scope="col" className="px-6 py-3" key={header.id}>
+                          <th
+                            scope="col"
+                            className="sticky top-0 z-10 w-96 border-b border-gray-300 bg-white bg-opacity-75 py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6 lg:pl-8"
+                            key={header.id}
+                          >
                             {header.isPlaceholder
                               ? null
                               : flexRender(
@@ -147,11 +153,14 @@ export const VirtualizedUserTable = () => {
                       </tr>
                     ))}
                   </thead>
-                  <tbody>
+                  <tbody className="px-12">
                     {table.getRowModel().rows.map((row) => (
-                      <tr className="border-b bg-white" key={row.id}>
+                      <tr className="w-96 border-b bg-white pl-3" key={row.id}>
                         {row.getVisibleCells().map((cell) => (
-                          <td className="px-6 py-4" key={cell.id}>
+                          <td
+                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                            key={cell.id}
+                          >
                             {flexRender(
                               cell.column.columnDef.cell,
                               cell.getContext()
@@ -162,6 +171,7 @@ export const VirtualizedUserTable = () => {
                     ))}
                   </tbody>
                 </table>
+
                 <Pagination table={table} />
               </div>
             </div>

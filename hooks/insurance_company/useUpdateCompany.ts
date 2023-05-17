@@ -7,6 +7,7 @@ import {
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useCallback, useEffect } from "react";
 
+import { FieldValues } from "react-hook-form";
 import { InsuranceCompany } from "@/interfaces/index";
 import { failureNotification } from "@/components/notifications/failureNotification";
 import { normalizeString } from "@/utils/normalizeString";
@@ -53,7 +54,7 @@ export const useUpdateCompany = () => {
     setSelectedInsuranceCompany(null);
   }, [setSelectedInsuranceCompany, setOpenModal]);
 
-  const updateCompany = (updatedCompany: InsuranceCompany) => {
+  const updateCompany = (updatedCompany: FieldValues) => {
     const { notes, name, logo_url } = updatedCompany;
     const logoUrl = uploadedImages.find(
       (file) =>
@@ -95,7 +96,7 @@ export const useUpdateCompany = () => {
       });
   };
 
-  const onSubmit = (values: InsuranceCompany) => {
+  const onSubmit = (values: FieldValues) => {
     updateCompany(values);
   };
 
