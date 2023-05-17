@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 
 import { ChatWindow } from "@/components/messaging/components/ChatWindow";
+import { ErrorComponent } from "@/components/Error";
 import { messagesAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
 import { useUpdateUserConversations } from "@/hooks/messaging/useUpdateUserConversations";
@@ -23,6 +24,8 @@ export const VirtualizedConversation = () => {
   useEffect(() => {
     if (count) virtualizer.scrollToIndex(count - 1);
   }, [count, virtualizer]);
+
+  if (error) <ErrorComponent error_message={error} />;
 
   return (
     <div
