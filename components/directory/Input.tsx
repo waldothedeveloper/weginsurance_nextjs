@@ -9,7 +9,7 @@ const errorClass =
 const okClass =
   "mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-slate-300 rounded-md";
 type InputProps = {
-  setValue: UseFormSetValue<FieldValues>,
+  setValue?: UseFormSetValue<FieldValues>,
   errorMessage: string,
   register: UseFormRegister<FieldValues>,
   name: string,

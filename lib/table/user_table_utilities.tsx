@@ -1,4 +1,5 @@
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
+import React, { HTMLProps } from 'react'
 import {
   createColumnHelper,
   getCoreRowModel,
@@ -7,24 +8,79 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import { RealUser } from "@/interfaces/index";
 import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
 import { useFakeUserList } from "@/hooks/test/useFakeUserList";
 import { useFirebaseUsers } from "@/hooks/user_directory/useFirebaseUsers";
 import { useMemo } from "react";
 
+const IndeterminateCheckbox = ({
+  indeterminate,
+  ...rest
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) => {
+  const ref = React.useRef<HTMLInputElement>(null!)
+
+  React.useEffect(() => {
+    if (typeof indeterminate === 'boolean') {
+      ref.current.indeterminate = !rest.checked && indeterminate
+    }
+  }, [ref, indeterminate, rest])
+
+  return (
+    <input
+      type="checkbox"
+      ref={ref}
+      className='rounded border-gray-200 text-blue-600 focus:ring-blue-600 cursor-pointer'
+      {...rest}
+    />
+  )
+}
+
+type UserTableUtilitiesProps = {
+  // eslint-disable-next-line no-unused-vars
+  handleUpdateModal: (arg: RealUser) => void,
+  // eslint-disable-next-line no-unused-vars
+  handleDeleteModal: (arg: RealUser) => void
+}
 //
 export const UserTableUtilities = ({
   handleUpdateModal,
   handleDeleteModal,
-}) => {
+}: UserTableUtilitiesProps) => {
   //! make sure to change this test = false when you're done testing
   const test = false;
+  const [rowSelection, setRowSelection] = React.useState({})
+
   const { firebaseUsers, firebaseError } = useFirebaseUsers();
   const fakeUserList = useFakeUserList();
   const totalUserCount = test ? fakeUserList.length : firebaseUsers.length;
-  const columnHelper = createColumnHelper();
+  const columnHelper = createColumnHelper<RealUser>();
   const columns = useMemo(
     () => [
+      {
+        id: "select",
+        header: ({ table }) => (
+          <IndeterminateCheckbox
+            {...{
+              checked: table.getIsAllRowsSelected(),
+              indeterminate: table.getIsSomeRowsSelected(),
+              onChange: table.getToggleAllRowsSelectedHandler(),
+            }}
+          />
+        ),
+        cell: ({ row }) => (
+          <div className="py-3.5 pl-4 pr-3">
+            <IndeterminateCheckbox
+              {...{
+                checked: row.getIsSelected(),
+                disabled: !row.getCanSelect(),
+                indeterminate: row.getIsSomeSelected(),
+                onChange: row.getToggleSelectedHandler(),
+              }}
+            />
+          </div>
+        ),
+      },
       columnHelper.accessor((row) => row.fullname, {
         id: "fullname",
         header: () => <span>Nombre y Apellidos</span>,
@@ -35,7 +91,7 @@ export const UserTableUtilities = ({
             </div>
 
             <div className="whitespace-nowrap font-normal text-slate-500">
-              {formatPhoneNumberToNationalUSAformat(props?.row?.original.phone)}
+              {formatPhoneNumberToNationalUSAformat(props?.row?.original.phone as string)}
             </div>
           </div>
         ),
@@ -110,10 +166,16 @@ export const UserTableUtilities = ({
   const table = useReactTable({
     data: test ? fakeUserList : firebaseUsers,
     columns,
+    state: {
+      rowSelection,
+    },
+    onRowSelectionChange: setRowSelection,
+    enableRowSelection: true,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    debugTable: false,
   });
 
-  return { totalUserCount, table, firebaseError, fakeUserList, firebaseUsers };
+  return { totalUserCount, table, firebaseError, fakeUserList, firebaseUsers, rowSelection };
 };
