@@ -1,4 +1,5 @@
 import {
+  Unsubscribe,
   collection,
   limit,
   onSnapshot,
@@ -21,7 +22,7 @@ export const useUpdateUserConversations = () => {
 
   //
   useEffect(() => {
-    let unsubscribe: any = null;
+    let unsubscribe: Unsubscribe | null = null;
     // console.log(`getMessages listener is running`);
     try {
       const messagesQuery = query(

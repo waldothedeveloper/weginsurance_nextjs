@@ -1,6 +1,7 @@
 import { getAuth, signInWithCustomToken } from "firebase/auth";
 import { useEffect, useState } from "react";
 
+import { AlgoliaProvider } from "@/components/algolia/config";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { DesktopSideBar } from "@/components/DesktopSideBar";
 import Link from "next/link";
@@ -18,7 +19,7 @@ export const Layout = () => {
   const handleOpenSideBar = () => setSidebarOpen(true);
 
   // TODO: identify who is more likely to benefit from this hook, probably the Wrapper component
-  const { inboundSMSMessageError, errorIdentifyingUser } =
+  const { errorIdentifyingUser } =
     useIdentifyIncomingUserFromInboundSMS();
   const { notiError } = useHandleNotifications(errorIdentifyingUser);
 
@@ -82,7 +83,9 @@ export const Layout = () => {
           </div>
 
           <div className="relative z-0 mx-auto flex w-full overflow-hidden">
-            <Wrapper />
+            <AlgoliaProvider>
+              <Wrapper />
+            </AlgoliaProvider>
           </div>
         </div>
       </div>

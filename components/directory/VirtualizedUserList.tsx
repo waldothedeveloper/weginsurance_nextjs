@@ -1,21 +1,18 @@
 import { FakeUser, RealUser } from "@/interfaces/index";
-import {
-  FunnelIcon,
-  MagnifyingGlassIcon,
-  UserIcon,
-} from "@heroicons/react/24/outline";
 import { forwardRef, useEffect } from "react";
-import { useAtomValue, useSetAtom } from "jotai";
 
+import { CustomHits } from "@/components/algolia/CustomHits"
+import { CustomSearchBox } from "@/components/algolia/CustomSearchBox"
+import { EmptyQueryBoundary } from "@/components/algolia/EmptyQueryBoundary"
+// import { SearchBox } from 'react-instantsearch-hooks-web';
 import { Spinning } from "@/components/Spinning";
+import { UserList } from "@/components/directory/UserList"
 import { Virtuoso } from "react-virtuoso";
-import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
-import { normalizeString } from "@/utils/normalizeString";
 import { selectedUserAtom } from "@/lib/state/atoms";
+import { useAtomValue } from "jotai"
 import { useFakeUserList } from "@/hooks/test/useFakeUserList";
 import { useFirebaseUsers } from "@/hooks/user_directory/useFirebaseUsers";
 import { useRouter } from "next/router";
-import { userPhoneAtom } from "@/lib/state/atoms";
 
 //
 const Footer = () => (
@@ -31,13 +28,8 @@ const List = forwardRef((props, ref) => {
 
 // eslint-disable-next-line no-unused-vars
 export const VirtualizedUserList = ({ getMessages }: { getMessages: (userId: string) => Promise<void> }) => {
-  const setUserPhone = useSetAtom(userPhoneAtom);
-  const setSelectedUser = useSetAtom(selectedUserAtom);
   const selectedUser = useAtomValue(selectedUserAtom);
   const router = useRouter();
-
-
-
 
   useEffect(() => {
     if (selectedUser) {
@@ -62,6 +54,8 @@ export const VirtualizedUserList = ({ getMessages }: { getMessages: (userId: str
     );
   }
 
+
+
   if (test ? fakeUserList?.length === 0 : firebaseUsers?.length === 0) {
     return <Spinning message="Cargando Usuarios" />;
   }
@@ -74,129 +68,35 @@ export const VirtualizedUserList = ({ getMessages }: { getMessages: (userId: str
           Directorio de búsqueda de{" "}
           {test ? fakeUserList?.length : firebaseUsers.length} usuarios
         </p>
-        <form
+        {/* <div
           className="mt-6 flex space-x-4"
-          onSubmit={(event) => event.preventDefault()}
         >
           <div className="min-w-0 flex-1">
-            <label htmlFor="search" className="sr-only">
-              Search
-            </label>
-            <div className="relative rounded-md shadow-sm">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <MagnifyingGlassIcon
-                  className="h-5 w-5 text-slate-400"
-                  aria-hidden="true"
-                />
-              </div>
-              <input
-                type="search"
-                name="search"
-                id="search"
-                className="block w-full rounded-md border-slate-300 bg-slate-50 pl-10 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                placeholder="Search"
-              />
-            </div>
+            <SearchBox classNames={{
+              root: 'w-full rounded-md',
+              form: 'w-full mt-6 flex gap-x-4 relative',
+              input: 'shadow-sm block w-full rounded-md border-0 py-1.5 pl-10 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6',
+              submit: 'absolute inset-y-0 left-0 flex items-center pl-3',
+            }} />
           </div>
-          <button
-            type="submit"
-            className="inline-flex justify-center rounded-md border border-slate-300 bg-white px-3.5 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
-            <FunnelIcon className="h-5 w-5 text-slate-400" aria-hidden="true" />
-            <span className="sr-only">Search</span>
-          </button>
-        </form>
+        </div> */}
+        <CustomSearchBox />
       </div>
       {/* Directory list */}
       <nav
         className="bg-secondary max-h-[80vh] flex-1 overflow-y-auto"
         aria-label="Directory"
       >
-        <Virtuoso
+
+        <EmptyQueryBoundary fallback={<Virtuoso
           components={{ List, Footer }}
           data={test ? fakeUserList : firebaseUsers}
           itemContent={(index, user: RealUser) => (
-            <>
-              <li
-                className={
-                  selectedUser?.fullname === user.fullname
-                    ? "my-3 flex items-center space-x-3 rounded-2xl bg-slate-100 px-6 py-6 outline-none focus-within:ring-2 focus-within:ring-inset focus:ring-red-50"
-                    : "my-3 flex items-center space-x-3 rounded-2xl px-6 py-6 outline-none focus-within:ring-2 focus-within:ring-inset hover:bg-slate-50 focus:outline-none"
-                }
-              >
-                <div className="flex-shrink-0">
-                  <UserIcon
-                    className={
-                      selectedUser?.fullname === user.fullname
-                        ? "h-12 w-12 rounded-xl bg-slate-200 p-2 font-light text-slate-400"
-                        : "h-12 w-12 rounded-xl bg-slate-50 p-2 font-light text-slate-400"
-                    }
-                  />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      try {
-                        setUserPhone(user?.phone);
-                        setSelectedUser(user);
-                        getMessages(user?.id)
-                      } catch (error) {
-                        return error;
-                      }
-                    }}
-                    className="flex w-full flex-col items-start space-y-1 focus:outline-none"
-                  >
-                    <div className="flex w-full justify-between">
-                      <p
-                        className={
-                          selectedUser?.fullname === user.fullname
-                            ? "whitespace-normal text-sm font-medium text-slate-900"
-                            : "whitespace-normal text-sm font-medium text-slate-600"
-                        }
-                      >
-                        {normalizeString(user?.fullname)}
-                      </p>
-                      <div
-                        className={
-                          selectedUser?.fullname === user.fullname
-                            ? "relative inline-flex items-center rounded-full border border-blue-600 px-2 py-0.5 text-sm"
-                            : "relative inline-flex items-center rounded-full border border-slate-200 px-2 py-0.5 text-sm"
-                        }
-                      >
-                        <span className="absolute flex flex-shrink-0 items-center justify-center">
-                          <span
-                            className="h-1 w-1 rounded-full"
-                            aria-hidden="true"
-                          />
-                        </span>
-                        <span
-                          className={
-                            selectedUser?.fullname === user.fullname
-                              ? "text-xs font-medium text-blue-600"
-                              : "text-xs text-slate-400"
-                          }
-                        >
-                          {user?.insurance_company}
-                        </span>
-                      </div>
-                    </div>
-
-                    <p
-                      className={
-                        selectedUser?.fullname === user.fullname
-                          ? "truncate text-xs text-slate-600"
-                          : "truncate text-xs text-slate-400"
-                      }
-                    >
-                      {formatPhoneNumberToNationalUSAformat(user?.phone)}
-                    </p>
-                  </button>
-                </div>
-              </li>
-            </>
+            <UserList user={user} getMessages={getMessages} />
           )}
-        />
+        />}>
+          <CustomHits getMessages={getMessages} />
+        </EmptyQueryBoundary>
       </nav>
     </>
   );
