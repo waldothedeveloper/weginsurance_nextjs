@@ -1,6 +1,7 @@
-import { PlusIcon, UserPlusIcon } from "@heroicons/react/20/solid";
+import { PlusIcon, TrashIcon, UserPlusIcon } from "@heroicons/react/20/solid";
 
 import { CreateUserForm } from "@/components/directory/CreateUserForm";
+import { DeleteMultipleUsersForm } from "@/components/directory/DeleteMultipleUsersForm";
 import { DeleteUserActions } from "@/components/directory/DeleteUserActions";
 import { ErrorComponent } from "@/components/Error";
 import { Modal } from "@/components/directory/Modal";
@@ -47,12 +48,16 @@ export const VirtualizedUserTable = () => {
   } = useUpdateUserForm();
   // delete user
   const {
+    openDeleteMultipleUsers,
     openDeleteUserModal,
     userToDelete,
     handleDeleteUser,
     handleDeleteModal,
     handleDeleteCloseModal,
     isSubmittingUserDelete,
+    handleCloseDeleteMultipleUsers,
+    handleOpenDeleteMultipleUsersModal,
+    handleDeleteMultipleUsers,
   } = useDeleteUserForm();
 
   const { totalUserCount, table, firebaseError, firebaseUsers, rowSelection } =
@@ -80,11 +85,8 @@ export const VirtualizedUserTable = () => {
           </h1>
           <p className="mt-2 text-sm text-slate-700">
             {Object.keys(rowSelection).length > 0
-              ? `Ha seleccionado ${
-                  Object.keys(rowSelection).length
-                } de un total de ${
-                  table.getPreFilteredRowModel().rows.length
-                } usuarios`
+              ? `Ha seleccionado ${Object.keys(rowSelection).length
+              } de un total de ${totalUserCount} usuarios`
               : `Directorio de busqueda de ${totalUserCount} usuarios`}
           </p>
         </div>
@@ -108,6 +110,17 @@ export const VirtualizedUserTable = () => {
           </div>
           {/* Create user button */}
           <div>
+            {/* Delete Multiple Users */}
+            {Object.keys(rowSelection).length > 0 && (
+              <button
+                onClick={() => handleOpenDeleteMultipleUsersModal(rowSelection)}
+                type="button"
+                className="hidden items-center gap-x-2 rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 md:inline-flex lg:ml-4"
+              >
+                <TrashIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+                Eliminar {Object.keys(rowSelection).length} usuarios
+              </button>
+            )}
             <button
               onClick={handleCreateUserModal}
               type="button"
@@ -145,9 +158,9 @@ export const VirtualizedUserTable = () => {
                             {header.isPlaceholder
                               ? null
                               : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext()
-                                )}
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
                           </th>
                         ))}
                       </tr>
@@ -193,6 +206,21 @@ export const VirtualizedUserTable = () => {
           />
         </Modal>
       )}
+      {/* delete MULTIPLE Users  */}
+      {openDeleteMultipleUsers && (
+        <Modal
+          action="delete"
+          openModal={openDeleteMultipleUsers}
+          handleCloseModal={handleCloseDeleteMultipleUsers}
+        >
+          <DeleteMultipleUsersForm
+            isSubmitting={isSubmittingUserDelete}
+            handleCloseModal={handleCloseDeleteMultipleUsers}
+            handleDeleteMultipleUsers={handleDeleteMultipleUsers}
+            table={table}
+          />
+        </Modal>
+      )}
       {/* update action */}
       {openUpdateUserModal && (
         <Modal
@@ -213,6 +241,7 @@ export const VirtualizedUserTable = () => {
           />
         </Modal>
       )}
+
       {/* create action */}
       {openCreateUserModal && (
         <Modal

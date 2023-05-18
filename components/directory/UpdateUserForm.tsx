@@ -1,9 +1,8 @@
-import { FieldErrors, FieldValues, SubmitHandler, UseFormRegister, UseFormSetValue } from "react-hook-form";
+import { FieldErrors, FieldValues, UseFormHandleSubmit, UseFormRegister, UseFormSetValue } from "react-hook-form";
 
 import { Dialog } from "@headlessui/react";
 import { ErrorComponent } from "@/components/Error";
 import { Input } from "@/components/directory/Input";
-import { InsuranceCompany } from "@/interfaces/index"
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { Select } from "@/components/directory/Select";
 import { userFormLabels } from "@/utils/userFormLabels";
@@ -12,11 +11,11 @@ type UpdateUserFormProps = {
   setValue: UseFormSetValue<FieldValues>,
   register: UseFormRegister<FieldValues>,
   errors: FieldErrors<FieldValues>,
-  handleSubmit: SubmitHandler<FieldValues>,
+  handleSubmit: UseFormHandleSubmit<FieldValues>,
   submitUpdateUser: () => void,
   isSubmitting: boolean,
   handleCloseModal: () => void,
-  companies: InsuranceCompany[],
+  companies: { value: string; id: string | undefined; }[] | undefined,
   companiesError: unknown,
 }
 
