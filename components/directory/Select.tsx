@@ -12,7 +12,7 @@ const okClass =
 interface SelectProps {
   errors: FieldErrors<FieldValues>;
   htmlFor: string,
-  options: InsuranceCompany[] | Gender[] | ActiveUser[],
+  options: InsuranceCompany[] | Gender[] | ActiveUser[] | { value: string; id: string | undefined; }[] | undefined,
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void,
   onBlur: React.FocusEventHandler<HTMLSelectElement>;
   name: string;

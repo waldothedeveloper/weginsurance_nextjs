@@ -1,9 +1,11 @@
 import { Dialog, Transition } from "@headlessui/react";
 
 import { Fragment } from "react";
-import PropTypes from "prop-types";
+import React from 'react'
 
-export const Modal = ({ openModal, handleCloseModal, children, action }) => {
+type ModalProps = { openModal: boolean, handleCloseModal: () => void, children: React.ReactNode, action: string }
+
+export const Modal = ({ openModal, handleCloseModal, children, action }: ModalProps) => {
   return (
     <Transition.Root show={openModal} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={handleCloseModal}>
@@ -49,10 +51,4 @@ export const Modal = ({ openModal, handleCloseModal, children, action }) => {
       </Dialog>
     </Transition.Root>
   );
-};
-
-Modal.propTypes = {
-  openModal: PropTypes.bool.isRequired,
-  handleCloseModal: PropTypes.func.isRequired,
-  action: PropTypes.string.isRequired,
 };
