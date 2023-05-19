@@ -1,8 +1,8 @@
 import { ChatMessage } from "@/components/messaging/components/ChatMessage";
+import { Message } from "@/interfaces/index";
 import { TimeDivider } from "@/components/messaging/TimeDivider";
 import { messagesAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
-
 //
 type ChatWindowProps = {
   items: VirtualItem[];
@@ -17,9 +17,9 @@ type VirtualItem = {
   start: number;
 };
 
-//
+
 export const ChatWindow = ({ virtualizer, items }: ChatWindowProps) => {
-  const messagesFromDB = useAtomValue(messagesAtom);
+  const messagesFromDB = useAtomValue(messagesAtom) as Message[];
   //
   return (
     <div
@@ -29,7 +29,6 @@ export const ChatWindow = ({ virtualizer, items }: ChatWindowProps) => {
       className="absolute left-0 top-0 w-full"
     >
       {items.map((virtualRow) => {
-
         return (
           <div
             key={virtualRow.key}
@@ -37,7 +36,7 @@ export const ChatWindow = ({ virtualizer, items }: ChatWindowProps) => {
             ref={virtualizer.measureElement}
           >
             <div className="py-0.5">
-              {messagesFromDB && "type" in messagesFromDB[virtualRow.index] ? (
+              {Array.isArray(messagesFromDB) && "type" in messagesFromDB[virtualRow.index] ? (
                 <TimeDivider time={messagesFromDB[virtualRow.index]?.dateCreated} />
               ) : (
                 <ChatMessage msg={messagesFromDB[virtualRow.index]} />

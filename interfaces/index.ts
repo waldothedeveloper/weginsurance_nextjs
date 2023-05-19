@@ -2,7 +2,7 @@ import firestore from "firebase/firestore";
 
 export interface FakeUser {
   id: string;
-  gender: "masculino" | "femenino";
+  gender: "masculino" | "femenino" | "male" | "female";
   active_user: boolean;
   firstname: string;
   second_name: string;

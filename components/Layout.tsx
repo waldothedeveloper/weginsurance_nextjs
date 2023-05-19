@@ -9,8 +9,9 @@ import { MobileSideBar } from "@/components/MobileSideBar";
 import { Wrapper } from "@/components/Wrapper";
 import { firebaseApp } from "@/lib/firebaseConfig";
 import { useAuth } from "@clerk/nextjs";
-import { useHandleNotifications } from "@/hooks/notifications/useHandleNotifications";
-import { useIdentifyIncomingUserFromInboundSMS } from "@/hooks/messaging/useIdentifyIncomingUserFromInboundSMS";
+
+// import { useHandleNotifications } from "@/hooks/notifications/useHandleNotifications";
+// import { useIdentifyIncomingUserFromInboundSMS } from "@/hooks/messaging/useIdentifyIncomingUserFromInboundSMS";
 
 export const Layout = () => {
   const { getToken } = useAuth();
@@ -19,9 +20,9 @@ export const Layout = () => {
   const handleOpenSideBar = () => setSidebarOpen(true);
 
   // TODO: identify who is more likely to benefit from this hook, probably the Wrapper component
-  const { errorIdentifyingUser } =
-    useIdentifyIncomingUserFromInboundSMS();
-  const { notiError } = useHandleNotifications(errorIdentifyingUser);
+  // const { errorIdentifyingUser } =
+  //   useIdentifyIncomingUserFromInboundSMS();
+  // const { notiError } = useHandleNotifications(errorIdentifyingUser);
 
   //
   useEffect(() => {

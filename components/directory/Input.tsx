@@ -51,7 +51,7 @@ export const Input = ({
           {...register("phone", {
             pattern: /^(\+?1-?)?(\()?\d{3}(\))?(-|\s)?\d{3}(-|\s)?\d{4}$/g,
             required: isRequired,
-            onChange: (e) => { return setValue("phone", formatPhoneNumberToNationalUSAformat(e.target.value), { shouldValidate: true }) },
+            onChange: (event) => { return setValue && setValue("phone", formatPhoneNumberToNationalUSAformat(event.target.value), { shouldValidate: true }) },
           })}
           placeholder={placeholder}
           type={type}

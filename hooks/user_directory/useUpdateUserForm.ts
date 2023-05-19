@@ -36,6 +36,7 @@ export const useUpdateUserForm = () => {
         gender: selectedUser?.gender,
         active_user: selectedUser?.active_user === true ? "Si" : "No",
         notes: selectedUser?.notes,
+        id: selectedUser?.id,
       });
     }
 
@@ -55,11 +56,11 @@ export const useUpdateUserForm = () => {
   //
   const submitUpdateUser = async (user: RealUser) => {
     //TODO:  I think you can take the id from the user prop being passed to this function...
-    const { id } = selectedUser;
 
     const updatedUser = normalizeFirebaseUser(user);
 
-    if (id && updatedUser) {
+    if (updatedUser && selectedUser && "id" in selectedUser) {
+      const { id } = selectedUser;
       setIsSubmitting(true);
       await updateFirebaseUser(updatedUser, id)
         .then(() => {

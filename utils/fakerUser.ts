@@ -3,6 +3,7 @@ import { faker } from "@faker-js/faker/locale/es";
 
 export const createRandomUser = (): FakeUser => {
   const gender = faker.name.sexType();
+
   const active_user = faker.datatype.boolean();
   const firstname = faker.name.firstName(gender);
   const second_name = faker.name.middleName(gender);

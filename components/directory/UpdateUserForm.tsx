@@ -1,9 +1,10 @@
-import { FieldErrors, FieldValues, UseFormHandleSubmit, UseFormRegister, UseFormSetValue } from "react-hook-form";
+import { FieldErrors, FieldValues, UseFormRegister, UseFormSetValue } from "react-hook-form";
 
 import { Dialog } from "@headlessui/react";
 import { ErrorComponent } from "@/components/Error";
 import { Input } from "@/components/directory/Input";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { RealUser } from "@/interfaces/index";
 import { Select } from "@/components/directory/Select";
 import { userFormLabels } from "@/utils/userFormLabels";
 
@@ -11,8 +12,9 @@ type UpdateUserFormProps = {
   setValue: UseFormSetValue<FieldValues>,
   register: UseFormRegister<FieldValues>,
   errors: FieldErrors<FieldValues>,
-  handleSubmit: UseFormHandleSubmit<FieldValues>,
-  submitUpdateUser: () => void,
+  handleSubmit: any,
+  // eslint-disable-next-line no-unused-vars
+  submitUpdateUser: (user: RealUser) => Promise<void>,
   isSubmitting: boolean,
   handleCloseModal: () => void,
   companies: { value: string; id: string | undefined; }[] | undefined,
