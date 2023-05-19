@@ -59,7 +59,7 @@ export const UserTableUtilities = ({
     () => [
       {
         id: "select",
-        header: ({ table }) => (
+        header: ({ table }: any) => (
           <IndeterminateCheckbox
             {...{
               checked: table.getIsAllRowsSelected(),
@@ -68,7 +68,7 @@ export const UserTableUtilities = ({
             }}
           />
         ),
-        cell: ({ row }) => (
+        cell: ({ row }: any) => (
           <div className="py-3.5 pl-4 pr-3">
             <IndeterminateCheckbox
               {...{

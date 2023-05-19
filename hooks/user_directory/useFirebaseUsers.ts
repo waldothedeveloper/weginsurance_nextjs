@@ -1,4 +1,10 @@
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  Unsubscribe,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 import { RealUser } from "@/interfaces/index";
@@ -10,7 +16,7 @@ export const useFirebaseUsers = () => {
   const [firebaseError, setFirebaseError] = useState<{} | null>(null);
 
   useEffect(() => {
-    let unsubscribe = null;
+    let unsubscribe: Unsubscribe | null = null;
     try {
       /* 
       you can use this db name collection to test large database of users (for testing only): 
@@ -21,7 +27,7 @@ export const useFirebaseUsers = () => {
       unsubscribe = onSnapshot(dbQuery, (querySnapshot) => {
         const users: RealUser[] = [];
         querySnapshot.forEach((doc) => {
-          const tempUser = doc.data();
+          const tempUser: RealUser = doc.data() as RealUser;
           tempUser.id = doc?.id;
           users.push(tempUser);
         });

@@ -3,6 +3,7 @@ import { FieldErrors, FieldValues, UseFormHandleSubmit, UseFormRegister } from "
 import { Dialog } from "@headlessui/react";
 import { DragAndDrop } from "@/components/companies/DragAndDrop";
 import { Input } from "@/components/directory/Input";
+import { InsuranceCompany } from "@/interfaces/index";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { UploadProgressBar } from "@/components/companies/UploadProgressBar";
 import { companyFormLabels } from "@/utils/companyFormLabels";
@@ -15,7 +16,7 @@ type CreateCompanyProps = {
   register: UseFormRegister<FieldValues>,
   errors: FieldErrors<FieldValues>,
   // eslint-disable-next-line no-unused-vars
-  onSubmit: (data: FieldValues) => (data: FieldValues) => void,
+  onSubmit: (values: InsuranceCompany) => void,
   handleSubmit: UseFormHandleSubmit<FieldValues>,
   closeModal: () => void,
 }
@@ -55,7 +56,7 @@ export const CreateCompany = ({
 
       <form
         //! don't forget to add the files (upload company logos) to the onSubmit function
-        onSubmit={handleSubmit((data) => onSubmit(data))}
+        onSubmit={handleSubmit((data) => onSubmit(data as InsuranceCompany))}
         className="mb-6 mt-2"
       >
         <div className="m-6 grid grid-cols-2 items-start gap-6">
