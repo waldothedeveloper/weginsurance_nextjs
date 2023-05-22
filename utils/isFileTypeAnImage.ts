@@ -2,7 +2,7 @@ import { ImagesArray } from "@/interfaces/index";
 
 export const isFileTypeAnImage = (
   files: ImagesArray,
-  selectedImgId: string
+  selectedImgId: string | null
 ) => {
   const isFileTypeAnImage = (str: string, type: string) => str.startsWith(type);
   const isSelectedImage = (arr: ImagesArray) =>

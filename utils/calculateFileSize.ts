@@ -2,7 +2,7 @@ import { ImagesArray } from "@/interfaces/index";
 
 export const calculateFileSize = (
   files: ImagesArray,
-  selectedImgId: string
+  selectedImgId: string | null
 ) => {
   if (files && files.length > 0) {
     const currentSelectedFile = files.find((file) => file.id === selectedImgId);

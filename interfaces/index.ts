@@ -158,7 +158,7 @@ export type DocumentType = {
   "application/rtf": [".rtf"];
 };
 
-export type FileLike = File & { preview?: string; id: string };
+export type FileLike = File & { preview?: string; id: string; url?: string };
 export type ImagesArray = FileLike[];
 export type UploadedFile = FileLike & {
   url: string;

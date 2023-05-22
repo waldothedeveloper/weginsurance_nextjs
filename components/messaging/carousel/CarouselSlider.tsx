@@ -3,6 +3,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 
 import Image from "next/image";
 import { ShowFileTypeIcon } from "@/components/messaging/carousel/ShowFileTypeIcon";
+import { UploadedFile } from "@/interfaces/index"
 import { classNames } from "@/utils/classNames";
 import { deleteStorageFile } from "@/utils/deleteStorageFile";
 import { splitFileName } from "@/utils/splitFileName";
@@ -12,9 +13,15 @@ import { useCallback } from "react";
 import { useDropAndUploadFiles } from "@/hooks/fileUploader/useDropAndUploadFiles";
 import { useHoverFile } from "@/hooks/fileUploader/useHoverFile";
 
+type CarouselSliderProps = {
+  // eslint-disable-next-line no-unused-vars
+  handleSelectedFile: (file: UploadedFile) => void;
+  selectedImage: string | null;
+}
 //
-export const CarouselSlider = ({ handleSelectedFile, selectedImage }) => {
+export const CarouselSlider = ({ handleSelectedFile, selectedImage }: CarouselSliderProps) => {
   const uploadedImages = useAtomValue(uploadedFilesAtom);
+
   const setUploadedImages = useSetAtom(uploadedFilesAtom);
   const { isCurrentHoveredFile, handleMouseOver, handleMouseLeave } =
     useHoverFile();
@@ -22,13 +29,12 @@ export const CarouselSlider = ({ handleSelectedFile, selectedImage }) => {
 
   const handleRemoveFile = useAtomCallback(
     useCallback(
-      (get, set, arg) => {
+      (get, set, arg: { id: string, type: string, name: string }) => {
         const remainingImages = get(uploadedFilesAtom).filter(
           (file) => file.id !== arg.id
         );
 
         if (remainingImages) {
-          // async function to delete the recently uploaded file...
           !arg.type.startsWith("image/")
             ? deleteStorageFile(arg?.name, "documents")
             : deleteStorageFile(arg?.name, "images");
@@ -97,7 +103,8 @@ export const CarouselSlider = ({ handleSelectedFile, selectedImage }) => {
           </li>
         ))}
       </ul>
-      {uploadedImages[0]?.type.startsWith("image/") ? (
+      {uploadedImages.length > 0 &&
+        uploadedImages[0]?.type.startsWith("image/") ? (
         <div className="h-14 self-start">
           <button
             {...imageDropZone.getRootProps()}

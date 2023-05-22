@@ -33,7 +33,9 @@ export const CarouselWrapper = () => {
 
   return (
     <Transition
-      show={Boolean(numberOfFilesUploaded > 0)}
+      show={Boolean(
+        uploadedImages.length > 0 || progress > 0 || numberOfFilesUploaded > 0
+      )}
       enter="transition-opacity duration-75"
       enterFrom="opacity-0"
       enterTo="opacity-100"
@@ -58,10 +60,10 @@ export const CarouselWrapper = () => {
             </button>
           </div>
           <div className="relative h-[60vh] w-full">
-            {isFileTypeAnImage(uploadedImages) ? (
+            {progress > 0 && isFileTypeAnImage(uploadedImages, selectedImage) ? (
               <Image
                 className="absolute top-0 h-full w-full rounded-sm object-contain drop-shadow-md"
-                src={currentSelectedFile(uploadedImages, selectedImage)?.url}
+                src={currentSelectedFile(uploadedImages, selectedImage)}
                 alt="file preview"
                 fill
                 sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 800px"
@@ -88,6 +90,7 @@ export const CarouselWrapper = () => {
                 </p>
               </div>
             )}
+
           </div>
           <div>
             {`${progress}%`}

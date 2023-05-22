@@ -12,6 +12,7 @@ import { useSetAtom } from "jotai";
 export const useUploadFilesWithProgressFeedback = () => {
   const setProgressPercentage = useSetAtom(progressPercentageAtom);
   const setNumberOfFilesUploaded = useSetAtom(numberOfFilesUploadedAtom);
+  // I'm not too sure about this, think about it
   const fileUploadOrder: number[] = [];
   //
   const uploadFilesToCloud = async (files: FileLike[], refPath: string) => {
@@ -35,8 +36,6 @@ export const useUploadFilesWithProgressFeedback = () => {
                 const progress = Math.round(
                   (snapshot.bytesTransferred / snapshot.totalBytes) * 100
                 );
-
-                // console.log(`Upload is ${progress}% done`);
                 setProgressPercentage(progress);
               },
               (error) => {

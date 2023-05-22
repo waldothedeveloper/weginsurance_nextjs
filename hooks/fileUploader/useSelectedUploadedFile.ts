@@ -1,26 +1,26 @@
-import { useCallback, useState } from "react";
+import { selectedImageIdAtom, uploadedFilesAtom } from "@/lib/state/atoms";
 
 import { UploadedFile } from "@/interfaces/index";
-import { uploadedFilesAtom } from "@/lib/state/atoms";
+import { useAtom } from "jotai";
 import { useAtomCallback } from "jotai/utils";
-import { useAtomValue } from "jotai";
+import { useCallback } from "react";
 
-//
 export const useSelectedUploadedFile = () => {
-  const uploadedImages = useAtomValue(uploadedFilesAtom);
-  const [selectedImage, setSelectedImage] = useState(
-    uploadedImages[0]?.id || null
-  );
+  const [selectedImage, setSelectedImage] = useAtom(selectedImageIdAtom);
 
   const handleSelectedFile = useAtomCallback(
-    useCallback((get, set, arg: UploadedFile) => {
-      const index = get(uploadedFilesAtom).findIndex(
-        (file: UploadedFile) => file.id === arg.id
-      );
-      if (index > -1) {
-        setSelectedImage(arg.id);
-      }
-    }, [])
+    useCallback(
+      (get, set, arg: UploadedFile) => {
+        const index = get(uploadedFilesAtom).findIndex(
+          (file: UploadedFile) => file.id === arg.id
+        );
+        if (index > -1) {
+          // eslint-disable-next-line no-unused-vars
+          (setSelectedImage as (value: string | null) => void)(arg.id);
+        }
+      },
+      [setSelectedImage]
+    )
   );
 
   return { handleSelectedFile, selectedImage };

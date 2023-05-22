@@ -13,12 +13,6 @@ import { useFirebaseUsers } from "@/hooks/user_directory/useFirebaseUsers";
 import { useRouter } from "next/router";
 
 export type Ref = HTMLUListElement
-//
-// const Footer = () => (
-//   <div className="flex justify-center px-6 py-5 text-xs text-slate-400">
-//     Ha llegado al final de la lista.
-//   </div>
-// );
 
 
 // eslint-disable-next-line no-unused-vars

@@ -3,7 +3,7 @@ import { FaceSmileIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { Editor } from "@tiptap/react";
 import { MyCustomEditor } from "@/components/messaging/MyCustomEditor";
 
-export const EditorWithAttachments = ({ editor }: { editor: Editor }) => {
+export const EditorWithAttachments = ({ editor }: { editor: Editor | null }) => {
 
   return (
     <div className="mt-12 px-2">

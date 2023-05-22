@@ -1,3 +1,9 @@
+import {
+  numberOfFilesUploadedAtom,
+  progressPercentageAtom,
+  uploadedFilesAtom,
+} from "@/lib/state/atoms";
+import { useAtomValue, useSetAtom } from "jotai";
 import { useCallback, useState } from "react";
 
 import { InsuranceCompany } from "@/interfaces/index";
@@ -5,8 +11,6 @@ import { createInsuranceCompany } from "@/lib/insurance_company/createInsuranceC
 import { failureNotification } from "@/components/notifications/failureNotification";
 import { normalizeString } from "@/utils/normalizeString";
 import { successNotification } from "@/components/notifications/successNotification";
-import { uploadedFilesAtom } from "@/lib/state/atoms";
-import { useAtomValue,useSetAtom } from "jotai";
 import { useForm } from "react-hook-form";
 
 //
@@ -15,6 +19,8 @@ export const useCreateNewCompany = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const setUploadedImages = useSetAtom(uploadedFilesAtom);
+  const setNumberOfFilesUploaded = useSetAtom(numberOfFilesUploadedAtom);
+  const setProgressPercentage = useSetAtom(progressPercentageAtom);
   const {
     register,
     reset,
@@ -46,6 +52,8 @@ export const useCreateNewCompany = () => {
     })
       .then(() => {
         reset();
+        setNumberOfFilesUploaded(0);
+        setProgressPercentage(0);
         setUploadedImages([]);
         handleCloseModal();
         setIsSubmitting(false);
@@ -54,6 +62,8 @@ export const useCreateNewCompany = () => {
         );
       })
       .catch((err) => {
+        setNumberOfFilesUploaded(0);
+        setProgressPercentage(0);
         setUploadedImages([]);
         handleCloseModal();
         setIsSubmitting(false);
