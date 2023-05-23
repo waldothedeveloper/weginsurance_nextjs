@@ -1,7 +1,7 @@
-import { ImagesArray } from "@/interfaces/index";
+import { UploadedFile } from "@/interfaces/index";
 
 export const getNameFromFile = (
-  files: ImagesArray,
+  files: UploadedFile[],
   selectedImgId: string | null
 ) => {
   if (!files) return;

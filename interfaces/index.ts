@@ -158,10 +158,18 @@ export type DocumentType = {
   "application/rtf": [".rtf"];
 };
 
-export type FileLike = File & { preview?: string; id: string; url?: string };
-export type ImagesArray = FileLike[];
-export type UploadedFile = FileLike & {
+export type FileLike = File & { preview?: string; id: string; url: string };
+export type ImagesArray = File &
+  {
+    url: string;
+    id: string;
+    size: string;
+    name: string;
+    type: string;
+  }[];
+export type UploadedFile = File & {
   url: string;
+  id: string;
 };
 
 export type InsuranceCompany = {

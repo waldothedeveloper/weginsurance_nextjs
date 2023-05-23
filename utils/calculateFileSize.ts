@@ -1,7 +1,7 @@
-import { ImagesArray } from "@/interfaces/index";
+import { UploadedFile } from "@/interfaces/index";
 
 export const calculateFileSize = (
-  files: ImagesArray,
+  files: UploadedFile[],
   selectedImgId: string | null
 ) => {
   if (files && files.length > 0) {

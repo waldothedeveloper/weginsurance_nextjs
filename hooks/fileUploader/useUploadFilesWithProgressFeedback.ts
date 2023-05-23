@@ -1,10 +1,10 @@
-import { FileLike, UploadedFile } from "@/interfaces/index";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import {
   numberOfFilesUploadedAtom,
   progressPercentageAtom,
 } from "@/lib/state/atoms";
 
+import { UploadedFile } from "@/interfaces/index";
 import { failureNotification } from "@/components/notifications/failureNotification";
 import { storage } from "@/lib/firebaseConfig";
 import { useSetAtom } from "jotai";
@@ -15,7 +15,10 @@ export const useUploadFilesWithProgressFeedback = () => {
   // I'm not too sure about this, think about it
   const fileUploadOrder: number[] = [];
   //
-  const uploadFilesToCloud = async (files: FileLike[], refPath: string) => {
+  const uploadFilesToCloud = async (
+    files: (File & { id: string })[],
+    refPath: string
+  ) => {
     const filePromises: any = [];
 
     files &&

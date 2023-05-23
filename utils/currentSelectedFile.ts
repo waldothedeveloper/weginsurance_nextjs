@@ -1,14 +1,16 @@
-import { ImagesArray } from "@/interfaces/index";
+import { UploadedFile } from "@/interfaces/index";
 
 export const currentSelectedFile = (
-  files: ImagesArray,
+  files: UploadedFile[],
   selectedImgId: string | null
-): string => {
-  const isSelected = files.find((file) => file.id === selectedImgId);
-
-  if (isSelected === undefined) {
+) => {
+  if (!selectedImgId || selectedImgId === null) {
     return files[0].url;
   } else {
-    return isSelected.url;
+    const isSelected = files.find((file) => file.id === selectedImgId);
+    if (isSelected) {
+      return isSelected.url;
+    }
+    return "https://via.placeholder.com/600/bfe0dc";
   }
 };

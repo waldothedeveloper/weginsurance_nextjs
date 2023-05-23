@@ -1,9 +1,9 @@
-import { ImagesArray } from "@/interfaces/index";
+import { UploadedFile } from "@/interfaces/index";
 import { splitFileName } from "@/utils/splitFileName";
 
 //
 export const getFileExtensionFromName = (
-  files: ImagesArray,
+  files: UploadedFile[],
   selectedImgId: string | null
 ): string => {
   const currentSelectedFile = files.find((file) => file.id === selectedImgId);

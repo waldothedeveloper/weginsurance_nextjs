@@ -15,7 +15,7 @@ export const deleteMultipleUsers = async (userIds: string[]): Promise<void> => {
     }
 
     await batch.commit();
-    console.log("Documents deleted successfully.");
+    // console.log("Documents deleted successfully.");
   } catch (error) {
     console.error("Error deleting documents:", error);
     throw error; // Re-throw the error to be caught by the caller if needed.

@@ -9,11 +9,11 @@ import Image from "next/image";
 import { ShowFileTypeIcon } from "@/components/messaging/carousel/ShowFileTypeIcon";
 import { Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { areAllFilesTypeOfImage } from "@/utils/areAllFilesTypeOfImage";
 import { calculateFileSize } from "@/utils/calculateFileSize";
 import { currentSelectedFile } from "@/utils/currentSelectedFile";
 import { getFileExtensionFromName } from "@/utils/getFileExtensionFromName";
 import { getNameFromFile } from "@/utils/getNameFromFile";
-import { isFileTypeAnImage } from "@/utils/isFileTypeAnImage";
 import { uploadedFilesAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
 import { useDeleteAllUploadedFiles } from "@/hooks/fileUploader/useDeleteAllUploadedFiles";
@@ -25,7 +25,7 @@ export const CarouselWrapper = () => {
   const editorWithImages = useEditorWithImages();
   const uploadedImages = useAtomValue(uploadedFilesAtom);
   const handleDeleteAllFiles = useDeleteAllUploadedFiles();
-  const { handleSelectedFile, selectedImage } = useSelectedUploadedFile();
+  const { handleSelectedFile, selectedFile } = useSelectedUploadedFile();
 
   const { handleSubmitMessage } = useSendOutboundMessage();
   const progress = useAtomValue(progressPercentageAtom);
@@ -33,9 +33,7 @@ export const CarouselWrapper = () => {
 
   return (
     <Transition
-      show={Boolean(
-        uploadedImages.length > 0 || progress > 0 || numberOfFilesUploaded > 0
-      )}
+      show={Boolean(progress > 0)}
       enter="transition-opacity duration-75"
       enterFrom="opacity-0"
       enterTo="opacity-100"
@@ -60,37 +58,39 @@ export const CarouselWrapper = () => {
             </button>
           </div>
           <div className="relative h-[60vh] w-full">
-            {progress > 0 && isFileTypeAnImage(uploadedImages, selectedImage) ? (
+            {progress > 0 && progress !== 100 && (<div>Upload is in progres...</div>)}
+            {uploadedImages && uploadedImages.length > 0 && progress === 100 && areAllFilesTypeOfImage(uploadedImages) && (
               <Image
                 className="absolute top-0 h-full w-full rounded-sm object-contain drop-shadow-md"
-                src={currentSelectedFile(uploadedImages, selectedImage)}
+                src={currentSelectedFile(uploadedImages, selectedFile)}
                 alt="file preview"
                 fill
                 sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 800px"
               />
-            ) : (
+            )}
+
+            {uploadedImages && uploadedImages.length > 0 && progress === 100 && !areAllFilesTypeOfImage(uploadedImages) && (
               <div className="relative flex h-full w-full flex-col items-center justify-center">
                 <ShowFileTypeIcon
                   fileType={getFileExtensionFromName(
                     uploadedImages,
-                    selectedImage
+                    selectedFile
                   )}
                   classString="mx-auto h-60 w-60 text-slate-300"
                 />
 
                 <h3 className="mt-12 text-xl font-semibold text-slate-700">
-                  {getNameFromFile(uploadedImages, selectedImage)}
+                  {getNameFromFile(uploadedImages, selectedFile)}
                 </h3>
                 <p className="mt-2 text-base font-medium text-slate-500">
-                  {calculateFileSize(uploadedImages, selectedImage)} -{" "}
+                  {calculateFileSize(uploadedImages, selectedFile)} -{" "}
                   {getFileExtensionFromName(
                     uploadedImages,
-                    selectedImage
+                    selectedFile
                   )?.toUpperCase()}
                 </p>
               </div>
             )}
-
           </div>
           <div>
             {`${progress}%`}
@@ -102,7 +102,7 @@ export const CarouselWrapper = () => {
 
           <CarouselSlider
             handleSelectedFile={handleSelectedFile}
-            selectedImage={selectedImage}
+            selectedImage={selectedFile}
           />
         </div>
       </form>
