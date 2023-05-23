@@ -83,7 +83,7 @@ export const Layout = () => {
             </div>
           </div>
 
-          <div className="relative z-0 mx-auto flex w-full overflow-hidden">
+          <div className="relative z-0 mx-auto flex w-full overflow-hidden h-full">
             <AlgoliaProvider>
               <Wrapper />
             </AlgoliaProvider>
