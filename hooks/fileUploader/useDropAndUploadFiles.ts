@@ -1,5 +1,4 @@
-import { FileLike, UploadedFile } from "@/interfaces/index";
-
+import { UploadedFile } from "@/interfaces/index";
 import { addUniqueId } from "@/utils/addUniqueID";
 import { uploadedFilesAtom } from "@/lib/state/atoms";
 import { useDropzone } from "react-dropzone";
@@ -10,7 +9,12 @@ const onDrop = async (
   localFiles: File[],
   setterFn: (fn: (prevFiles: UploadedFile[]) => UploadedFile[]) => void, // eslint-disable-line
   bucket: string,
-  uploaderFn: (files: FileLike[], bucket: string) => Promise<UploadedFile[]> // eslint-disable-line
+  uploaderFn: (
+    // eslint-disable-next-line no-unused-vars
+    files: (File & { id: string })[],
+    // eslint-disable-next-line no-unused-vars
+    bucket: string
+  ) => Promise<UploadedFile[]> // eslint-disable-line
 ) => {
   const files = addUniqueId(localFiles);
   const uploadedFiles = await uploaderFn(files, bucket);

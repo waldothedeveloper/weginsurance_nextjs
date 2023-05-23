@@ -1,16 +1,16 @@
-import { ImagesArray } from "@/interfaces/index";
+import { UploadedFile } from "@/interfaces/index";
 
 export const currentSelectedFile = (
-  files: ImagesArray,
-  selectedImgId: string
+  files: UploadedFile[],
+  selectedImgId: string | null
 ) => {
-  const isSelected = files.find((file) => file.id === selectedImgId);
-
-  if (files && files.length > 0) {
-    if (isSelected === undefined) {
-      return files[0];
-    } else {
-      return isSelected;
+  if (!selectedImgId || selectedImgId === null) {
+    return files[0].url;
+  } else {
+    const isSelected = files.find((file) => file.id === selectedImgId);
+    if (isSelected) {
+      return isSelected.url;
     }
+    return "https://via.placeholder.com/600/bfe0dc";
   }
 };

@@ -1,6 +1,8 @@
 import {
   isSubmittingAtom,
+  numberOfFilesUploadedAtom,
   openModalAtom,
+  progressPercentageAtom,
   selectedInsuranceCompanyAtom,
   uploadedFilesAtom,
 } from "@/lib/state/atoms";
@@ -23,6 +25,8 @@ export const useUpdateCompany = () => {
   const setUploadedImages = useSetAtom(uploadedFilesAtom);
   const setSelectedInsuranceCompany = useSetAtom(selectedInsuranceCompanyAtom);
   const selectedInsuranceCompany = useAtomValue(selectedInsuranceCompanyAtom);
+  const setNumberOfFilesUploaded = useSetAtom(numberOfFilesUploadedAtom);
+  const setProgressPercentage = useSetAtom(progressPercentageAtom);
 
   const {
     register,
@@ -74,6 +78,8 @@ export const useUpdateCompany = () => {
     updateInsuranceCompany(updatedCom, updatedCompany.id)
       .then(() => {
         reset();
+        setNumberOfFilesUploaded(0);
+        setProgressPercentage(0);
         setUploadedImages([]);
         handleCloseModal();
         setIsSubmitting(false);
@@ -84,6 +90,8 @@ export const useUpdateCompany = () => {
         );
       })
       .catch((err) => {
+        setNumberOfFilesUploaded(0);
+        setProgressPercentage(0);
         setUploadedImages([]);
         handleCloseModal();
         setIsSubmitting(false);
