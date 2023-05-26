@@ -48,7 +48,7 @@ export const UserTableUtilities = ({
   handleDeleteModal,
 }: UserTableUtilitiesProps) => {
   //! make sure to change this test = false when you're done testing
-  const test = false;
+  const test = true;
   const [rowSelection, setRowSelection] = React.useState({})
 
   const { firebaseUsers, firebaseError } = useFirebaseUsers();
@@ -69,7 +69,7 @@ export const UserTableUtilities = ({
           />
         ),
         cell: ({ row }: any) => (
-          <div className="py-3.5 pl-4 pr-3">
+          <div className="py-3.5">
             <IndeterminateCheckbox
               {...{
                 checked: row.getIsSelected(),
@@ -85,7 +85,7 @@ export const UserTableUtilities = ({
         id: "fullname",
         header: () => <span>Nombre y Apellidos</span>,
         cell: (props) => (
-          <div className="pl-3">
+          <div>
             <div className="text-base font-medium text-slate-700">
               {props.getValue()}
             </div>
@@ -106,7 +106,7 @@ export const UserTableUtilities = ({
       columnHelper.accessor((row) => row.insurance_company, {
         id: "insurance_company",
         cell: (props) => (
-          <div className="relative ml-2 inline-flex items-center justify-center rounded-full border border-slate-300 px-2 py-0.5">
+          <div className="relative ml-2 inline-flex items-center justify-center rounded-full border border-slate-300 py-0.5 px-2">
             <span className="absolute flex flex-shrink-0 items-center justify-center">
               <span className="h-1 w-1 rounded-full" aria-hidden="true" />
             </span>

@@ -35,6 +35,7 @@ export const VirtualizedUserList = ({ getMessages }: { getMessages: (userId: str
   const fakeUserList: FakeUser[] = useFakeUserList();
 
 
+
   if (firebaseError) {
     return (
       <div>
@@ -51,7 +52,7 @@ export const VirtualizedUserList = ({ getMessages }: { getMessages: (userId: str
 
   return (
     <>
-      <div className="px-6 pb-6 pt-6">
+      <div className="p-6">
         <h2 className="text-lg font-medium text-slate-900">Directorio</h2>
         <p className="mt-1 text-sm text-slate-600">
           Directorio de búsqueda de{" "}
@@ -65,7 +66,7 @@ export const VirtualizedUserList = ({ getMessages }: { getMessages: (userId: str
         aria-label="Directory"
       >
 
-        <EmptyQueryBoundary fallback={<TanStackVirtualizer users={firebaseUsers} getMessages={getMessages} />}>
+        <EmptyQueryBoundary fallback={<TanStackVirtualizer users={test ? fakeUserList : firebaseUsers} getMessages={getMessages} />}>
           <CustomHits getMessages={getMessages} />
         </EmptyQueryBoundary>
 

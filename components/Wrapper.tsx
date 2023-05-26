@@ -28,7 +28,7 @@ export const Wrapper = () => {
       )}
 
       {router?.query?.dashboard?.includes("directory") && (
-        <MainComponent className="relative z-0 flex-1 overflow-y-hidden focus:outline-none">
+        <MainComponent className="relative z-0 flex-1 overflow-y-auto focus:outline-none">
           <div className="pt-12">
             <VirtualizedUserTable />
           </div>

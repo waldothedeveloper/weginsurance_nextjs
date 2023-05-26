@@ -35,7 +35,7 @@ export const TanStackVirtualizer = ({ users, getMessages }: { users: RealUser[],
           style={{
             transform: `translateY(${items[0]?.start}px)`,
           }}
-          className="absolute left-0 top-0 w-full"
+          className="absolute left-0 top-0 w-full px-6"
         >
           {items.map((virtualRow) => {
             return (
