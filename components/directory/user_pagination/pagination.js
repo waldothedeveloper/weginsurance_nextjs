@@ -1,7 +1,7 @@
 export const Pagination = ({ table }) => {
   return (
     <nav
-      className="sticky bottom-0 flex items-center justify-between border-t border-slate-200 bg-white px-4 pb-6 pt-3 sm:px-6"
+      className="flex items-center justify-between border-t border-slate-200 bg-white px-4 pb-6 pt-3 sm:px-6"
       aria-label="Pagination"
     >
       <div className="hidden sm:block">

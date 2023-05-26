@@ -1,7 +1,7 @@
+import { FakeUser, RealUser } from "@/interfaces/index";
 import { selectedUserAtom, userPhoneAtom } from "@/lib/state/atoms";
 import { useAtomValue, useSetAtom } from "jotai";
 
-import { RealUser } from "@/interfaces/index";
 import {
   UserIcon,
 } from "@heroicons/react/24/outline";
@@ -10,7 +10,7 @@ import { normalizeString } from "@/utils/normalizeString";
 
 // 
 // eslint-disable-next-line no-unused-vars
-export const UserList = ({ user, getMessages }: { user: RealUser, getMessages: (userId: string) => Promise<void> }) => {
+export const UserList = ({ user, getMessages }: { user: RealUser | FakeUser, getMessages: (userId: string) => Promise<void> }) => {
   const selectedUser = useAtomValue(selectedUserAtom);
   const setUserPhone = useSetAtom(userPhoneAtom);
   const setSelectedUser = useSetAtom(selectedUserAtom);

@@ -1,10 +1,11 @@
-import { RealUser } from "@/interfaces/index";
+import { FakeUser, RealUser } from "@/interfaces/index";
+
 import { UserList } from "@/components/directory/UserList";
 import { useRef } from 'react'
 import { useVirtualizer } from "@tanstack/react-virtual";
 // 
 // eslint-disable-next-line no-unused-vars
-export const TanStackVirtualizer = ({ users, getMessages }: { users: RealUser[], getMessages: (userId: string) => Promise<void> }) => {
+export const TanStackVirtualizer = ({ users, getMessages }: { users: RealUser[] | FakeUser[], getMessages: (userId: string) => Promise<void> }) => {
 
   const parentRef = useRef(null);
   // 
@@ -35,7 +36,7 @@ export const TanStackVirtualizer = ({ users, getMessages }: { users: RealUser[],
           style={{
             transform: `translateY(${items[0]?.start}px)`,
           }}
-          className="absolute left-0 top-0 w-full"
+          className="absolute left-0 top-0 w-full px-6"
         >
           {items.map((virtualRow) => {
             return (

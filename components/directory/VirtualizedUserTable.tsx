@@ -78,8 +78,8 @@ export const VirtualizedUserTable = () => {
   }
   return (
     <>
-      <div className="flex flex-col justify-center px-4 sm:px-6">
-        <div className="sm:flex-auto">
+      <div className="px-4 sm:px-6 lg:px-8 h-full w-full">
+        <div className="sm:flex-auto items-center">
           <h1 className="text-base font-semibold leading-6 text-slate-900">
             Usuarios
           </h1>
@@ -143,54 +143,53 @@ export const VirtualizedUserTable = () => {
 
         <div className="mt-8 flow-root">
           <div className="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
-            <div className="py-2 sm:px-6 lg:px-8">
-              <div className="max-h-[43rem] overflow-y-auto align-middle">
-                <table className="min-w-full border-separate border-spacing-0">
-                  <thead className="w-full">
-                    {table.getHeaderGroups().map((headerGroup) => (
-                      <tr key={headerGroup.id}>
-                        {headerGroup.headers.map((header) => (
-                          <th
-                            scope="col"
-                            className="sticky top-0 z-10 w-96 border-b border-gray-300 bg-white bg-opacity-75 py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6 lg:pl-8"
-                            key={header.id}
-                          >
-                            {header.isPlaceholder
-                              ? null
-                              : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                          </th>
-                        ))}
-                      </tr>
-                    ))}
-                  </thead>
-                  <tbody className="px-12">
-                    {table.getRowModel().rows.map((row) => (
-                      <tr className="w-96 border-b bg-white pl-3" key={row.id}>
-                        {row.getVisibleCells().map((cell) => (
-                          <td
-                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
-                            key={cell.id}
-                          >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+            <div className="py-2 sm:px-6 lg:px-8 h-full w-full">
+              <table className="min-w-full table-fixed divide-y divide-slate-300">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <thead key={headerGroup.id}>
+                    <tr>
+                      {headerGroup.headers.map((header) => (
+                        <th
+                          key={header.id}
+                          scope="col"
+                          className={header.id === "0" ? "relative px-7 sm:w-12 sm:px-6" : "px-3 py-3.5 text-left text-sm font-semibold text-slate-900"}
 
-                <Pagination table={table} />
-              </div>
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                ))}
+
+                <tbody className="divide-y divide-slate-200 bg-white">
+                  {table.getRowModel().rows.map((row) => (
+                    <tr key={row.id}>
+                      {row.getVisibleCells().map((cell) => (
+                        <td
+                          className={cell.id === '0' ? "relative px-7 sm:w-12 sm:px-6" : "whitespace-nowrap px-3 py-4 text-sm text-slate-500"}
+                          key={cell.id}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
+      <Pagination table={table} />
       {/* delete action */}
       {openDeleteUserModal && (
         <Modal
