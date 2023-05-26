@@ -1,8 +1,8 @@
 import { Atom, useAtomValue, useSetAtom } from "jotai";
+import { FakeUser, RealUser } from "@/interfaces/index";
 import { selectedUserAtom, userPhoneAtom } from "@/lib/state/atoms";
 
 import React from 'react'
-import { RealUser } from "@/interfaces/index";
 import {
   UserIcon,
 } from "@heroicons/react/24/outline";
@@ -16,7 +16,7 @@ export const CustomHits = ({ getMessages }: { getMessages: (userId: string) => P
   const { hits } = useHits();
   const setUserPhone = useSetAtom(userPhoneAtom);
   const setSelectedUser = useSetAtom(selectedUserAtom);
-  const selectedUser = useAtomValue<Atom<RealUser | null>>(selectedUserAtom);
+  const selectedUser = useAtomValue<Atom<RealUser | FakeUser | null>>(selectedUserAtom);
   return <>
     <ul className="z-0 w-full px-6">
       {hits.map((hit) => (

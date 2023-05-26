@@ -48,7 +48,7 @@ export const UserTableUtilities = ({
   handleDeleteModal,
 }: UserTableUtilitiesProps) => {
   //! make sure to change this test = false when you're done testing
-  const test = true;
+  const test = false;
   const [rowSelection, setRowSelection] = React.useState({})
 
   const { firebaseUsers, firebaseError } = useFirebaseUsers();
