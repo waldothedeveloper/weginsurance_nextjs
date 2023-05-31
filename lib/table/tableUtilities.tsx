@@ -1,60 +1,47 @@
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
-import React, { HTMLProps } from 'react'
 import {
+  FilterFn,
   createColumnHelper,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
+import React, { useState } from 'react'
 
+import { IndeterminateCheckbox } from "@/lib/table/Checkbox"
 import { RealUser } from "@/interfaces/index";
 import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
+import {
+  rankItem,
+} from '@tanstack/match-sorter-utils'
 import { useFakeUserList } from "@/hooks/test/useFakeUserList";
 import { useFirebaseUsers } from "@/hooks/user_directory/useFirebaseUsers";
 import { useMemo } from "react";
-
-const IndeterminateCheckbox = ({
-  indeterminate,
-  ...rest
-}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) => {
-  const ref = React.useRef<HTMLInputElement>(null!)
-
-  React.useEffect(() => {
-    if (typeof indeterminate === 'boolean') {
-      ref.current.indeterminate = !rest.checked && indeterminate
-    }
-  }, [ref, indeterminate, rest])
-
-  return (
-    <input
-      type="checkbox"
-      ref={ref}
-      className='rounded border-gray-200 text-blue-600 focus:ring-blue-600 cursor-pointer'
-      {...rest}
-    />
-  )
-}
 
 type UserTableUtilitiesProps = {
   // eslint-disable-next-line no-unused-vars
   handleUpdateModal: (arg: RealUser) => void,
   // eslint-disable-next-line no-unused-vars
-  handleDeleteModal: (arg: RealUser) => void
+  handleDeleteModal: (arg: RealUser) => void,
+
 }
 //
 export const UserTableUtilities = ({
   handleUpdateModal,
   handleDeleteModal,
 }: UserTableUtilitiesProps) => {
+
+
   //! make sure to change this test = false when you're done testing
   const test = false;
-  const [rowSelection, setRowSelection] = React.useState({})
-
+  const [globalFilter, setGlobalFilter] = React.useState('')
+  const [rowSelection, setRowSelection] = useState({})
   const { firebaseUsers, firebaseError } = useFirebaseUsers();
   const fakeUserList = useFakeUserList();
   const totalUserCount = test ? fakeUserList.length : firebaseUsers.length;
   const columnHelper = createColumnHelper<RealUser>();
+
   const columns = useMemo(
     () => [
       {
@@ -163,12 +150,30 @@ export const UserTableUtilities = ({
     [columnHelper, handleUpdateModal, handleDeleteModal]
   );
 
+
+  const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+    // Rank the item
+    const itemRank = rankItem(row.getValue(columnId), value)
+
+    // Store the itemRank info
+    addMeta({
+      itemRank,
+    })
+
+    // Return if the item should be filtered in/out
+    return itemRank.passed
+  }
+
+
   const table = useReactTable({
-    data: test ? fakeUserList : firebaseUsers,
+    data: firebaseUsers,
     columns,
     state: {
       rowSelection,
+      globalFilter
     },
+    globalFilterFn: fuzzyFilter,
+    onGlobalFilterChange: setGlobalFilter,
     onRowSelectionChange: setRowSelection,
     enableRowSelection: true,
     getCoreRowModel: getCoreRowModel(),
@@ -177,5 +182,5 @@ export const UserTableUtilities = ({
     debugTable: false,
   });
 
-  return { totalUserCount, table, firebaseError, fakeUserList, firebaseUsers, rowSelection };
+  return { totalUserCount, table, firebaseError, fakeUserList, firebaseUsers, rowSelection, globalFilter, setGlobalFilter };
 };

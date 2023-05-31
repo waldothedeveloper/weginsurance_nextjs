@@ -1,6 +1,7 @@
 import { PlusIcon, TrashIcon, UserPlusIcon } from "@heroicons/react/20/solid";
 
 import { CreateUserForm } from "@/components/directory/CreateUserForm";
+import { DebouncedInput } from "@/lib/table/DebouncedInput";
 import { DeleteMultipleUsersForm } from "@/components/directory/DeleteMultipleUsersForm";
 import { DeleteUserActions } from "@/components/directory/DeleteUserActions";
 import { ErrorComponent } from "@/components/Error";
@@ -8,19 +9,20 @@ import { Modal } from "@/components/directory/Modal";
 import { Pagination } from "@/components/directory/user_pagination/pagination";
 import { Spinning } from "@/components/Spinning";
 import { UpdateUserForm } from "@/components/directory/UpdateUserForm";
-import { UserTableUtilities } from "@/lib/table/user_table_utilities";
-import { flexRender } from "@tanstack/react-table";
+import { UserTable } from "@/components/directory/UserTable";
+import { UserTableUtilities } from "@/lib/table/tableUtilities";
 import { useDeleteUserForm } from "@/hooks/user_directory/useDeleteUserForm";
 import { useInsuranceCompany } from "@/hooks/insurance_company/useHandleInsuranceCompany";
 import { useNewUserForm } from "@/hooks/user_directory/useNewUserForm";
 import { useUpdateUserForm } from "@/hooks/user_directory/useUpdateUserForm";
 
 //
-export const VirtualizedUserTable = () => {
+export const UsersUI = () => {
   const { insuranceCompanies, insuranceCompanyError } = useInsuranceCompany();
   const filteredInsuranceCompanies = insuranceCompanies?.map((company) => {
     return { value: company.name, id: company.id };
   });
+
 
   // new user
   const {
@@ -60,7 +62,7 @@ export const VirtualizedUserTable = () => {
     handleDeleteMultipleUsers,
   } = useDeleteUserForm();
 
-  const { totalUserCount, table, firebaseError, firebaseUsers, rowSelection } =
+  const { totalUserCount, table, firebaseError, firebaseUsers, rowSelection, globalFilter, setGlobalFilter } =
     UserTableUtilities({ handleDeleteModal, handleUpdateModal });
 
   if (firebaseError) {
@@ -92,23 +94,15 @@ export const VirtualizedUserTable = () => {
         </div>
         {/* Search bar */}
         <div className="mt-6 flex items-end justify-between">
-          <div>
-            <div className="relative mt-2 flex items-center">
-              <input
-                placeholder="Buscar usuario"
-                type="text"
-                name="search"
-                id="search"
-                className="block w-full rounded-md border-0 py-1.5 pr-32 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
-              />
-              <div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
-                <kbd className="inline-flex items-center rounded border border-slate-200 px-1 font-sans text-xs text-slate-400">
-                  Ctrl+K
-                </kbd>
-              </div>
-            </div>
-          </div>
-          {/* Create user button */}
+          <DebouncedInput
+            type="text"
+            name="search"
+            value={globalFilter ?? ''}
+            onChange={value => setGlobalFilter(String(value))}
+            cssValues="block w-full rounded-md border-0 py-1.5 pr-32 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+            placeholder="Buscar usuarios..."
+          />
+
           <div>
             {/* Delete Multiple Users */}
             {Object.keys(rowSelection).length > 0 && (
@@ -121,6 +115,7 @@ export const VirtualizedUserTable = () => {
                 Eliminar {Object.keys(rowSelection).length} usuarios
               </button>
             )}
+            {/* Create user button */}
             <button
               onClick={handleCreateUserModal}
               type="button"
@@ -140,54 +135,7 @@ export const VirtualizedUserTable = () => {
             </span>
           </div>
         </div>
-
-        <div className="mt-8 flow-root">
-          <div className="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
-            <div className="py-2 sm:px-6 lg:px-8 h-full w-full">
-              <table className="min-w-full table-fixed divide-y divide-slate-300">
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <thead key={headerGroup.id}>
-                    <tr>
-                      {headerGroup.headers.map((header) => (
-                        <th
-                          key={header.id}
-                          scope="col"
-                          className={header.id === "0" ? "relative px-7 sm:w-12 sm:px-6" : "px-3 py-3.5 text-left text-sm font-semibold text-slate-900"}
-
-                        >
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                ))}
-
-                <tbody className="divide-y divide-slate-200 bg-white">
-                  {table.getRowModel().rows.map((row) => (
-                    <tr key={row.id}>
-                      {row.getVisibleCells().map((cell) => (
-                        <td
-                          className={cell.id === '0' ? "relative px-7 sm:w-12 sm:px-6" : "whitespace-nowrap px-3 py-4 text-sm text-slate-500"}
-                          key={cell.id}
-                        >
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+        <UserTable table={table} />
       </div>
       <Pagination table={table} />
       {/* delete action */}
