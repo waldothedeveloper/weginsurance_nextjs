@@ -8,7 +8,8 @@ export const CustomSearchBox = (props: UseSearchBoxProps) => {
   const { query, refine } = useSearchBox(props);
 
   const handleInputChange = (event: React.FormEvent<HTMLInputElement>): void => {
-    refine(event.currentTarget.value); // Update the search query with the new input value
+    refine(event.currentTarget.value);
+
   };
 
   return (

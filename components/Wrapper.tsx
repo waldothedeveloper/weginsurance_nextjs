@@ -6,8 +6,8 @@ import { InsuranceCompanyTable } from "@/components/companies/InsuranceCompanyTa
 import { MainComponent } from "@/components/dashboard/MainComponent";
 import { NovuNotificationsCenter } from "@/components/notifications/NovuConfig";
 import { UserFormWrapper } from "@/components/directory/UserFormWrapper";
+import { UsersUI } from "@/components/directory/UsersUI";
 import { VirtualizedUserList } from "@/components/directory/VirtualizedUserList";
-import { VirtualizedUserTable } from "@/components/directory/VirtualizedUserTable";
 import { useGetUserConversations } from "@/hooks/messaging/useGetUserConversations";
 
 export const Wrapper = () => {
@@ -30,7 +30,7 @@ export const Wrapper = () => {
       {router?.query?.dashboard?.includes("directory") && (
         <MainComponent className="relative z-0 flex-1 overflow-y-auto focus:outline-none">
           <div className="pt-12">
-            <VirtualizedUserTable />
+            <UsersUI />
           </div>
         </MainComponent>
       )}

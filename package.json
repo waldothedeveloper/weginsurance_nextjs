@@ -17,6 +17,7 @@
     "@next/font": "13.1.6",
     "@novu/node": "^0.12.0",
     "@novu/notification-center": "^0.12.0",
+    "@tanstack/match-sorter-utils": "^8.8.4",
     "@tanstack/react-table": "^8.8.5",
     "@tanstack/react-virtual": "^3.0.0-beta.54",
     "@tiptap/extension-floating-menu": "^2.0.3",
