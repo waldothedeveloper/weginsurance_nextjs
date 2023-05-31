@@ -12,6 +12,7 @@ export const Conversation = ({ isLoading, error }: { isLoading: boolean, error: 
   const messagesFromDB = useAtomValue(messagesAtom)
 
 
+
   if (isLoading) {
     return (
       <div className="grid h-screen place-items-center overflow-hidden">
@@ -28,7 +29,7 @@ export const Conversation = ({ isLoading, error }: { isLoading: boolean, error: 
     );
   }
 
-  if (!messagesFromDB || messagesFromDB.length === 0) {
+  if (!messagesFromDB) {
     return (
       <div className="grid h-screen place-items-center overflow-hidden">
         <div className="bg-white px-6 py-24 sm:py-32 lg:px-8">

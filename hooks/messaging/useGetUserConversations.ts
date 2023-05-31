@@ -12,8 +12,8 @@ import { useEffect, useState } from "react";
 
 import { db } from "@/lib/firebaseConfig";
 import { fetcherPostPhoneNumber } from "@/utils/fetcherPostPhoneNumber";
-import { isTodayPresentInArray } from "@/utils/isTodayPresentInArray";
-import { saveDayTypeMessage } from "@/utils/saveDayTypeMessage";
+// import { isTodayPresentInArray } from "@/utils/isTodayPresentInArray";
+// import { saveDayTypeMessage } from "@/utils/saveDayTypeMessage";
 import { saveMessagesToClientConversations } from "@/utils/saveMessagesToClientConversations";
 import useSWR from "swr";
 
@@ -33,18 +33,20 @@ export const useGetUserConversations = () => {
     if (!userId || userId?.length === 0) throw new Error("userId is required");
     setUserId(userId);
   };
-  const messagesFromDB = useAtomValue(messagesAtom);
+  // const messagesFromDB = useAtomValue(messagesAtom);
   const { data: messagesFromTwilioAPI, error: errorFromTwilioAPI } = useSWR(
     key,
     (url) => fetcherPostPhoneNumber(url[0], selectedUser?.phone || null)
   );
 
-  useEffect(() => {
-    if (!isTodayPresentInArray(messagesFromDB) && messagesFromDB.length > 0) {
-      saveDayTypeMessage(userId);
-    }
-  }, [messagesFromDB, userId]);
+  //TODO:  this needs to be modified, it's not working as expected, so it's commented for now
+  // useEffect(() => {
+  //   if (!isTodayPresentInArray(messagesFromDB) && messagesFromDB.length > 0) {
+  //     saveDayTypeMessage(userId);
+  //   }
+  // }, [messagesFromDB, userId]);
 
+  // this will set everything back to zero when you leave conversations
   useEffect(() => {
     if (!router?.query?.dashboard?.includes("messages")) {
       setUserId(null);
@@ -54,17 +56,28 @@ export const useGetUserConversations = () => {
     }
   }, [router, setUserId, setKey, setMessagesAtom, setSelectedUser]);
 
+  // this will save messages from Twilio API to firestore db
   useEffect(() => {
+    const saveMessagesToFirestore = async () =>
+      await saveMessagesToClientConversations(userId, messagesFromTwilioAPI);
     if (
       messagesFromTwilioAPI &&
       messagesFromTwilioAPI.length > 0 &&
       userId &&
       userId.length > 0
     ) {
-      saveMessagesToClientConversations(userId, messagesFromTwilioAPI);
+      try {
+        setIsLoading(true);
+        saveMessagesToFirestore();
+      } catch (error) {
+        setIsLoading(false);
+        setError(error);
+      }
+      setIsLoading(false);
     }
   }, [messagesFromTwilioAPI, userId]);
 
+  // this will get messages from firestore db
   useEffect(() => {
     let unsubscribe: Unsubscribe | null = null;
     try {
@@ -80,8 +93,11 @@ export const useGetUserConversations = () => {
               return doc.data();
             })
           );
+          // do not get messages from Twilio API if we already have messages in the firestore sub-collection
           setKey(null);
         } else {
+          //! if there are no messages in the firestore sub-collection, MAKE SURE you set the messagesAtom to an empty array, because if you don't, the messagesAtom will be set to the previous messages from the previous user, if there were any
+          setMessagesAtom([]);
           if (userId && userId.length > 0) {
             setKey(["/api/messaging/sms/retrieve_sms", userId]);
           }
@@ -91,7 +107,7 @@ export const useGetUserConversations = () => {
     } catch (error) {
       setIsLoading(false);
       setError(error);
-      console.error("Error setting up Firestore listener:", error);
+      // console.error("Error setting up Firestore listener:", error);
     }
 
     return () => {
@@ -99,7 +115,7 @@ export const useGetUserConversations = () => {
         unsubscribe();
       }
     };
-  }, [userId, setMessagesAtom]);
+  }, [userId, setMessagesAtom, setSelectedUser]);
 
   return { getMessages, isLoading, error, errorFromTwilioAPI };
 };
