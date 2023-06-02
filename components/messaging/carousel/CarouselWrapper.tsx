@@ -23,7 +23,7 @@ import { useSendOutboundMessage } from "@/hooks/messaging/useSendOutboundMessage
 
 export const CarouselWrapper = () => {
   const editorWithImages = useEditorWithImages();
-  const uploadedImages = useAtomValue(uploadedFilesAtom);
+  const uploadedResources = useAtomValue(uploadedFilesAtom);
   const handleDeleteAllFiles = useDeleteAllUploadedFiles();
   const { handleSelectedFile, selectedFile } = useSelectedUploadedFile();
 
@@ -58,39 +58,47 @@ export const CarouselWrapper = () => {
             </button>
           </div>
           <div className="relative h-[60vh] w-full">
-            {progress > 0 && progress !== 100 && (<div>Upload is in progres...</div>)}
-            {uploadedImages && uploadedImages.length > 0 && progress === 100 && areAllFilesTypeOfImage(uploadedImages) && (
-              <Image
-                className="absolute top-0 h-full w-full rounded-sm object-contain drop-shadow-md"
-                src={currentSelectedFile(uploadedImages, selectedFile)}
-                alt="file preview"
-                fill
-                sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 800px"
-              />
+            {progress > 0 && progress !== 100 && (
+              <div>Upload is in progres...</div>
             )}
-
-            {uploadedImages && uploadedImages.length > 0 && progress === 100 && !areAllFilesTypeOfImage(uploadedImages) && (
-              <div className="relative flex h-full w-full flex-col items-center justify-center">
-                <ShowFileTypeIcon
-                  fileType={getFileExtensionFromName(
-                    uploadedImages,
-                    selectedFile
-                  )}
-                  classString="mx-auto h-60 w-60 text-slate-300"
+            {uploadedResources &&
+              uploadedResources.length > 0 &&
+              progress === 100 &&
+              areAllFilesTypeOfImage(uploadedResources) && (
+                <Image
+                  className="absolute top-0 h-full w-full rounded-sm object-contain drop-shadow-md"
+                  src={currentSelectedFile(uploadedResources, selectedFile)}
+                  alt="file preview"
+                  fill
+                  sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 800px"
                 />
+              )}
 
-                <h3 className="mt-12 text-xl font-semibold text-slate-700">
-                  {getNameFromFile(uploadedImages, selectedFile)}
-                </h3>
-                <p className="mt-2 text-base font-medium text-slate-500">
-                  {calculateFileSize(uploadedImages, selectedFile)} -{" "}
-                  {getFileExtensionFromName(
-                    uploadedImages,
-                    selectedFile
-                  )?.toUpperCase()}
-                </p>
-              </div>
-            )}
+            {uploadedResources &&
+              uploadedResources.length > 0 &&
+              progress === 100 &&
+              !areAllFilesTypeOfImage(uploadedResources) && (
+                <div className="relative flex h-full w-full flex-col items-center justify-center">
+                  <ShowFileTypeIcon
+                    fileType={getFileExtensionFromName(
+                      uploadedResources,
+                      selectedFile
+                    )}
+                    classString="mx-auto h-60 w-60 text-slate-300"
+                  />
+
+                  <h3 className="mt-12 text-xl font-semibold text-slate-700">
+                    {getNameFromFile(uploadedResources, selectedFile)}
+                  </h3>
+                  <p className="mt-2 text-base font-medium text-slate-500">
+                    {calculateFileSize(uploadedResources, selectedFile)} -{" "}
+                    {getFileExtensionFromName(
+                      uploadedResources,
+                      selectedFile
+                    )?.toUpperCase()}
+                  </p>
+                </div>
+              )}
           </div>
           <div>
             {`${progress}%`}

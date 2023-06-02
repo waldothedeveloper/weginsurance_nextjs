@@ -1,55 +1,36 @@
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useAtomValue, useSetAtom } from "jotai";
 
 import Image from "next/image";
 import { ShowFileTypeIcon } from "@/components/messaging/carousel/ShowFileTypeIcon";
-import { UploadedFile } from "@/interfaces/index"
+import { UploadedFile } from "@/interfaces/index";
 import { classNames } from "@/utils/classNames";
-import { deleteStorageFile } from "@/utils/deleteStorageFile";
 import { splitFileName } from "@/utils/splitFileName";
 import { uploadedFilesAtom } from "@/lib/state/atoms";
-import { useAtomCallback } from "jotai/utils";
-import { useCallback } from "react";
+import { useAtomValue } from "jotai";
+import { useDeleteUploadedFileOneByOne } from "@/hooks/fileUploader/useDeleteUploadedFileOneByOne";
 import { useDropAndUploadFiles } from "@/hooks/fileUploader/useDropAndUploadFiles";
 import { useHoverFile } from "@/hooks/fileUploader/useHoverFile";
-
 type CarouselSliderProps = {
   // eslint-disable-next-line no-unused-vars
   handleSelectedFile: (file: UploadedFile) => void;
   selectedImage: string | null;
-}
+};
 //
-export const CarouselSlider = ({ handleSelectedFile, selectedImage }: CarouselSliderProps) => {
-  const uploadedImages = useAtomValue(uploadedFilesAtom);
-
-  const setUploadedImages = useSetAtom(uploadedFilesAtom);
+export const CarouselSlider = ({
+  handleSelectedFile,
+  selectedImage,
+}: CarouselSliderProps) => {
+  const uploadedResources = useAtomValue(uploadedFilesAtom);
   const { isCurrentHoveredFile, handleMouseOver, handleMouseLeave } =
     useHoverFile();
   const { imageDropZone, documentDropZone } = useDropAndUploadFiles();
-
-  const handleRemoveFile = useAtomCallback(
-    useCallback(
-      (get, set, arg: { id: string, type: string, name: string }) => {
-        const remainingImages = get(uploadedFilesAtom).filter(
-          (file) => file.id !== arg.id
-        );
-
-        if (remainingImages) {
-          !arg.type.startsWith("image/")
-            ? deleteStorageFile(arg?.name, "documents")
-            : deleteStorageFile(arg?.name, "images");
-          setUploadedImages(remainingImages);
-        }
-      },
-      [setUploadedImages]
-    )
-  );
+  const { handleRemoveFile } = useDeleteUploadedFileOneByOne();
 
   //
   return (
     <div className="mt-6 flex items-center justify-center space-x-2">
       <ul className="scrollbar flex max-w-[72rem] space-x-2 overflow-x-scroll scroll-smooth px-2">
-        {uploadedImages.map((file, index) => (
+        {uploadedResources.map((file, index) => (
           <li
             role="button"
             key={file?.id}
@@ -103,8 +84,8 @@ export const CarouselSlider = ({ handleSelectedFile, selectedImage }: CarouselSl
           </li>
         ))}
       </ul>
-      {uploadedImages.length > 0 &&
-        uploadedImages[0]?.type.startsWith("image/") ? (
+      {uploadedResources.length > 0 &&
+      uploadedResources[0]?.type.startsWith("image/") ? (
         <div className="h-14 self-start">
           <button
             {...imageDropZone.getRootProps()}
