@@ -2,17 +2,17 @@ import { addDoc, collection } from "firebase/firestore";
 
 import { Day } from "@/interfaces/index";
 import { db } from "@/lib/firebaseConfig";
-import { getToday } from "@/utils/getToday";
 
 //
-export const saveDayTypeMessage = async (userId: string | null) => {
-  const today = getToday();
-
+export const saveDayTypeMessage = async (
+  userId: string | null,
+  date: string
+) => {
   const groupRef = collection(db, `Users/${userId}/conversations`);
   const todayTypeMessage: Day = {
     type: "day",
-    dateCreated: today,
-    id: today,
+    dateCreated: date,
+    id: date,
   };
 
   try {

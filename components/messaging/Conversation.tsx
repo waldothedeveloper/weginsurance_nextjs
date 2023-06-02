@@ -1,15 +1,23 @@
+import { messagesAtom, userIdAtom } from "@/lib/state/atoms";
+
 import { CarouselWrapper } from "@/components/messaging/carousel/CarouselWrapper";
 import { ChatHeader } from "@/components/messaging/ChatHeader";
 import { EditorWrapper } from "@/components/messaging/EditorWrapper";
 import { ErrorComponent } from "@/components/Error";
 import { Spinning } from "@/components/Spinning";
 import { VirtualizedConversation } from "@/components/messaging/VirtualizedConversation";
-import { messagesAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
 
+type ConversationProps = {
+  isLoading: boolean;
+  error: Error | null | unknown;
+  saveDateHeadersError: Error | null | unknown;
+}
+
 // 
-export const Conversation = ({ isLoading, error }: { isLoading: boolean, error: Error | null | unknown }) => {
+export const Conversation = ({ isLoading, error, saveDateHeadersError }: ConversationProps) => {
   const messagesFromDB = useAtomValue(messagesAtom)
+  const userId = useAtomValue(userIdAtom);
 
 
 
@@ -21,15 +29,15 @@ export const Conversation = ({ isLoading, error }: { isLoading: boolean, error: 
     );
   }
 
-  if (error) {
+  if (error || saveDateHeadersError) {
     return (
       <div className="grid h-screen place-items-center overflow-hidden">
-        <ErrorComponent error_message={error} />
+        <ErrorComponent error_message={error || saveDateHeadersError} />
       </div>
     );
   }
 
-  if (!messagesFromDB) {
+  if (!messagesFromDB || !userId) {
     return (
       <div className="grid h-screen place-items-center overflow-hidden">
         <div className="bg-white px-6 py-24 sm:py-32 lg:px-8">

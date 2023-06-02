@@ -12,7 +12,7 @@ import { useGetUserConversations } from "@/hooks/messaging/useGetUserConversatio
 
 export const Wrapper = () => {
   const router: NextRouter = useRouter();
-  const { getMessages, isLoading, error } = useGetUserConversations()
+  const { getMessages, isLoading, error, saveDateHeadersError } = useGetUserConversations()
 
   return (
     <>
@@ -21,7 +21,7 @@ export const Wrapper = () => {
         <>
           <MainComponent className="relative z-0 flex-1 overflow-hidden focus:outline-none">
             <div className="mx-auto">
-              <Conversation isLoading={isLoading} error={error} />
+              <Conversation isLoading={isLoading} error={error} saveDateHeadersError={saveDateHeadersError}/>
             </div>
           </MainComponent>
         </>
