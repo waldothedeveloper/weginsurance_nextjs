@@ -19,10 +19,10 @@ import { useForm } from "react-hook-form";
 
 //
 export const useUpdateCompany = () => {
-  const uploadedImages = useAtomValue(uploadedFilesAtom);
+  const uploadedResources = useAtomValue(uploadedFilesAtom);
   const [isSubmitting, setIsSubmitting] = useAtom(isSubmittingAtom);
   const [openModal, setOpenModal] = useAtom(openModalAtom);
-  const setUploadedImages = useSetAtom(uploadedFilesAtom);
+  const setUploadedResources = useSetAtom(uploadedFilesAtom);
   const setSelectedInsuranceCompany = useSetAtom(selectedInsuranceCompanyAtom);
   const selectedInsuranceCompany = useAtomValue(selectedInsuranceCompanyAtom);
   const setNumberOfFilesUploaded = useSetAtom(numberOfFilesUploadedAtom);
@@ -60,7 +60,7 @@ export const useUpdateCompany = () => {
 
   const updateCompany = (updatedCompany: FieldValues) => {
     const { notes, name, logo_url } = updatedCompany;
-    const logoUrl = uploadedImages.find(
+    const logoUrl = uploadedResources.find(
       (file) =>
         file.type.startsWith("image/") &&
         file?.url?.includes("insurance_company_logos")
@@ -80,7 +80,7 @@ export const useUpdateCompany = () => {
         reset();
         setNumberOfFilesUploaded(0);
         setProgressPercentage(0);
-        setUploadedImages([]);
+        setUploadedResources([]);
         handleCloseModal();
         setIsSubmitting(false);
         successNotification(
@@ -92,7 +92,7 @@ export const useUpdateCompany = () => {
       .catch((err) => {
         setNumberOfFilesUploaded(0);
         setProgressPercentage(0);
-        setUploadedImages([]);
+        setUploadedResources([]);
         handleCloseModal();
         setIsSubmitting(false);
         failureNotification(

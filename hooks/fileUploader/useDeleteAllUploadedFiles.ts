@@ -11,7 +11,7 @@ import { useSetAtom } from "jotai";
 
 //
 export const useDeleteAllUploadedFiles = () => {
-  const setUploadedImages = useSetAtom(uploadedFilesAtom);
+  const setUploadedResources = useSetAtom(uploadedFilesAtom);
   const setProgressAtom = useSetAtom(progressPercentageAtom);
   const setNumberOfFilesUploaded = useSetAtom(numberOfFilesUploadedAtom);
 
@@ -21,6 +21,12 @@ export const useDeleteAllUploadedFiles = () => {
       async (get) => {
         const filePromises: any = [];
         const files = get(uploadedFilesAtom);
+
+        const resetProgressAndNumberOfUploadedFiles = () => {
+          setUploadedResources([]);
+          setProgressAtom(0);
+          setNumberOfFilesUploaded(0);
+        };
 
         if (!files) return;
         if (files.length === 0) return;
@@ -40,11 +46,9 @@ export const useDeleteAllUploadedFiles = () => {
           }
         });
         await Promise.all(filePromises);
-        setUploadedImages([]);
-        setProgressAtom(0);
-        setNumberOfFilesUploaded(0);
+        resetProgressAndNumberOfUploadedFiles();
       },
-      [setUploadedImages, setProgressAtom, setNumberOfFilesUploaded]
+      [setUploadedResources, setProgressAtom, setNumberOfFilesUploaded]
     )
   );
 

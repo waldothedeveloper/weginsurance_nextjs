@@ -13,12 +13,12 @@ export const DragAndDrop = () => {
   const selectedInsuranceCompany = useAtomValue(selectedInsuranceCompanyAtom);
   const { insuranceLogoDropZone } = useDropAndUploadFiles();
   const handleDeleteAllFiles = useDeleteAllUploadedFiles()
-  const uploadedImages = useAtomValue(uploadedFilesAtom);
+  const uploadedResources = useAtomValue(uploadedFilesAtom);
   const ifUserUploadsALogo =
     !insuranceLogoDropZone.isDragActive &&
-    uploadedImages &&
-    uploadedImages.length > 0 &&
-    uploadedImages.map((file) => (
+    uploadedResources &&
+    uploadedResources.length > 0 &&
+    uploadedResources.map((file) => (
       <div className="relative h-auto w-full" key={file.name}>
         <Image
           className="h-full w-full object-contain"
@@ -108,7 +108,7 @@ export const DragAndDrop = () => {
               )}
             </div>
           </div>
-          {!insuranceLogoDropZone.isDragActive && uploadedImages && uploadedImages.length > 0 && (
+          {!insuranceLogoDropZone.isDragActive && uploadedResources && uploadedResources.length > 0 && (
             <button
               onClick={handleDeleteAllFiles}
               type="button"

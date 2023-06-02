@@ -1,5 +1,6 @@
 import {
   numberOfFilesUploadedAtom,
+  progressPercentageAtom,
   uploadedFilesAtom,
   userIdAtom,
   userPhoneAtom,
@@ -21,10 +22,11 @@ const productionNumber =
 
 //
 export const useSendOutboundMessage = () => {
+  const setProgressAtom = useSetAtom(progressPercentageAtom);
   const userId = useAtomValue(userIdAtom);
   const setNumberOfFilesUploaded = useSetAtom(numberOfFilesUploadedAtom);
-  const setUploadedFiles = useSetAtom(uploadedFilesAtom);
-  const uploadedFiles = useAtomValue(uploadedFilesAtom);
+  const setUploadedResources = useSetAtom(uploadedFilesAtom);
+  const uploadedResources = useAtomValue(uploadedFilesAtom);
   const phone = useAtomValue(userPhoneAtom);
 
   const handleSubmitMessage = async (
@@ -33,7 +35,7 @@ export const useSendOutboundMessage = () => {
   ) => {
     if (event) event.preventDefault();
     const messageHasAttachments = () =>
-      uploadedFiles?.length > 0 ? true : false;
+      uploadedResources?.length > 0 ? true : false;
 
     if (!editor) {
       failureNotification(
@@ -48,12 +50,18 @@ export const useSendOutboundMessage = () => {
       },
     } = editor;
 
-    if (!innerText?.trim() && uploadedFiles.length === 0) {
+    if (!innerText?.trim() && uploadedResources.length === 0) {
       failureNotification(
         `El mensaje de texto esta vacio, por favor escribe algun texto para poder enviarlo. Intenta de nuevo por favor`
       );
       return;
     }
+
+    const resetProgressAndNumberOfUploadedFiles = () => {
+      setNumberOfFilesUploaded(0);
+      setUploadedResources([]);
+      setProgressAtom(0);
+    };
 
     const todayISO: string = dayjs.utc().toISOString();
 
@@ -69,7 +77,7 @@ export const useSendOutboundMessage = () => {
       sid: nanoid(),
       direction: "outbound-api",
       mediaUrl: messageHasAttachments()
-        ? uploadedFiles.map((file) => file.url)
+        ? uploadedResources.map((file) => file.url)
         : [],
     };
 
@@ -77,8 +85,7 @@ export const useSendOutboundMessage = () => {
       if (userId) {
         await saveMessageInSelectedUserConversations(newMessage);
         editor?.commands?.clearContent();
-        setNumberOfFilesUploaded(0);
-        setUploadedFiles([]);
+        resetProgressAndNumberOfUploadedFiles();
         return newMessage;
       }
     } catch (error) {

@@ -15,10 +15,10 @@ import { useForm } from "react-hook-form";
 
 //
 export const useCreateNewCompany = () => {
-  const uploadedImages = useAtomValue(uploadedFilesAtom);
+  const uploadedResources = useAtomValue(uploadedFilesAtom);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const setUploadedImages = useSetAtom(uploadedFilesAtom);
+  const setUploadedResources = useSetAtom(uploadedFilesAtom);
   const setNumberOfFilesUploaded = useSetAtom(numberOfFilesUploadedAtom);
   const setProgressPercentage = useSetAtom(progressPercentageAtom);
   const {
@@ -39,7 +39,7 @@ export const useCreateNewCompany = () => {
 
   const createCompany = (companyDetails: InsuranceCompany) => {
     const { notes, name } = companyDetails;
-    const logoUrl = uploadedImages.find(
+    const logoUrl = uploadedResources.find(
       (file) =>
         file.type.startsWith("image/") &&
         file?.url?.includes("insurance_company_logos")
@@ -54,7 +54,7 @@ export const useCreateNewCompany = () => {
         reset();
         setNumberOfFilesUploaded(0);
         setProgressPercentage(0);
-        setUploadedImages([]);
+        setUploadedResources([]);
         handleCloseModal();
         setIsSubmitting(false);
         successNotification(
@@ -64,7 +64,7 @@ export const useCreateNewCompany = () => {
       .catch((err) => {
         setNumberOfFilesUploaded(0);
         setProgressPercentage(0);
-        setUploadedImages([]);
+        setUploadedResources([]);
         handleCloseModal();
         setIsSubmitting(false);
         failureNotification(
