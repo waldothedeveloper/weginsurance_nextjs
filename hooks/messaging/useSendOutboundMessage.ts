@@ -1,5 +1,6 @@
 import {
   numberOfFilesUploadedAtom,
+  openResourceUploadModalAtom,
   progressPercentageAtom,
   uploadedFilesAtom,
   userIdAtom,
@@ -28,6 +29,7 @@ export const useSendOutboundMessage = () => {
   const setUploadedResources = useSetAtom(uploadedFilesAtom);
   const uploadedResources = useAtomValue(uploadedFilesAtom);
   const phone = useAtomValue(userPhoneAtom);
+  const setOpenResourceUploadModal = useSetAtom(openResourceUploadModalAtom);
 
   const handleSubmitMessage = async (
     event: React.SyntheticEvent,
@@ -58,6 +60,7 @@ export const useSendOutboundMessage = () => {
     }
 
     const resetProgressAndNumberOfUploadedFiles = () => {
+      setOpenResourceUploadModal(false);
       setNumberOfFilesUploaded(0);
       setUploadedResources([]);
       setProgressAtom(0);
