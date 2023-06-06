@@ -1,21 +1,15 @@
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import {
-  numberOfFilesUploadedAtom,
-  progressPercentageAtom,
-} from "@/lib/state/atoms";
 
 import { UploadedFile } from "@/interfaces/index";
 import { failureNotification } from "@/components/notifications/failureNotification";
+import { progressPercentageAtom } from "@/lib/state/atoms";
 import { storage } from "@/lib/firebaseConfig";
 import { useSetAtom } from "jotai";
 
 export const useUploadFilesWithProgressFeedback = () => {
   const setProgressPercentage = useSetAtom(progressPercentageAtom);
-  const setNumberOfFilesUploaded = useSetAtom(numberOfFilesUploadedAtom);
-  // I'm not too sure about this, think about it
-  const fileUploadOrder: number[] = [];
-  //
-  const uploadFilesToCloud = async (
+
+  const uploadFilesToCloudStorage = async (
     files: (File & { id: string })[],
     refPath: string
   ) => {
@@ -23,8 +17,8 @@ export const useUploadFilesWithProgressFeedback = () => {
 
     files &&
       files.length > 0 &&
-      files.map((file, idx) => {
-        filePromises.push(
+      files.map((file) => {
+        return filePromises.push(
           new Promise((resolve, reject) => {
             const metadata = {
               contentType: file.type,
@@ -67,9 +61,6 @@ export const useUploadFilesWithProgressFeedback = () => {
               },
               () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                  fileUploadOrder.push(idx);
-                  const numUploaded = fileUploadOrder.length;
-                  setNumberOfFilesUploaded(numUploaded);
                   resolve(
                     Object.assign(file, {
                       url: downloadURL,
@@ -86,5 +77,5 @@ export const useUploadFilesWithProgressFeedback = () => {
     return fileLinks;
   };
 
-  return { uploadFilesToCloud };
+  return { uploadFilesToCloudStorage };
 };

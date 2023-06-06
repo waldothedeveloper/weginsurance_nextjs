@@ -1,10 +1,22 @@
+import {
+  numberOfFilesUploadedAtom,
+  openResourceUploadModalAtom,
+  uploadedFilesAtom,
+} from "@/lib/state/atoms";
+
 import { UploadedFile } from "@/interfaces/index";
 import { addUniqueId } from "@/utils/addUniqueID";
-import { uploadedFilesAtom } from "@/lib/state/atoms";
 import { useDropzone } from "react-dropzone";
 import { useSetAtom } from "jotai";
 import { useUploadFilesWithProgressFeedback } from "@/hooks/fileUploader/useUploadFilesWithProgressFeedback";
 
+/*
+The onDrop function will take the selected files (images or documents) and do the following things:
+1. Add a unique ID to each file in the array of files
+2. Upload files to cloud storage
+3. Set uploaded files to state
+
+*/
 const onDrop = async (
   localFiles: File[],
   setterFn: (fn: (prevFiles: UploadedFile[]) => UploadedFile[]) => void, // eslint-disable-line
@@ -16,13 +28,18 @@ const onDrop = async (
     bucket: string
   ) => Promise<UploadedFile[]> // eslint-disable-line
 ) => {
+  // add unique ID to each file in the array of files
   const files = addUniqueId(localFiles);
+  // upload files to cloud storage
   const uploadedFiles = await uploaderFn(files, bucket);
-  setterFn((prevFiles: UploadedFile[]) => [...prevFiles, ...uploadedFiles]);
+  // set uploaded files to state
+  setterFn((prevFiles) => [...prevFiles, ...uploadedFiles]);
 };
 
 export const useDropAndUploadFiles = () => {
-  const { uploadFilesToCloud } = useUploadFilesWithProgressFeedback();
+  const setOpenResourceUploadModal = useSetAtom(openResourceUploadModalAtom);
+  const setNumberOfFilesUploaded = useSetAtom(numberOfFilesUploadedAtom);
+  const { uploadFilesToCloudStorage } = useUploadFilesWithProgressFeedback();
   const setUploadedFile = useSetAtom(uploadedFilesAtom);
   const imageDropZone = useDropzone({
     maxFiles: 10,
@@ -31,11 +48,14 @@ export const useDropAndUploadFiles = () => {
     },
     multiple: true,
     onDrop: (acceptedFiles) => {
+      setOpenResourceUploadModal(true);
+      // this will help with the loading carousel skeleton when uploading images
+      setNumberOfFilesUploaded(acceptedFiles.length);
       return onDrop(
         acceptedFiles,
         setUploadedFile,
         "images",
-        uploadFilesToCloud
+        uploadFilesToCloudStorage
       );
     },
   });
@@ -52,11 +72,14 @@ export const useDropAndUploadFiles = () => {
     },
     multiple: true,
     onDrop: (acceptedFiles) => {
+      setOpenResourceUploadModal(true);
+      // this will help with the loading carousel skeleton when uploading documents
+      setNumberOfFilesUploaded(acceptedFiles.length);
       return onDrop(
         acceptedFiles,
         setUploadedFile,
         "documents",
-        uploadFilesToCloud
+        uploadFilesToCloudStorage
       );
     },
   });
@@ -72,7 +95,7 @@ export const useDropAndUploadFiles = () => {
         acceptedFiles,
         setUploadedFile,
         "insurance_company_logos",
-        uploadFilesToCloud
+        uploadFilesToCloudStorage
       );
     },
   });
