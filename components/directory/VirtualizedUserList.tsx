@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { selectedUserAtom, uploadedFilesAtom } from "@/lib/state/atoms";
 
 import { CustomHits } from "@/components/algolia/CustomHits"
 import { CustomSearchBox } from "@/components/algolia/CustomSearchBox"
@@ -6,8 +7,8 @@ import { EmptyQueryBoundary } from "@/components/algolia/EmptyQueryBoundary"
 import { FakeUser } from "@/interfaces/index";
 import { Spinning } from "@/components/Spinning";
 import { TanStackVirtualizer } from "@/components/directory/TanStackVirtualizer";
-import { selectedUserAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai"
+import { useDeleteAllUploadedFiles } from "@/hooks/fileUploader/useDeleteAllUploadedFiles";
 import { useFakeUserList } from "@/hooks/test/useFakeUserList";
 import { useFirebaseUsers } from "@/hooks/user_directory/useFirebaseUsers";
 import { useRouter } from "next/router";
@@ -19,12 +20,16 @@ export type Ref = HTMLUListElement
 export const VirtualizedUserList = ({ getMessages }: { getMessages: (userId: string) => Promise<void> }) => {
   const selectedUser = useAtomValue(selectedUserAtom);
   const router = useRouter();
+  const handleDeleteAllFiles = useDeleteAllUploadedFiles();
+  const uploadedResources = useAtomValue(uploadedFilesAtom);
 
   useEffect(() => {
     if (selectedUser) {
       router.push(`/admin/messages?userId=${selectedUser?.id}`, undefined, {
         shallow: true,
       });
+      // if selectedUser changes, and there are files (images or documents) uploaded, then we need to clean the files
+      if (uploadedResources.length > 0) handleDeleteAllFiles()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedUser]);

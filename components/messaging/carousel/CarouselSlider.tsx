@@ -10,6 +10,7 @@ import { useAtomValue } from "jotai";
 import { useDeleteUploadedFileOneByOne } from "@/hooks/fileUploader/useDeleteUploadedFileOneByOne";
 import { useDropAndUploadFiles } from "@/hooks/fileUploader/useDropAndUploadFiles";
 import { useHoverFile } from "@/hooks/fileUploader/useHoverFile";
+
 type CarouselSliderProps = {
   // eslint-disable-next-line no-unused-vars
   handleSelectedFile: (file: UploadedFile) => void;
@@ -30,7 +31,7 @@ export const CarouselSlider = ({
   return (
     <div className="mt-6 flex items-center justify-center space-x-2">
       <ul className="scrollbar flex max-w-[72rem] space-x-2 overflow-x-scroll scroll-smooth px-2">
-        {uploadedResources.map((file, index) => (
+        {uploadedResources.length > 0 && uploadedResources.map((file, index) => (
           <li
             role="button"
             key={file?.id}
@@ -48,7 +49,7 @@ export const CarouselSlider = ({
                 "relative block h-14 w-14 overflow-hidden rounded-sm duration-300 ease-in-out"
               )}
             >
-              {file?.type.startsWith("image/") ? (
+              {file?.type?.startsWith("image/") ? (
                 <Image
                   className="rounded-sm object-cover"
                   src={file?.url}
@@ -85,20 +86,21 @@ export const CarouselSlider = ({
         ))}
       </ul>
       {uploadedResources.length > 0 &&
-      uploadedResources[0]?.type.startsWith("image/") ? (
-        <div className="h-14 self-start">
-          <button
-            {...imageDropZone.getRootProps()}
-            type="button"
-            className="mt-1.5 rounded-sm border border-slate-300 bg-slate-50 p-0 text-white shadow-sm duration-300 ease-in-out hover:bg-slate-100 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-300"
-          >
-            <span className="flex h-14 w-14 items-center justify-center">
-              <PlusIcon className="h-6 w-6 text-slate-900" aria-hidden="true" />
-              <input {...imageDropZone.getInputProps()} />
-            </span>
-          </button>
-        </div>
-      ) : (
+        uploadedResources[0]?.type?.startsWith("image/") && (
+          <div className="h-14 self-start">
+            <button
+              {...imageDropZone.getRootProps()}
+              type="button"
+              className="mt-1.5 rounded-sm border border-slate-300 bg-slate-50 p-0 text-white shadow-sm duration-300 ease-in-out hover:bg-slate-100 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-300"
+            >
+              <span className="flex h-14 w-14 items-center justify-center">
+                <PlusIcon className="h-6 w-6 text-slate-900" aria-hidden="true" />
+                <input {...imageDropZone.getInputProps()} />
+              </span>
+            </button>
+          </div>
+        )}
+      {uploadedResources?.length > 0 && !uploadedResources[0]?.type?.startsWith("image/") && (
         <div className="h-14 self-start">
           <button
             {...documentDropZone.getRootProps()}

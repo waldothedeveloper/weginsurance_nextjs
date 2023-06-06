@@ -1,5 +1,6 @@
 import {
   numberOfFilesUploadedAtom,
+  openResourceUploadModalAtom,
   progressPercentageAtom,
   uploadedFilesAtom,
 } from "@/lib/state/atoms";
@@ -12,6 +13,7 @@ import { useSetAtom } from "jotai";
 export const useDeleteUploadedFileOneByOne = () => {
   const setProgressAtom = useSetAtom(progressPercentageAtom);
   const setNumberOfFilesUploaded = useSetAtom(numberOfFilesUploadedAtom);
+  const setOpenResourceUploadModal = useSetAtom(openResourceUploadModalAtom);
 
   const setUploadedResources = useSetAtom(uploadedFilesAtom);
 
@@ -23,6 +25,7 @@ export const useDeleteUploadedFileOneByOne = () => {
         );
 
         const resetProgressAndNumberOfUploadedFiles = () => {
+          setOpenResourceUploadModal(false);
           setProgressAtom(0);
           setNumberOfFilesUploaded(0);
         };
@@ -42,7 +45,12 @@ export const useDeleteUploadedFileOneByOne = () => {
           setUploadedResources(remainingResources);
         }
       },
-      [setUploadedResources, setProgressAtom, setNumberOfFilesUploaded]
+      [
+        setUploadedResources,
+        setProgressAtom,
+        setNumberOfFilesUploaded,
+        setOpenResourceUploadModal,
+      ]
     )
   );
 

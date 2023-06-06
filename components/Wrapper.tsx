@@ -8,11 +8,25 @@ import { NovuNotificationsCenter } from "@/components/notifications/NovuConfig";
 import { UserFormWrapper } from "@/components/directory/UserFormWrapper";
 import { UsersUI } from "@/components/directory/UsersUI";
 import { VirtualizedUserList } from "@/components/directory/VirtualizedUserList";
+import { uploadedFilesAtom } from "@/lib/state/atoms";
+import { useAtomValue } from "jotai";
+import { useDeleteAllUploadedFiles } from "@/hooks/fileUploader/useDeleteAllUploadedFiles";
+import { useEffect } from "react";
 import { useGetUserConversations } from "@/hooks/messaging/useGetUserConversations";
 
 export const Wrapper = () => {
   const router: NextRouter = useRouter();
   const { getMessages, isLoading, error, saveDateHeadersError } = useGetUserConversations()
+  const uploadedResources = useAtomValue(uploadedFilesAtom);
+  const handleDeleteAllFiles = useDeleteAllUploadedFiles();
+
+  useEffect(() => {
+    if (uploadedResources.length > 0 && !router?.query?.dashboard?.includes("messages")) {
+      handleDeleteAllFiles()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uploadedResources, router])
+
 
   return (
     <>
@@ -21,7 +35,7 @@ export const Wrapper = () => {
         <>
           <MainComponent className="relative z-0 flex-1 overflow-hidden focus:outline-none">
             <div className="mx-auto">
-              <Conversation isLoading={isLoading} error={error} saveDateHeadersError={saveDateHeadersError}/>
+              <Conversation isLoading={isLoading} error={error} saveDateHeadersError={saveDateHeadersError} />
             </div>
           </MainComponent>
         </>

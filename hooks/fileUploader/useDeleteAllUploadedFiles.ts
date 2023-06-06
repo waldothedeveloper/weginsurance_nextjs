@@ -1,5 +1,6 @@
 import {
   numberOfFilesUploadedAtom,
+  openResourceUploadModalAtom,
   progressPercentageAtom,
 } from "@/lib/state/atoms";
 
@@ -14,6 +15,7 @@ export const useDeleteAllUploadedFiles = () => {
   const setUploadedResources = useSetAtom(uploadedFilesAtom);
   const setProgressAtom = useSetAtom(progressPercentageAtom);
   const setNumberOfFilesUploaded = useSetAtom(numberOfFilesUploadedAtom);
+  const setOpenResourceUploadModal = useSetAtom(openResourceUploadModalAtom);
 
   //
   const handleDeleteAllFiles = useAtomCallback(
@@ -23,13 +25,20 @@ export const useDeleteAllUploadedFiles = () => {
         const files = get(uploadedFilesAtom);
 
         const resetProgressAndNumberOfUploadedFiles = () => {
+          setOpenResourceUploadModal(false);
           setUploadedResources([]);
           setProgressAtom(0);
           setNumberOfFilesUploaded(0);
         };
 
-        if (!files) return;
-        if (files.length === 0) return;
+        if (!files) {
+          resetProgressAndNumberOfUploadedFiles();
+          return;
+        }
+        if (files.length === 0) {
+          resetProgressAndNumberOfUploadedFiles();
+          return;
+        }
 
         files.forEach((file) => {
           if (
@@ -48,7 +57,12 @@ export const useDeleteAllUploadedFiles = () => {
         await Promise.all(filePromises);
         resetProgressAndNumberOfUploadedFiles();
       },
-      [setUploadedResources, setProgressAtom, setNumberOfFilesUploaded]
+      [
+        setUploadedResources,
+        setProgressAtom,
+        setNumberOfFilesUploaded,
+        setOpenResourceUploadModal,
+      ]
     )
   );
 

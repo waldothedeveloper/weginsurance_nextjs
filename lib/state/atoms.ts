@@ -33,6 +33,7 @@ export const editorAtomwithImages = atom<Editor | null>(null);
 export const progressPercentageAtom = atom(0);
 export const numberOfFilesUploadedAtom = atom(0);
 export const uploadedFilesAtom = atom<UploadedFile[]>([]);
+export const openResourceUploadModalAtom = atom(false);
 
 export const selectedInsuranceCompanyAtom = atom<InsuranceCompany | null>(null);
 export const isSubmittingAtom = atom<boolean>(false);
