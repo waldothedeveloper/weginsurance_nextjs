@@ -3,7 +3,7 @@ import firestore from "firebase/firestore";
 export interface FakeUser {
   id: string;
   gender: "masculino" | "femenino" | "male" | "female";
-  active_user: boolean;
+  activeUser: boolean;
   firstname: string;
   second_name: string;
   lastname: string;
@@ -13,17 +13,17 @@ export interface FakeUser {
   notes: string;
   phone: string;
   avatar: string;
-  insurance_company: string;
+  insuranceCompany: string;
 }
 
 export interface RealUser {
-  active_user: boolean | "Si" | "No";
+  activeUser: boolean | "Si" | "No";
   email: string;
   firstname: string;
   fullname: string;
   gender: "masculino" | "femenino";
   id: string;
-  insurance_company: string;
+  insuranceCompany: string;
   lastname: string;
   notes: string;
   phone: string;

@@ -34,7 +34,7 @@ export const useDeleteUserForm = () => {
       setOpenDeleteMultipleUsers(true);
       const usersToDelete = [];
 
-      if (Object.keys(rowSelection).length > 0) {
+      if (Object.keys(rowSelection).length > 0 && firebaseUsers !== null) {
         for (const key in rowSelection) {
           usersToDelete.push(firebaseUsers[key]);
         }

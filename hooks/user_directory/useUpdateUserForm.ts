@@ -32,9 +32,9 @@ export const useUpdateUserForm = () => {
         second_lastname: selectedUser?.second_lastname,
         phone: formatPhoneNumberToNationalUSAformat(selectedUser?.phone),
         email: selectedUser?.email,
-        insurance_company: selectedUser?.insurance_company,
+        insuranceCompany: selectedUser?.insuranceCompany,
         gender: selectedUser?.gender,
-        active_user: selectedUser?.active_user === true ? "Si" : "No",
+        activeUser: selectedUser?.activeUser === true ? "Si" : "No",
         notes: selectedUser?.notes,
         id: selectedUser?.id,
       });
@@ -73,9 +73,10 @@ export const useUpdateUserForm = () => {
           return updatedUser;
         })
         .catch((err) => {
+          console.log("err: ", err);
           setIsSubmitting(false);
           failureNotification(
-            `Ha ocurrido un error trantando de actualizar al usuario ${updatedUser?.fullname}`
+            `Ha ocurrido un error trantando de actualizar al usuario ${updatedUser?.fullname}. ${err}`
           );
 
           return err;

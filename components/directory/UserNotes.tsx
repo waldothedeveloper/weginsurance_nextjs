@@ -1,4 +1,6 @@
-export const UserNotes = ({ register }) => {
+import { FieldValues, UseFormRegister } from "react-hook-form"
+
+export const UserNotes = ({ register }: { register: UseFormRegister<FieldValues> }) => {
   return (
     <div className="mt-12">
       <div className="md:grid md:grid-cols-3 md:gap-6">

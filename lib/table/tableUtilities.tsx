@@ -39,7 +39,7 @@ export const UserTableUtilities = ({
   const [rowSelection, setRowSelection] = useState({})
   const { firebaseUsers, firebaseError } = useFirebaseUsers();
   const fakeUserList = useFakeUserList();
-  const totalUserCount = test ? fakeUserList.length : firebaseUsers.length;
+  const totalUserCount = test ? fakeUserList.length : firebaseUsers?.length;
   const columnHelper = createColumnHelper<RealUser>();
 
   const columns = useMemo(
@@ -90,8 +90,8 @@ export const UserTableUtilities = ({
         ),
         header: () => <span>Correo electronico</span>,
       }),
-      columnHelper.accessor((row) => row.insurance_company, {
-        id: "insurance_company",
+      columnHelper.accessor((row) => row.insuranceCompany, {
+        id: "insuranceCompany",
         cell: (props) => (
           <div className="relative ml-2 inline-flex items-center justify-center rounded-full border border-slate-300 py-0.5 px-2">
             <span className="absolute flex flex-shrink-0 items-center justify-center">
@@ -104,7 +104,7 @@ export const UserTableUtilities = ({
         ),
         header: () => <span>Compañia de Seguros</span>,
       }),
-      columnHelper.accessor((row) => row.active_user, {
+      columnHelper.accessor((row) => row.activeUser, {
         id: "status",
         header: () => "Estado",
         cell: (props) => (
@@ -166,7 +166,7 @@ export const UserTableUtilities = ({
 
 
   const table = useReactTable({
-    data: firebaseUsers,
+    data: firebaseUsers || [],
     columns,
     state: {
       rowSelection,

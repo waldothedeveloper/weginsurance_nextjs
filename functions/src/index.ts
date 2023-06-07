@@ -510,12 +510,12 @@ exports.incomingMessage = functions.https.onRequest(
 
         // create a user document for the incoming message
         const newUser = {
-          active_user: true,
+          activeUser: true,
           email: null,
           firstname: "Usuario",
           fullname: "Usuario Desconocido",
           gender: "Masculino",
-          insurance_company: null,
+          insuranceCompany: null,
           lastname: "Desconocido",
           notes: "",
           phone: From,

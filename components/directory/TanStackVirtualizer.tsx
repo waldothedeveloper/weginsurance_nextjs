@@ -3,13 +3,14 @@ import { FakeUser, RealUser } from "@/interfaces/index";
 import { UserList } from "@/components/directory/UserList";
 import { useRef } from 'react'
 import { useVirtualizer } from "@tanstack/react-virtual";
+
 // 
 // eslint-disable-next-line no-unused-vars
-export const TanStackVirtualizer = ({ users, getMessages }: { users: RealUser[] | FakeUser[], getMessages: (userId: string) => Promise<void> }) => {
+export const TanStackVirtualizer = ({ users, getMessages }: { users: RealUser[] | FakeUser[] | null, getMessages: (userId: string) => Promise<void> }) => {
 
   const parentRef = useRef(null);
   // 
-  const count = users.length;
+  const count = users?.length || 0;
   const virtualizer = useVirtualizer({
     count,
     getScrollElement: () => parentRef.current,
@@ -36,7 +37,7 @@ export const TanStackVirtualizer = ({ users, getMessages }: { users: RealUser[] 
           style={{
             transform: `translateY(${items[0]?.start}px)`,
           }}
-          className="absolute left-0 top-0 w-full px-6"
+          className="absolute left-0 top-0 w-full px-4"
         >
           {items.map((virtualRow) => {
             return (
@@ -45,7 +46,7 @@ export const TanStackVirtualizer = ({ users, getMessages }: { users: RealUser[] 
                 data-index={virtualRow.index}
                 ref={virtualizer.measureElement}
               >
-                <UserList user={users[virtualRow.index]} getMessages={getMessages} />
+                <UserList user={users && users[virtualRow.index]} getMessages={getMessages} />
               </div>
             )
           })}
