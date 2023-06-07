@@ -4,7 +4,7 @@ import { faker } from "@faker-js/faker/locale/es";
 export const createRandomUser = (): FakeUser => {
   const gender = faker.name.sexType();
 
-  const active_user = faker.datatype.boolean();
+  const activeUser = faker.datatype.boolean();
   const firstname = faker.name.firstName(gender);
   const second_name = faker.name.middleName(gender);
   const lastname = faker.name.lastName();
@@ -20,11 +20,11 @@ export const createRandomUser = (): FakeUser => {
   return {
     id: faker.datatype.uuid(),
     fullname,
-    active_user,
+    activeUser,
     avatar: faker.image.avatar(),
     email,
     firstname,
-    insurance_company: faker.helpers.arrayElement([
+    insuranceCompany: faker.helpers.arrayElement([
       "Aetna",
       "Anthem",
       "Blue Cross Blue Shield",

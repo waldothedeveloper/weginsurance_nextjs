@@ -5,7 +5,6 @@ import { Conversation } from "@/components/messaging/Conversation";
 import { InsuranceCompanyTable } from "@/components/companies/InsuranceCompanyTable";
 import { MainComponent } from "@/components/dashboard/MainComponent";
 import { NovuNotificationsCenter } from "@/components/notifications/NovuConfig";
-import { UserFormWrapper } from "@/components/directory/UserFormWrapper";
 import { UsersUI } from "@/components/directory/UsersUI";
 import { VirtualizedUserList } from "@/components/directory/VirtualizedUserList";
 import { uploadedFilesAtom } from "@/lib/state/atoms";
@@ -21,7 +20,7 @@ export const Wrapper = () => {
   const handleDeleteAllFiles = useDeleteAllUploadedFiles();
 
   useEffect(() => {
-    if (uploadedResources.length > 0 && !router?.query?.dashboard?.includes("messages")) {
+    if (uploadedResources.length > 0 && !router?.query?.dashboard?.includes("messages") && !router?.query?.dashboard?.includes("insurance_company")) {
       handleDeleteAllFiles()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -45,14 +44,6 @@ export const Wrapper = () => {
         <MainComponent className="relative z-0 flex-1 overflow-y-auto focus:outline-none">
           <div className="pt-12">
             <UsersUI />
-          </div>
-        </MainComponent>
-      )}
-
-      {router?.query?.dashboard?.includes("new_user") && (
-        <MainComponent className="relative z-0 flex-1 overflow-y-auto focus:outline-none">
-          <div className="mx-auto max-w-7xl py-12">
-            <UserFormWrapper />
           </div>
         </MainComponent>
       )}

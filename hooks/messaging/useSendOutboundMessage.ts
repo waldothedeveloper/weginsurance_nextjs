@@ -68,6 +68,13 @@ export const useSendOutboundMessage = () => {
 
     const todayISO: string = dayjs.utc().toISOString();
 
+    if (!phone) {
+      failureNotification(
+        `No se ha podido obtener el numero de telefono del usuario. Intenta de nuevo por favor`
+      );
+      return;
+    }
+
     const newMessage: Message = {
       userId,
       body: innerText,
@@ -75,7 +82,7 @@ export const useSendOutboundMessage = () => {
         process.env.NODE_ENV === "production"
           ? productionNumber
           : developmentNumber,
-      to: phone,
+      to: phone || "",
       dateCreated: todayISO,
       sid: nanoid(),
       direction: "outbound-api",

@@ -13,7 +13,7 @@ import { atom } from "jotai";
 import dayjs from "dayjs";
 
 //
-export const userPhoneAtom = atom("");
+export const userPhoneAtom = atom<string | null>("");
 export const userIdAtom = atom<string | null>(null);
 export const selectedUserAtom = atom<RealUser | FakeUser | null>(null);
 export const sendingSMSAtom = atom(true);

@@ -18,7 +18,7 @@ export const CustomHits = ({ getMessages }: { getMessages: (userId: string) => P
   const setSelectedUser = useSetAtom(selectedUserAtom);
   const selectedUser = useAtomValue<Atom<RealUser | FakeUser | null>>(selectedUserAtom);
   return <>
-    <ul className="z-0 w-full px-6">
+    <ul className="z-0 w-full px-4">
       {hits.map((hit) => (
         <li
           key={hit.objectID}
@@ -45,13 +45,13 @@ export const CustomHits = ({ getMessages }: { getMessages: (userId: string) => P
                 try {
                   setUserPhone(hit?.phone as string);
                   setSelectedUser({
-                    active_user: hit?.active_user as boolean,
+                    activeUser: hit?.activeUser as boolean,
                     email: hit?.email as string,
                     firstname: hit?.firstname as string,
                     fullname: hit?.fullname as string,
                     gender: hit?.gender as "masculino" | "femenino",
                     id: hit?.objectID as string,
-                    insurance_company: hit?.insurance_company as string,
+                    insuranceCompany: hit?.insuranceCompany as string,
                     lastname: hit?.lastname as string,
                     notes: hit?.notes as string,
                     phone: hit?.phone as string,
@@ -95,7 +95,7 @@ export const CustomHits = ({ getMessages }: { getMessages: (userId: string) => P
                         : "text-xs text-slate-400"
                     }
                   >
-                    {hit?.insurance_company as React.ReactNode}
+                    {hit?.insuranceCompany as React.ReactNode}
                   </span>
                 </div>
               </div>

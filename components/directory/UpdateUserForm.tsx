@@ -93,12 +93,12 @@ export const UpdateUserForm = ({
           {/* TODO: Make these Select  a loop too */}
           <div className="col-span-1">
             <Select
-              {...register("insurance_company", { required: true })}
+              {...register("insuranceCompany", { required: true })}
               errors={errors}
-              htmlFor="insurance_company"
+              htmlFor="insuranceCompany"
               errorMessage="Por favor elija una compañia"
               options={companies}
-              name="insurance_company"
+              name="insuranceCompany"
               label="Compañia"
             />
           </div>
@@ -119,14 +119,14 @@ export const UpdateUserForm = ({
           </div>
           <div className="col-span-1">
             <Select
-              {...register("active_user")}
+              {...register("activeUser")}
               errors={errors}
-              htmlFor="active_user"
+              htmlFor="activeUser"
               options={[
                 { value: "Si", id: 0 },
                 { value: "No", id: 1 },
               ]}
-              name="active_user"
+              name="activeUser"
               label="Usuario Activo"
             />
           </div>

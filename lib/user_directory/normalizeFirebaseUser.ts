@@ -4,11 +4,12 @@ import { normalizeString } from "@/utils/normalizeString";
 //
 export const normalizeFirebaseUser = (user: RealUser) => {
   const normalizedUser = user;
+  console.log("normalizedUser: ", normalizedUser);
 
-  if (normalizedUser?.active_user === "Si") {
-    normalizedUser.active_user = true;
+  if (normalizedUser?.activeUser === "Si") {
+    normalizedUser.activeUser = true;
   } else {
-    normalizedUser.active_user = false;
+    normalizedUser.activeUser = false;
   }
 
   const goodPhoneNum = convertToE164Format(normalizedUser?.phone);

@@ -1,5 +1,7 @@
-export const formatPhoneNumberToNationalUSAformat = (value: string): string => {
-  if (!value || typeof value !== "string") return value;
+export const formatPhoneNumberToNationalUSAformat = (
+  value: string | null | undefined
+) => {
+  if (!value || typeof value !== "string") return;
   const digitsOnly = value.replace(/\D/g, ""); // Remove all non-digit characters
 
   if (digitsOnly.length === 11 && digitsOnly.startsWith("1")) {
