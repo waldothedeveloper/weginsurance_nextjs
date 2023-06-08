@@ -1,5 +1,5 @@
 type ShowFileTypeIconProps = {
-  fileType: string;
+  fileType: string | undefined;
   classString: string;
 };
 
@@ -21,6 +21,7 @@ export const ShowFileTypeIcon = ({
   fileType,
   classString,
 }: ShowFileTypeIconProps) => {
+  if (!fileType) return null;
   switch (fileType) {
     case "txt":
       return <BsFiletypeTxt className={classString} />;
