@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { ShowFileTypeIcon } from "@/components/messaging/carousel/ShowFileTypeIcon";
+import { hasImageExtension } from "@/utils/hasImageExtension";
+
 
 export const MessageAttachments = ({ attachments }: { attachments: string[] | undefined }) => {
   if (!attachments) return null;
@@ -7,7 +9,7 @@ export const MessageAttachments = ({ attachments }: { attachments: string[] | un
   return (
     <div className="relative flex flex-col space-y-2 w-full">
       {attachments?.map((image: string) => {
-        if (!image.includes(`jpeg` || `png` || `jpg` || `gif` || `svg`)) {
+        if (!hasImageExtension(image)) {
           return (
             <dd className="block relative" key={image}>
               <a href={image} target="_blank" rel="noopener noreferrer">
