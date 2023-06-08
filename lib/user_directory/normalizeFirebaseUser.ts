@@ -4,7 +4,6 @@ import { normalizeString } from "@/utils/normalizeString";
 //
 export const normalizeFirebaseUser = (user: RealUser) => {
   const normalizedUser = user;
-  console.log("normalizedUser: ", normalizedUser);
 
   if (normalizedUser?.activeUser === "Si") {
     normalizedUser.activeUser = true;

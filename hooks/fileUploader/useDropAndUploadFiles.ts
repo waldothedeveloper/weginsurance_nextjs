@@ -6,6 +6,7 @@ import {
 
 import { UploadedFile } from "@/interfaces/index";
 import { addUniqueId } from "@/utils/addUniqueID";
+import { failureNotification } from "@/components/notifications/failureNotification";
 import { useDropzone } from "react-dropzone";
 import { useSetAtom } from "jotai";
 import { useUploadFilesWithProgressFeedback } from "@/hooks/fileUploader/useUploadFilesWithProgressFeedback";
@@ -43,13 +44,16 @@ export const useDropAndUploadFiles = () => {
   const setUploadedFile = useSetAtom(uploadedFilesAtom);
   const imageDropZone = useDropzone({
     maxFiles: 10,
+    maxSize: 5242880, // 5MB in bytes
     accept: {
       "image/*": [".jpeg", ".png", ".jpg", ".gif"],
     },
     multiple: true,
     onDrop: (acceptedFiles) => {
+      if (!acceptedFiles || acceptedFiles.length === 0) return;
+
       setOpenResourceUploadModal(true);
-      // this will help with the loading carousel skeleton when uploading images
+      // this will help with the loading carousel skeleton when uploading images, to show accurate accepted images
       setNumberOfFilesUploaded(acceptedFiles.length);
       return onDrop(
         acceptedFiles,
@@ -58,10 +62,27 @@ export const useDropAndUploadFiles = () => {
         uploadFilesToCloudStorage
       );
     },
+    onDropRejected: (rejectedFiles) => {
+      if (rejectedFiles.length === 1) {
+        failureNotification(
+          `La imagen ${rejectedFiles[0]?.file?.name} es mayor de 5MB y ha sido rechazada. Por favor seleccione una imagen menor o igual a 5MB.`
+        );
+      }
+
+      if (rejectedFiles.length > 1) {
+        const rejectedImgs = rejectedFiles.map(
+          (img, idx) => `${idx + 1}. ${img?.file?.name} `
+        );
+        failureNotification(
+          `Estas imagenes son mayores de 5MB: ${rejectedImgs}. Por favor seleccione imagenes iguales o menores de 5MB.`
+        );
+      }
+    },
   });
 
   const documentDropZone = useDropzone({
     maxFiles: 10,
+    maxSize: 614400, // 600KB in bytes
     accept: {
       "application/pdf": [".pdf"],
       "text/plain": [".txt"],
@@ -72,6 +93,7 @@ export const useDropAndUploadFiles = () => {
     },
     multiple: true,
     onDrop: (acceptedFiles) => {
+      if (!acceptedFiles || acceptedFiles.length === 0) return;
       setOpenResourceUploadModal(true);
       // this will help with the loading carousel skeleton when uploading documents
       setNumberOfFilesUploaded(acceptedFiles.length);
@@ -82,6 +104,22 @@ export const useDropAndUploadFiles = () => {
         uploadFilesToCloudStorage
       );
     },
+    onDropRejected: (rejectedFiles) => {
+      if (rejectedFiles.length === 1) {
+        failureNotification(
+          `El siguiente documento adjunto es mayor de 600KB: ${rejectedFiles[0]?.file?.name}. Por favor seleccione un adjunto igual o menor a 600KB.`
+        );
+      }
+
+      if (rejectedFiles.length > 1) {
+        const rejectedDocs = rejectedFiles.map(
+          (img, idx) => `${idx + 1}. ${img?.file?.name} `
+        );
+        failureNotification(
+          `Los siguientes documentos adjuntos son mayores de 600KB. ${rejectedDocs}. Por favor seleccione adjuntos iguales o menores a 600KB.`
+        );
+      }
+    },
   });
 
   const insuranceLogoDropZone = useDropzone({
@@ -91,6 +129,7 @@ export const useDropAndUploadFiles = () => {
     },
     multiple: false,
     onDrop: (acceptedFiles) => {
+      if (!acceptedFiles || acceptedFiles.length === 0) return;
       return onDrop(
         acceptedFiles,
         setUploadedFile,

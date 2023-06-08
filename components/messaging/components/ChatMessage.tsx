@@ -28,7 +28,7 @@ export const ChatMessage = ({ msg }: ChatMessageProps) => {
   const sentMsg = delivery?.info?.status === "sent" || delivery?.info?.status === "queued";
 
   return (
-    <div className="grid grid-cols-1 space-y-2 px-5">
+    <div className="grid grid-cols-1 space-y-2 px-6">
       <div
         key={msg.sid}
         className={
@@ -39,34 +39,36 @@ export const ChatMessage = ({ msg }: ChatMessageProps) => {
           <div className="ml-2 text-xs font-medium text-slate-400">
             {dayjs.utc(msg.dateCreated).tz("America/New_York").format("h:mm a")}
           </div>
-          {msg.mediaUrl !== undefined && msg?.mediaUrl.length > 0 && (<MessageAttachments attachments={msg.mediaUrl} />)}
-          {msg.body.trim() && (
-            <div
-              key={msg.dateCreated}
-              className={classNames(
-                outboundMsg && (undeliveredMsg || failedMsg)
-                  ? "bg-red-50"
-                  : inboundMsg
-                    ? "rounded-bl-none bg-slate-100"
-                    : "rounded-br-none bg-green-500 p-3",
-                "mt-1 rounded-2xl p-3"
-              )}
-            >
-              <p
+          <div className="flex flex-col items-start justify-start">
+            {msg.mediaUrl !== undefined && msg?.mediaUrl.length > 0 && (<MessageAttachments attachments={msg.mediaUrl} />)}
+            {msg.body && (
+              <div
+                key={msg.dateCreated}
                 className={classNames(
                   outboundMsg && (undeliveredMsg || failedMsg)
-                    ? "text-red-700"
+                    ? "bg-red-50 rounded-br-none"
                     : inboundMsg
-                      ? "text-slate-900"
-                      : "text-slate-50",
-                  "whitespace-pre-wrap break-words"
+                      ? "rounded-bl-none bg-slate-100"
+                      : "rounded-br-none bg-green-500 p-3",
+                  "mt-2 rounded-2xl p-3"
                 )}
               >
-                {msg.body}
+                <p
+                  className={classNames(
+                    outboundMsg && (undeliveredMsg || failedMsg)
+                      ? "text-red-700"
+                      : inboundMsg
+                        ? "text-slate-900"
+                        : "text-slate-50",
+                    "whitespace-pre-wrap break-words"
+                  )}
+                >
+                  {msg.body.trim()}
 
-              </p>
-            </div>
-          )}
+                </p>
+              </div>
+            )}
+          </div>
           {outboundMsg && (
             <div className="mt-1 flex items-center justify-end">
               <p
