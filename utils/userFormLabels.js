@@ -10,8 +10,8 @@ export const userFormLabels = [
   },
   {
     errorMessage: "",
-    htmlFor: "second_name",
-    name: "second_name",
+    htmlFor: "secondName",
+    name: "secondName",
     label: "Segundo Nombre",
     autoComplete: "given-name",
     type: "text",
@@ -28,8 +28,8 @@ export const userFormLabels = [
   },
   {
     errorMessage: "",
-    htmlFor: "second_lastname",
-    name: "second_lastname",
+    htmlFor: "secondLastname",
+    name: "secondLastname",
     label: "Segundo Apellido",
     autoComplete: "family-name",
     type: "text",

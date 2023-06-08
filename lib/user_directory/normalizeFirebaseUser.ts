@@ -16,9 +16,9 @@ export const normalizeFirebaseUser = (user: RealUser) => {
   if (goodPhoneNum) {
     normalizedUser.notes = user?.notes.trim();
     normalizedUser.firstname = normalizeString(user?.firstname);
-    normalizedUser.second_name = normalizeString(user?.second_name);
+    normalizedUser.secondName = normalizeString(user?.secondName);
     normalizedUser.lastname = normalizeString(user?.lastname);
-    normalizedUser.second_lastname = normalizeString(user?.second_lastname);
+    normalizedUser.secondLastname = normalizeString(user?.secondLastname);
     normalizedUser.email = user?.email.trim();
     normalizedUser.fullname = `${normalizedUser?.firstname} ${normalizedUser?.lastname}`;
     normalizedUser.phone = goodPhoneNum;

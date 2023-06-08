@@ -27,9 +27,9 @@ export const useUpdateUserForm = () => {
     if (selectedUser) {
       reset({
         firstname: selectedUser?.firstname,
-        second_name: selectedUser?.second_name,
+        secondName: selectedUser?.secondName,
         lastname: selectedUser?.lastname,
-        second_lastname: selectedUser?.second_lastname,
+        secondLastname: selectedUser?.secondLastname,
         phone: formatPhoneNumberToNationalUSAformat(selectedUser?.phone),
         email: selectedUser?.email,
         insuranceCompany: selectedUser?.insuranceCompany,
