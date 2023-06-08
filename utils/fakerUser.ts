@@ -6,9 +6,9 @@ export const createRandomUser = (): FakeUser => {
 
   const activeUser = faker.datatype.boolean();
   const firstname = faker.name.firstName(gender);
-  const second_name = faker.name.middleName(gender);
+  const secondName = faker.name.middleName(gender);
   const lastname = faker.name.lastName();
-  const second_lastname = faker.name.firstName(gender);
+  const secondLastname = faker.name.firstName(gender);
   const fullname = `${firstname} ${lastname}`;
   const email = faker.helpers.unique(faker.internet.email, [
     firstname,
@@ -40,7 +40,7 @@ export const createRandomUser = (): FakeUser => {
     gender,
     notes,
     phone,
-    second_lastname,
-    second_name,
+    secondLastname,
+    secondName,
   };
 };

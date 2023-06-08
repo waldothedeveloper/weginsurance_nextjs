@@ -519,8 +519,8 @@ exports.incomingMessage = functions.https.onRequest(
           lastname: "Desconocido",
           notes: "",
           phone: From,
-          second_lastname: "",
-          second_name: "",
+          secondLastname: "",
+          secondName: "",
         };
 
         try {

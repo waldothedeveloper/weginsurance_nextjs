@@ -5,9 +5,9 @@ export interface FakeUser {
   gender: "masculino" | "femenino" | "male" | "female";
   activeUser: boolean;
   firstname: string;
-  second_name: string;
+  secondName: string;
   lastname: string;
-  second_lastname: string;
+  secondLastname: string;
   fullname: string;
   email: string;
   notes: string;
@@ -27,8 +27,8 @@ export interface RealUser {
   lastname: string;
   notes: string;
   phone: string;
-  second_lastname: string;
-  second_name: string;
+  secondLastname: string;
+  secondName: string;
   conversations?: VirtualizedConversationType;
 }
 

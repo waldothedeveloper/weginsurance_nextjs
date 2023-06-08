@@ -55,8 +55,8 @@ export const CustomHits = ({ getMessages }: { getMessages: (userId: string) => P
                     lastname: hit?.lastname as string,
                     notes: hit?.notes as string,
                     phone: hit?.phone as string,
-                    second_lastname: hit?.second_lastname as string,
-                    second_name: hit?.second_name as string
+                    secondLastname: hit?.secondLastname as string,
+                    secondName: hit?.secondName as string
                   } as RealUser);
                   getMessages(hit?.objectID)
                 } catch (error) {
