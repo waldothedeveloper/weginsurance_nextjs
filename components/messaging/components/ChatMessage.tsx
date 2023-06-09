@@ -4,6 +4,7 @@ import {
   PaperAirplaneIcon,
 } from "@heroicons/react/24/outline";
 
+// import { ChatCard } from "@/components/messaging/components/ChatCard";
 import { Message } from "@/interfaces/index";
 import { MessageAttachments } from "@/components/messaging/components/MessageAttachments";
 import { classNames } from "@/utils/classNames";
@@ -40,6 +41,7 @@ export const ChatMessage = ({ msg }: ChatMessageProps) => {
             {dayjs.utc(msg.dateCreated).tz("America/New_York").format("h:mm a")}
           </div>
           <div className="flex flex-col items-start justify-start">
+            {/* {msg.mediaUrl !== undefined && msg?.mediaUrl.length > 0 && (<ChatCard msg={msg}/>)} */}
             {msg.mediaUrl !== undefined && msg?.mediaUrl.length > 0 && (<MessageAttachments attachments={msg.mediaUrl} />)}
             {msg.body && (
               <div

@@ -37,7 +37,7 @@ export const UserTableUtilities = ({
   const test = false;
   const [globalFilter, setGlobalFilter] = React.useState('')
   const [rowSelection, setRowSelection] = useState({})
-  const { firebaseUsers, firebaseError } = useFirebaseUsers();
+  const { firebaseUsers, firebaseError, isLoadingFirebaseUsers } = useFirebaseUsers();
   const fakeUserList = useFakeUserList();
   const totalUserCount = test ? fakeUserList.length : firebaseUsers?.length;
   const columnHelper = createColumnHelper<RealUser>();
@@ -182,5 +182,5 @@ export const UserTableUtilities = ({
     debugTable: false,
   });
 
-  return { totalUserCount, table, firebaseError, fakeUserList, firebaseUsers, rowSelection, globalFilter, setGlobalFilter };
+  return { totalUserCount, table, firebaseError, fakeUserList, firebaseUsers, rowSelection, globalFilter, setGlobalFilter, isLoadingFirebaseUsers };
 };

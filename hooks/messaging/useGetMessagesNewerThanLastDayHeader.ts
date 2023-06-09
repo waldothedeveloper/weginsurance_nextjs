@@ -8,9 +8,11 @@ import { failureNotification } from "@/components/notifications/failureNotificat
 import { useAtomValue } from "jotai";
 
 export const useGetMessagesNewerThanLastDayHeader = (
-  dateHeaders: Day[] | null,isLoadingDayHeader: boolean, dayHeaderError: Error | null | unknown
+  dateHeaders: Day[] | null,
+  isLoadingDayHeader: boolean,
+  dayHeaderError: Error | null | unknown
 ) => {
-  const [isLoadingNewDateHeaders, setIsLoadingNewDateHeaders] = useState(false);
+  // const [isLoadingNewDateHeaders, setIsLoadingNewDateHeaders] = useState(false);
   const [newDateHeaders, setNewDateHeaders] = useState<string[] | null>(null);
   const [newDateHeadersError, setNewDateHeadersError] = useState<
     Error | null | unknown
@@ -19,17 +21,16 @@ export const useGetMessagesNewerThanLastDayHeader = (
   const messagesFromDB = useAtomValue(messagesAtom);
   //
   useEffect(() => {
-    if(dayHeaderError) return
+    if (dayHeaderError) return;
     if (
       userId &&
       userId.length > 0 &&
       dateHeaders &&
       dateHeaders.length > 0 &&
-      !isLoadingDayHeader &&
-      !messagesFromDB?.length
+      messagesFromDB?.length > 0
     ) {
       try {
-        setIsLoadingNewDateHeaders(true);
+        // setIsLoadingNewDateHeaders(true);
         const newDateHeaders = messagesFromDB.filter((message: Message) => {
           const lastDateHeader =
             dateHeaders[dateHeaders.length - 1].dateCreated;
@@ -42,18 +43,21 @@ export const useGetMessagesNewerThanLastDayHeader = (
         const dateHeadersToCreate = excludeRepeatedDateHeaders(newDateHeaders);
         setNewDateHeaders(dateHeadersToCreate);
       } catch (error) {
-        failureNotification(`Error obteniendo mensajes mas recientes que la ultima fecha de date header. Por favor informar al administrador. ${error}`);
-        setIsLoadingNewDateHeaders(false);
+        failureNotification(
+          `Error obteniendo mensajes mas recientes que la ultima fecha de date header. Por favor informar al administrador. ${error}`
+        );
+        // setIsLoadingNewDateHeaders(false);
         setNewDateHeadersError(error);
       }
     }
 
     return () => {
       setNewDateHeaders(null);
-      setIsLoadingNewDateHeaders(false);
+      // setIsLoadingNewDateHeaders(false);
       setNewDateHeadersError(null);
     };
-  }, [userId, dateHeaders, messagesFromDB, isLoadingDayHeader, dayHeaderError]);
+  }, [userId, dateHeaders, messagesFromDB, dayHeaderError]);
 
-  return { newDateHeaders, isLoadingNewDateHeaders, newDateHeadersError };
+  return { newDateHeaders, newDateHeadersError };
 };
+//

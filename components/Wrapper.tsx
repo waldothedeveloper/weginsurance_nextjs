@@ -15,7 +15,7 @@ import { useGetUserConversations } from "@/hooks/messaging/useGetUserConversatio
 
 export const Wrapper = () => {
   const router: NextRouter = useRouter();
-  const { getMessages, isLoading, error, saveDateHeadersError } = useGetUserConversations()
+  const { getMessages, isLoading, isLoadingMessagesFromTwilioAPI, error, errorFromTwilioAPI, saveDateHeadersError } = useGetUserConversations()
   const uploadedResources = useAtomValue(uploadedFilesAtom);
   const handleDeleteAllFiles = useDeleteAllUploadedFiles();
 
@@ -34,7 +34,7 @@ export const Wrapper = () => {
         <>
           <MainComponent className="relative z-0 flex-1 overflow-hidden focus:outline-none">
             <div className="mx-auto">
-              <Conversation isLoading={isLoading} error={error} saveDateHeadersError={saveDateHeadersError} />
+              <Conversation isLoading={isLoading} error={error} errorFromTwilioAPI={errorFromTwilioAPI} saveDateHeadersError={saveDateHeadersError} isLoadingMessagesFromTwilioAPI={isLoadingMessagesFromTwilioAPI} />
             </div>
           </MainComponent>
         </>

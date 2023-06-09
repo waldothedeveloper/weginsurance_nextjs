@@ -10,18 +10,20 @@ import { useAtomValue } from "jotai";
 
 type ConversationProps = {
   isLoading: boolean;
+  isLoadingMessagesFromTwilioAPI: boolean;
   error: Error | null | unknown;
+  errorFromTwilioAPI: Error | null | unknown;
   saveDateHeadersError: Error | null | unknown;
 }
 
 // 
-export const Conversation = ({ isLoading, error, saveDateHeadersError }: ConversationProps) => {
+export const Conversation = ({ isLoading, error, saveDateHeadersError, isLoadingMessagesFromTwilioAPI, errorFromTwilioAPI }: ConversationProps) => {
   const messagesFromDB = useAtomValue(messagesAtom)
   const userId = useAtomValue(userIdAtom);
 
 
 
-  if (isLoading) {
+  if (isLoading || isLoadingMessagesFromTwilioAPI) {
     return (
       <div className="grid h-screen place-items-center overflow-hidden">
         <Spinning message="Un momento por favor. Estamos cargando la conversacion..." />
@@ -29,10 +31,10 @@ export const Conversation = ({ isLoading, error, saveDateHeadersError }: Convers
     );
   }
 
-  if (error || saveDateHeadersError) {
+  if (error || saveDateHeadersError || errorFromTwilioAPI) {
     return (
       <div className="grid h-screen place-items-center overflow-hidden">
-        <ErrorComponent error_message={error || saveDateHeadersError} />
+        <ErrorComponent error_message={error || saveDateHeadersError || errorFromTwilioAPI} />
       </div>
     );
   }
