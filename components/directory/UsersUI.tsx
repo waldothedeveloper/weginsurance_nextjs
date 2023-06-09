@@ -63,7 +63,7 @@ export const UsersUI = () => {
     handleDeleteMultipleUsers,
   } = useDeleteUserForm();
 
-  const { totalUserCount, table, firebaseError, firebaseUsers, rowSelection, globalFilter, setGlobalFilter } =
+  const { totalUserCount, table, firebaseError, firebaseUsers, rowSelection, globalFilter, setGlobalFilter, isLoadingFirebaseUsers } =
     UserTableUtilities({ handleDeleteModal, handleUpdateModal });
 
   if (firebaseError) {
@@ -77,7 +77,7 @@ export const UsersUI = () => {
     );
   }
 
-  if (!firebaseUsers) {
+  if (!firebaseUsers || isLoadingFirebaseUsers) {
     return <Spinning message="Cargando Usuarios" />;
   }
 

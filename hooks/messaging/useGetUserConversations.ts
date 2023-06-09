@@ -33,7 +33,7 @@ export const useGetUserConversations = () => {
   const { dateHeaders, isLoadingDayHeader, dayHeaderError } =
     useGetDateHeaders();
 
-  const { newDateHeaders, isLoadingNewDateHeaders, newDateHeadersError } =
+  const { newDateHeaders, newDateHeadersError } =
     useGetMessagesNewerThanLastDayHeader(
       dateHeaders,
       isLoadingDayHeader,
@@ -42,7 +42,6 @@ export const useGetUserConversations = () => {
 
   const { saveDateHeadersError } = useSaveDateHeadersToDB(
     newDateHeaders,
-    isLoadingNewDateHeaders,
     newDateHeadersError
   );
 
@@ -51,9 +50,12 @@ export const useGetUserConversations = () => {
     setUserId(userId);
   };
 
-  const { data: messagesFromTwilioAPI, error: errorFromTwilioAPI } = useSWR(
-    key,
-    (url) => fetcherPostPhoneNumber(url[0], selectedUser?.phone || null)
+  const {
+    data: messagesFromTwilioAPI,
+    error: errorFromTwilioAPI,
+    isLoading: isLoadingMessagesFromTwilioAPI,
+  } = useSWR(key, (url) =>
+    fetcherPostPhoneNumber(url[0], selectedUser?.phone || null)
   );
 
   // this will set everything back to zero when you leave conversations
@@ -95,27 +97,27 @@ export const useGetUserConversations = () => {
     let unsubscribe: Unsubscribe | null = null;
 
     if (userId && userId.length > 0) {
+      setIsLoading(true);
+      // if there are no messages in the firestore sub-collection, setMessagesAtom MUST be set the messagesAtom to an empty array, because if you don't, the messagesAtom will be set to the previous messages from the previous user, if there were any
+      setMessagesAtom([]);
       try {
-        setIsLoading(true);
         const q = query(
           collection(db, `Users/${userId}/conversations`),
           orderBy("dateCreated", "asc")
         );
         unsubscribe = onSnapshot(q, (querySnapshot) => {
           if (!querySnapshot.empty) {
+            // do not get messages from Twilio API if we already have messages in the firestore sub-collection
+            setKey(null);
+            // means we have messages saved in the firestore sub-collection (db)
             setMessagesAtom(
               querySnapshot.docs.map((doc) => {
                 return doc.data();
               })
             );
-            // do not get messages from Twilio API if we already have messages in the firestore sub-collection
-            setKey(null);
           } else {
-            //! if there are no messages in the firestore sub-collection, MAKE SURE you set the messagesAtom to an empty array, because if you don't, the messagesAtom will be set to the previous messages from the previous user, if there were any
-            setMessagesAtom([]);
-            if (userId && userId.length > 0) {
-              setKey(["/api/messaging/sms/retrieve_sms", userId]);
-            }
+            // get the messages from Twilio API instead
+            setKey(["/api/messaging/sms/retrieve_sms", userId]);
           }
           setIsLoading(false);
         });
@@ -125,7 +127,6 @@ export const useGetUserConversations = () => {
         );
         setIsLoading(false);
         setError(error);
-        // console.error("Error setting up Firestore listener:", error);
       }
     }
 
@@ -134,11 +135,12 @@ export const useGetUserConversations = () => {
         unsubscribe();
       }
     };
-  }, [userId, setMessagesAtom, setSelectedUser]);
+  }, [userId, setMessagesAtom]);
 
   return {
     getMessages,
     isLoading,
+    isLoadingMessagesFromTwilioAPI,
     error,
     errorFromTwilioAPI,
     saveDateHeadersError,

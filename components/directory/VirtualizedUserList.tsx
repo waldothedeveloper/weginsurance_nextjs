@@ -38,7 +38,7 @@ export const VirtualizedUserList = ({ getMessages }: { getMessages: (userId: str
 
   //! make sure to change this test = false when you're done testing
   const test = false;
-  const { firebaseUsers, firebaseError } = useFirebaseUsers();
+  const { firebaseUsers, firebaseError, isLoadingFirebaseUsers } = useFirebaseUsers();
   const fakeUserList: FakeUser[] = useFakeUserList();
 
 
@@ -52,8 +52,7 @@ export const VirtualizedUserList = ({ getMessages }: { getMessages: (userId: str
   }
 
 
-
-  if (test ? !fakeUserList : !firebaseUsers) {
+  if (test ? !fakeUserList : !firebaseUsers || isLoadingFirebaseUsers) {
     return <Spinning message="Cargando Usuarios" />;
   }
 

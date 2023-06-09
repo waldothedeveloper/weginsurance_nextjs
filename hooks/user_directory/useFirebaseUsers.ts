@@ -14,16 +14,15 @@ import { db } from "@/lib/firebaseConfig";
 export const useFirebaseUsers = () => {
   const [firebaseUsers, setFirebaseUsers] = useState<RealUser[] | null>(null);
   const [firebaseError, setFirebaseError] = useState<{} | null>(null);
+  const [isLoadingFirebaseUsers, setIsLoadingFirebaseUsers] = useState(false);
 
   useEffect(() => {
     let unsubscribe: Unsubscribe | null = null;
-    const userCollection =
-      process.env.NODE_ENV === "production" ? "Users" : "UsersDev";
+    // const userCollection =
+    //   process.env.NODE_ENV === "production" ? "Users" : "UsersDev";
     try {
-      const dbQuery = query(
-        collection(db, userCollection),
-        orderBy("firstname")
-      );
+      setIsLoadingFirebaseUsers(true);
+      const dbQuery = query(collection(db, "Users"), orderBy("firstname"));
       unsubscribe = onSnapshot(dbQuery, (querySnapshot) => {
         const users: RealUser[] = [];
 
@@ -36,7 +35,9 @@ export const useFirebaseUsers = () => {
           setFirebaseUsers(users);
         }
       });
+      setIsLoadingFirebaseUsers(false);
     } catch (error: any) {
+      setIsLoadingFirebaseUsers(false);
       setFirebaseError(JSON.stringify(error, null, 2));
     }
 
@@ -46,5 +47,5 @@ export const useFirebaseUsers = () => {
     };
   }, []);
 
-  return { firebaseUsers, firebaseError };
+  return { firebaseUsers, firebaseError, isLoadingFirebaseUsers };
 };

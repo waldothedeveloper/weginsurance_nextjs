@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { failureNotification } from "@/components/notifications/failureNotification";
 import { saveDayTypeMessage } from "@/utils/saveDayTypeMessage";
@@ -7,7 +7,6 @@ import { userIdAtom } from "@/lib/state/atoms";
 
 export const useSaveDateHeadersToDB = (
   newDateHeaders: string[] | null,
-  isLoadingNewDateHeaders: boolean,
   newDateHeadersError: Error | null | unknown
 ) => {
   const userId = useAtomValue(userIdAtom);
@@ -15,26 +14,34 @@ export const useSaveDateHeadersToDB = (
     Error | null | unknown
   >(null);
 
-  useEffect(() => {
-    const saveDateHeaders = async () => {
-      try {
-        if (!newDateHeaders?.length) return;
-        await Promise.all(
-          newDateHeaders.map((date: string) => saveDayTypeMessage(userId, date))
-        );
-      } catch (error) {
-        failureNotification(
-          "Ha ocurrido un error guardando los mensajes de tipo dia. Por favor, contacte al administrador."
-        );
+  const saveDateHeaders = useCallback(async () => {
+    try {
+      if (!newDateHeaders || newDateHeaders.length === 0) return;
 
-        setSaveDateHeadersError(error);
-        console.error("Error saving day type messages:", error);
+      for (const dayHeader of newDateHeaders) {
+        await saveDayTypeMessage(userId, dayHeader);
       }
-    };
+    } catch (error) {
+      failureNotification(
+        "Ha ocurrido un error guardando los mensajes de tipo dia. Por favor, contacte al administrador."
+      );
 
-    if (!isLoadingNewDateHeaders && !newDateHeadersError && userId?.length)
+      setSaveDateHeadersError(error);
+      console.error("Error saving day type messages:", error);
+    }
+  }, [newDateHeaders, userId]);
+
+  useEffect(() => {
+    if (
+      !newDateHeadersError &&
+      userId &&
+      userId?.length > 0 &&
+      newDateHeaders &&
+      newDateHeaders?.length > 0
+    ) {
       saveDateHeaders();
-  }, [newDateHeaders, userId, isLoadingNewDateHeaders, newDateHeadersError]);
+    }
+  }, [newDateHeaders, userId, newDateHeadersError, saveDateHeaders]);
 
   return { saveDateHeadersError };
 };
