@@ -22,10 +22,7 @@ export const useFirebaseUsers = () => {
       process.env.NODE_ENV === "production" ? "Users" : "UsersDev";
     try {
       setIsLoadingFirebaseUsers(true);
-      const dbQuery = query(
-        collection(db, userCollection),
-        orderBy("firstname")
-      );
+      const dbQuery = query(collection(db, "Users"), orderBy("firstname"));
       unsubscribe = onSnapshot(dbQuery, (querySnapshot) => {
         const users: RealUser[] = [];
 
