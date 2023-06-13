@@ -4,9 +4,10 @@ import {
   PaperAirplaneIcon,
 } from "@heroicons/react/24/outline";
 
-// import { ChatCard } from "@/components/messaging/components/ChatCard";
+import { ChatCard } from "@/components/messaging/components/ChatCard";
+import { ChatCardGrid } from "@/components/messaging/components/ChatCardGrid";
 import { Message } from "@/interfaces/index";
-import { MessageAttachments } from "@/components/messaging/components/MessageAttachments";
+// import { MessageAttachments } from "@/components/messaging/components/MessageAttachments";
 import { classNames } from "@/utils/classNames";
 import dayjs from "dayjs";
 import { messageStatus } from "@/utils/messageStatus";
@@ -19,6 +20,7 @@ dayjs.extend(timezone);
 type ChatMessageProps = { msg: Message };
 //
 export const ChatMessage = ({ msg }: ChatMessageProps) => {
+
   const { direction, delivery } = msg;
 
   const inboundMsg = direction === "inbound";
@@ -31,7 +33,6 @@ export const ChatMessage = ({ msg }: ChatMessageProps) => {
   return (
     <div className="grid grid-cols-1 space-y-2 px-6">
       <div
-        key={msg.sid}
         className={
           outboundMsg ? "max-w-lg place-self-end" : "max-w-lg place-self-start"
         }
@@ -41,35 +42,30 @@ export const ChatMessage = ({ msg }: ChatMessageProps) => {
             {dayjs.utc(msg.dateCreated).tz("America/New_York").format("h:mm a")}
           </div>
           <div className="flex flex-col items-start justify-start">
-            {/* {msg.mediaUrl !== undefined && msg?.mediaUrl.length > 0 && (<ChatCard msg={msg}/>)} */}
-            {msg.mediaUrl !== undefined && msg?.mediaUrl.length > 0 && (<MessageAttachments attachments={msg.mediaUrl} />)}
-            {msg.body && (
-              <div
-                key={msg.dateCreated}
+            {msg.mediaUrl !== undefined && msg?.mediaUrl?.length === 1 ? <ChatCard msg={msg} /> : msg.mediaUrl !== undefined && msg.mediaUrl.length > 1 ? (<ChatCardGrid msg={msg} />) : (<div
+              className={classNames(
+                outboundMsg && (undeliveredMsg || failedMsg)
+                  ? "bg-red-50 rounded-br-none"
+                  : inboundMsg
+                    ? "rounded-bl-none bg-slate-100"
+                    : "rounded-br-none bg-blue-500 p-3",
+                "mt-2 rounded-2xl p-3"
+              )}
+            >
+              <p
                 className={classNames(
                   outboundMsg && (undeliveredMsg || failedMsg)
-                    ? "bg-red-50 rounded-br-none"
+                    ? "text-red-700"
                     : inboundMsg
-                      ? "rounded-bl-none bg-slate-100"
-                      : "rounded-br-none bg-green-500 p-3",
-                  "mt-2 rounded-2xl p-3"
+                      ? "text-slate-900"
+                      : "text-slate-50",
+                  "whitespace-pre-wrap break-words"
                 )}
               >
-                <p
-                  className={classNames(
-                    outboundMsg && (undeliveredMsg || failedMsg)
-                      ? "text-red-700"
-                      : inboundMsg
-                        ? "text-slate-900"
-                        : "text-slate-50",
-                    "whitespace-pre-wrap break-words"
-                  )}
-                >
-                  {msg.body.trim()}
+                {msg.body.trim()}
 
-                </p>
-              </div>
-            )}
+              </p>
+            </div>)}
           </div>
           {outboundMsg && (
             <div className="mt-1 flex items-center justify-end">
