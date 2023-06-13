@@ -17,13 +17,14 @@ export const CustomHits = ({ getMessages }: { getMessages: (userId: string) => P
   const setUserPhone = useSetAtom(userPhoneAtom);
   const setSelectedUser = useSetAtom(selectedUserAtom);
   const selectedUser = useAtomValue<Atom<RealUser | FakeUser | null>>(selectedUserAtom);
+
   return <>
     <ul className="z-0 w-full px-4">
       {hits.map((hit) => (
         <li
           key={hit.objectID}
           className={
-            selectedUser?.fullname === hit.fullname
+            selectedUser?.id === hit.objectID
               ? "my-3 flex items-center space-x-3 rounded-2xl bg-slate-100 px-6 py-6 outline-none focus-within:ring-2 focus-within:ring-inset focus:ring-red-50"
               : "my-3 flex items-center space-x-3 rounded-2xl px-6 py-6 outline-none focus-within:ring-2 focus-within:ring-inset hover:bg-slate-50 focus:outline-none"
           }
@@ -31,7 +32,7 @@ export const CustomHits = ({ getMessages }: { getMessages: (userId: string) => P
           <div className="flex-shrink-0">
             <UserIcon
               className={
-                selectedUser?.fullname === hit.fullname
+                selectedUser?.id === hit.objectID
                   ? "h-12 w-12 rounded-xl bg-slate-200 p-2 font-light text-slate-400"
                   : "h-12 w-12 rounded-xl bg-slate-50 p-2 font-light text-slate-400"
               }
@@ -68,7 +69,7 @@ export const CustomHits = ({ getMessages }: { getMessages: (userId: string) => P
               <div className="flex w-full justify-between">
                 <p
                   className={
-                    selectedUser?.fullname === hit.fullname
+                    selectedUser?.id === hit.objectID
                       ? "whitsespace-normal text-sm font-medium text-slate-900"
                       : "whitsespace-normal text-sm font-medium text-slate-600"
                   }
@@ -77,7 +78,7 @@ export const CustomHits = ({ getMessages }: { getMessages: (userId: string) => P
                 </p>
                 <div
                   className={
-                    selectedUser?.fullname === hit.fullname
+                    selectedUser?.id === hit.objectID
                       ? "relative inline-flex items-center rounded-full border border-blue-600 px-2 py-0.5 text-sm"
                       : "relative inline-flex items-center rounded-full border border-slate-200 px-2 py-0.5 text-sm"
                   }
@@ -90,7 +91,7 @@ export const CustomHits = ({ getMessages }: { getMessages: (userId: string) => P
                   </span>
                   <span
                     className={
-                      selectedUser?.fullname === hit.fullname
+                      selectedUser?.id === hit.objectID
                         ? "text-xs font-medium text-blue-600"
                         : "text-xs text-slate-400"
                     }
@@ -102,7 +103,7 @@ export const CustomHits = ({ getMessages }: { getMessages: (userId: string) => P
 
               <p
                 className={
-                  selectedUser?.fullname === hit.fullname
+                  selectedUser?.id === hit.objectID
                     ? "truncate text-xs text-slate-600"
                     : "truncate text-xs text-slate-400"
                 }
