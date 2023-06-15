@@ -5,8 +5,9 @@ import { decodeUrlName } from "@/utils/decodeUrlName";
 import { hasImageExtension } from "@/utils/hasImageExtension";
 //
 export const ChatCard = ({ msg }: { msg: Message }) => {
+  const failedMsg = msg?.delivery?.info?.status === "failed" || msg?.delivery?.info?.status === "undelivered" || null;
   return (
-    <div className="mt-0.5 rounded-2xl bg-blue-500 p-1">
+    <div className={failedMsg ? "mt-0.5 rounded-2xl bg-red-50 p-1" : "mt-0.5 rounded-2xl bg-blue-500 p-1"}>
       {msg?.mediaUrl?.map((element) => {
         if (!hasImageExtension(element)) {
           return (
@@ -15,17 +16,17 @@ export const ChatCard = ({ msg }: { msg: Message }) => {
                 href={element}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex justify-between rounded-xl bg-slate-100 p-3"
+                className={failedMsg ? "flex rounded-xl bg-red-50 p-3" : "flex rounded-xl bg-slate-100 p-3"}
               >
                 <ShowFileTypeIcon
                   fileType={element?.split(".")?.pop()?.split("?")?.shift()}
-                  classString="text-slate-400 h-20 w-20"
+                  classString={failedMsg ? "text-red-500 h-20 w-20" : "text-slate-400 h-20 w-20"}
                 />
 
-                <p className="text-slate-400">{decodeUrlName(element)}</p>
+                <p className={failedMsg ? "text-red-500" : "text-slate-400"}>{decodeUrlName(element)}</p>
               </a>
 
-              <p className="my-2 block px-2 text-sm font-medium text-slate-50">
+              <p className={failedMsg ? "my-2 block px-2 text-sm font-medium text-red-500" : "my-2 block px-2 text-sm font-medium text-slate-50"}>
                 {msg.body}
               </p>
             </div>
@@ -44,7 +45,7 @@ export const ChatCard = ({ msg }: { msg: Message }) => {
               33vw"
                 />
               </div>
-              <p className="my-2 block px-2 text-sm font-medium text-slate-50">
+              <p className={failedMsg ? "my-2 block px-2 text-sm font-medium text-red-500" : "my-2 block px-2 text-sm font-medium text-slate-50"}>
                 {msg.body}
               </p>
             </div>

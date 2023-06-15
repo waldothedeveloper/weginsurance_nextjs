@@ -1,45 +1,43 @@
-import { messagesAtom, userIdAtom } from "@/lib/state/atoms";
-
 import { CarouselWrapper } from "@/components/messaging/carousel/CarouselWrapper";
 import { ChatHeader } from "@/components/messaging/ChatHeader";
 import { EditorWrapper } from "@/components/messaging/EditorWrapper";
 import { ErrorComponent } from "@/components/Error";
 import { Spinning } from "@/components/Spinning";
 import { VirtualizedConversation } from "@/components/messaging/VirtualizedConversation";
-import { useAtomValue } from "jotai";
+import { VirtualizedConversationType } from "@/interfaces/index";
 
 type ConversationProps = {
   isLoading: boolean;
+  isSavingMessagesToDb: boolean;
   isLoadingMessagesFromTwilioAPI: boolean;
   error: Error | null | unknown;
+  errorSavingMessagesToDb: Error | null | unknown;
   errorFromTwilioAPI: Error | null | unknown;
   saveDateHeadersError: Error | null | unknown;
+  messages: VirtualizedConversationType | null;
 }
 
 // 
-export const Conversation = ({ isLoading, error, saveDateHeadersError, isLoadingMessagesFromTwilioAPI, errorFromTwilioAPI }: ConversationProps) => {
-  const messagesFromDB = useAtomValue(messagesAtom)
-  const userId = useAtomValue(userIdAtom);
+export const Conversation = ({ messages, isLoading, error, saveDateHeadersError, isLoadingMessagesFromTwilioAPI, errorFromTwilioAPI, isSavingMessagesToDb, errorSavingMessagesToDb }: ConversationProps) => {
 
 
-
-  if (isLoading || isLoadingMessagesFromTwilioAPI) {
+  if (isLoading || isLoadingMessagesFromTwilioAPI || isSavingMessagesToDb) {
     return (
       <div className="grid h-screen place-items-center overflow-hidden">
-        <Spinning message="Un momento por favor. Estamos cargando la conversacion..." />
+        <Spinning message="Un momento por favor. Cargando la conversacion..." />
       </div>
     );
   }
 
-  if (error || saveDateHeadersError || errorFromTwilioAPI) {
+  if (error || saveDateHeadersError || errorFromTwilioAPI || errorSavingMessagesToDb) {
     return (
       <div className="grid h-screen place-items-center overflow-hidden">
-        <ErrorComponent error_message={error || saveDateHeadersError || errorFromTwilioAPI} />
+        <ErrorComponent error_message={error || saveDateHeadersError || errorFromTwilioAPI || errorSavingMessagesToDb} />
       </div>
     );
   }
 
-  if (!messagesFromDB || !userId) {
+  if (!messages) {
     return (
       <div className="grid h-screen place-items-center overflow-hidden">
         <div className="bg-white px-6 py-24 sm:py-32 lg:px-8">
@@ -63,7 +61,7 @@ export const Conversation = ({ isLoading, error, saveDateHeadersError, isLoading
       <>
         <ChatHeader />
         <CarouselWrapper />
-        <VirtualizedConversation />
+        <VirtualizedConversation messages={messages} />
         <EditorWrapper />
       </>
     </div>

@@ -5,7 +5,7 @@ import { db } from "@/lib/firebaseConfig";
 
 //
 export const saveDayTypeMessage = async (
-  userId: string | null,
+  userId: string | undefined,
   date: string
 ) => {
   const groupRef = collection(db, `Users/${userId}/conversations`);

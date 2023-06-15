@@ -2,8 +2,8 @@ import {
   numberOfFilesUploadedAtom,
   openResourceUploadModalAtom,
   progressPercentageAtom,
+  selectedUserAtom,
   uploadedFilesAtom,
-  userIdAtom,
   userPhoneAtom,
 } from "@/lib/state/atoms";
 import { useAtomValue, useSetAtom } from "jotai";
@@ -24,7 +24,7 @@ const productionNumber =
 //
 export const useSendOutboundMessage = () => {
   const setProgressAtom = useSetAtom(progressPercentageAtom);
-  const userId = useAtomValue(userIdAtom);
+  const selectedUser = useAtomValue(selectedUserAtom);
   const setNumberOfFilesUploaded = useSetAtom(numberOfFilesUploadedAtom);
   const setUploadedResources = useSetAtom(uploadedFilesAtom);
   const uploadedResources = useAtomValue(uploadedFilesAtom);
@@ -52,7 +52,7 @@ export const useSendOutboundMessage = () => {
       },
     } = editor;
 
-    if (!innerText?.trim() && uploadedResources.length === 0) {
+    if (editor?.isEmpty && uploadedResources.length === 0) {
       failureNotification(
         `El mensaje de texto esta vacio, por favor escribe algun texto para poder enviarlo. Intenta de nuevo por favor`
       );
@@ -76,7 +76,7 @@ export const useSendOutboundMessage = () => {
     }
 
     const newMessage: Message = {
-      userId,
+      userId: selectedUser?.id,
       body: innerText,
       from:
         process.env.NODE_ENV === "production"
@@ -92,12 +92,16 @@ export const useSendOutboundMessage = () => {
     };
 
     try {
-      if (userId) {
+      if (selectedUser?.id) {
         await saveMessageInSelectedUserConversations(newMessage);
         editor?.commands?.clearContent();
         resetProgressAndNumberOfUploadedFiles();
         return newMessage;
       }
+
+      failureNotification(
+        `No se ha podido obtener el id del usuario. ${selectedUser?.id}`
+      );
     } catch (error) {
       failureNotification(
         `Un error ocurrió al crear el mensaje en la base de datos ${error}`

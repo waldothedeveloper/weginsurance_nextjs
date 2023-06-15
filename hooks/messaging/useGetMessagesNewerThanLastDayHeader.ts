@@ -1,37 +1,39 @@
-import { Day, Message } from "@/interfaces/index";
-import { messagesAtom, userIdAtom } from "@/lib/state/atoms";
+import { Day, Message, VirtualizedConversationType } from "@/interfaces/index";
 import { useEffect, useState } from "react";
 
 import dayjs from "dayjs";
 import { excludeRepeatedDateHeaders } from "@/utils/excludeRepeatedDateHeaders";
 import { failureNotification } from "@/components/notifications/failureNotification";
+import { selectedUserAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
 
 export const useGetMessagesNewerThanLastDayHeader = (
   dateHeaders: Day[] | null,
   isLoadingDayHeader: boolean,
-  dayHeaderError: Error | null | unknown
+  dayHeaderError: Error | null | unknown,
+  messages: VirtualizedConversationType | null
 ) => {
   // const [isLoadingNewDateHeaders, setIsLoadingNewDateHeaders] = useState(false);
   const [newDateHeaders, setNewDateHeaders] = useState<string[] | null>(null);
   const [newDateHeadersError, setNewDateHeadersError] = useState<
     Error | null | unknown
   >(null);
-  const userId = useAtomValue(userIdAtom);
-  const messagesFromDB = useAtomValue(messagesAtom);
+  const selectedUser = useAtomValue(selectedUserAtom);
+
   //
   useEffect(() => {
     if (dayHeaderError) return;
     if (
-      userId &&
-      userId.length > 0 &&
+      selectedUser &&
+      selectedUser?.id &&
       dateHeaders &&
       dateHeaders.length > 0 &&
-      messagesFromDB?.length > 0
+      messages &&
+      messages?.length > 0
     ) {
       try {
         // setIsLoadingNewDateHeaders(true);
-        const newDateHeaders = messagesFromDB.filter((message: Message) => {
+        const newDateHeaders = messages.filter((message: Message | Day) => {
           const lastDateHeader =
             dateHeaders[dateHeaders.length - 1].dateCreated;
 
@@ -56,7 +58,7 @@ export const useGetMessagesNewerThanLastDayHeader = (
       // setIsLoadingNewDateHeaders(false);
       setNewDateHeadersError(null);
     };
-  }, [userId, dateHeaders, messagesFromDB, dayHeaderError]);
+  }, [selectedUser, dateHeaders, messages, dayHeaderError]);
 
   return { newDateHeaders, newDateHeadersError };
 };

@@ -15,7 +15,14 @@ import { useGetUserConversations } from "@/hooks/messaging/useGetUserConversatio
 
 export const Wrapper = () => {
   const router: NextRouter = useRouter();
-  const { getMessages, isLoading, isLoadingMessagesFromTwilioAPI, error, errorFromTwilioAPI, saveDateHeadersError } = useGetUserConversations()
+  // const { getMessages, isLoading, isLoadingMessagesFromTwilioAPI, error, errorFromTwilioAPI, saveDateHeadersError } = useGetUserConversations()
+  const { messages,
+    isLoading,
+    error,
+    isLoadingMessagesFromTwilioAPI,
+    errorFromTwilioAPI,
+    isSavingMessagesToDb,
+    errorSavingMessagesToDb, } = useGetUserConversations()
   const uploadedResources = useAtomValue(uploadedFilesAtom);
   const handleDeleteAllFiles = useDeleteAllUploadedFiles();
 
@@ -34,7 +41,7 @@ export const Wrapper = () => {
         <>
           <MainComponent className="relative z-0 flex-1 overflow-hidden focus:outline-none">
             <div className="mx-auto">
-              <Conversation isLoading={isLoading} error={error} errorFromTwilioAPI={errorFromTwilioAPI} saveDateHeadersError={saveDateHeadersError} isLoadingMessagesFromTwilioAPI={isLoadingMessagesFromTwilioAPI} />
+              <Conversation messages={messages} isLoading={isLoading} error={error} errorFromTwilioAPI={errorFromTwilioAPI} saveDateHeadersError={null} isLoadingMessagesFromTwilioAPI={isLoadingMessagesFromTwilioAPI} isSavingMessagesToDb={isSavingMessagesToDb} errorSavingMessagesToDb={errorSavingMessagesToDb} />
             </div>
           </MainComponent>
         </>
@@ -59,7 +66,7 @@ export const Wrapper = () => {
       {/* left side components*/}
       {router?.query?.dashboard?.includes("messages") && (
         <AsideComponent>
-          <VirtualizedUserList getMessages={getMessages} />
+          <VirtualizedUserList />
         </AsideComponent>
       )}
 

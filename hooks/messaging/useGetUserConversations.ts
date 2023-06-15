@@ -1,148 +1,82 @@
 import { NextRouter, useRouter } from "next/router";
-import {
-  Unsubscribe,
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-} from "firebase/firestore";
-import { messagesAtom, selectedUserAtom, userIdAtom } from "@/lib/state/atoms";
 import { useAtomValue, useSetAtom } from "jotai";
-import { useEffect, useState } from "react";
 
-import { db } from "@/lib/firebaseConfig";
-import { failureNotification } from "@/components/notifications/failureNotification";
-import { fetcherPostPhoneNumber } from "@/utils/fetcherPostPhoneNumber";
-import { saveMessagesToClientConversations } from "@/utils/saveMessagesToClientConversations";
+import { selectedUserAtom } from "@/lib/state/atoms";
+import { useEffect } from "react";
 import { useGetDateHeaders } from "@/hooks/messaging/useGetDateHeaders";
+import { useGetMessagesFromTwilio } from "@/hooks/messaging/useGetMessagesFromTwilio";
 import { useGetMessagesNewerThanLastDayHeader } from "@/hooks/messaging/useGetMessagesNewerThanLastDayHeader";
-import useSWR from "swr";
+import { useGetRealTimeUserConversations } from "@/hooks/messaging/useGetRealTimeUserConversations";
 import { useSaveDateHeadersToDB } from "@/hooks/messaging/useSaveDateHeadersToDB";
+import { useSaveMessagesFromTwilioToDatabase } from "@/hooks/messaging/useSaveMessagesFromTwilioToDatabase";
 
-//
 export const useGetUserConversations = () => {
   const router: NextRouter = useRouter();
-  const setMessagesAtom = useSetAtom(messagesAtom);
-  const setUserId = useSetAtom(userIdAtom);
-  const userId = useAtomValue(userIdAtom);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null | unknown>(null);
   const selectedUser = useAtomValue(selectedUserAtom);
   const setSelectedUser = useSetAtom(selectedUserAtom);
-  const [key, setKey] = useState<[string, string | null] | null>(null);
+
+  // get messages from database
+  const { isLoading, error, messages, setUser, setMessages } =
+    useGetRealTimeUserConversations();
+
+  // get date headers from database
   const { dateHeaders, isLoadingDayHeader, dayHeaderError } =
     useGetDateHeaders();
 
+  // get messages newer than the last date headers from the database
   const { newDateHeaders, newDateHeadersError } =
     useGetMessagesNewerThanLastDayHeader(
       dateHeaders,
       isLoadingDayHeader,
-      dayHeaderError
+      dayHeaderError,
+      messages
     );
 
+  // save date headers to database
   const { saveDateHeadersError } = useSaveDateHeadersToDB(
     newDateHeaders,
     newDateHeadersError
   );
 
-  const getMessages = async (userId: string) => {
-    if (!userId || userId?.length === 0) throw new Error("userId is required");
-    setUserId(userId);
-  };
-
+  // get messages from Twilio API
   const {
-    data: messagesFromTwilioAPI,
-    error: errorFromTwilioAPI,
-    isLoading: isLoadingMessagesFromTwilioAPI,
-  } = useSWR(key, (url) =>
-    fetcherPostPhoneNumber(url[0], selectedUser?.phone || null)
-  );
+    setKey,
+    messagesFromTwilioAPI,
+    errorFromTwilioAPI,
+    isLoadingMessagesFromTwilioAPI,
+  } = useGetMessagesFromTwilio();
 
-  // this will set everything back to zero when you leave conversations
+  // Handle logic to either get the messages from Twilio API or from the database
+  useEffect(() => {
+    if (selectedUser && !selectedUser?.firstTimeVisit) {
+      setKey(["/api/messaging/sms/retrieve_sms", selectedUser?.id]);
+    } else {
+      setUser(selectedUser);
+    }
+  }, [selectedUser, setKey, setSelectedUser, setUser]);
+
+  // Save messages from Twilio API to the database
+  const { isSavingMessagesToDb, errorSavingMessagesToDb } =
+    useSaveMessagesFromTwilioToDatabase(messagesFromTwilioAPI, setKey, setUser);
+
+  // Cleanup function to reset the selected user when we leave the messages dashboard
   useEffect(() => {
     if (!router?.query?.dashboard?.includes("messages")) {
-      setUserId(null);
-      setKey(null);
-      setMessagesAtom([]);
       setSelectedUser(null);
+      setKey(null);
+      setUser(null);
+      setMessages(null);
     }
-  }, [router, setUserId, setKey, setMessagesAtom, setSelectedUser]);
-
-  // this will save messages from Twilio API to firestore db
-  useEffect(() => {
-    const saveMessagesToFirestore = async () =>
-      await saveMessagesToClientConversations(userId, messagesFromTwilioAPI);
-    if (
-      messagesFromTwilioAPI &&
-      messagesFromTwilioAPI.length > 0 &&
-      userId &&
-      userId.length > 0
-    ) {
-      try {
-        setIsLoading(true);
-        saveMessagesToFirestore();
-      } catch (error) {
-        failureNotification(
-          `Ha ocurrido un error guardando los mensajes desde Twilio a la base de datos. Por favor, contacte al administrador. ${error}`
-        );
-        setIsLoading(false);
-        setError(error);
-      }
-      setIsLoading(false);
-    }
-  }, [messagesFromTwilioAPI, userId]);
-
-  // this will get messages from firestore db
-  useEffect(() => {
-    let unsubscribe: Unsubscribe | null = null;
-
-    if (userId && userId.length > 0) {
-      setIsLoading(true);
-      // if there are no messages in the firestore sub-collection, setMessagesAtom MUST be set the messagesAtom to an empty array, because if you don't, the messagesAtom will be set to the previous messages from the previous user, if there were any
-      setMessagesAtom([]);
-      try {
-        const q = query(
-          collection(db, `Users/${userId}/conversations`),
-          orderBy("dateCreated", "asc")
-        );
-        unsubscribe = onSnapshot(q, (querySnapshot) => {
-          if (!querySnapshot.empty) {
-            // do not get messages from Twilio API if we already have messages in the firestore sub-collection
-            setKey(null);
-            // means we have messages saved in the firestore sub-collection (db)
-            setMessagesAtom(
-              querySnapshot.docs.map((doc) => {
-                return doc.data();
-              })
-            );
-          } else {
-            // get the messages from Twilio API instead
-            setKey(["/api/messaging/sms/retrieve_sms", userId]);
-          }
-          setIsLoading(false);
-        });
-      } catch (error) {
-        failureNotification(
-          `Ha ocurrido un error obteniendo los mensajes desde la base de datos. Por favor, contacte al administrador. ${error}`
-        );
-        setIsLoading(false);
-        setError(error);
-      }
-    }
-
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
-      }
-    };
-  }, [userId, setMessagesAtom]);
+  }, [router, setKey, setSelectedUser, setUser, setMessages]);
 
   return {
-    getMessages,
+    messages,
     isLoading,
-    isLoadingMessagesFromTwilioAPI,
     error,
+    isLoadingMessagesFromTwilioAPI,
     errorFromTwilioAPI,
+    isSavingMessagesToDb,
+    errorSavingMessagesToDb,
     saveDateHeadersError,
   };
 };

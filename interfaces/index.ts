@@ -14,6 +14,8 @@ export interface FakeUser {
   phone: string;
   avatar: string;
   insuranceCompany: string;
+  lastVisitedTimestamp?: string;
+  firstTimeVisit: boolean;
 }
 
 export interface RealUser {
@@ -30,6 +32,8 @@ export interface RealUser {
   secondLastname: string;
   secondName: string;
   conversations?: VirtualizedConversationType;
+  lastVisitedTimestamp?: string;
+  firstTimeVisit: boolean;
 }
 
 export type MessageStatus =
@@ -64,7 +68,7 @@ export type QueuePayload = {
 };
 
 export interface Message {
-  userId: string | null;
+  userId: string | null | undefined;
   body: string;
   dateCreated: string;
   from: string;
@@ -154,6 +158,19 @@ export type DocumentType = {
   "application/pdf": [".pdf"];
   "text/plain": [".txt"];
   "application/msword": [".doc", ".docx"];
+  "application/vnd.ms-excel": [".xls", ".xlsx"];
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [
+    ".docx",
+    ".doc"
+  ];
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
+    ".xlsx",
+    ".xls"
+  ];
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation": [
+    ".pptx",
+    ".ppt"
+  ];
   "application/vnd.ms-powerpoint": [".ppt", ".pptx"];
   "application/rtf": [".rtf"];
 };

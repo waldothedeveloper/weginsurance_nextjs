@@ -2,6 +2,7 @@ import { PlusIcon, UserPlusIcon } from "@heroicons/react/20/solid";
 import React, { useEffect } from "react";
 import { selectedUserAtom, uploadedFilesAtom } from "@/lib/state/atoms";
 
+import { AlgoliaProvider } from "@/components/algolia/config";
 import { CustomHits } from "@/components/algolia/CustomHits"
 import { CustomSearchBox } from "@/components/algolia/CustomSearchBox"
 import { EmptyQueryBoundary } from "@/components/algolia/EmptyQueryBoundary"
@@ -19,7 +20,7 @@ export type Ref = HTMLUListElement
 
 
 // eslint-disable-next-line no-unused-vars
-export const VirtualizedUserList = ({ getMessages }: { getMessages: (userId: string) => Promise<void> }) => {
+export const VirtualizedUserList = () => {
   const selectedUser = useAtomValue(selectedUserAtom);
   const router = useRouter();
   const handleDeleteAllFiles = useDeleteAllUploadedFiles();
@@ -83,26 +84,28 @@ export const VirtualizedUserList = ({ getMessages }: { getMessages: (userId: str
 
   return (
     <>
-      <div className="p-6">
-        <h2 className="text-lg font-medium text-slate-900">Directorio</h2>
-        <p className="mt-1 text-sm text-slate-600">
-          Directorio de búsqueda de{" "}
-          {test ? fakeUserList?.length : firebaseUsers?.length} usuarios
-        </p>
-        <CustomSearchBox />
-      </div>
-      {/* Directory list */}
-      <nav
-        className="bg-secondary max-h-[80vh] flex-1 overflow-y-auto"
-        aria-label="Directory"
-      >
+      <AlgoliaProvider>
+        <div className="p-6">
+          <h2 className="text-lg font-medium text-slate-900">Directorio</h2>
+          <p className="mt-1 text-sm text-slate-600">
+            Directorio de búsqueda de{" "}
+            {test ? fakeUserList?.length : firebaseUsers?.length} usuarios
+          </p>
+          <CustomSearchBox />
+        </div>
+        {/* Directory list */}
+        <nav
+          className="bg-secondary max-h-[80vh] flex-1 overflow-y-auto"
+          aria-label="Directory"
+        >
 
-        <EmptyQueryBoundary fallback={<TanStackVirtualizer users={test ? fakeUserList : firebaseUsers} getMessages={getMessages} />}>
-          <CustomHits getMessages={getMessages} />
-        </EmptyQueryBoundary>
+          <EmptyQueryBoundary fallback={<TanStackVirtualizer users={test ? fakeUserList : firebaseUsers} />}>
+            <CustomHits />
+          </EmptyQueryBoundary>
 
 
-      </nav>
+        </nav>
+      </AlgoliaProvider>
     </>
   );
 };

@@ -1,7 +1,6 @@
 import { getAuth, signInWithCustomToken } from "firebase/auth";
 import { useEffect, useState } from "react";
 
-import { AlgoliaProvider } from "@/components/algolia/config";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { DesktopSideBar } from "@/components/DesktopSideBar";
 import Link from "next/link";
@@ -84,9 +83,9 @@ export const Layout = () => {
           </div>
 
           <div className="relative z-0 mx-auto flex w-full overflow-hidden h-full">
-            <AlgoliaProvider>
-              <Wrapper />
-            </AlgoliaProvider>
+
+            <Wrapper />
+
           </div>
         </div>
       </div>

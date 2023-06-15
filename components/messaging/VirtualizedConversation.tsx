@@ -1,18 +1,21 @@
 import { useEffect, useRef } from "react";
 
 import { ChatWindow } from "@/components/messaging/components/ChatWindow";
-import { ErrorComponent } from "@/components/Error";
-import { messagesAtom } from "@/lib/state/atoms";
-import { useAtomValue } from "jotai";
-import { useUpdateUserConversations } from "@/hooks/messaging/useUpdateUserConversations";
+// import { ErrorComponent } from "@/components/Error";
+import { VirtualizedConversationType } from "@/interfaces/index";
+// import { useUpdateUserConversations } from "@/hooks/messaging/useUpdateUserConversations";
 import { useVirtualizer } from "@tanstack/react-virtual";
 
-export const VirtualizedConversation = () => {
+export const VirtualizedConversation = ({
+  messages,
+}: {
+  messages: VirtualizedConversationType | null,
+}) => {
   const parentRef = useRef(null);
-  const { error } = useUpdateUserConversations();
-  const messagesFromDB = useAtomValue(messagesAtom);
+  // const { error } = useUpdateUserConversations();
 
-  const count = (messagesFromDB && messagesFromDB.length) || 0;
+
+  const count = (messages && messages.length) || 0;
   const virtualizer = useVirtualizer({
     count,
     getScrollElement: () => parentRef.current,
@@ -25,7 +28,7 @@ export const VirtualizedConversation = () => {
     if (count) virtualizer.scrollToIndex(count - 1);
   }, [count, virtualizer]);
 
-  if (error) <ErrorComponent error_message={error} />;
+  // if (error) <ErrorComponent error_message={error} />;
 
   return (
     <div
@@ -38,7 +41,11 @@ export const VirtualizedConversation = () => {
         className="relative w-full"
         style={{ height: virtualizer.getTotalSize() }}
       >
-        <ChatWindow virtualizer={virtualizer} items={items} />
+        <ChatWindow
+          virtualizer={virtualizer}
+          items={items}
+          messages={messages}
+        />
       </div>
     </div>
   );

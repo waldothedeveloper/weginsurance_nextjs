@@ -23,7 +23,7 @@ export const useUpdateUserConversations = () => {
   //
   useEffect(() => {
     let unsubscribe: Unsubscribe | null = null;
-    // console.log(`getMessages listener is running`);
+
     try {
       const messagesQuery = query(
         collection(db, "messages"),
@@ -52,7 +52,6 @@ export const useUpdateUserConversations = () => {
     }
 
     return () => {
-      // console.log(`about to unsubscribe from getMessages`);
       if (unsubscribe) unsubscribe();
     };
   }, [selectedUser, setMessagesAtom]);

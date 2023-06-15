@@ -3,7 +3,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
 
 //
-export const getFirebaseUser = async (id) => {
+export const getFirebaseUser = async (id: string) => {
   if (!id) throw new Error(`Please provide a document id first`);
 
   const docRef = doc(db, "Users", id);

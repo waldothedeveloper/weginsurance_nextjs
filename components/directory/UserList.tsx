@@ -2,20 +2,20 @@ import { FakeUser, RealUser } from "@/interfaces/index";
 import { selectedUserAtom, userPhoneAtom } from "@/lib/state/atoms";
 import { useAtomValue, useSetAtom } from "jotai";
 
-import {
-  UserIcon,
-} from "@heroicons/react/24/outline";
+import { UserIcon } from "@heroicons/react/24/outline";
 import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
 import { normalizeString } from "@/utils/normalizeString";
 
-// 
-// eslint-disable-next-line no-unused-vars
-export const UserList = ({ user, getMessages }: { user: RealUser | FakeUser | null, getMessages: (userId: string) => Promise<void> }) => {
-  console.log('user: ', user);
+export const UserList = ({
+  user,
+}: {
+  user: RealUser | FakeUser | null;
+}) => {
   const selectedUser = useAtomValue(selectedUserAtom);
-  console.log('selectedUser: ', selectedUser);
   const setUserPhone = useSetAtom(userPhoneAtom);
   const setSelectedUser = useSetAtom(selectedUserAtom);
+
+
   return (
     <>
       <li
@@ -41,7 +41,6 @@ export const UserList = ({ user, getMessages }: { user: RealUser | FakeUser | nu
               try {
                 setUserPhone(user?.phone || "");
                 setSelectedUser(user);
-                getMessages(user?.id || "")
               } catch (error) {
                 return error;
               }
@@ -66,10 +65,7 @@ export const UserList = ({ user, getMessages }: { user: RealUser | FakeUser | nu
                 }
               >
                 <span className="absolute flex flex-shrink-0 items-center justify-center">
-                  <span
-                    className="h-1 w-1 rounded-full"
-                    aria-hidden="true"
-                  />
+                  <span className="h-1 w-1 rounded-full" aria-hidden="true" />
                 </span>
                 <span
                   className={
@@ -96,5 +92,5 @@ export const UserList = ({ user, getMessages }: { user: RealUser | FakeUser | nu
         </div>
       </li>
     </>
-  )
-}
+  );
+};

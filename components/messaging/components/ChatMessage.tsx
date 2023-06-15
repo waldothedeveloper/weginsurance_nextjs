@@ -21,6 +21,7 @@ type ChatMessageProps = { msg: Message };
 //
 export const ChatMessage = ({ msg }: ChatMessageProps) => {
 
+
   const { direction, delivery } = msg;
 
   const inboundMsg = direction === "inbound";
@@ -39,10 +40,10 @@ export const ChatMessage = ({ msg }: ChatMessageProps) => {
       >
         <div>
           <div className="ml-2 text-xs font-medium text-slate-400">
-            {dayjs.utc(msg.dateCreated).tz("America/New_York").format("h:mm a")}
+            {dayjs.utc(msg?.dateCreated).tz("America/New_York").format("h:mm a")}
           </div>
           <div className="flex flex-col items-start justify-start">
-            {msg.mediaUrl !== undefined && msg?.mediaUrl?.length === 1 ? <ChatCard msg={msg} /> : msg.mediaUrl !== undefined && msg.mediaUrl.length > 1 ? (<ChatCardGrid msg={msg} />) : (<div
+            {msg?.mediaUrl !== undefined && msg?.mediaUrl?.length === 1 ? <ChatCard msg={msg} /> : msg?.mediaUrl !== undefined && msg?.mediaUrl?.length > 1 ? (<ChatCardGrid msg={msg} />) : (<div
               className={classNames(
                 outboundMsg && (undeliveredMsg || failedMsg)
                   ? "bg-red-50 rounded-br-none"
@@ -62,7 +63,7 @@ export const ChatMessage = ({ msg }: ChatMessageProps) => {
                   "whitespace-pre-wrap break-words"
                 )}
               >
-                {msg.body.trim()}
+                {msg?.body?.trim()}
 
               </p>
             </div>)}
