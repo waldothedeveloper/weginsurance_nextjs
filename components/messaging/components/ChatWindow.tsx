@@ -1,26 +1,18 @@
+import { Message, VirtualizedConversationType } from "@/interfaces/index";
+
 import { ChatMessage } from "@/components/messaging/components/ChatMessage";
-import { Message } from "@/interfaces/index";
 import { TimeDivider } from "@/components/messaging/TimeDivider";
-import { messagesAtom } from "@/lib/state/atoms";
-import { useAtomValue } from "jotai";
-//
+import { VirtualItem } from "@tanstack/react-virtual";
+import { Virtualizer } from "@tanstack/react-virtual";
+
 type ChatWindowProps = {
   items: VirtualItem[];
-  virtualizer: any;
-};
-
-type VirtualItem = {
-  index: number;
-  key: number;
-  lane: number;
-  size: number;
-  start: number;
+  virtualizer: Virtualizer<Element, Element>;
+  messages: VirtualizedConversationType | null
 };
 
 
-export const ChatWindow = ({ virtualizer, items }: ChatWindowProps) => {
-  const messagesFromDB = useAtomValue(messagesAtom) as Message[];
-  //
+export const ChatWindow = ({ virtualizer, items, messages }: ChatWindowProps) => {
   return (
     <div
       style={{
@@ -36,10 +28,10 @@ export const ChatWindow = ({ virtualizer, items }: ChatWindowProps) => {
             ref={virtualizer.measureElement}
           >
             <div className="py-0.5">
-              {Array.isArray(messagesFromDB) && "type" in messagesFromDB[virtualRow.index] ? (
-                <TimeDivider time={messagesFromDB[virtualRow.index]?.dateCreated} />
-              ) : (
-                <ChatMessage msg={messagesFromDB[virtualRow.index]} />
+              {Array.isArray(messages) && "type" in messages[virtualRow.index] ? (
+                <TimeDivider time={messages[virtualRow.index]?.dateCreated} />
+              ) : messages && messages[virtualRow.index] && (
+                <ChatMessage msg={messages[virtualRow.index] as Message} />
               )}
             </div>
           </div>

@@ -2,24 +2,23 @@ import { useCallback, useEffect, useState } from "react";
 
 import { failureNotification } from "@/components/notifications/failureNotification";
 import { saveDayTypeMessage } from "@/utils/saveDayTypeMessage";
+import { selectedUserAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
-import { userIdAtom } from "@/lib/state/atoms";
 
 export const useSaveDateHeadersToDB = (
   newDateHeaders: string[] | null,
   newDateHeadersError: Error | null | unknown
 ) => {
-  const userId = useAtomValue(userIdAtom);
   const [saveDateHeadersError, setSaveDateHeadersError] = useState<
     Error | null | unknown
   >(null);
-
+  const selectedUser = useAtomValue(selectedUserAtom);
   const saveDateHeaders = useCallback(async () => {
     try {
       if (!newDateHeaders || newDateHeaders.length === 0) return;
 
       for (const dayHeader of newDateHeaders) {
-        await saveDayTypeMessage(userId, dayHeader);
+        await saveDayTypeMessage(selectedUser?.id, dayHeader);
       }
     } catch (error) {
       failureNotification(
@@ -29,19 +28,19 @@ export const useSaveDateHeadersToDB = (
       setSaveDateHeadersError(error);
       console.error("Error saving day type messages:", error);
     }
-  }, [newDateHeaders, userId]);
+  }, [newDateHeaders, selectedUser]);
 
   useEffect(() => {
     if (
       !newDateHeadersError &&
-      userId &&
-      userId?.length > 0 &&
+      selectedUser &&
+      selectedUser?.id &&
       newDateHeaders &&
       newDateHeaders?.length > 0
     ) {
       saveDateHeaders();
     }
-  }, [newDateHeaders, userId, newDateHeadersError, saveDateHeaders]);
+  }, [newDateHeaders, selectedUser, newDateHeadersError, saveDateHeaders]);
 
   return { saveDateHeadersError };
 };

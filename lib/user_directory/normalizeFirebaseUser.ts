@@ -22,6 +22,7 @@ export const normalizeFirebaseUser = (user: RealUser) => {
     normalizedUser.email = user?.email.trim();
     normalizedUser.fullname = `${normalizedUser?.firstname} ${normalizedUser?.lastname}`;
     normalizedUser.phone = goodPhoneNum;
+    normalizedUser.firstTimeVisit = user?.firstTimeVisit || false;
     return normalizedUser;
   } else {
     throw new Error("Invalid phone number");

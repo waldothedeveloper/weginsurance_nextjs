@@ -18,8 +18,8 @@ export const useFirebaseUsers = () => {
 
   useEffect(() => {
     let unsubscribe: Unsubscribe | null = null;
-    const userCollection =
-      process.env.NODE_ENV === "production" ? "Users" : "UsersDev";
+    // const userCollection =
+    //   process.env.NODE_ENV === "production" ? "Users" : "UsersDev";
     try {
       setIsLoadingFirebaseUsers(true);
       const dbQuery = query(collection(db, "Users"), orderBy("firstname"));
@@ -33,6 +33,9 @@ export const useFirebaseUsers = () => {
             users.push(tempUser);
           });
           setFirebaseUsers(users);
+        } else {
+          // if hypotetically there are no users in the database, set the users to an empty array so that the user directory table doesn't show the loading spinner forever
+          setFirebaseUsers([]);
         }
       });
       setIsLoadingFirebaseUsers(false);

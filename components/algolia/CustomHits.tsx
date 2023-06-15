@@ -11,7 +11,7 @@ import { normalizeString } from "@/utils/normalizeString";
 import { useHits } from 'react-instantsearch-hooks-web';
 
 // eslint-disable-next-line no-unused-vars
-export const CustomHits = ({ getMessages }: { getMessages: (userId: string) => Promise<void> }) => {
+export const CustomHits = () => {
 
   const { hits } = useHits();
   const setUserPhone = useSetAtom(userPhoneAtom);
@@ -59,7 +59,7 @@ export const CustomHits = ({ getMessages }: { getMessages: (userId: string) => P
                     secondLastname: hit?.secondLastname as string,
                     secondName: hit?.secondName as string
                   } as RealUser);
-                  getMessages(hit?.objectID)
+                  // getMessages(hit?.objectID)
                 } catch (error) {
                   return error;
                 }

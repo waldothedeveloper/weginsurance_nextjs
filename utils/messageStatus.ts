@@ -26,7 +26,7 @@ export const messageStatus = (status: string): { status: string } => {
       };
     default:
       return {
-        status: "Desconocido",
+        status: "Procesando",
       };
   }
 };

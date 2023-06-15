@@ -18,6 +18,7 @@ export const createRandomUser = (): FakeUser => {
   const phone = faker.phone.number("+1#########");
 
   return {
+    firstTimeVisit: false,
     id: faker.datatype.uuid(),
     fullname,
     activeUser,
