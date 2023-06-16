@@ -1,4 +1,4 @@
-import { addDoc, collection } from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 
 import { Day } from "@/interfaces/index";
 import { db } from "@/lib/firebaseConfig";
@@ -16,7 +16,7 @@ export const saveDayTypeMessage = async (
   };
 
   try {
-    await addDoc(groupRef, todayTypeMessage);
+    await setDoc(doc(groupRef), todayTypeMessage);
   } catch (error) {
     throw new Error(`Unable to save day type message to user's collection`);
   }
