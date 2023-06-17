@@ -45,6 +45,8 @@ export const useSaveMessagesFromTwilioToDatabase = (
             makeFirstTimeVisitTrue(selectedUser);
             // set the user to activate the real-time listener db
             setUser(selectedUser);
+            //  reset the loading state
+            setIsSavingMessagesToDb(false);
           })
           .catch((error) => {
             failureNotification(
@@ -54,13 +56,14 @@ export const useSaveMessagesFromTwilioToDatabase = (
             return error;
           });
       } catch (error) {
+        // stop getting messages from twilio api
+        setKey(null);
         failureNotification(
           `Error tratando de salvar los mensajes a la base de datos desde Twilio: ${error}`
         );
         setIsSavingMessagesToDb(false);
         setErrorSavingMessagesToDb(error);
       }
-      setIsSavingMessagesToDb(false);
     } else {
       // this covers the case when the user has no messages from the Twilio API or database, so this is basically a new conversation with a new user most likely
       if (

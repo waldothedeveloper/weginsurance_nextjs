@@ -20,7 +20,7 @@ export type Ref = HTMLUListElement
 
 
 // eslint-disable-next-line no-unused-vars
-export const VirtualizedUserList = () => {
+export const VirtualizedUserList = ({ isProcessingInfo }: { isProcessingInfo: boolean }) => {
   const selectedUser = useAtomValue(selectedUserAtom);
   const router = useRouter();
   const handleDeleteAllFiles = useDeleteAllUploadedFiles();
@@ -99,8 +99,8 @@ export const VirtualizedUserList = () => {
           aria-label="Directory"
         >
 
-          <EmptyQueryBoundary fallback={<TanStackVirtualizer users={test ? fakeUserList : firebaseUsers} />}>
-            <CustomHits />
+          <EmptyQueryBoundary fallback={<TanStackVirtualizer isProcessingInfo={isProcessingInfo} users={test ? fakeUserList : firebaseUsers} />}>
+            <CustomHits isProcessingInfo={isProcessingInfo} />
           </EmptyQueryBoundary>
 
 

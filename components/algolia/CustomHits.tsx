@@ -11,7 +11,7 @@ import { normalizeString } from "@/utils/normalizeString";
 import { useHits } from 'react-instantsearch-hooks-web';
 
 // eslint-disable-next-line no-unused-vars
-export const CustomHits = () => {
+export const CustomHits = ({ isProcessingInfo }: { isProcessingInfo: boolean }) => {
 
   const { hits } = useHits();
   const setUserPhone = useSetAtom(userPhoneAtom);
@@ -41,6 +41,7 @@ export const CustomHits = () => {
 
           <div className="min-w-0 flex-1">
             <button
+              disabled={isProcessingInfo}
               type="button"
               onClick={() => {
                 try {
@@ -59,7 +60,7 @@ export const CustomHits = () => {
                     secondLastname: hit?.secondLastname as string,
                     secondName: hit?.secondName as string
                   } as RealUser);
-                  // getMessages(hit?.objectID)
+
                 } catch (error) {
                   return error;
                 }

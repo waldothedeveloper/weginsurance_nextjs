@@ -48,12 +48,15 @@ export const useGetUserConversations = () => {
 
   // Handle logic to either get the messages from Twilio API or from the database
   useEffect(() => {
+    setKey(null);
+    setUser(null);
+    setMessages(null);
     if (selectedUser && !selectedUser?.firstTimeVisit) {
       setKey(["/api/messaging/sms/retrieve_sms", selectedUser?.id]);
     } else {
       setUser(selectedUser);
     }
-  }, [selectedUser, setKey, setSelectedUser, setUser]);
+  }, [selectedUser, setKey, setSelectedUser, setUser, setMessages]);
 
   // Save messages from Twilio API to the database
   const { isSavingMessagesToDb, errorSavingMessagesToDb } =
