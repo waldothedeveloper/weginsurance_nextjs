@@ -8,8 +8,10 @@ import { normalizeString } from "@/utils/normalizeString";
 
 export const UserList = ({
   user,
+  isProcessingInfo
 }: {
   user: RealUser | FakeUser | null;
+  isProcessingInfo: boolean;
 }) => {
   const selectedUser = useAtomValue(selectedUserAtom);
   const setUserPhone = useSetAtom(userPhoneAtom);
@@ -36,6 +38,7 @@ export const UserList = ({
         </div>
         <div className="min-w-0 flex-1">
           <button
+            disabled={isProcessingInfo}
             type="button"
             onClick={() => {
               try {

@@ -6,7 +6,7 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 
 // 
 // eslint-disable-next-line no-unused-vars
-export const TanStackVirtualizer = ({ users }: { users: RealUser[] | FakeUser[] | null }) => {
+export const TanStackVirtualizer = ({ users, isProcessingInfo }: { users: RealUser[] | FakeUser[] | null, isProcessingInfo: boolean }) => {
 
   const parentRef = useRef(null);
   // 
@@ -46,7 +46,7 @@ export const TanStackVirtualizer = ({ users }: { users: RealUser[] | FakeUser[] 
                 data-index={virtualRow.index}
                 ref={virtualizer.measureElement}
               >
-                <UserList user={users && users[virtualRow.index]} />
+                <UserList user={users && users[virtualRow.index]} isProcessingInfo={isProcessingInfo} />
               </div>
             )
           })}

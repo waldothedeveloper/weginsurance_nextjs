@@ -66,7 +66,7 @@ export const Wrapper = () => {
       {/* left side components*/}
       {router?.query?.dashboard?.includes("messages") && (
         <AsideComponent>
-          <VirtualizedUserList />
+          <VirtualizedUserList isProcessingInfo={isLoading || isLoadingMessagesFromTwilioAPI || isSavingMessagesToDb} />
         </AsideComponent>
       )}
 
