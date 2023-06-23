@@ -11,4 +11,8 @@ export default {
     ? process.env.PROJECT_ID_DEV
     : process.env.PROJECT_ID_PROD,
   messageCollection: process.env.MESSAGE_COLLECTION || "messages",
+  storageBucket:
+    process.env.NODE_ENV === "production"
+      ? process.env.PROD_STORAGE_BUCKET
+      : process.env.DEV_STORAGE_BUCKET,
 };

@@ -67,8 +67,14 @@ export type QueuePayload = {
   };
 };
 
+type document = {
+  url: string;
+  type: string;
+  name: string;
+};
+
 export interface Message {
-  userId: string | null | undefined;
+  userId?: string | null | undefined;
   body: string;
   dateCreated: string;
   from: string;
@@ -77,6 +83,7 @@ export interface Message {
   sid: string;
   delivery?: QueuePayload;
   mediaUrl?: string[];
+  documentUrl?: (document | undefined)[] | [];
 }
 
 export interface Day {
@@ -86,6 +93,8 @@ export interface Day {
 }
 
 export interface TwilioAPIMessage {
+  mediaUrl?: string[];
+  documentUrl?: (document | undefined)[] | [];
   body: string;
   numSegments: string;
   direction: "inbound" | "outbound-api";
@@ -110,6 +119,33 @@ export interface TwilioAPIMessage {
     feedback: string;
   };
 }
+
+/*
+
+interface MessageResource {
+  body: string;
+  num_segments: string;
+  direction: MessageDirection;
+  from: string;
+  to: string;
+  date_updated: Date;
+  price: string;
+  error_message: string;
+  uri: string;
+  account_sid: string;
+  num_media: string;
+  status: MessageStatus;
+  messaging_service_sid: string;
+  sid: string;
+  date_sent: Date;
+  date_created: Date;
+  error_code: number;
+  price_unit: string;
+  api_version: string;
+  subresource_uris: Record<string, string>;
+}
+
+*/
 
 export type VirtualizedConversationType = (Day | Message)[];
 

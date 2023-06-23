@@ -6,7 +6,8 @@ export const transformMessages = (
   const conversation = originalArray.map((obj) => {
     if (obj.type !== "day") {
       return {
-        mediaUrl: [],
+        documentUrl: obj.documentUrl || [],
+        mediaUrl: obj.mediaUrl || [],
         from: obj.from,
         direction: obj.direction,
         body: obj.body,
