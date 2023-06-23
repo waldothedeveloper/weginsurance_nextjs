@@ -86,6 +86,16 @@ export const useSendOutboundMessage = () => {
       dateCreated: todayISO,
       sid: nanoid(),
       direction: "outbound-api",
+      // by doing this, we are separating documents send from regular images.
+      documentUrl: messageHasAttachments()
+        ? uploadedResources
+            .map((file) => {
+              if (!file?.type.startsWith("image/")) {
+                return { url: file.url, name: file.name, type: file.type };
+              }
+            })
+            .filter((file) => file !== undefined)
+        : [],
       mediaUrl: messageHasAttachments()
         ? uploadedResources.map((file) => file.url)
         : [],

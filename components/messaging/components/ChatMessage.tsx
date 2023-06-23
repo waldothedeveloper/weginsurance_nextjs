@@ -20,6 +20,7 @@ dayjs.extend(timezone);
 type ChatMessageProps = { msg: Message };
 //
 export const ChatMessage = ({ msg }: ChatMessageProps) => {
+  // console.log('msg: ', msg);
 
 
   const { direction, delivery } = msg;
@@ -43,7 +44,7 @@ export const ChatMessage = ({ msg }: ChatMessageProps) => {
             {dayjs.utc(msg?.dateCreated).tz("America/New_York").format("h:mm a")}
           </div>
           <div className="flex flex-col items-start justify-start">
-            {msg?.mediaUrl !== undefined && msg?.mediaUrl?.length === 1 ? <ChatCard msg={msg} /> : msg?.mediaUrl !== undefined && msg?.mediaUrl?.length > 1 ? (<ChatCardGrid msg={msg} />) : (<div
+            {msg?.mediaUrl !== undefined && msg?.mediaUrl?.length === 1 || msg.documentUrl !== undefined && msg.documentUrl.length === 1 ? <ChatCard msg={msg} /> : msg?.mediaUrl !== undefined && msg?.mediaUrl?.length > 1 || msg.documentUrl !== undefined && msg.documentUrl.length > 1 ? (<ChatCardGrid msg={msg} />) : (<div
               className={classNames(
                 outboundMsg && (undeliveredMsg || failedMsg)
                   ? "bg-red-50 rounded-br-none"

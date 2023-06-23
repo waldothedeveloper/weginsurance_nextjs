@@ -14,11 +14,43 @@ import { twiml, validateRequest } from "twilio";
 
 import { Novu } from "@novu/node";
 import { QueuePayload } from "./types";
+import { Storage } from "@google-cloud/storage";
 import { firestore as adminFirestore } from "firebase-admin";
 import config from "./config";
 
 const fv: FieldValue = FieldValue.serverTimestamp();
 const terminalStatuses = ["delivered", "undelivered", "failed"];
+
+exports.uploadImages = functions.https.onRequest(
+  async (req: Request, res: Response): Promise<any> => {
+    functions.logger.info("Starting uploadImages function.");
+    // Get the array of URLs from the request body.
+    const urls = req.body.urls;
+
+    if (!urls || !Array.isArray(urls) || urls.length === 0) {
+      functions.logger.error("No URLs provided.");
+      return res
+        .status(500)
+        .json("No URLs provided. Please provide an array of URLs.");
+    }
+
+    // Creates a client
+    const storage = new Storage();
+
+    try {
+      for (const url of urls) {
+        functions.logger.info("url", url);
+        await storage.bucket("images").upload(url);
+
+        return res.status(200).json("Images uploaded successfully.");
+      }
+      res.sendStatus(200);
+    } catch (error) {
+      functions.logger.error(error);
+      res.sendStatus(500);
+    }
+  }
+);
 
 exports.statusCallback = functions.https.onRequest(
   async (req: Request, res: Response): Promise<any> => {
