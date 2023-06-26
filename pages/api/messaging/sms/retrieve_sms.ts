@@ -1,9 +1,9 @@
-import { Message, VirtualizedConversationType } from "@/interfaces/index";
 import { NextApiRequest, NextApiResponse } from "next";
 
-import dayjs from "dayjs";
 import { findMessagesWithMedia } from "@/utils/findMessagesWithMedia";
 import { getMessages } from "@/utils/getMessages";
+import { groupMessages } from "@/utils/groupMessages";
+import { sortMessages } from "@/utils/sortMessages";
 
 // TODO: Make sure to add Twilio webhook security verification, so that only Twilio can send requests to this endpoint
 
@@ -38,7 +38,7 @@ export default async function handler(
     // get me all messages RECEIVED from this user to APP
     const smsFromUserToApp = await getMessages(user, app);
 
-    // it is important to recognize that if the Twilio API fails for some reason, we should return an Error
+    //! it is important to recognize that if the Twilio API fails for some reason, we should return an Error
     if (
       smsFromApptoUser instanceof Error ||
       smsFromUserToApp instanceof Error
@@ -53,13 +53,30 @@ export default async function handler(
       });
     }
 
-    const smsFromApptoUserWithMedia = await findMessagesWithMedia(
-      smsFromApptoUser
-    );
+    //! if there is the case the no messages have been sent to this user, or this user has never sent any messages to the app, return an empty array.
+    //  This is considered a new conversation technically speaking.
+    if (
+      Array.isArray(smsFromApptoUser) &&
+      smsFromApptoUser.length === 0 &&
+      Array.isArray(smsFromUserToApp) &&
+      smsFromUserToApp.length === 0
+    ) {
+      console.log(`No messages found for ${user_phone}`);
+      return res.status(200).json([]);
+    }
 
-    const smsFromUserToAppWithMedia = await findMessagesWithMedia(
-      smsFromUserToApp
-    );
+    // There could be the case the user has sent messages to the app, but the app has never sent any messages to the user, or viceversa, so there is no need to try to find messages with media if there are no messages
+    //! if there are no messages with media, the findMessagesWithMedia will simply return the messages from Twilio as they are or False if there are no messages.
+    const smsFromApptoUserWithMedia =
+      Array.isArray(smsFromApptoUser) &&
+      smsFromApptoUser.length > 0 &&
+      (await findMessagesWithMedia(smsFromApptoUser));
+
+    //! if there are no messages with media, the findMessagesWithMedia will simply return the messages from Twilio as they are or False if there are no messages.
+    const smsFromUserToAppWithMedia =
+      Array.isArray(smsFromUserToApp) &&
+      smsFromUserToApp.length > 0 &&
+      (await findMessagesWithMedia(smsFromUserToApp));
 
     // it is important to recognize that if we are not able to put the messages received and sent a.k.a the Conversation for some reason, we should return an Error
     if (
@@ -75,77 +92,59 @@ export default async function handler(
       });
     }
 
-    const finalMessagesArrayNotSorted =
-      smsFromApptoUserWithMedia &&
-      smsFromUserToAppWithMedia &&
-      smsFromApptoUserWithMedia.concat(smsFromUserToAppWithMedia);
-
     /*
-    the groupedDays function below is creating a object similar to this one:
-            {
-          '2022-05-26': [
-            {
-              from: '+5553332211',
-              sid: 'SM63e433054d8043dab81b6b5b9aaa5222',
-              dateCreated: '2022-05-26T18:33:28.000Z',
-              delivery: [Object],
-              direction: 'outbound-api',
-              userId: 'uPVAYp0fZED0D03YZyY4',
-              to: '+3055555555',
-              body: 'test',
-              mediaUrl: [],
-              documentUrl: []
-                }
-              ]
-            }
+    =========================================================================
+     the code below might just be a repetition of this, so think about it
+
+          if (
+            Array.isArray(smsFromApptoUser) &&
+            smsFromApptoUser.length === 0 &&
+            Array.isArray(smsFromUserToApp) &&
+            smsFromUserToApp.length === 0
+          ) {
+            return res.status(200).json([]);
+          }
+    ==========================================================================
     */
-    const groupedDays = (
-      messages: Message[]
-    ): {
-      [key: string]: Message[];
-    } =>
-      messages.reduce((acc: { [key: string]: Message[] }, el) => {
-        const messageDay = dayjs(el.dateCreated).format("YYYY-MM-DD");
-        if (acc[messageDay]) {
-          return { ...acc, [messageDay]: [...acc[messageDay], el] };
-        }
-        return { ...acc, [messageDay]: [el] };
-      }, {});
+    if (!smsFromApptoUserWithMedia && !smsFromUserToAppWithMedia) {
+      return res.status(200).json([]);
+    }
 
-    const generateItems = (
-      messages: Message[]
-    ): VirtualizedConversationType[] => {
-      const days = groupedDays(messages);
-      const sortedDays = Object.keys(days).sort(
-        (x, y) => dayjs(y, "YYYY-MM-DD").unix() - dayjs(x, "YYYY-MM-DD").unix()
+    // if there are messages from user to app, but not from app to user, we can just return the messages from user to app with media
+    if (!smsFromApptoUserWithMedia && smsFromUserToAppWithMedia) {
+      const sortedMessagesFromUsertoApp = sortMessages(
+        smsFromUserToAppWithMedia,
+        groupMessages
+      ).reverse();
+      console.log(`CASE WHERE THERE ARE MESSAGES FROM User TO APP 👦🏻 => 💻 `);
+      return res.status(200).json(sortedMessagesFromUsertoApp);
+    }
+
+    // if there are messages from app to user, but not from user to app, we can just return the messages from app to user with media
+    if (smsFromApptoUserWithMedia && !smsFromUserToAppWithMedia) {
+      const sortedMessagesFromApptoUser = sortMessages(
+        smsFromApptoUserWithMedia,
+        groupMessages
+      ).reverse();
+      console.log(`CASE WHERE THERE ARE MESSAGES FROM APP TO USER 👦🏻 => 💻 `);
+
+      return res.status(200).json(sortedMessagesFromApptoUser);
+    }
+
+    // if both messages contain media, we need to sort them by date and group them by date
+    if (smsFromApptoUserWithMedia && smsFromUserToAppWithMedia) {
+      const messagesFromUserAndApp = smsFromUserToAppWithMedia.concat(
+        smsFromApptoUserWithMedia
       );
+      const sortedMessages = sortMessages(
+        messagesFromUserAndApp,
+        groupMessages
+      ).reverse();
 
-      const items = sortedDays.reduce(
-        (acc: VirtualizedConversationType[], date) => {
-          const sortedMessages = days[date].sort((x, y) =>
-            dayjs(y.dateCreated).diff(dayjs(x.dateCreated))
-          );
-          return acc.concat([
-            ...sortedMessages,
-            { type: "day", dateCreated: date, id: date },
-          ]);
-        },
-        []
+      console.log(
+        `CASE WHERE THERE ARE MESSAGES FROM APP TO USER AND USER TO APP 🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟 `
       );
-      return items;
-    };
-
-    if (
-      finalMessagesArrayNotSorted &&
-      Array.isArray(finalMessagesArrayNotSorted)
-    ) {
-      const allMsg = generateItems(finalMessagesArrayNotSorted).reverse();
-      return res.status(200).json(allMsg);
-    } else {
-      return res.status(500).json({
-        message: "Our system has detected an unexpected error.",
-        status: 500,
-      });
+      return res.status(200).json(sortedMessages);
     }
   } catch (error) {
     console.log("error: ", error);

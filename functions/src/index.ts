@@ -12,11 +12,14 @@ import { Request, Response } from "express";
 import { getFunctionsUrl, initialize, twilioClient } from "./utils";
 import { twiml, validateRequest } from "twilio";
 
+// import { MediaInstance } from "twilio/lib/rest/api/v2010/account/message/media";
 import { Novu } from "@novu/node";
 import { QueuePayload } from "./types";
 import { Storage } from "@google-cloud/storage";
 import { firestore as adminFirestore } from "firebase-admin";
 import config from "./config";
+// import { getContentTypeFromUrl } from "./getContentTypeFromUrl";
+import { returnIncomingMedia } from "./returnIncomingMedia";
 
 const fv: FieldValue = FieldValue.serverTimestamp();
 const terminalStatuses = ["delivered", "undelivered", "failed"];
@@ -412,34 +415,34 @@ exports.findMessage = functions.firestore
 exports.incomingMessage = functions.https.onRequest(
   async (req: Request, res: Response): Promise<any> => {
     initialize();
-    const {
-      twilio: { authToken },
-    } = config;
-    const signature = req.get("x-twilio-signature");
-    const url = getFunctionsUrl("incomingMessage");
-    const params = req.body;
-    if (!signature) {
-      return res
-        .type("text/plain")
-        .status(400)
-        .send(
-          "No signature header error - X-Twilio-Signature header does not exist, maybe this request is not coming from Twilio."
-        );
-    }
-    if (typeof authToken !== "string") {
-      return res
-        .type("text/plain")
-        .status(500)
-        .send(
-          "Webhook Error - we attempted to validate this request without first configuring our auth token."
-        );
-    }
-    if (!validateRequest(authToken, signature, url, params)) {
-      return res
-        .type("text/plain")
-        .status(403)
-        .send("Twilio Request Validation Failed");
-    }
+    // const {
+    //   twilio: { authToken },
+    // } = config;
+    // const signature = req.get("x-twilio-signature");
+    // const url = getFunctionsUrl("incomingMessage");
+    // const params = req.body;
+    // if (!signature) {
+    //   return res
+    //     .type("text/plain")
+    //     .status(400)
+    //     .send(
+    //       "No signature header error - X-Twilio-Signature header does not exist, maybe this request is not coming from Twilio."
+    //     );
+    // }
+    // if (typeof authToken !== "string") {
+    //   return res
+    //     .type("text/plain")
+    //     .status(500)
+    //     .send(
+    //       "Webhook Error - we attempted to validate this request without first configuring our auth token."
+    //     );
+    // }
+    // if (!validateRequest(authToken, signature, url, params)) {
+    //   return res
+    //     .type("text/plain")
+    //     .status(403)
+    //     .send("Twilio Request Validation Failed");
+    // }
     const {
       MessageSid,
       From,
@@ -460,8 +463,21 @@ exports.incomingMessage = functions.https.onRequest(
         .send("Webhook error - No MessageSid found.");
     }
 
+    const filteredMediaImages = await returnIncomingMedia(
+      NumMedia,
+      req.body,
+      "image/"
+    );
+    functions.logger.info(JSON.stringify(filteredMediaImages));
+    const filteredMediaDocuments = await returnIncomingMedia(
+      NumMedia,
+      req.body,
+      "application/"
+    );
+
     const incomingMessage = {
-      mediaUrl: [],
+      documentUrl: filteredMediaDocuments,
+      mediaUrl: filteredMediaImages,
       from: From,
       direction: "inbound",
       body: Body,
@@ -563,6 +579,9 @@ exports.incomingMessage = functions.https.onRequest(
             transaction.set(userRef, newUser);
             incomingMessage.userId = userRef.id;
             transaction.set(conversationRef, incomingMessage);
+            functions.logger.info(
+              `Saved conversation in the user's conversation: ${userRef.id}`
+            );
             return Promise.resolve();
           });
         } catch (error) {

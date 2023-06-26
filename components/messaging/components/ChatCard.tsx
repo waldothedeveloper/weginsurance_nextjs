@@ -3,30 +3,41 @@ import { Message } from "@/interfaces/index";
 import { ShowFileTypeIcon } from "@/components/messaging/carousel/ShowFileTypeIcon";
 
 export const ChatCard = ({ msg }: { msg: Message }) => {
+  const { direction } = msg;
+  const inboundMsg = direction === "inbound";
+  // const outboundMsg = direction === "outbound-api";
+
   const failedMsg =
     msg?.delivery?.info?.status === "failed" ||
     msg?.delivery?.info?.status === "undelivered" ||
     null;
 
+
   if (!msg?.mediaUrl?.length && !msg?.documentUrl?.length) {
     return null;
+  }
+
+  const applyStyle = () => {
+    if (failedMsg) {
+      return "mt-0.5 rounded-2xl bg-red-50 p-1 w-80";
+    } else if (inboundMsg) {
+      return "mt-0.5 rounded-2xl bg-slate-200 p-1 w-80";
+    } else {
+      return "mt-0.5 rounded-2xl bg-blue-500 p-1 w-80";
+    }
   }
   // return images
   if (!msg?.documentUrl?.length) {
     return (
       <div
-        className={
-          failedMsg
-            ? "mt-0.5 rounded-2xl bg-red-50 p-1"
-            : "mt-0.5 rounded-2xl bg-blue-500 p-1"
-        }
+        className={applyStyle()}
       >
         {msg?.mediaUrl?.map((element) => {
           return (
             <div key={element}>
-              <div className="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-slate-100 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 focus-within:ring-offset-slate-100">
+              <div className="group aspect-h-7 aspect-w-10 relative block w-full overflow-hidden bg-slate-100 rounded-lg focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 focus-within:ring-offset-slate-100 w">
                 <Image
-                  className="object-cover group-hover:opacity-75 duration-300 ease-in-out"
+                  className="object-cover group-hover:opacity-50 duration-300 ease-in-out"
                   src={element}
                   alt=""
                   fill
@@ -35,15 +46,17 @@ export const ChatCard = ({ msg }: { msg: Message }) => {
               33vw"
                 />
               </div>
-              <p
-                className={
-                  failedMsg
-                    ? "my-2 block px-2 text-sm font-medium text-red-500"
-                    : "my-2 block px-2 text-sm font-medium text-slate-50"
-                }
-              >
-                {msg.body}
-              </p>
+              {msg.body.length > 0 && (
+                <p
+                  className={
+                    failedMsg && inboundMsg
+                      ? "my-2 block px-2 text-sm font-medium text-red-500"
+                      : inboundMsg ? "my-2 block px-2 text-sm font-medium text-slate-900" : "my-2 block px-2 text-sm font-medium text-slate-50"
+                  }
+                >
+                  {msg.body}
+                </p>
+              )}
             </div>
           );
         })}
@@ -55,11 +68,7 @@ export const ChatCard = ({ msg }: { msg: Message }) => {
   if (msg?.documentUrl?.length && msg.documentUrl.length === 1) {
     return (
       <div
-        className={
-          failedMsg
-            ? "mt-0.5 rounded-2xl bg-red-50 p-1"
-            : "mt-0.5 rounded-2xl bg-blue-500 p-1"
-        }
+        className={applyStyle()}
       >
         {msg?.documentUrl?.map((element) => {
           return (
