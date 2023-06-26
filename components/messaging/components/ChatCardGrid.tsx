@@ -3,6 +3,10 @@ import { Message } from "@/interfaces/index";
 import { ShowFileTypeIcon } from "@/components/messaging/carousel/ShowFileTypeIcon";
 
 export const ChatCardGrid = ({ msg }: { msg: Message }) => {
+
+  const { direction } = msg;
+  const inboundMsg = direction === "inbound";
+  // const outboundMsg = direction === "outbound-api";
   const failedMsg =
     msg?.delivery?.info?.status === "failed" ||
     msg?.delivery?.info?.status === "undelivered" ||
@@ -12,19 +16,25 @@ export const ChatCardGrid = ({ msg }: { msg: Message }) => {
     return null;
   }
 
+  const applyStyle = () => {
+    if (failedMsg) {
+      return "mt-0.5 grid grid-cols-2 gap-1 rounded-2xl bg-red-50 px-1 py-1";
+    } else if (inboundMsg) {
+      return "mt-0.5 grid grid-cols-2 gap-1 rounded-2xl bg-slate-100 px-1 py-1";
+    } else {
+      return "mt-0.5 grid grid-cols-2 gap-1 rounded-2xl bg-blue-500 px-1 py-1";
+    }
+  }
+
   if (!msg?.documentUrl?.length) {
     return (
       <div
-        className={
-          failedMsg
-            ? "mt-0.5 grid grid-cols-2 gap-1 rounded-2xl bg-red-50 px-1 py-1"
-            : "mt-0.5 grid grid-cols-2 gap-1 rounded-2xl bg-blue-500 px-1 py-1"
-        }
+        className={applyStyle()}
       >
         {msg?.mediaUrl?.map((element) => {
           return (
             <div key={element}>
-              <div className="group aspect-h-7 aspect-w-10 relative block w-full overflow-hidden rounded-lg bg-slate-100 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 focus-within:ring-offset-slate-100">
+              <div className="group w-60 h-48 relative block overflow-hidden rounded-lg bg-slate-100 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 focus-within:ring-offset-slate-100">
                 <Image
                   className="object-cover group-hover:opacity-75 duration-300 ease-in-out"
                   src={element}
@@ -38,15 +48,15 @@ export const ChatCardGrid = ({ msg }: { msg: Message }) => {
             </div>
           );
         })}
-        <p
+        {msg?.body?.length > 1 && (<p
           className={
-            failedMsg
+            failedMsg && inboundMsg
               ? "row-start-4 my-2 block px-2 text-sm font-medium text-red-500"
-              : "row-start-4 my-2 block px-2 text-sm font-medium text-slate-50"
+              : "row-start-4 my-2 block px-2 text-sm font-medium text-slate-900"
           }
         >
-          {msg.body}
-        </p>
+          {msg.body.trim()}
+        </p>)}
       </div>
     );
   }
@@ -54,11 +64,7 @@ export const ChatCardGrid = ({ msg }: { msg: Message }) => {
   if (msg?.documentUrl?.length && msg.documentUrl.length > 1) {
     return (
       <div
-        className={
-          failedMsg
-            ? "mt-0.5 grid grid-cols-2 gap-1 rounded-2xl bg-red-50 px-1 py-1"
-            : "mt-0.5 grid grid-cols-2 gap-1 rounded-2xl bg-blue-500 px-1 py-1"
-        }
+        className={applyStyle()}
       >
         {msg?.documentUrl?.map((element) => {
           return (
@@ -88,15 +94,17 @@ export const ChatCardGrid = ({ msg }: { msg: Message }) => {
             </div>
           );
         })}
-        <p
-          className={
-            failedMsg
-              ? "row-start-4 my-2 block px-2 text-sm font-medium text-red-500"
-              : "row-start-4 my-2 block px-2 text-sm font-medium text-slate-50"
-          }
-        >
-          {msg.body}
-        </p>
+        {msg?.body?.length > 1 && (
+          <p
+            className={
+              failedMsg
+                ? "row-start-4 my-2 block px-2 text-sm font-medium text-red-500"
+                : "row-start-4 my-2 block px-2 text-sm font-medium text-slate-50"
+            }
+          >
+            {msg.body}
+          </p>
+        )}
       </div>
     );
   }

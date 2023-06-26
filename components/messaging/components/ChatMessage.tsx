@@ -20,8 +20,6 @@ dayjs.extend(timezone);
 type ChatMessageProps = { msg: Message };
 //
 export const ChatMessage = ({ msg }: ChatMessageProps) => {
-  // console.log('msg: ', msg);
-
 
   const { direction, delivery } = msg;
 

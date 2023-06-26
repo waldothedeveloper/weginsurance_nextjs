@@ -60,7 +60,7 @@ export const saveMessagesToClientConversations = async (
       return "success";
     });
   } catch (error) {
-    console.log("error on saveMessagesToClientConversations: ", error);
+    // console.log("error on saveMessagesToClientConversations: ", error);
     return error;
   }
 };

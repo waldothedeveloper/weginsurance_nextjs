@@ -27,7 +27,7 @@ export const ChatWindow = ({ virtualizer, items, messages }: ChatWindowProps) =>
             data-index={virtualRow.index}
             ref={virtualizer.measureElement}
           >
-            <div className="py-0.5">
+            <div className="py-3">
               {Array.isArray(messages) && "type" in messages[virtualRow.index] ? (
                 <TimeDivider time={messages[virtualRow.index]?.dateCreated} />
               ) : messages && messages[virtualRow.index] && (

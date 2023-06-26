@@ -18,6 +18,7 @@ export const CustomHits = ({ isProcessingInfo }: { isProcessingInfo: boolean }) 
   const setSelectedUser = useSetAtom(selectedUserAtom);
   const selectedUser = useAtomValue<Atom<RealUser | FakeUser | null>>(selectedUserAtom);
 
+
   return <>
     <ul className="z-0 w-full px-4">
       {hits.map((hit) => (
@@ -38,7 +39,6 @@ export const CustomHits = ({ isProcessingInfo }: { isProcessingInfo: boolean }) 
               }
             />
           </div>
-
           <div className="min-w-0 flex-1">
             <button
               disabled={isProcessingInfo}
@@ -47,18 +47,19 @@ export const CustomHits = ({ isProcessingInfo }: { isProcessingInfo: boolean }) 
                 try {
                   setUserPhone(hit?.phone as string);
                   setSelectedUser({
-                    activeUser: hit?.activeUser as boolean,
-                    email: hit?.email as string,
-                    firstname: hit?.firstname as string,
-                    fullname: hit?.fullname as string,
-                    gender: hit?.gender as "masculino" | "femenino",
-                    id: hit?.objectID as string,
-                    insuranceCompany: hit?.insuranceCompany as string,
-                    lastname: hit?.lastname as string,
-                    notes: hit?.notes as string,
                     phone: hit?.phone as string,
+                    activeUser: hit?.activeUser as boolean,
                     secondLastname: hit?.secondLastname as string,
-                    secondName: hit?.secondName as string
+                    email: hit?.email as string,
+                    notes: hit?.notes as string,
+                    firstname: hit?.firstname as string,
+                    secondName: hit?.secondName as string,
+                    insuranceCompany: hit?.insuranceCompany as string,
+                    gender: hit?.gender as "masculino" | "femenino",
+                    firstTimeVisit: hit?.firstTimeVisit as boolean,
+                    lastname: hit?.lastname as string,
+                    fullname: hit?.fullname as string,
+                    id: hit?.objectID as string,
                   } as RealUser);
 
                 } catch (error) {

@@ -36,3 +36,33 @@ export type QueuePayload = {
   sid: string;
   userId: string;
 };
+
+export interface InboundMessage {
+  ToCountry: string;
+  ToState: string;
+  SmsMessageSid: string;
+  NumMedia: string;
+  ToCity: string;
+  FromZip: string;
+  SmsSid: string;
+  FromState: string;
+  SmsStatus: string;
+  FromCity: string;
+  Body: string;
+  FromCountry: string;
+  To: string;
+  MessagingServiceSid: string;
+  ToZip: string;
+  NumSegments: string;
+  MessageSid: string;
+  AccountSid: string;
+  From: string;
+  ApiVersion: string;
+  MediaUrl0?: string;
+}
+
+export type document = {
+  url: string;
+  type: string;
+  name: string;
+};
