@@ -7,14 +7,29 @@ import {
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
+import { H } from "highlight.run";
 import { RealUser } from "@/interfaces/index";
 import { db } from "@/lib/firebaseConfig";
+import { useUser } from "@clerk/nextjs";
 
 //
 export const useFirebaseUsers = () => {
   const [firebaseUsers, setFirebaseUsers] = useState<RealUser[] | null>(null);
   const [firebaseError, setFirebaseError] = useState<{} | null>(null);
   const [isLoadingFirebaseUsers, setIsLoadingFirebaseUsers] = useState(false);
+  const { user } = useUser();
+
+  useEffect(() => {
+    if (user) {
+      const email = user?.emailAddresses[0]?.emailAddress;
+      const fullname = user?.fullName;
+      const id = user?.id;
+      H.identify(email, {
+        id: id,
+        name: fullname || "",
+      });
+    }
+  }, [user]);
 
   useEffect(() => {
     let unsubscribe: Unsubscribe | null = null;
