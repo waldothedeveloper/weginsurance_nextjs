@@ -1,18 +1,6 @@
 /** @type {import('next').NextConfig} */
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import nextBuildId from "next-build-id";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
 const nextConfig = {
-  generateBuildId: () => nextBuildId({ dir: __dirname }),
-  // experimental: {
-  //   appDir: true,
-  //   instrumentationHook: true,
-  // },
-  productionBrowserSourceMaps: false,
+  reactStrictMode: true,
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
@@ -40,4 +28,4 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
