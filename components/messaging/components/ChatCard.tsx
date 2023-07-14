@@ -4,8 +4,8 @@ import { ShowFileTypeIcon } from "@/components/messaging/carousel/ShowFileTypeIc
 
 export const ChatCard = ({ msg }: { msg: Message }) => {
   const { direction } = msg;
-  const inboundMsg = direction === "inbound";
-  // const outboundMsg = direction === "outbound-api";
+  // const inboundMsg = direction === "inbound";
+  const outboundMsg = direction === "outbound-api";
 
   const failedMsg =
     msg?.delivery?.info?.status === "failed" ||
@@ -20,10 +20,10 @@ export const ChatCard = ({ msg }: { msg: Message }) => {
   const applyStyle = () => {
     if (failedMsg) {
       return "mt-0.5 rounded-2xl bg-red-50 p-1 w-80";
-    } else if (inboundMsg) {
-      return "mt-0.5 rounded-2xl bg-slate-200 p-1 w-80";
-    } else {
+    } else if (outboundMsg) {
       return "mt-0.5 rounded-2xl bg-blue-500 p-1 w-80";
+    } else {
+      return "mt-0.5 rounded-2xl bg-slate-200 p-1 w-80";
     }
   }
   // return images
@@ -49,9 +49,9 @@ export const ChatCard = ({ msg }: { msg: Message }) => {
               {msg.body.length > 0 && (
                 <p
                   className={
-                    failedMsg && inboundMsg
+                    failedMsg && outboundMsg
                       ? "my-2 block px-2 text-sm font-medium text-red-500"
-                      : inboundMsg ? "my-2 block px-2 text-sm font-medium text-slate-900" : "my-2 block px-2 text-sm font-medium text-slate-50"
+                      : outboundMsg ? "my-2 block px-2 text-sm font-medium text-slate-50" : "my-2 block px-2 text-sm font-medium text-slate-900"
                   }
                 >
                   {msg.body}
