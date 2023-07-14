@@ -5,8 +5,8 @@ import { ShowFileTypeIcon } from "@/components/messaging/carousel/ShowFileTypeIc
 export const ChatCardGrid = ({ msg }: { msg: Message }) => {
 
   const { direction } = msg;
-  const inboundMsg = direction === "inbound";
-  // const outboundMsg = direction === "outbound-api";
+  // const inboundMsg = direction === "inbound";
+  const outboundMsg = direction === "outbound-api";
   const failedMsg =
     msg?.delivery?.info?.status === "failed" ||
     msg?.delivery?.info?.status === "undelivered" ||
@@ -19,10 +19,10 @@ export const ChatCardGrid = ({ msg }: { msg: Message }) => {
   const applyStyle = () => {
     if (failedMsg) {
       return "mt-0.5 grid grid-cols-2 gap-1 rounded-2xl bg-red-50 px-1 py-1";
-    } else if (inboundMsg) {
-      return "mt-0.5 grid grid-cols-2 gap-1 rounded-2xl bg-slate-100 px-1 py-1";
-    } else {
+    } else if (outboundMsg) {
       return "mt-0.5 grid grid-cols-2 gap-1 rounded-2xl bg-blue-500 px-1 py-1";
+    } else {
+      return "mt-0.5 grid grid-cols-2 gap-1 rounded-2xl bg-slate-100 px-1 py-1";
     }
   }
 
@@ -50,9 +50,9 @@ export const ChatCardGrid = ({ msg }: { msg: Message }) => {
         })}
         {msg?.body?.length > 1 && (<p
           className={
-            failedMsg && inboundMsg
+            failedMsg && outboundMsg
               ? "row-start-4 my-2 block px-2 text-sm font-medium text-red-500"
-              : "row-start-4 my-2 block px-2 text-sm font-medium text-slate-900"
+              : outboundMsg ? "row-start-4 my-2 block px-2 text-sm font-medium text-slate-50" : "row-start-4 my-2 block px-2 text-sm font-medium text-slate-900"
           }
         >
           {msg.body.trim()}
@@ -99,7 +99,7 @@ export const ChatCardGrid = ({ msg }: { msg: Message }) => {
             className={
               failedMsg
                 ? "row-start-4 my-2 block px-2 text-sm font-medium text-red-500"
-                : "row-start-4 my-2 block px-2 text-sm font-medium text-slate-50"
+                : "row-start-4 my-2 block px-2 text-sm font-medium text-slate-900"
             }
           >
             {msg.body}
