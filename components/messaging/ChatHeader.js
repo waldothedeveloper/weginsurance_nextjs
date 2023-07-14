@@ -1,12 +1,11 @@
 import {
   ChatBubbleLeftEllipsisIcon,
-  CodeBracketIcon,
   EllipsisVerticalIcon,
-  FlagIcon,
-  StarIcon,
 } from "@heroicons/react/20/solid";
+import { FaUserEdit, FaUserMinus } from "react-icons/fa";
 import { Menu, Transition } from "@headlessui/react";
 
+import { BsFiletypePdf } from "react-icons/bs";
 import { Fragment } from "react";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { classNames } from "@/utils/classNames";
@@ -66,11 +65,11 @@ export const ChatHeader = () => {
                           "flex w-full px-4 py-2 text-sm"
                         )}
                       >
-                        <StarIcon
+                        <FaUserEdit
                           className="mr-3 h-5 w-5 text-slate-400"
                           aria-hidden="true"
                         />
-                        <span>Add to favorites</span>
+                        <span>Actualizar Usuario</span>
                       </button>
                     )}
                   </Menu.Item>
@@ -85,11 +84,11 @@ export const ChatHeader = () => {
                           "flex px-4 py-2 text-sm"
                         )}
                       >
-                        <CodeBracketIcon
+                        <BsFiletypePdf
                           className="mr-3 h-5 w-5 text-slate-400"
                           aria-hidden="true"
                         />
-                        <span>Embed</span>
+                        <span>Documentos PDF</span>
                       </a>
                     )}
                   </Menu.Item>
@@ -104,11 +103,11 @@ export const ChatHeader = () => {
                           "flex px-4 py-2 text-sm"
                         )}
                       >
-                        <FlagIcon
+                        <FaUserMinus
                           className="mr-3 h-5 w-5 text-slate-400"
                           aria-hidden="true"
                         />
-                        <span>Report content</span>
+                        <span>Eliminar Usuario</span>
                       </a>
                     )}
                   </Menu.Item>
