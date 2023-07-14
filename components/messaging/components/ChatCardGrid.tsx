@@ -99,7 +99,7 @@ export const ChatCardGrid = ({ msg }: { msg: Message }) => {
             className={
               failedMsg
                 ? "row-start-4 my-2 block px-2 text-sm font-medium text-red-500"
-                : "row-start-4 my-2 block px-2 text-sm font-medium text-slate-900"
+                : outboundMsg ? "row-start-4 my-2 block px-2 text-sm font-medium text-slate-50" : "row-start-4 my-2 block px-2 text-sm font-medium text-slate-900"
             }
           >
             {msg.body}
