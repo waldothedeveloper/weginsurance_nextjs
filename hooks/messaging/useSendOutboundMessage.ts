@@ -36,8 +36,18 @@ export const useSendOutboundMessage = () => {
     editor: Editor | null
   ) => {
     if (event) event.preventDefault();
+
     const messageHasAttachments = () =>
       uploadedResources?.length > 0 ? true : false;
+
+    // if they change their mind, we simply don't call this functtion and replace it by an empty array if there are no media urls
+    const getMediaAndAddCompanyLogo = () => {
+      const media = uploadedResources.map((file) => file.url);
+      media.push(
+        "https://firebasestorage.googleapis.com/v0/b/weginsurance-production.appspot.com/o/images%2Fweg_logo.jpg?alt=media&token=a1fe14e0-3df0-46c0-882a-8e74a2a4d6f4"
+      );
+      return media;
+    };
 
     if (!editor) {
       failureNotification(
@@ -97,8 +107,10 @@ export const useSendOutboundMessage = () => {
             .filter((file) => file !== undefined)
         : [],
       mediaUrl: messageHasAttachments()
-        ? uploadedResources.map((file) => file.url)
-        : [],
+        ? getMediaAndAddCompanyLogo()
+        : [
+            "https://firebasestorage.googleapis.com/v0/b/weginsurance-production.appspot.com/o/images%2Fweg_logo.jpg?alt=media&token=a1fe14e0-3df0-46c0-882a-8e74a2a4d6f4",
+          ],
     };
 
     try {
