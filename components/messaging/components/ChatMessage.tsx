@@ -39,7 +39,7 @@ export const ChatMessage = ({ msg }: ChatMessageProps) => {
       >
         <div>
           <div className="ml-2 text-xs font-medium text-slate-400">
-            {dayjs.utc(msg?.dateCreated).tz("America/New_York").format("h:mm a")}
+            {outboundMsg && dayjs.utc(msg?.dateCreated).tz("America/New_York").format("h:mm a")}
           </div>
           <div className="flex flex-col items-start justify-start">
             {msg?.mediaUrl !== undefined && msg?.mediaUrl?.length === 1 || msg.documentUrl !== undefined && msg.documentUrl.length === 1 ? <ChatCard msg={msg} /> : msg?.mediaUrl !== undefined && msg?.mediaUrl?.length > 1 || msg.documentUrl !== undefined && msg.documentUrl.length > 1 ? (<ChatCardGrid msg={msg} />) : (<div
@@ -65,7 +65,13 @@ export const ChatMessage = ({ msg }: ChatMessageProps) => {
                 {msg?.body?.trim()}
 
               </p>
+
             </div>)}
+            {inboundMsg && (<div className="mt-2 text-xs font-medium text-slate-400">
+              {dayjs.utc(msg?.dateCreated).tz("America/New_York").format("dddd, D [de] MMMM [de] YYYY")} a las{` `}
+              {dayjs.utc(msg?.dateCreated).tz("America/New_York").format("h:mm a")}
+            </div>)}
+
           </div>
           {outboundMsg && (
             <div className="mt-1 flex items-center justify-end">
