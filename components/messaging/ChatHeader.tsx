@@ -6,6 +6,7 @@ import { FaUserEdit, FaUserMinus } from "react-icons/fa";
 import { Menu, Transition } from "@headlessui/react";
 
 import { BsFiletypePdf } from "react-icons/bs";
+import { DateSelect } from "@/components/documents/DateSelect";
 import { DocumentModal } from "@/components/documents/DocumentModal";
 import { Fragment } from "react";
 import { Questions } from "@/components/documents/Questions";
@@ -125,9 +126,10 @@ export const ChatHeader = () => {
           </Menu>
         </div>
       </div>
-      <DocumentModal isOpen={isOpen} setIsOpen={setIsOpen} step={step} handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} handleResetStep={handleResetStep}>
-        <Questions options={[{ id: 'en', item: 'Ingles' }, { id: 'es', item: 'Español' }]} />
-        <Questions options={[{ id: 'agent1', item: 'William Gola' }, { id: 'agent2', item: 'Lorena Zozaya' }]} />
+      <DocumentModal questions={[{ title: "Selecione el idioma para el modelo PDF" }, { title: "Selecione el agente de seguros" }, { title: "Selecione la fecha que aparecera en el documento" }]} isOpen={isOpen} setIsOpen={setIsOpen} step={step} handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} handleResetStep={handleResetStep}>
+        <Questions name="language" subtitle="El documento PDF sera enviado con el idioma selecionado." options={[{ id: 'en', item: 'Ingles' }, { id: 'es', item: 'Español' }]} />
+        <Questions name="agent" subtitle="El documento PDF sera enviado con los datos del agente selecionado." options={[{ id: 'agent1', item: 'William Gola' }, { id: 'agent2', item: 'Lorena Zozaya' }]} />
+        <DateSelect name="date" subtitle="La fecha por defecto son 10 años. Puede escoger otra fecha si desea." />
       </DocumentModal>
     </div>
   );

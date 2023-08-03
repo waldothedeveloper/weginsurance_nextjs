@@ -4,7 +4,8 @@ import React, { Dispatch, Fragment, SetStateAction, useRef } from 'react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 
 type DocumentModalProps = {
-  isOpen: boolean
+  isOpen: boolean,
+  questions: { title: string }[],
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   step: number;
   handlePrevStep: () => void;
@@ -14,10 +15,11 @@ type DocumentModalProps = {
 
 }
 
-export const DocumentModal = ({ isOpen, setIsOpen, step, handleNextStep, handlePrevStep, children, handleResetStep }: DocumentModalProps) => {
+export const DocumentModal = ({ questions, isOpen, setIsOpen, step, handleNextStep, handlePrevStep, children, handleResetStep }: DocumentModalProps) => {
 
   const pages = React.Children.toArray(children)
   const currentPage = pages[step - 1]
+
   const cancelButtonRef = useRef(null)
 
 
@@ -63,9 +65,9 @@ export const DocumentModal = ({ isOpen, setIsOpen, step, handleNextStep, handleP
                     {step}
                   </div>
                   <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                    {/* <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-slate-900">
-                      Deactivate account
-                    </Dialog.Title> */}
+                    <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-slate-900">
+                      {questions[step - 1]?.title}
+                    </Dialog.Title>
                     <div className="mt-2">
                       {currentPage}
                     </div>
@@ -77,7 +79,7 @@ export const DocumentModal = ({ isOpen, setIsOpen, step, handleNextStep, handleP
                     className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
                     onClick={() => handleNextStep()}
                   >
-                    Siguiente
+                    {step === questions.length ? 'Finalizar' : 'Siguiente'}
                   </button>
                   <button
                     disabled={step === 1}

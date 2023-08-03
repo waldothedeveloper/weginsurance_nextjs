@@ -2,6 +2,7 @@ import {
   FakeUser,
   IdentifiedUser,
   InsuranceCompany,
+  PdfData,
   RealUser,
   UploadedFile,
   VirtualizedConversationType,
@@ -11,6 +12,7 @@ import { DocumentData } from "firebase/firestore";
 import { Editor } from "@tiptap/core";
 import { atom } from "jotai";
 import dayjs from "dayjs";
+import { tenYearsFromToday } from "@/components/documents/helpers/date";
 
 //
 export const userPhoneAtom = atom<string | null>("");
@@ -38,3 +40,8 @@ export const openResourceUploadModalAtom = atom(false);
 export const selectedInsuranceCompanyAtom = atom<InsuranceCompany | null>(null);
 export const isSubmittingAtom = atom<boolean>(false);
 export const openModalAtom = atom<boolean>(false);
+export const pdfDataAtom = atom<PdfData>({
+  language: "Español",
+  agent: "Lorena Zozaya",
+  date: tenYearsFromToday,
+});

@@ -242,3 +242,10 @@ export type ActiveUser = {
   value: "" | "Si" | "No";
   id: number;
 };
+
+export type PdfData = {
+  [key: string]: string;
+  language: string;
+  agent: string;
+  date: string;
+};
