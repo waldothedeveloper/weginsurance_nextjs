@@ -6,15 +6,25 @@ import { FaUserEdit, FaUserMinus } from "react-icons/fa";
 import { Menu, Transition } from "@headlessui/react";
 
 import { BsFiletypePdf } from "react-icons/bs";
+import { DateSelect } from "@/components/documents/DateSelect";
+import { DocumentModal } from "@/components/documents/DocumentModal";
 import { Fragment } from "react";
+import { Questions } from "@/components/documents/Questions";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { classNames } from "@/utils/classNames";
 import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
 import { selectedUserAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
+import { useOpenModal } from "@/components/documents/hooks/useOpenModal";
 
 export const ChatHeader = () => {
   const selectedUser = useAtomValue(selectedUserAtom);
+  const { isOpen,
+    setIsOpen,
+    step,
+    handleNextStep,
+    handleResetStep,
+    handlePrevStep, } = useOpenModal();
   return (
     <div className="border-b-2 border-b-slate-200 px-4 py-5 sm:px-6">
       <div className="flex space-x-3">
@@ -75,13 +85,13 @@ export const ChatHeader = () => {
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
-                      <a
-                        href="#"
+                      <button
+                        onClick={() => setIsOpen(true)}
                         className={classNames(
                           active
                             ? "bg-slate-100 text-slate-900"
                             : "text-slate-700",
-                          "flex px-4 py-2 text-sm"
+                          "flex w-full px-4 py-2 text-sm"
                         )}
                       >
                         <BsFiletypePdf
@@ -89,18 +99,17 @@ export const ChatHeader = () => {
                           aria-hidden="true"
                         />
                         <span>Documentos PDF</span>
-                      </a>
+                      </button>
                     )}
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
-                      <a
-                        href="#"
+                      <button
                         className={classNames(
                           active
                             ? "bg-slate-100 text-slate-900"
                             : "text-slate-700",
-                          "flex px-4 py-2 text-sm"
+                          "flex w-full px-4 py-2 text-sm"
                         )}
                       >
                         <FaUserMinus
@@ -108,7 +117,7 @@ export const ChatHeader = () => {
                           aria-hidden="true"
                         />
                         <span>Eliminar Usuario</span>
-                      </a>
+                      </button>
                     )}
                   </Menu.Item>
                 </div>
@@ -117,6 +126,11 @@ export const ChatHeader = () => {
           </Menu>
         </div>
       </div>
+      <DocumentModal questions={[{ title: "Selecione el idioma para el modelo PDF" }, { title: "Selecione el agente de seguros" }, { title: "Selecione la fecha que aparecera en el documento" }]} isOpen={isOpen} setIsOpen={setIsOpen} step={step} handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} handleResetStep={handleResetStep}>
+        <Questions name="language" subtitle="El documento PDF sera enviado con el idioma selecionado." options={[{ id: 'en', item: 'Ingles' }, { id: 'es', item: 'Español' }]} />
+        <Questions name="agent" subtitle="El documento PDF sera enviado con los datos del agente selecionado." options={[{ id: 'agent1', item: 'William Gola' }, { id: 'agent2', item: 'Lorena Zozaya' }]} />
+        <DateSelect name="date" subtitle="La fecha por defecto son 10 años. Puede escoger otra fecha si desea." />
+      </DocumentModal>
     </div>
   );
 };
