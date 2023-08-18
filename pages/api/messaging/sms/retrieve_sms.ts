@@ -61,7 +61,7 @@ export default async function handler(
       Array.isArray(smsFromUserToApp) &&
       smsFromUserToApp.length === 0
     ) {
-      console.log(`No messages found for ${user_phone}`);
+      // console.log(`No messages found for ${user_phone}`);
       return res.status(200).json([]);
     }
 
@@ -116,7 +116,7 @@ export default async function handler(
         smsFromUserToAppWithMedia,
         groupMessages
       ).reverse();
-      console.log(`CASE WHERE THERE ARE MESSAGES FROM User TO APP 👦🏻 => 💻 `);
+      // console.log(`CASE WHERE THERE ARE MESSAGES FROM User TO APP 👦🏻 => 💻 `);
       return res.status(200).json(sortedMessagesFromUsertoApp);
     }
 
@@ -126,7 +126,7 @@ export default async function handler(
         smsFromApptoUserWithMedia,
         groupMessages
       ).reverse();
-      console.log(`CASE WHERE THERE ARE MESSAGES FROM APP TO USER 👦🏻 => 💻 `);
+      // console.log(`CASE WHERE THERE ARE MESSAGES FROM APP TO USER 👦🏻 => 💻 `);
 
       return res.status(200).json(sortedMessagesFromApptoUser);
     }
@@ -141,13 +141,13 @@ export default async function handler(
         groupMessages
       ).reverse();
 
-      console.log(
-        `CASE WHERE THERE ARE MESSAGES FROM APP TO USER AND USER TO APP 🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟 `
-      );
+      // console.log(
+      //   `CASE WHERE THERE ARE MESSAGES FROM APP TO USER AND USER TO APP 🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟 `
+      // );
       return res.status(200).json(sortedMessages);
     }
   } catch (error) {
-    console.log("error: ", error);
+    // console.log("error: ", error);
     return res.status(500).json({
       message: "Our system has detected an unexpected error.",
       status: 500,
