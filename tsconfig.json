@@ -25,6 +25,12 @@
       "@/interfaces/*": ["interfaces/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/twilio/config.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "lib/twilio/config.js",
+    "pages/api/notifications/add_user_to_sms_notifications.js"
+  ],
   "exclude": ["node_modules"]
 }

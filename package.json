@@ -30,6 +30,7 @@
     "@tiptap/starter-kit": "^2.0.3",
     "@types/underscore": "^1.11.4",
     "@vercel/analytics": "^1.0.1",
+    "airtable": "^0.12.2",
     "algoliasearch": "^4.17.0",
     "dayjs": "^1.11.7",
     "eslint-config-next": "13.1.6",
