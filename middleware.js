@@ -3,7 +3,7 @@ import { getAuth, withClerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 // Set the paths that don't require the user to be signed in
-const publicPaths = ["/", "/sign-in*", "/sms-notifications*", "/sms-campaign*"];
+const publicPaths = ["/", "/sign-in*", "/sms-notifications*", "/sms-campaign*","/sign-pdf*"];
 
 const isPublic = (path) => {
   return publicPaths.find((x) =>
