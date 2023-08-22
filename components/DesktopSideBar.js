@@ -22,7 +22,6 @@ export const DesktopSideBar = () => {
             <NavigationLinks />
           </div>
           <div className="flex flex-shrink-0 border-t border-slate-200 p-4">
-            {/* TODO: it would be nice if the whole button can show the user profile */}
             <button className="group block w-full flex-shrink-0">
               <div className="flex items-center">
                 <LoggedInUserButton />
