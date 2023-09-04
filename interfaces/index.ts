@@ -16,6 +16,11 @@ export interface FakeUser {
   insuranceCompany: string;
   lastVisitedTimestamp?: string;
   firstTimeVisit: boolean;
+  pdfData?: {
+    language: string;
+    agent: string;
+    date: string;
+  };
 }
 
 export interface RealUser {
@@ -34,7 +39,18 @@ export interface RealUser {
   conversations?: VirtualizedConversationType;
   lastVisitedTimestamp?: string;
   firstTimeVisit: boolean;
+  pdfData?: {
+    language: string;
+    agent: string;
+    date: string;
+  };
 }
+
+export type pdfDataTypes = {
+  language: string;
+  agent: string;
+  date: string;
+};
 
 export type MessageStatus =
   | "accepted"

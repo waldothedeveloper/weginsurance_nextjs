@@ -1,5 +1,4 @@
-import PropTypes from "prop-types";
-//
+
 export const Spinning = ({ message }: { message: string }) => {
   return (
     <div
@@ -15,6 +14,3 @@ export const Spinning = ({ message }: { message: string }) => {
   );
 };
 
-Spinning.propTypes = {
-  message: PropTypes.string.isRequired,
-};

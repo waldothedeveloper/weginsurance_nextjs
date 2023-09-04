@@ -4,6 +4,8 @@ import React, { Dispatch, Fragment, SetStateAction, useRef } from 'react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 
 type DocumentModalProps = {
+  urlCopied: boolean;
+  error: string | null;
   isOpen: boolean,
   questions: { title: string }[],
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -12,10 +14,11 @@ type DocumentModalProps = {
   handleNextStep: () => void;
   children: React.ReactNode;
   handleResetStep: () => void;
+  isLoading: boolean;
 
 }
 
-export const DocumentModal = ({ questions, isOpen, setIsOpen, step, handleNextStep, handlePrevStep, children, handleResetStep }: DocumentModalProps) => {
+export const DocumentModal = ({ urlCopied, error, isLoading, questions, isOpen, setIsOpen, step, handleNextStep, handlePrevStep, children, handleResetStep }: DocumentModalProps) => {
 
   const pages = React.Children.toArray(children)
   const currentPage = pages[step - 1]
@@ -49,7 +52,7 @@ export const DocumentModal = ({ questions, isOpen, setIsOpen, step, handleNextSt
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl sm:p-6">
                 <div className="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
                   <button
                     type="button"
@@ -60,26 +63,35 @@ export const DocumentModal = ({ questions, isOpen, setIsOpen, step, handleNextSt
                     <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
-                <div className="sm:flex sm:items-start">
+                <div className="flex w-full">
                   <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-blue-50 sm:mx-0 sm:h-10 sm:w-10">
                     {step}
                   </div>
-                  <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                  <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
                     <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-slate-900">
                       {questions[step - 1]?.title}
                     </Dialog.Title>
-                    <div className="mt-2">
+                    <div className="mt-2 w-full">
                       {currentPage}
+                      <p className="mt-2 text-sm text-red-600" id="email-error">
+                        {error || step === 4 && !urlCopied && 'Por favor, copie el enlace para continuar'}
+                      </p>
                     </div>
                   </div>
                 </div>
                 <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                   <button
+                    disabled={isLoading || step === 4 && !urlCopied}
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+                    className={isLoading || step === 4 && !urlCopied ? "inline-flex w-full justify-center rounded-md bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-400 shadow-sm sm:ml-3 sm:w-auto" : "inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"}
                     onClick={() => handleNextStep()}
                   >
-                    {step === questions.length ? 'Finalizar' : 'Siguiente'}
+
+                    {step === questions.length ? 'Finalizar' : isLoading ? 'Procesando' : 'Siguiente'}
+                    {isLoading && <div
+                      className="ml-2 inline-block h-5 w-5 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em] text-slate-300 motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                      role="status"
+                    />}
                   </button>
                   <button
                     disabled={step === 1}

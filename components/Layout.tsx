@@ -83,9 +83,7 @@ export const Layout = () => {
           </div>
 
           <div className="relative z-0 mx-auto flex w-full overflow-hidden h-full">
-
             <Wrapper />
-
           </div>
         </div>
       </div>
