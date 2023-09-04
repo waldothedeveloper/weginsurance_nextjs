@@ -11,7 +11,7 @@ export const useGetMessagesFromTwilio = () => {
     data: messagesFromTwilioAPI,
     error: errorFromTwilioAPI,
     isLoading: isLoadingMessagesFromTwilioAPI,
-  } = useSWR(key, (url: string) =>
+  } = useSWR(key, (url) =>
     fetcherPostPhoneNumber(url[0], selectedUser?.phone || null)
   );
 

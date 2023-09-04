@@ -18,5 +18,6 @@ export const makeFirstTimeVisitTrue = async (
       "Error adding last visited timestamp to a the user's document: ",
       error
     );
+    return error;
   }
 };
