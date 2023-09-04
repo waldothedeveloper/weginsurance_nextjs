@@ -10,8 +10,11 @@ export const createRandomUser = (): FakeUser => {
   const lastname = faker.person.lastName();
   const secondLastname = faker.person.firstName(gender);
   const fullname = `${firstname} ${lastname}`;
-  const email = faker.internet.email({ firstname, lastname })
-    
+  const email = faker.internet.email({
+    firstName: firstname || undefined,
+    lastName: lastname || undefined,
+  });
+
   const notes = faker.lorem.paragraph(2);
   const phone = faker.phone.number("+1#########");
 
