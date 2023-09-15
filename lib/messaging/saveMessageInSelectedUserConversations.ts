@@ -20,8 +20,9 @@ export const saveMessageInSelectedUserConversations = async (
 
     const result = await addDoc(groupRef, newMessage);
     return result;
-  } catch (error) {
+  } catch (error: any) {
     console.error("An error occurred while creating the message", error);
     failureNotification(`Un error ocurrió al crear el mensaje ${error}`);
+    throw new Error(error);
   }
 };

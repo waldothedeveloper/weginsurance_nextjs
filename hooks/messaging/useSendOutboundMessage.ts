@@ -16,10 +16,8 @@ import { failureNotification } from "@/components/notifications/failureNotificat
 import { nanoid } from "nanoid";
 import { saveMessageInSelectedUserConversations } from "@/lib/messaging/saveMessageInSelectedUserConversations";
 
-const developmentNumber =
-  process.env.NEXT_PUBLIC_WEG_INSURANCE_DEVELOPMENT_TEST_NUMBER || "";
 const productionNumber =
-  process.env.NEXT_PUBLIC_WEG_INSURANCE_PRODUCTION_NUMBER || "";
+  process.env.NEXT_PUBLIC_WEG_INSURANCE_TWILIO_PRODUCTION_NUMBER;
 
 //
 export const useSendOutboundMessage = () => {
@@ -88,10 +86,7 @@ export const useSendOutboundMessage = () => {
     const newMessage: Message = {
       userId: selectedUser?.id,
       body: innerText,
-      from:
-        process.env.NODE_ENV === "production"
-          ? productionNumber
-          : developmentNumber,
+      from: productionNumber as string,
       to: phone || "",
       dateCreated: todayISO,
       sid: nanoid(),
@@ -115,7 +110,8 @@ export const useSendOutboundMessage = () => {
 
     try {
       if (selectedUser?.id) {
-        await saveMessageInSelectedUserConversations(newMessage);
+        const result = await saveMessageInSelectedUserConversations(newMessage);
+        console.log("result: ", result);
         editor?.commands?.clearContent();
         resetProgressAndNumberOfUploadedFiles();
         return newMessage;
