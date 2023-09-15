@@ -18,8 +18,53 @@ import { QueuePayload } from "./types";
 import { Storage } from "@google-cloud/storage";
 import { firestore as adminFirestore } from "firebase-admin";
 import config from "./config";
+import { initializeApp } from "firebase-admin/app";
+import { onRequest } from "firebase-functions/v2/https";
 // import { getContentTypeFromUrl } from "./getContentTypeFromUrl";
 import { returnIncomingMedia } from "./returnIncomingMedia";
+
+initializeApp();
+
+// this fn will allow for the PDF signature process to start
+exports.verifyUser = onRequest(
+  { maxInstances: 5 },
+  async (req: Request, res: Response): Promise<any> => {
+    if (req.method !== "POST") {
+      return res
+        .status(404)
+        .send({ message: "This endpoint requires a POST request!" });
+    }
+
+    const { userId } = req.body;
+
+    if (!userId) {
+      return res.status(400).send({
+        response: "No phone provided. Please provide a valid phone number",
+      });
+    }
+
+    try {
+      const documentRef = await adminFirestore()
+        .collection("Users")
+        .doc(userId)
+        .get();
+
+      if (!documentRef.exists) {
+        return res
+          .status(404)
+          .send({ response: "User not found", status: 404 });
+      } else {
+        return res.status(200).send({
+          user: { ...documentRef.data(), id: documentRef.id },
+          status: 200,
+        });
+      }
+    } catch (error) {
+      functions.logger.error(error);
+      return res.status(500).send({ response: error, status: 500 });
+    }
+  }
+);
 
 const fv: FieldValue = FieldValue.serverTimestamp();
 const terminalStatuses = ["delivered", "undelivered", "failed"];
@@ -42,7 +87,7 @@ exports.uploadImages = functions.https.onRequest(
 
     try {
       for (const url of urls) {
-        functions.logger.info("url", url);
+        // functions.logger.info("url", url);
         await storage.bucket("images").upload(url);
 
         return res.status(200).json("Images uploaded successfully.");
@@ -109,6 +154,7 @@ exports.statusCallback = functions.https.onRequest(
         functions.logger.error(
           `Could not find user document for message with SID: ${MessageSid} and To: ${To}`
         );
+        return;
       }
 
       const conversationsQuery = await adminFirestore()

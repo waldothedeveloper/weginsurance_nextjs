@@ -7,7 +7,7 @@ export const Header = () => {
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
         <Link href="/" className="-m-1.5 p-1.5">
           <span className="sr-only">WEG Insurance</span>
-          <Image className="rounded-full" src="/weg_logo.jpg" alt="" width={50} height={50} />
+          <Image className="rounded-full" src="/weg_logo.jpg" alt="" width={50} height={50} priority />
         </Link>
         <div className="flex flex-1 justify-end">
           <Link href="/admin/dashboard" className="text-sm font-semibold leading-6 text-gray-900">
@@ -15,7 +15,6 @@ export const Header = () => {
           </Link>
         </div>
       </nav>
-
     </header>
   )
 }

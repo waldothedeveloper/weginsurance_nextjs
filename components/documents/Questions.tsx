@@ -1,10 +1,12 @@
 import { useAtomValue, useSetAtom } from 'jotai'
 
 import { pdfDataAtom } from "@/lib/state/atoms"
+import { pdfDataTypes } from "@/interfaces/index"
 
-export const Questions = ({ options, subtitle, name }: { options: { id: string, item: string }[], subtitle: string, name: string }) => {
+export const Questions = ({ options, subtitle, name }: { options: { id: string, item: string }[], subtitle: string, name: keyof pdfDataTypes }) => {
   const pdfData = useAtomValue(pdfDataAtom)
   const setPDFData = useSetAtom(pdfDataAtom)
+
   return (
     <div>
       <p className="text-sm text-slate-500">{subtitle}</p>

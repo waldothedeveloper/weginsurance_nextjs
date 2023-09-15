@@ -10,7 +10,7 @@ export const UserList = ({
   user,
   isProcessingInfo
 }: {
-  user: RealUser | FakeUser | null;
+  user: RealUser | FakeUser | null | undefined;
   isProcessingInfo: boolean;
 }) => {
   const selectedUser = useAtomValue(selectedUserAtom);
@@ -41,11 +41,13 @@ export const UserList = ({
             disabled={isProcessingInfo}
             type="button"
             onClick={() => {
-              try {
-                setUserPhone(user?.phone || "");
-                setSelectedUser(user);
-              } catch (error) {
-                return error;
+              if (user) {
+                try {
+                  setUserPhone(user?.phone || "");
+                  setSelectedUser(user);
+                } catch (error) {
+                  return error;
+                }
               }
             }}
             className="flex w-full flex-col items-start space-y-1 focus:outline-none"
