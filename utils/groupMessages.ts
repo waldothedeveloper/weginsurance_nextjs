@@ -27,7 +27,6 @@ export const groupMessages = (
   messages.reduce((acc: { [key: string]: Message[] }, el) => {
     const messageDay = dayjs(el.dateCreated).format("YYYY-MM-DD");
     if (acc[messageDay]) {
-      // @ts-ignore
       return { ...acc, [messageDay]: [...acc[messageDay], el] };
     }
     return { ...acc, [messageDay]: [el] };

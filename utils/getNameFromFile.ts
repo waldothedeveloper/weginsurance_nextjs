@@ -12,9 +12,6 @@ export const getNameFromFile = (
   if (currentSelectedFile) {
     return splitFileName(currentSelectedFile?.name);
   } else {
-    if (files.length > 0 && files[0]?.name) {
-      return splitFileName(files[0]?.name);
-    }
-    return "Image";
+    return splitFileName(files[0]?.name);
   }
 };

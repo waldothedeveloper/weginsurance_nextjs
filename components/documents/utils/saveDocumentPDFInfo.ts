@@ -12,15 +12,12 @@ export const saveDocumentPDFInfo = async (
   const docRef = doc(db, "Users", userId);
 
   try {
-    const res = await updateDoc(docRef, {
-      pdfData: {
-        language: data.language === "Ingles" ? "en" : "es",
-        agent: data.agent.includes("Lorena") ? "female" : "male",
-        date: data.date,
-      },
-    });
+    const res = await updateDoc(docRef, { pdfData: data });
     return res;
   } catch (error: any) {
+    // console.log(
+    //   `Error adding the PDF information to a the user's document: ${error}`
+    // );
     return error;
   }
 };

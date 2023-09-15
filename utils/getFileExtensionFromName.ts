@@ -11,10 +11,6 @@ export const getFileExtensionFromName = (
   if (currentSelectedFile) {
     return splitFileName(currentSelectedFile.name)?.toLocaleLowerCase();
   } else {
-    if (files.length > 0 && files[0]?.name) {
-      return splitFileName(files[0]?.name)?.toLocaleLowerCase();
-    }
-
-    return "jpg";
+    return splitFileName(files[0]?.name)?.toLocaleLowerCase();
   }
 };

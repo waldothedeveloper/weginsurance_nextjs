@@ -1,11 +1,10 @@
 import { useAtomValue, useSetAtom } from 'jotai'
 
 import { pdfDataAtom } from "@/lib/state/atoms"
-import { pdfDataTypes } from "@/interfaces/index"
 import { today } from "@/components/documents/helpers/date"
 
 // 
-export const DateSelect = ({ subtitle, name }: { subtitle: string, name: keyof pdfDataTypes }) => {
+export const DateSelect = ({ subtitle, name }: { subtitle: string, name: string }) => {
   const pdfData = useAtomValue(pdfDataAtom)
   const setPDFData = useSetAtom(pdfDataAtom)
   return (

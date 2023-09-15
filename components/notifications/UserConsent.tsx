@@ -70,8 +70,6 @@ export const UserConsent = () => {
                           required: true,
                           onChange: (event) => { return setValue && setValue("phone", formatPhoneNumberToNationalUSAformat(event.target.value), { shouldValidate: true }) },
                         })}
-                        inputMode="numeric"
-                        pattern="[0-9]*"
                         type="tel"
                         placeholder="+1 (555) 987-6543"
                         autoComplete="tel"

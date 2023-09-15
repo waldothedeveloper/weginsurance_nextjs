@@ -16,7 +16,7 @@ export const useDeleteUserForm = () => {
   const [isSubmittingUserDelete, setIsSubmittingUserDelete] = useState(false);
   const [openDeleteMultipleUsers, setOpenDeleteMultipleUsers] = useState(false);
   const [multipleUsersToDelete, setMultipleUsersToDelete] = useState<
-    string[] | undefined | null
+    string[] | null
   >(null);
 
   // open modal for deleting users
@@ -40,16 +40,7 @@ export const useDeleteUserForm = () => {
         }
       }
 
-      setMultipleUsersToDelete(
-        usersToDelete
-          .map((user) => {
-            if (user && "id" in user && typeof user.id === "string") {
-              return user.id;
-            }
-            return null;
-          })
-          .filter((id): id is string => id !== null)
-      );
+      setMultipleUsersToDelete(usersToDelete.map((user) => user.id));
     },
     [firebaseUsers]
   );
