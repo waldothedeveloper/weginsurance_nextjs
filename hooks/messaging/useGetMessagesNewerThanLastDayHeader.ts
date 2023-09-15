@@ -35,13 +35,11 @@ export const useGetMessagesNewerThanLastDayHeader = (
         // setIsLoadingNewDateHeaders(true);
         const newDateHeaders = messages.filter((message: Message | Day) => {
           const lastDateHeader =
-            dateHeaders[dateHeaders.length - 1]?.dateCreated;
+            dateHeaders[dateHeaders.length - 1].dateCreated;
 
-          if (lastDateHeader) {
-            return (
-              dayjs(message.dateCreated).format("YYYY-MM-DD") > lastDateHeader
-            );
-          }
+          return (
+            dayjs(message.dateCreated).format("YYYY-MM-DD") > lastDateHeader
+          );
         });
         // this will take care of the repeated date headers, so that we save only the new ones
         const dateHeadersToCreate = excludeRepeatedDateHeaders(newDateHeaders);

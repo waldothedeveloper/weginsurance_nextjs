@@ -73,6 +73,7 @@ export const useUpdateUserForm = () => {
           return updatedUser;
         })
         .catch((err) => {
+          // console.log("err: ", err);
           setIsSubmitting(false);
           failureNotification(
             `Ha ocurrido un error trantando de actualizar al usuario ${updatedUser?.fullname}. ${err}`

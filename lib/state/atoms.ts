@@ -2,10 +2,10 @@ import {
   FakeUser,
   IdentifiedUser,
   InsuranceCompany,
+  PdfData,
   RealUser,
   UploadedFile,
   VirtualizedConversationType,
-  pdfDataTypes,
 } from "@/interfaces/index";
 
 import { DocumentData } from "firebase/firestore";
@@ -40,10 +40,8 @@ export const openResourceUploadModalAtom = atom(false);
 export const selectedInsuranceCompanyAtom = atom<InsuranceCompany | null>(null);
 export const isSubmittingAtom = atom<boolean>(false);
 export const openModalAtom = atom<boolean>(false);
-export const pdfDataAtom = atom<pdfDataTypes>({
+export const pdfDataAtom = atom<PdfData>({
   language: "Español",
   agent: "Lorena Zozaya",
   date: tenYearsFromToday,
 });
-
-export const signURL = atom<string>("");

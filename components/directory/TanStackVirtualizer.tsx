@@ -4,6 +4,8 @@ import { UserList } from "@/components/directory/UserList";
 import { useRef } from 'react'
 import { useVirtualizer } from "@tanstack/react-virtual";
 
+// 
+// eslint-disable-next-line no-unused-vars
 export const TanStackVirtualizer = ({ users, isProcessingInfo }: { users: RealUser[] | FakeUser[] | null, isProcessingInfo: boolean }) => {
 
   const parentRef = useRef(null);

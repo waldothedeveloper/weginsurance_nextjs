@@ -38,9 +38,7 @@ export const useOpenModal = () => {
       try {
         await saveDocumentPDFInfo(selectedUser?.id, pdfData);
         setUrl(
-          process.env.NODE_ENV === "development"
-            ? `http://localhost:3000/sign_pdf/verify_user?userId=${selectedUser?.id}`
-            : `https://weginsurancesms.org/sign_pdf/verify_user?userId=${selectedUser?.id}`
+          `https://weginsurancesms.org/sign-pdf?userId=${selectedUser?.id}`
         );
         setStep((step) => step + 1);
       } catch (error) {

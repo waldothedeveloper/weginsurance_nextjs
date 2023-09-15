@@ -12,7 +12,6 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noUncheckedIndexedAccess": true,
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
@@ -33,5 +32,5 @@
     "lib/twilio/config.js",
     "pages/api/notifications/add_user_to_sms_notifications.js"
   ],
-  "exclude": ["node_modules", "functions"]
+  "exclude": ["node_modules"]
 }

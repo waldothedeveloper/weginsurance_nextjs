@@ -63,7 +63,7 @@ export const useUserConsent = () => {
         setShouldFetch(false);
         setUserInfo(null);
         reset();
-        router.push("/sms_campaign/success");
+        router.push("/sms-campaign/success");
       }
     }
   }, [data, router, reset]);
