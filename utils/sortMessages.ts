@@ -14,6 +14,7 @@ export const sortMessages = (
 
   const items = sortedDays.reduce(
     (acc: VirtualizedConversationType[], date) => {
+      // @ts-ignore
       const sortedMessages = days[date].sort((x, y) =>
         dayjs(y.dateCreated).diff(dayjs(x.dateCreated))
       );

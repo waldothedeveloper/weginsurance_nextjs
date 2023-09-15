@@ -7,12 +7,13 @@ export const calculateFileSize = (
   if (files && files.length > 0) {
     const currentSelectedFile = files.find((file) => file.id === selectedImgId);
 
-    if (currentSelectedFile) {
+    if (currentSelectedFile?.size) {
       return getFileSizeString(currentSelectedFile.size);
-    } else {
+    } else if (files[0]?.size) {
       return getFileSizeString(files[0].size);
     }
   }
+  return "0 Bytes"; // default value when no file size can be calculated
 };
 
 const getFileSizeString = (fileSizeInBytes: number) => {

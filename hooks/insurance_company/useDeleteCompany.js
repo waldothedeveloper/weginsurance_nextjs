@@ -39,7 +39,6 @@ export const useDeleteCompany = () => {
 
       Promise.all(deleteOps)
         .then(() => {
-          // console.log(`COMPANY DELETED OK!`);
           handleCloseModal();
           setIsSubmitting(false);
           successNotification(

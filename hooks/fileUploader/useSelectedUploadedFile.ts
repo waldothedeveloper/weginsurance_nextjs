@@ -13,7 +13,7 @@ export const useSelectedUploadedFile = () => {
       atom((get) => {
         const uploadedFilesUrls = get(uploadedFilesAtom);
         if (uploadedFilesUrls.length > 0)
-          setSelectedFile(uploadedFilesUrls[0]?.id);
+          setSelectedFile(uploadedFilesUrls[0]?.id ?? null);
         return uploadedFilesUrls[0]?.id;
       }),
     []
