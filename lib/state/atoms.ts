@@ -45,3 +45,4 @@ export const pdfDataAtom = atom<PdfData>({
   agent: "Lorena Zozaya",
   date: tenYearsFromToday,
 });
+export const signURL = atom<string>("");
