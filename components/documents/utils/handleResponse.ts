@@ -1,9 +1,9 @@
-// import Anvil from "@anvilco/anvil";
+import Anvil from "@anvilco/anvil";
 import type { NextApiResponse } from "next";
 import { generateSignURL } from "@/components/documents/utils/generateSignURL";
 
 export const handleResponse = async (
-  response: any,
+  response: Anvil.GraphQLResponse,
   id: string,
   res: NextApiResponse
 ) => {

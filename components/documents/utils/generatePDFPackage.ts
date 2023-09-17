@@ -1,4 +1,4 @@
-// import Anvil from "@anvilco/anvil";
+import Anvil from "@anvilco/anvil";
 import { PDFTemplate } from "@/interfaces/index";
 import { anvilClient } from "@/components/documents/utils/anvilClient";
 

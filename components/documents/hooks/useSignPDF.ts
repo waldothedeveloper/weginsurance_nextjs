@@ -27,7 +27,7 @@ export const useSignPDF = (user: RealUser | null) => {
       const data = await response.json();
       setIsLoading(false);
       return data;
-    } catch (error) {
+    } catch (error: unknown | any) {
       setError(error as Error);
       setIsLoading(false);
       throw new Error(error);
