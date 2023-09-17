@@ -10,6 +10,8 @@
     "test": "jest --watch"
   },
   "dependencies": {
+    "@anvilco/anvil": "^3.0.1",
+    "@anvilco/anvil-embed-frame": "^1.1.0",
     "@clerk/localizations": "^1.25.0",
     "@clerk/nextjs": "^4.23.3",
     "@headlessui/react": "^1.7.17",

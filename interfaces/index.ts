@@ -213,15 +213,15 @@ export type DocumentType = {
   "application/vnd.ms-excel": [".xls", ".xlsx"];
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [
     ".docx",
-    ".doc"
+    ".doc",
   ];
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
     ".xlsx",
-    ".xls"
+    ".xls",
   ];
   "application/vnd.openxmlformats-officedocument.presentationml.presentation": [
     ".pptx",
-    ".ppt"
+    ".ppt",
   ];
   "application/vnd.ms-powerpoint": [".ppt", ".pptx"];
   "application/rtf": [".rtf"];
@@ -264,4 +264,100 @@ export type PdfData = {
   language: string;
   agent: string;
   date: string;
+};
+
+export interface SignaturePayload {
+  expirationDate: string;
+  signerFirstName: string;
+  signerLastName: string;
+  agentFirstName: string;
+  agentLastName: string;
+  agentEmail: string;
+  agentInsuranceNumber: string;
+  agentPhoneNumber: string;
+  signerPhoneNumber: string;
+  signerEmail: string;
+  signatureDate: string;
+}
+
+// this means that the keys will change depending on the pdf template, wither english or spanish
+export type languageDependentPayload = {
+  [key: string]:
+    | string
+    | { firstName: string; lastName: string }
+    | { num: string; region: string; baseRegion: string };
+};
+
+export type PDFTemplate = {
+  isDraft: boolean;
+  isTest: boolean;
+  files: [
+    {
+      id: string;
+      castEid: string;
+    },
+  ];
+  data: {
+    payloads: {
+      [key: string]: {
+        title: string;
+        fontSize: number;
+        textColor: string;
+        data: languageDependentPayload;
+      };
+    };
+  };
+  signaturePageOptions?: {
+    // String overrides for the UI
+    [key: string]: any;
+  };
+  signers: [
+    {
+      id: string;
+      name: string;
+      email: string;
+      signerType: string;
+      fields: [
+        {
+          fileId: string;
+          fieldId: string;
+        },
+      ];
+    },
+  ];
+};
+
+export type InternationalizationPDFTemplate = {
+  title: string;
+  description: string;
+  signatureLabel: string;
+  initialLabel: string;
+  acceptTitle: string;
+  acceptDescription: string;
+  acceptButtonText: string;
+  drawSignatureTitle: string;
+  drawSignatureDescription: string;
+  drawSignatureButtonText: string;
+  drawInitialsTitle: string;
+  drawInitialsDescription: string;
+  drawInitialsButtonText: string;
+  signTitle: string;
+  signDescription: string;
+  signDescriptionCompleted: string;
+  signConsentText: string;
+  signButtonText: string;
+  completedButtonText: string;
+  error: string;
+  style: {
+    primaryColor: string;
+    successColor: string;
+    infoColor: string;
+    linkColor: string;
+  };
+};
+
+export type signURLResponse = {
+  url: string | null;
+  statusCode: number;
+  errors: string | unknown;
 };
