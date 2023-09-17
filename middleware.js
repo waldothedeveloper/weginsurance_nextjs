@@ -9,6 +9,7 @@ const publicPaths = [
   "/sms-notifications*",
   "/sms-campaign*",
   "/sign_pdf*",
+  "/api/documents*",
 ];
 
 const isPublic = (path) => {
