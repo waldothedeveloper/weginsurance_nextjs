@@ -317,3 +317,32 @@ export type iframeEvent = {
   signerStatus: string;
   token: string;
 };
+
+export type InternationalizationPDFTemplate = {
+  title: string;
+  description: string;
+  signatureLabel: string;
+  initialLabel: string;
+  acceptTitle: string;
+  acceptDescription: string;
+  acceptButtonText: string;
+  drawSignatureTitle: string;
+  drawSignatureDescription: string;
+  drawSignatureButtonText: string;
+  drawInitialsTitle: string;
+  drawInitialsDescription: string;
+  drawInitialsButtonText: string;
+  signTitle: string;
+  signDescription: string;
+  signDescriptionCompleted: string;
+  signConsentText: string;
+  signButtonText: string;
+  completedButtonText: string;
+  error: string;
+  style: {
+    primaryColor: string;
+    successColor: string;
+    infoColor: string;
+    linkColor: string;
+  };
+};

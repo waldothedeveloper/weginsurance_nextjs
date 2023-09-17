@@ -1,6 +1,9 @@
-import { RealUser } from "@/interfaces/index";
+import { RealUser, SignaturePayload } from "@/interfaces/index";
 
-export const provideLanguagePayload = (date: string, payload: RealUser) => {
+export const provideLanguagePayload = (
+  date: string,
+  payload: RealUser
+): SignaturePayload => {
   const { firstname, lastname, email, pdfData, phone } = payload;
   return {
     expirationDate: date,

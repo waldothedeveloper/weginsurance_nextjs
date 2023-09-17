@@ -1,20 +1,28 @@
 import { useEffect, useState } from "react";
 
 import { RealUser } from "@/interfaces/index";
-import { useRouter } from "next/router";
 
 export const useGetUserFromSessionStorage = () => {
   const [user, setUser] = useState<RealUser | null>(null);
-  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const user = sessionStorage.getItem("user");
-    if (user) {
-      setUser(JSON.parse(user));
+    if (!user || typeof user === "undefined") {
+      console.log("user not found on session Storage");
+      //  handle error
+      setError("user not found on session Storage");
     } else {
-      router.push("/404");
+      try {
+        const parsedUser = JSON.parse(user);
+        const { data } = parsedUser;
+        setUser(data);
+      } catch (error) {
+        console.log("error: ", error);
+        throw new Error(error as unknown as string);
+      }
     }
-  }, [router]);
+  }, []);
 
-  return { user };
+  return { user, error };
 };

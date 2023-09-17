@@ -5,6 +5,7 @@ import { RealUser } from "@/interfaces/index";
 import { useRouter } from "next/router";
 
 type VerifiedUserInfoAndStatus = {
+  response?: string;
   user: RealUser;
   status: number;
 };
@@ -36,24 +37,22 @@ export const useVerifyUser = () => {
   }, []);
 
   const fetcher: Fetcher<VerifiedUserInfoAndStatus, string> = async (url) => {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId }),
-    });
-    return response.json();
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId }),
+      });
+      return response.json();
+    } catch (error: unknown) {
+      // console.log(error);
+      throw new Error(error as unknown as string);
+    }
   };
-
-  // call the http callable Firebase cloud function to verify the user's phone number
-  // respond with error if user phone doesn't match
   const { data, error, isLoading } = useSWR(
-    shouldFetch
-      ? process.env.NODE_ENV === "development"
-        ? "http://localhost:5001/weginsuranceinternal-90864/us-central1/verifyUser"
-        : "https://us-central1-weginsurance-production.cloudfunctions.net/verifyUser"
-      : null,
+    shouldFetch ? "/api/documents/verify_user" : null,
     fetcher
   );
 
@@ -61,24 +60,26 @@ export const useVerifyUser = () => {
     if (data && data.status !== 200 && !isLoading) {
       setShouldFetch(false);
       setUrlParamsErrors(
-        "Lo sentimos, ha ocurrido un error inesperado. Por favor contactenos para ayudarle a resolver el problema."
+        `Lo sentimos, ha ocurrido un error inesperado: ${JSON.stringify(data)}`
       );
     }
 
     if (error) {
       setShouldFetch(false);
       setUrlParamsErrors(
-        "Lo sentimos, ha ocurrido un error inesperado. Por favor contactenos para ayudarle a resolver el problema."
+        `Lo sentimos, ha ocurrido un error inesperado: ${JSON.stringify(error)}`
       );
     }
 
     if (data && data.status === 200 && !isLoading) {
-      sessionStorage.setItem("user", JSON.stringify(data?.user));
+      sessionStorage.setItem("user", JSON.stringify(data));
+      setShouldFetch(false);
       router.push(`/sign_pdf/ready_for_signature`);
     }
   }, [data, isLoading, error, router]);
 
   return {
+    userId,
     error,
     isLoading,
     urlParamsErrors,

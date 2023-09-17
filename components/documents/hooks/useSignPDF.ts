@@ -11,8 +11,8 @@ export const useSignPDF = (user: RealUser | null) => {
   const [error, setError] = useState<Error | null>(null);
   //
   const createSignaturePDFPackage = async (pdfData: RealUser) => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       if (!pdfData)
         return new Error(
           "No se ha encontrado la informacion del PDF en el usuario seleccionado"
@@ -29,14 +29,15 @@ export const useSignPDF = (user: RealUser | null) => {
       return data;
     } catch (error) {
       setError(error as Error);
-      return error;
+      setIsLoading(false);
+      throw new Error(error);
     }
   };
 
   //
   const generateSignURL = async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       if (user && user?.pdfData) {
         const pdfSignURL = await createSignaturePDFPackage(user);
         const { data } = pdfSignURL;

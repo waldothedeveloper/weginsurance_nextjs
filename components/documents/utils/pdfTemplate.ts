@@ -15,7 +15,7 @@ export const pdfTemplate = (
     return {
       // Indicate the packet is all ready to send to the
       // signers. An email will be sent to the first signer.
-      isDraft: true,
+      isDraft: false,
 
       // Test packets will use development signatures and
       // not count toward your billed packets
@@ -55,6 +55,8 @@ export const pdfTemplate = (
           email:
             signerEmail?.length > 0
               ? signerEmail
+              : process.env.NODE_ENV === "development"
+              ? (process.env.WEG_INTERNAL_EMAIL as string)
               : (process.env.LORENA_EMAIL as string),
           signerType: "embedded",
 
@@ -114,6 +116,8 @@ export const pdfTemplate = (
           email:
             signerEmail?.length > 0
               ? signerEmail
+              : process.env.NODE_ENV === "development"
+              ? (process.env.WEG_INTERNAL_EMAIL as string)
               : (process.env.LORENA_EMAIL as string),
           signerType: "embedded",
 

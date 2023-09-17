@@ -23,12 +23,11 @@ import { onRequest } from "firebase-functions/v2/https";
 // import { getContentTypeFromUrl } from "./getContentTypeFromUrl";
 import { returnIncomingMedia } from "./returnIncomingMedia";
 
-initializeApp();
-
 // this fn will allow for the PDF signature process to start
 exports.verifyUser = onRequest(
-  { maxInstances: 5 },
+  { maxInstances: 5, cors: true },
   async (req: Request, res: Response): Promise<any> => {
+    initializeApp();
     if (req.method !== "POST") {
       return res
         .status(404)
@@ -39,7 +38,8 @@ exports.verifyUser = onRequest(
 
     if (!userId) {
       return res.status(400).send({
-        response: "No phone provided. Please provide a valid phone number",
+        response:
+          "The provided user id is not valid. Please provide a valid user id.",
       });
     }
 

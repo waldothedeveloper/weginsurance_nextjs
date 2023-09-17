@@ -1,14 +1,13 @@
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 import { Header } from "@/components/Header"
-import Image from "next/image";
+import Image from "next/image"
 import { useVerifyUser } from "@/components/documents/hooks/useVerifyUser"
-
 export const VerifyUserLayout = () => {
   const {
+    setShouldFetch,
     error,
     isLoading,
     urlParamsErrors,
-    setShouldFetch
   } = useVerifyUser()
 
   return (
@@ -49,7 +48,7 @@ export const VerifyUserLayout = () => {
                     />}
                   </button>
                   <p className="mt-2 text-sm text-red-600">
-                    {urlParamsErrors || error}
+                    {urlParamsErrors || JSON.stringify(error)}
                   </p>
                 </div>
               </div>

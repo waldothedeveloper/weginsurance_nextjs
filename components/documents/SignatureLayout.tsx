@@ -8,7 +8,7 @@ import { useGetUserFromSessionStorage } from "@/components/documents/hooks/useGe
 import { useSignPDF } from '@/components/documents/hooks/useSignPDF'
 
 export const SignatureLayout = () => {
-  const { user } = useGetUserFromSessionStorage()
+  const { user, error: sessionStorageError } = useGetUserFromSessionStorage()
   const { generateSignURL, isLoading, error } = useSignPDF(user)
   const { openCompanyHelpModal, setOpenCompanyHelpModal } = useCompanyHelpInformation()
 
@@ -41,13 +41,12 @@ export const SignatureLayout = () => {
                   />) : <PencilSquareIcon className="-mr-0.5 h-5 w-5" aria-hidden="true" />}
 
                 </button>
-
                 <button className="text-sm font-semibold leading-6 text-slate-900 inline-flex gap-x-1.5 items-center" type="button" onClick={() => setOpenCompanyHelpModal(true)} >
                   Necesito ayuda <span aria-hidden="true"> <QuestionMarkCircleIcon className="-mr-0.5 h-5 w-5" aria-hidden="true" /></span>
                 </button>
               </div>
               <p className="mt-2 text-sm text-red-600" id="email-error">
-                {error && JSON.stringify(error)}
+                {error && JSON.stringify(error) || sessionStorageError && JSON.stringify(sessionStorageError)}
               </p>
             </div>
           </div>
