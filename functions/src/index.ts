@@ -18,53 +18,8 @@ import { QueuePayload } from "./types";
 import { Storage } from "@google-cloud/storage";
 import { firestore as adminFirestore } from "firebase-admin";
 import config from "./config";
-import { initializeApp } from "firebase-admin/app";
-import { onRequest } from "firebase-functions/v2/https";
 // import { getContentTypeFromUrl } from "./getContentTypeFromUrl";
 import { returnIncomingMedia } from "./returnIncomingMedia";
-
-// this fn will allow for the PDF signature process to start
-exports.verifyUser = onRequest(
-  { maxInstances: 5, cors: true },
-  async (req: Request, res: Response): Promise<any> => {
-    initializeApp();
-    if (req.method !== "POST") {
-      return res
-        .status(404)
-        .send({ message: "This endpoint requires a POST request!" });
-    }
-
-    const { userId } = req.body;
-
-    if (!userId) {
-      return res.status(400).send({
-        response:
-          "The provided user id is not valid. Please provide a valid user id.",
-      });
-    }
-
-    try {
-      const documentRef = await adminFirestore()
-        .collection("Users")
-        .doc(userId)
-        .get();
-
-      if (!documentRef.exists) {
-        return res
-          .status(404)
-          .send({ response: "User not found", status: 404 });
-      } else {
-        return res.status(200).send({
-          user: { ...documentRef.data(), id: documentRef.id },
-          status: 200,
-        });
-      }
-    } catch (error) {
-      functions.logger.error(error);
-      return res.status(500).send({ response: error, status: 500 });
-    }
-  }
-);
 
 const fv: FieldValue = FieldValue.serverTimestamp();
 const terminalStatuses = ["delivered", "undelivered", "failed"];
