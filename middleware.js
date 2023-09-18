@@ -8,8 +8,8 @@ const publicPaths = [
   "/sign-in*",
   "/sms-notifications*",
   "/sms-campaign*",
+  "/api/documents/generate_signature_iframe",
   "/sign_pdf*",
-  "/api/documents*",
 ];
 
 const isPublic = (path) => {

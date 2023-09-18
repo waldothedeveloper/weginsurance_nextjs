@@ -5,9 +5,14 @@ import { pdfDataTypes } from "@/interfaces/index";
 
 export const saveDocumentPDFInfo = async (
   userId: string | undefined,
-  data: pdfDataTypes
+  data: pdfDataTypes,
+  signerEid: string
 ) => {
-  if (!userId) return;
+  if (!userId || !signerEid) {
+    throw new Error(
+      ` userId and signerEid is required. UserId is: ${userId}. SignerEid is ${signerEid}`
+    );
+  }
 
   const docRef = doc(db, "Users", userId);
 
@@ -17,6 +22,7 @@ export const saveDocumentPDFInfo = async (
         language: data.language === "Ingles" ? "en" : "es",
         agent: data.agent.includes("Lorena") ? "female" : "male",
         date: data.date,
+        signerEid: signerEid,
       },
     });
     return res;

@@ -24,6 +24,6 @@ export const generatePDFPackage = async (
     }
   } catch (error) {
     // @ts-ignore
-    return { errors: error, statusCode: 500 };
+    return { errors: error, statusCode: 500, data: null };
   }
 };

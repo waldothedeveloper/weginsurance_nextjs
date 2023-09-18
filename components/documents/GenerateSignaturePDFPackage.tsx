@@ -1,14 +1,22 @@
-import { ChevronRightIcon } from '@heroicons/react/20/solid'
+import { ChevronRightIcon, QuestionMarkCircleIcon } from '@heroicons/react/20/solid'
+
+import { CompanyHelpInformationModal } from '@/components/CompanyHelpInformationModal'
 import { Header } from "@/components/Header"
 import Image from "next/image"
-import { useVerifyUser } from "@/components/documents/hooks/useVerifyUser"
-export const VerifyUserLayout = () => {
+import { useCompanyHelpInformation } from '@/hooks/useCompanyHelpInformation'
+import { useGenerateSignatureURL } from "@/components/documents/hooks/useGenerateSignatureURL"
+
+// 
+export const GenerateSignaturePDFPackage = () => {
   const {
     setShouldFetch,
     error,
     isLoading,
+    isValidating,
     urlParamsErrors,
-  } = useVerifyUser()
+  } = useGenerateSignatureURL()
+
+  const { openCompanyHelpModal, setOpenCompanyHelpModal } = useCompanyHelpInformation()
 
   return (
     <>
@@ -26,31 +34,29 @@ export const VerifyUserLayout = () => {
               </h1>
               <div className="mt-6 max-w-xl lg:mt-0 xl:col-end-1 xl:row-start-1">
                 <p className="text-lg leading-8 text-slate-600">
-                  Bienvenido a la pagina de firmar sus documentos de seguro. Si necesita ayuda para completar este paso puede contactarnos a cualquiera de los siguientes telefonos o correo electronico: <br />
-                  <span className="text-sm font-medium text-slate-400">
-                    (305)-320-4969<br />
-                    (305)-749-5529<br />
-                    (786)-471-8800 <br />
-                    healthinsuranceweg@gmail.com
-                  </span>
+                  Hemos recibido la información necesaria a través del enlace que usted recibió. Por favor, haga clic en el botón de abajo para firmar su documento de seguro con Weg Insurance.<br />
                 </p>
-                <div>
+                <div className="mt-10 flex items-center justify-start gap-x-6">
                   <button
-                    disabled={Boolean(urlParamsErrors) || isLoading}
+                    disabled={Boolean(urlParamsErrors) || isLoading || isValidating}
                     onClick={() => setShouldFetch(true)}
-                    className={isLoading || urlParamsErrors ? "opacity-50 inline-flex items-center justify-center mt-6 rounded-md  bg-gradient-to-r from-blue-600 to-blue-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" : "inline-flex mt-6 rounded-md  bg-gradient-to-r from-blue-600 to-blue-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"}
+                    className={isLoading || urlParamsErrors || isValidating ? "opacity-50 inline-flex items-center justify-center rounded-md  bg-gradient-to-r from-blue-600 to-blue-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" : "inline-flex rounded-md  bg-gradient-to-r from-blue-600 to-blue-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"}
                   >
-                    {isLoading ? 'Procesando' : 'Comenzar'}
-                    <ChevronRightIcon className="-mr-0.5 h-5 w-5" aria-hidden="true" />
-                    {isLoading && <div
+                    {isLoading || isValidating ? 'Procesando' : 'Generar Documento'}
+                    {isLoading || isValidating ? (<div
                       className="ml-2 inline-block h-5 w-5 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em] text-slate-50 motion-reduce:animate-[spin_1.5s_linear_infinite]"
                       role="status"
-                    />}
+                    />) : <ChevronRightIcon className="-mr-0.5 h-5 w-5" aria-hidden="true" />}
+
                   </button>
-                  <p className="mt-2 text-sm text-red-600">
-                    {urlParamsErrors || JSON.stringify(error)}
-                  </p>
+                  <button className="text-sm font-semibold leading-6 text-slate-900 inline-flex gap-x-1.5 items-center" type="button" onClick={() => setOpenCompanyHelpModal(true)} >
+                    Necesito ayuda <span aria-hidden="true"> <QuestionMarkCircleIcon className="-mr-0.5 h-5 w-5" aria-hidden="true" /></span>
+                  </button>
+
                 </div>
+                <p className="mt-2 text-sm text-red-600">
+                  {urlParamsErrors || JSON.stringify(error)}
+                </p>
               </div>
 
               <div className="aspect-[6/5] relative max-w-lg lg:max-w-none xl:row-span-2 xl:row-end-2">
@@ -68,6 +74,7 @@ export const VerifyUserLayout = () => {
           <div className="absolute inset-x-0 bottom-0 -z-10 h-24 bg-gradient-to-t from-white sm:h-32" />
         </div>
       </div>
+      <CompanyHelpInformationModal open={openCompanyHelpModal} setOpen={setOpenCompanyHelpModal} />
     </>
   )
 };

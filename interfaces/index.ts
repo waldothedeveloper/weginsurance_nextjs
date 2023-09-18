@@ -357,7 +357,7 @@ export type InternationalizationPDFTemplate = {
 };
 
 export type signURLResponse = {
-  url: string | null;
+  signerEid: string | null;
   statusCode: number;
   errors: string | unknown;
 };
