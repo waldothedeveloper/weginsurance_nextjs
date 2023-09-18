@@ -78,7 +78,7 @@ export const pdfTemplate = (
     return {
       // Indicate the packet is all ready to send to the
       // signers. An email will be sent to the first signer.
-      isDraft: process.env.NODE_ENV === "development" ? false : true,
+      isDraft: false,
 
       // Test packets will use development signatures and
       // not count toward your billed packets
