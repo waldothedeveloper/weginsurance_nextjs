@@ -19,7 +19,8 @@ export interface FakeUser {
   pdfData?: {
     language: string;
     agent: string;
-    date: string;
+    expirationDate: string;
+    optionalAgentPhone?: string | undefined;
   };
 }
 
@@ -42,14 +43,16 @@ export interface RealUser {
   pdfData?: {
     language: string;
     agent: string;
-    date: string;
+    expirationDate: string;
+    optionalAgentPhone?: string | undefined;
   };
 }
 
 export type pdfDataTypes = {
   language: string;
   agent: string;
-  date: string;
+  expirationDate: string;
+  optionalAgentPhone?: string | undefined;
 };
 
 export type MessageStatus =
@@ -260,10 +263,10 @@ export type ActiveUser = {
 };
 
 export type PdfData = {
-  [key: string]: string;
   language: string;
   agent: string;
-  date: string;
+  expirationDate: string;
+  optionalAgentPhone?: string | undefined;
 };
 
 export interface SignaturePayload {

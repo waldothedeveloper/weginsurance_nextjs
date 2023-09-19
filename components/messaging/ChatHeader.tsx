@@ -4,6 +4,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { FaUserEdit, FaUserMinus, } from "react-icons/fa";
 import { Menu, Transition } from "@headlessui/react";
+import { pdfDataAtom, selectedUserAtom } from "@/lib/state/atoms";
 
 import { BsFiletypePdf } from "react-icons/bs";
 import { DateSelect } from "@/components/documents/DateSelect";
@@ -14,13 +15,15 @@ import { URLCopy } from "@/components/documents/URLCopy";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { classNames } from "@/utils/classNames";
 import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
-import { selectedUserAtom } from "@/lib/state/atoms";
+import { pdfModalTitles } from "@/components/documents/utils/pdfModalTitles";
 import { useAtomValue } from "jotai";
-import { useOpenModal } from "@/components/documents/hooks/useOpenModal";
+import { usePDFWizard } from "@/components/documents/hooks/usePDFWizard";
 
 export const ChatHeader = () => {
   const selectedUser = useAtomValue(selectedUserAtom);
+  const pdfData = useAtomValue(pdfDataAtom);
   const { isOpen,
+    canDoNextStep,
     error,
     urlCopied,
     copyToClipboard,
@@ -29,7 +32,7 @@ export const ChatHeader = () => {
     step,
     handleNextStep,
     handleResetStep,
-    handlePrevStep, isLoading } = useOpenModal();
+    handlePrevStep, isLoading } = usePDFWizard();
   return (
     <div className="border-b-2 border-b-slate-200 px-4 py-5 sm:px-6">
       <div className="flex space-x-3">
@@ -131,10 +134,11 @@ export const ChatHeader = () => {
           </Menu>
         </div>
       </div>
-      <DocumentModal urlCopied={urlCopied} error={error} isLoading={isLoading} questions={[{ title: "Selecione el idioma para el modelo PDF" }, { title: "Selecione el agente de seguros" }, { title: "Selecione la fecha que aparecera en el documento" }, { title: "Copie y pegue el link en el mensaje" }]} isOpen={isOpen} setIsOpen={setIsOpen} step={step} handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} handleResetStep={handleResetStep}>
-        <Questions name="language" subtitle="El documento PDF sera enviado con el idioma selecionado." options={[{ id: 'en', item: 'Ingles' }, { id: 'es', item: 'Español' }]} />
-        <Questions name="agent" subtitle="El documento PDF sera enviado con los datos del agente selecionado." options={[{ id: 'agent1', item: 'William Gola' }, { id: 'agent2', item: 'Lorena Zozaya' }]} />
-        <DateSelect name="date" subtitle="La fecha por defecto son 10 años. Puede escoger otra fecha si desea." />
+      <DocumentModal canDoNextStep={canDoNextStep} urlCopied={urlCopied} error={error} isLoading={isLoading} questions={pdfModalTitles(pdfData?.agent.includes("William"))} isOpen={isOpen} setIsOpen={setIsOpen} step={step} handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} handleResetStep={handleResetStep}>
+        <Questions step={step} name="language" subtitle="El documento PDF sera enviado con el idioma selecionado." options={[{ id: 'en', item: 'Ingles' }, { id: 'es', item: 'Español' }]} />
+        <Questions step={step} name="agent" subtitle="El documento PDF sera enviado con los datos del agente selecionado." options={[{ id: 'agent1', item: 'William Gola-Romero' }, { id: 'agent2', item: 'Lorena Zozaya' }]} />
+        {pdfData?.agent.includes("William") && (<Questions step={step} name="optionalAgentPhone" subtitle="Para clientes de Texas escoja el telefono privado. Para cualquier otro cliente, escoja el telefono general." options={[{ id: 'privado', item: process.env.NEXT_PUBLIC_PERSONAL_PHONE as string }, { id: 'general', item: process.env.NEXT_PUBLIC_WILLIAM_GENERAL_PHONE as string }]} />)}
+        <DateSelect name="expirationDate" subtitle="La fecha por defecto son 10 años. Puede escoger otra fecha si desea." />
         <URLCopy url={url} copy={copyToClipboard} urlCopied={urlCopied} />
       </DocumentModal>
     </div>

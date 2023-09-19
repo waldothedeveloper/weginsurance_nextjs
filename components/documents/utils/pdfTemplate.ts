@@ -11,6 +11,7 @@ export const pdfTemplate = (
   // this could be either spanishPayload or englishPayload helper functions
   templatePayload: languageDependentPayload
 ): PDFTemplate => {
+  // this means this is the SPANISH version of the PDF template
   if (signaturePageOptions) {
     return {
       // Indicate the packet is all ready to send to the

@@ -4,7 +4,7 @@ export const spanishPayload = (
   payload: SignaturePayload
 ): languageDependentPayload => {
   return {
-    castc76a3a10228011ee9a08d17f33fdcf3c: payload.signatureDate,
+    castc76a3a10228011ee9a08d17f33fdcf3c: payload.expirationDate,
     castde5429c0228011ee9a08d17f33fdcf3c: {
       firstName: payload.signerFirstName,
       lastName: payload.signerLastName,
@@ -35,7 +35,6 @@ export const spanishPayload = (
       baseRegion: "US",
     },
     castfc715510228311ee9a08d17f33fdcf3c: payload.signerEmail,
-    // expirationDate
-    cast1dd77130228411ee9a08d17f33fdcf3c: payload.expirationDate,
+    cast1dd77130228411ee9a08d17f33fdcf3c: payload.signatureDate,
   };
 };
