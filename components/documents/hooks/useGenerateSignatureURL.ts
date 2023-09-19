@@ -50,7 +50,6 @@ export const useGenerateSignatureURL = () => {
         }
 
         if (data?.statusCode !== 200 || data?.errors) {
-          console.log("errors data: ", data?.errors);
           setShouldFetch(false);
           // most likely Signer already signed the document
           if (Array.isArray(data?.errors) && data?.errors[0].message) {

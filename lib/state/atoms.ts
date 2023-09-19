@@ -11,6 +11,7 @@ import {
 import { DocumentData } from "firebase/firestore";
 import { Editor } from "@tiptap/core";
 import { atom } from "jotai";
+import { atomWithReset } from "jotai/utils";
 import dayjs from "dayjs";
 import { tenYearsFromToday } from "@/components/documents/helpers/date";
 
@@ -40,9 +41,11 @@ export const openResourceUploadModalAtom = atom(false);
 export const selectedInsuranceCompanyAtom = atom<InsuranceCompany | null>(null);
 export const isSubmittingAtom = atom<boolean>(false);
 export const openModalAtom = atom<boolean>(false);
-export const pdfDataAtom = atom<PdfData>({
-  language: "Español",
-  agent: "Lorena Zozaya",
-  date: tenYearsFromToday,
+export const pdfDataAtom = atomWithReset<PdfData>({
+  language: "",
+  agent: "",
+  expirationDate: tenYearsFromToday,
+  // typecasting undefined can be a bit dangerous
+  optionalAgentPhone: undefined,
 });
 export const signURL = atom<string>("");

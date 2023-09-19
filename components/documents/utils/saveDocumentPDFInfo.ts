@@ -21,7 +21,7 @@ export const saveDocumentPDFInfo = async (
       pdfData: {
         language: data.language === "Ingles" ? "en" : "es",
         agent: data.agent.includes("Lorena") ? "female" : "male",
-        date: data.date,
+        expirationDate: data.expirationDate,
         signerEid: signerEid,
       },
     });

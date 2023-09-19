@@ -13,7 +13,8 @@ export const createPDFEtchPackage = async (
       pdfData: {
         language: pdfData.language === "Ingles" ? "en" : "es",
         agent: pdfData.agent.includes("Lorena") ? "female" : "male",
-        date: pdfData.date,
+        expirationDate: pdfData.expirationDate,
+        optionalAgentPhone: pdfData.optionalAgentPhone,
       },
       user,
     }),

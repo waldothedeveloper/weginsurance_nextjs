@@ -34,7 +34,7 @@ export default async function handler(
   }
 
   const signatureDate = signerSignatureDate();
-  const languagePayload = provideLanguagePayload(signatureDate, user);
+  const languagePayload = provideLanguagePayload(signatureDate, user, pdfData);
   let etchPackagePayload;
 
   // spanish template version

@@ -110,8 +110,7 @@ export const useSendOutboundMessage = () => {
 
     try {
       if (selectedUser?.id) {
-        const result = await saveMessageInSelectedUserConversations(newMessage);
-        console.log("result: ", result);
+        await saveMessageInSelectedUserConversations(newMessage);
         editor?.commands?.clearContent();
         resetProgressAndNumberOfUploadedFiles();
         return newMessage;
