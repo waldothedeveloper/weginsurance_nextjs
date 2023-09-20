@@ -15,6 +15,7 @@ export const createPDFEtchPackage = async (
         agent: pdfData.agent.includes("Lorena") ? "female" : "male",
         expirationDate: pdfData.expirationDate,
         optionalAgentPhone: pdfData.optionalAgentPhone,
+        signerBirthdate: pdfData.signerBirthdate,
       },
       user,
     }),

@@ -28,7 +28,7 @@ export const ChatHeader = () => {
     urlCopied,
     copyToClipboard,
     url,
-    setIsOpen, initPdfModal,
+    initPdfModal,
     step,
     handleNextStep,
     handleResetStep,
@@ -134,11 +134,17 @@ export const ChatHeader = () => {
           </Menu>
         </div>
       </div>
-      <DocumentModal canDoNextStep={canDoNextStep} urlCopied={urlCopied} error={error} isLoading={isLoading} questions={pdfModalTitles(pdfData?.agent.includes("William"))} isOpen={isOpen} setIsOpen={setIsOpen} step={step} handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} handleResetStep={handleResetStep}>
+      <DocumentModal canDoNextStep={canDoNextStep} urlCopied={urlCopied} error={error} isLoading={isLoading} questions={pdfModalTitles(pdfData?.agent.includes("William"))} isOpen={isOpen} step={step} handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} handleResetStep={handleResetStep}>
+        {/* Select the language of the PDF template */}
         <Questions step={step} name="language" subtitle="El documento PDF sera enviado con el idioma selecionado." options={[{ id: 'en', item: 'Ingles' }, { id: 'es', item: 'Español' }]} />
+        {/* Select the insurance agent */}
         <Questions step={step} name="agent" subtitle="El documento PDF sera enviado con los datos del agente selecionado." options={[{ id: 'agent1', item: 'William Gola-Romero' }, { id: 'agent2', item: 'Lorena Zozaya' }]} />
         {pdfData?.agent.includes("William") && (<Questions step={step} name="optionalAgentPhone" subtitle="Para clientes de Texas escoja el telefono privado. Para cualquier otro cliente, escoja el telefono general." options={[{ id: 'privado', item: process.env.NEXT_PUBLIC_PERSONAL_PHONE as string }, { id: 'general', item: process.env.NEXT_PUBLIC_WILLIAM_GENERAL_PHONE as string }]} />)}
+        {/* Choose the birth date of the user */}
+        <DateSelect name="signerBirthdate" subtitle="Escoja la fecha de nacimiento del usuario que va a firmar este documento." />
+        {/* Choose the expiration date of the PDF */}
         <DateSelect name="expirationDate" subtitle="La fecha por defecto son 10 años. Puede escoger otra fecha si desea." />
+        {/* Choose the expiration date of the PDF */}
         <URLCopy url={url} copy={copyToClipboard} urlCopied={urlCopied} />
       </DocumentModal>
     </div>

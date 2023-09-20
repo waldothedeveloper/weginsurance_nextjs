@@ -21,6 +21,7 @@ export interface FakeUser {
     agent: string;
     expirationDate: string;
     optionalAgentPhone?: string | undefined;
+    signerBirthdate: string;
   };
 }
 
@@ -45,6 +46,7 @@ export interface RealUser {
     agent: string;
     expirationDate: string;
     optionalAgentPhone?: string | undefined;
+    signerBirthdate: string;
   };
 }
 
@@ -53,6 +55,7 @@ export type pdfDataTypes = {
   agent: string;
   expirationDate: string;
   optionalAgentPhone?: string | undefined;
+  signerBirthdate: string;
 };
 
 export type MessageStatus =
@@ -267,6 +270,7 @@ export type PdfData = {
   agent: string;
   expirationDate: string;
   optionalAgentPhone?: string | undefined;
+  signerBirthdate: string;
 };
 
 export interface SignaturePayload {
@@ -279,6 +283,7 @@ export interface SignaturePayload {
   agentInsuranceNumber: string;
   agentPhoneNumber: string;
   signerPhoneNumber: string;
+  signerBirthdate: string;
   signerEmail: string;
   signatureDate: string;
 }

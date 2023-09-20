@@ -28,6 +28,18 @@ export const provideLanguagePayload = (
         : (process.env.WILLIAM_PHONE_NUMBER as string),
     signerPhoneNumber: phone,
     signerEmail: email || "",
-    signatureDate: userSignatureDate,
+    signatureDate: new Date(userSignatureDate).toLocaleDateString("en-US", {
+      month: "2-digit",
+      day: "2-digit",
+      year: "numeric",
+    }),
+    signerBirthdate: new Date(pdfData?.signerBirthdate).toLocaleDateString(
+      "en-US",
+      {
+        month: "2-digit",
+        day: "2-digit",
+        year: "numeric",
+      }
+    ),
   };
 };
