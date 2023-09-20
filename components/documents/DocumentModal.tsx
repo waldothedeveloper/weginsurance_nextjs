@@ -1,7 +1,9 @@
 import { Dialog, Transition } from '@headlessui/react'
-import React, { Dispatch, Fragment, SetStateAction, useRef } from 'react'
+import React, { Fragment, useRef } from 'react'
 
 import { XMarkIcon } from '@heroicons/react/24/outline'
+import { pdfDataAtom } from "@/lib/state/atoms";
+import { useAtomValue } from "jotai";
 
 type DocumentModalProps = {
   canDoNextStep: boolean;
@@ -9,7 +11,6 @@ type DocumentModalProps = {
   error: string | null;
   isOpen: boolean,
   questions: { title: string }[],
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
   step: number;
   handlePrevStep: () => void;
   handleNextStep: () => void;
@@ -19,8 +20,8 @@ type DocumentModalProps = {
 
 }
 
-export const DocumentModal = ({ canDoNextStep, urlCopied, error, isLoading, questions, isOpen, setIsOpen, step, handleNextStep, handlePrevStep, children, handleResetStep }: DocumentModalProps) => {
-
+export const DocumentModal = ({ canDoNextStep, urlCopied, error, isLoading, questions, isOpen, step, handleNextStep, handlePrevStep, children, handleResetStep }: DocumentModalProps) => {
+  const pdfData = useAtomValue(pdfDataAtom);
   const pages = React.Children.toArray(children)
   const currentPage = pages[step - 1]
   const cancelButtonRef = useRef(null)
@@ -28,7 +29,7 @@ export const DocumentModal = ({ canDoNextStep, urlCopied, error, isLoading, ques
 
   return (
     <Transition.Root show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setIsOpen}>
+      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={handleResetStep}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -56,7 +57,7 @@ export const DocumentModal = ({ canDoNextStep, urlCopied, error, isLoading, ques
                 <div className="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
                   <button
                     type="button"
-                    className="rounded-md bg-white text-slate-400 hover:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="rounded-md bg-white text-slate-400 hover:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     onClick={() => handleResetStep()}
                   >
                     <span className="sr-only">Close</span>
@@ -73,12 +74,13 @@ export const DocumentModal = ({ canDoNextStep, urlCopied, error, isLoading, ques
                     </Dialog.Title>
                     <div className="mt-2 w-full">
                       {currentPage}
-                      {(!canDoNextStep && step === 4 && !urlCopied) && (
+                      {/* Make SURE you dont have William selected here */}
+                      {(step === 5 && !urlCopied && pdfData.agent.includes("Lorena")) && (
                         <p className="mt-2 text-sm text-red-600">
                           Por favor, copie el enlace para continuar
                         </p>
                       )}
-                      {(!canDoNextStep && step === 5 && !urlCopied) && (
+                      {(step === 6 && !urlCopied) && (
                         <p className="mt-2 text-sm text-red-600">
                           Por favor, copie el enlace para continuar
                         </p>

@@ -11,8 +11,8 @@ import { signURLResponse } from "@/interfaces/index";
 import { signerSignatureDate } from "@/components/documents/utils/signerSignatureDate";
 import { spanishPayload } from "@/components/documents/utils/spanishPayload";
 
-const spanishPDFTemplateEid = "WdtAnWi5zn4kvrasJfh6";
-const englishPDFTemplateEid = "FpD3DJTgR9X2fkJ3hCXE";
+const spanishPDFTemplateEid = "J84wYQcf53GOhAtpqHPp";
+const englishPDFTemplateEid = "vZKJ62lvfb7tKiGbwXE9";
 
 export default async function handler(
   req: NextApiRequest,
@@ -45,7 +45,8 @@ export default async function handler(
       spanishPDFTemplateEid,
       user.fullname,
       user.email,
-      "cast122583e0228411ee9a08d17f33fdcf3c",
+      // this is the ID of the field that is connected to the user who will be signing the PDF
+      "firma_del_cliente",
       provideSignaturePageOptions(),
       spanishPayload(languagePayload)
     );
@@ -57,7 +58,8 @@ export default async function handler(
       englishPDFTemplateEid,
       user.fullname,
       user.email,
-      "cast300bf580228c11ee9a08d17f33fdcf3c",
+      // this is the ID of the field that is connected to the user who will be signing the PDF
+      "signer_signature",
       null,
       englishPayload(languagePayload)
     );

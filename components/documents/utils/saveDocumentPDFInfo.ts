@@ -23,6 +23,7 @@ export const saveDocumentPDFInfo = async (
         agent: data.agent.includes("Lorena") ? "female" : "male",
         expirationDate: data.expirationDate,
         signerEid: signerEid,
+        signerBirthdate: data.signerBirthdate,
       },
     });
     return res;

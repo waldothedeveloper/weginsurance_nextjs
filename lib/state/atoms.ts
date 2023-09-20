@@ -45,7 +45,7 @@ export const pdfDataAtom = atomWithReset<PdfData>({
   language: "",
   agent: "",
   expirationDate: tenYearsFromToday,
-  // typecasting undefined can be a bit dangerous
+  signerBirthdate: "",
   optionalAgentPhone: undefined,
 });
 export const signURL = atom<string>("");

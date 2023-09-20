@@ -1,8 +1,8 @@
 import { pdfDataAtom, selectedUserAtom } from "@/lib/state/atoms";
+import { useAtomValue, useSetAtom } from "jotai";
 import { useEffect, useState } from "react";
 
 import { generatePDF } from "@/components/documents/utils/generatePDF";
-import { useAtomValue } from "jotai";
 import { useResetAtom } from "jotai/utils";
 
 export const usePDFWizard = () => {
@@ -12,26 +12,73 @@ export const usePDFWizard = () => {
   const [canDoNextStep, setCanDoNextStep] = useState(false);
   const selectedUser = useAtomValue(selectedUserAtom);
   const pdfData = useAtomValue(pdfDataAtom);
-  const setPDFData = useResetAtom(pdfDataAtom);
+  const setPDFData = useSetAtom(pdfDataAtom);
+  const setResetPDFData = useResetAtom(pdfDataAtom);
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (pdfData.language.length > 0 && step === 1) {
-      setCanDoNextStep(true);
-    } else if (pdfData.agent.length > 0 && step === 2) {
-      setCanDoNextStep(true);
-    } else if (pdfData.expirationDate && step === 3) {
-      setCanDoNextStep(true);
-    } else if (step === 4 && pdfData?.optionalAgentPhone) {
-      setCanDoNextStep(true);
-    } else if (step === 4 && urlCopied) {
-      setCanDoNextStep(true);
-    } else if (step === 5 && urlCopied) {
-      setCanDoNextStep(true);
-    } else {
-      setCanDoNextStep(false);
+    const isLanguageSelected = pdfData.language.length > 0;
+    const isAgentSelected = pdfData.agent.length > 0;
+    const isSignerBirthdateSelected = pdfData.signerBirthdate;
+    const isExpirationDateSelected = pdfData.expirationDate;
+    const isLorenaAgentSelected = pdfData.agent.includes("Lorena");
+    const isWilliamAgentSelected = pdfData.optionalAgentPhone;
+
+    const canNotContinue = () => setCanDoNextStep(false);
+    switch (step) {
+      case 1:
+        if (isLanguageSelected) {
+          setCanDoNextStep(true);
+        } else {
+          canNotContinue();
+        }
+        break;
+      case 2:
+        if (isAgentSelected) {
+          setCanDoNextStep(true);
+        } else {
+          canNotContinue();
+        }
+        break;
+      case 3:
+        if (isSignerBirthdateSelected) {
+          setCanDoNextStep(true);
+        } else if (isWilliamAgentSelected) {
+          setCanDoNextStep(true);
+        } else {
+          canNotContinue();
+        }
+        break;
+      case 4:
+        if (isExpirationDateSelected && isLorenaAgentSelected) {
+          setCanDoNextStep(true);
+        } else if (isSignerBirthdateSelected) {
+          setCanDoNextStep(true);
+        } else {
+          canNotContinue();
+        }
+        break;
+      case 5:
+        if (isExpirationDateSelected && urlCopied) {
+          setCanDoNextStep(true);
+        } else if (!isLorenaAgentSelected && isExpirationDateSelected) {
+          setCanDoNextStep(true);
+        } else {
+          canNotContinue();
+        }
+        break;
+      case 6:
+        if (urlCopied) {
+          setCanDoNextStep(true);
+        } else {
+          setCanDoNextStep(false);
+        }
+        break;
+      default:
+        setCanDoNextStep(false);
+        break;
     }
   }, [pdfData, step, urlCopied]);
 
@@ -42,7 +89,7 @@ export const usePDFWizard = () => {
     setIsLoading(false);
     setUrlCopied(false);
     setError(null);
-    setPDFData();
+    setResetPDFData();
   };
 
   const initPdfModal = () => {
@@ -54,10 +101,19 @@ export const usePDFWizard = () => {
     setError(null);
   };
 
+  const handleProcessAndNullError = () => {
+    setIsLoading(true);
+    setError(null);
+  };
+
   const handleNextStep = async () => {
-    if (step === 3 && !pdfData?.optionalAgentPhone) {
-      setIsLoading(true);
-      setError(null);
+    if (pdfData.agent.includes("Lorena")) {
+      setPDFData((prev) => {
+        return { ...prev, optionalAgentPhone: undefined };
+      });
+    }
+    if (step === 4 && pdfData?.agent.includes("Lorena")) {
+      handleProcessAndNullError();
       // generate the PDF
       await generatePDF(
         setIsLoading,
@@ -67,9 +123,8 @@ export const usePDFWizard = () => {
         selectedUser,
         pdfData
       );
-    } else if (step === 4 && pdfData?.optionalAgentPhone) {
-      setIsLoading(true);
-      setError(null);
+    } else if (step === 5 && !pdfData?.agent.includes("Lorena")) {
+      handleProcessAndNullError();
       // generate the PDF
       await generatePDF(
         setIsLoading,
@@ -79,7 +134,7 @@ export const usePDFWizard = () => {
         selectedUser,
         pdfData
       );
-    } else if ((step === 4 && !pdfData?.optionalAgentPhone) || step === 5) {
+    } else if (step === 5 || step === 6) {
       handleResetStep();
     } else {
       setStep((step) => {
@@ -93,7 +148,8 @@ export const usePDFWizard = () => {
       if (step === 1) {
         return 1;
       }
-      if (step !== 4 && step >= 2) {
+      if (step < 6) {
+        // only if you're going back this will execute, you will have to press the back button for this to run
         setUrl("");
         setUrlCopied(false);
         setError(null);
@@ -114,7 +170,6 @@ export const usePDFWizard = () => {
     urlCopied,
     isOpen,
     initPdfModal,
-    setIsOpen,
     step,
     handleNextStep,
     handlePrevStep,
