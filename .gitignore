@@ -33,5 +33,6 @@ yarn-error.log*
 
 # ignore node_modules in the functions folder
 functions/**/node_modules
+
 # Sentry Auth Token
 .sentryclirc
