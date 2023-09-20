@@ -54,9 +54,7 @@ export const pdfTemplate = (
           id: "signer1",
           name: signerFullname,
           email:
-            signerEmail?.length > 0
-              ? signerEmail
-              : process.env.NODE_ENV === "development"
+            process.env.NODE_ENV === "development"
               ? (process.env.WEG_INTERNAL_EMAIL as string)
               : (process.env.LORENA_EMAIL as string),
           signerType: "embedded",
@@ -115,9 +113,7 @@ export const pdfTemplate = (
           id: "signer1",
           name: signerFullname,
           email:
-            signerEmail?.length > 0
-              ? signerEmail
-              : process.env.NODE_ENV === "development"
+            process.env.NODE_ENV === "development"
               ? (process.env.WEG_INTERNAL_EMAIL as string)
               : (process.env.LORENA_EMAIL as string),
           signerType: "embedded",
