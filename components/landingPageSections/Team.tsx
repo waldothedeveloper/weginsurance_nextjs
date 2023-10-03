@@ -1,18 +1,16 @@
 import Image from "next/image";
-import lorena from "@/public/lorena_agent.jpg"
-import william from "@/public/william_agent.jpg"
 const team = [
   {
     name: 'Lorena Zozaya',
     role: 'Agente de Seguros',
     imageUrl:
-      lorena,
+      '/lorena_agent.jpg',
   },
   {
     name: 'William Gola',
     role: 'Agente de Seguros',
     imageUrl:
-      william,
+      '/william_agent.jpg',
   }
 ]
 
