@@ -25,7 +25,7 @@ export const Footer = () => {
         </div>
       </div>
       <p className="mt-16 text-center text-xs leading-5 text-slate-500">
-        &copy; {new Date().getFullYear()} WEG Insurance, Corp. Todos los derechos reservados.
+        &copy; {new Date().getFullYear()} WEG Insurance, Corp.
       </p>
     </footer >
   )
