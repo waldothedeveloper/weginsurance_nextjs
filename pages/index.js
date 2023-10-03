@@ -1,4 +1,4 @@
-import { AppRoot } from "@/components/AppRoot";
+import { AppRoot } from "@/components/AppRootNew";
 import Head from "next/head";
 //
 export default function Home() {
