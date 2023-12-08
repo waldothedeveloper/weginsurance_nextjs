@@ -54,7 +54,7 @@
     "react-instantsearch-hooks-web": "^6.44.0",
     "sharp": "^0.32.5",
     "swr": "^2.2.2",
-    "twilio": "^4.16.0",
+    "twilio": "^4.19.3",
     "underscore": "^1.13.6"
   },
   "devDependencies": {
