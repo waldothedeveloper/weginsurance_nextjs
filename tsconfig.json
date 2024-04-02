@@ -8,6 +8,7 @@
     "noEmit": true,
     "incremental": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -22,16 +23,24 @@
       "@/utils/*": ["utils/*"],
       "@/lib/*": ["lib/*"],
       "@/hooks/*": ["hooks/*"],
-      "@/interfaces/*": ["interfaces/*"]
-    }
+      "@/interfaces/*": ["interfaces/*"],
+      "@/actions/*": ["actions/*"],
+      "@/documents/*": ["documents/*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
     // I have no idea what is this below
     // "lib/twilio/config.js"
     // "pages/api/notifications/add_user_to_sms_notifications.js",
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

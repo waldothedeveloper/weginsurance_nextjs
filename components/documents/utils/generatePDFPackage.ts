@@ -1,11 +1,10 @@
-import Anvil from "@anvilco/anvil";
 import { PDFTemplate } from "@/interfaces/index";
 import { anvilClient } from "@/components/documents/utils/anvilClient";
 
 //
 export const generatePDFPackage = async (
   variables: PDFTemplate
-): Promise<Anvil.GraphQLResponse> => {
+): Promise<any> => {
   try {
     const { statusCode, data, errors } = await anvilClient.createEtchPacket({
       variables,

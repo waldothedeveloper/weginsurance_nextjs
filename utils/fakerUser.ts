@@ -16,7 +16,7 @@ export const createRandomUser = (): FakeUser => {
   });
 
   const notes = faker.lorem.paragraph(2);
-  const phone = faker.phone.number("+1#########");
+  const phone = faker.phone.number();
 
   return {
     firstTimeVisit: false,
