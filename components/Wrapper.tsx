@@ -63,6 +63,7 @@ export const Wrapper = () => {
         </MainComponent>
       )}
 
+
       {/* left side components*/}
       {router?.query?.dashboard?.includes("messages") && (
         <AsideComponent>

@@ -1,3 +1,5 @@
+"use client";
+
 import { Dialog, Transition } from "@headlessui/react";
 
 import { Fragment } from "react";
@@ -6,13 +8,13 @@ import { LoggedInUserButton } from "@/components/auth/LoggedInUserButton";
 import { NavigationLinks } from "@/components/navigation/links";
 import { NovuNotificationsCenter } from "@/components/notifications/NovuConfig";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
 
 //
-export const MobileSideBar = ({
-  sidebarOpen,
-  setSidebarOpen,
-  handleCloseSideBar,
-}) => {
+export const MobileSideBar = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const handleCloseSideBar = () => setSidebarOpen(false);
+  // const handleOpenSideBar = () => setSidebarOpen(true);
   return (
     <Transition.Root show={sidebarOpen} as={Fragment}>
       <Dialog

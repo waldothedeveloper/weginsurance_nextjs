@@ -1,8 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { LoggedInUserButton } from "@/components/auth/LoggedInUserButton";
-import { NavigationLinks } from "@/components/navigation/links";
 
-export const DesktopSideBar = () => {
+export const DesktopSideBar = ({ children }) => {
   return (
     <div className="hidden lg:flex lg:flex-shrink-0">
       <div className="flex w-64 flex-col">
@@ -19,7 +20,7 @@ export const DesktopSideBar = () => {
                 </span>
               </Link>
             </div>
-            <NavigationLinks />
+            {children}
           </div>
           <div className="flex flex-shrink-0 border-t border-slate-200 p-4">
             <button className="group block w-full flex-shrink-0">

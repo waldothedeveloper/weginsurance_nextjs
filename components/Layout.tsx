@@ -1,22 +1,22 @@
 import { getAuth, signInWithCustomToken } from "firebase/auth";
-import { useEffect, useState } from "react";
 
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { DesktopSideBar } from "@/components/DesktopSideBar";
 import Link from "next/link";
 import { MobileSideBar } from "@/components/MobileSideBar";
+// this is the old navigation links used for PAGES and not for the new UI
+import { NavigationLinks } from "@/components/navigation/links";
 import { Wrapper } from "@/components/Wrapper";
 import { firebaseApp } from "@/lib/firebaseConfig";
 import { useAuth } from "@clerk/nextjs";
+import { useEffect } from "react";
 
 // import { useHandleNotifications } from "@/hooks/notifications/useHandleNotifications";
 // import { useIdentifyIncomingUserFromInboundSMS } from "@/hooks/messaging/useIdentifyIncomingUserFromInboundSMS";
 
 export const Layout = () => {
   const { getToken } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
-  const handleCloseSideBar = () => setSidebarOpen(false);
-  const handleOpenSideBar = () => setSidebarOpen(true);
+
 
   // TODO: identify who is more likely to benefit from this hook, probably the Wrapper component
   // const { errorIdentifyingUser } =
@@ -50,12 +50,10 @@ export const Layout = () => {
   return (
     <>
       <div className="flex h-screen">
-        <MobileSideBar
-          sidebarOpen={sidebarOpen}
-          setSidebarOpen={setSidebarOpen}
-          handleCloseSideBar={handleCloseSideBar}
-        />
-        <DesktopSideBar />
+        <MobileSideBar />
+        <DesktopSideBar>
+          <NavigationLinks />
+        </DesktopSideBar>
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
           <div className="lg:hidden">
             <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-4 py-1.5">
@@ -73,7 +71,8 @@ export const Layout = () => {
                 <button
                   type="button"
                   className="-mr-3 inline-flex h-12 w-12 items-center justify-center rounded-md text-slate-500 hover:text-slate-900"
-                  onClick={handleOpenSideBar}
+                // TODO: see what you're doing here since you moved this state into the MobileSideBar component
+                // onClick={handleOpenSideBar}
                 >
                   <span className="sr-only">Open sidebar</span>
                   <Bars3Icon className="h-6 w-6" aria-hidden="true" />

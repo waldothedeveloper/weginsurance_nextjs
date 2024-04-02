@@ -24,7 +24,6 @@ export const UsersUI = () => {
     return { value: company.name, id: company.id };
   });
 
-
   // new user
   const {
     setValueNewUserForm,
@@ -63,8 +62,16 @@ export const UsersUI = () => {
     handleDeleteMultipleUsers,
   } = useDeleteUserForm();
 
-  const { totalUserCount, table, firebaseError, firebaseUsers, rowSelection, globalFilter, setGlobalFilter, isLoadingFirebaseUsers } =
-    UserTableUtilities({ handleDeleteModal, handleUpdateModal });
+  const {
+    totalUserCount,
+    table,
+    firebaseError,
+    firebaseUsers,
+    rowSelection,
+    globalFilter,
+    setGlobalFilter,
+    isLoadingFirebaseUsers,
+  } = UserTableUtilities({ handleDeleteModal, handleUpdateModal });
 
   if (firebaseError) {
     return (
@@ -80,7 +87,6 @@ export const UsersUI = () => {
   if (!firebaseUsers || isLoadingFirebaseUsers) {
     return <Spinning message="Cargando Usuarios" />;
   }
-
 
   if (firebaseUsers?.length === 0) {
     return (
@@ -128,11 +134,8 @@ export const UsersUI = () => {
           </Modal>
         )}
       </div>
-    )
-
-
+    );
   }
-
 
   return (
     <>
@@ -153,8 +156,8 @@ export const UsersUI = () => {
           <DebouncedInput
             type="text"
             name="search"
-            value={globalFilter ?? ''}
-            onChange={value => setGlobalFilter(String(value))}
+            value={globalFilter ?? ""}
+            onChange={(value) => setGlobalFilter(String(value))}
             cssValues="block w-full rounded-md border-0 py-1.5 pr-32 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
             placeholder="Buscar usuarios..."
           />
