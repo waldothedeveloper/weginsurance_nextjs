@@ -21,7 +21,7 @@ export default authMiddleware({
     "/sms-notifications",
     "/sms-campaign",
     "/api/documents/generate_signature_iframe",
-    "/sign_pdf",
+    "/sign_pdf(.*)",
   ],
 });
 
