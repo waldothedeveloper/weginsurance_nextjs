@@ -26,11 +26,13 @@ export default async function handler(
     });
   }
 
-  const app =
-    process.env.NODE_ENV === "production"
-      ? process.env.NEXT_PUBLIC_WEG_INSURANCE_TWILIO_PRODUCTION_NUMBER
-      : process.env.NEXT_PUBLIC_WEG_INSURANCE_DEVELOPMENT_TEST_NUMBER;
+  const app = process.env.NEXT_PUBLIC_WEG_INSURANCE_TWILIO_PRODUCTION_NUMBER;
+  // const app =
+  //   process.env.NODE_ENV === "production"
+  //     ? process.env.NEXT_PUBLIC_WEG_INSURANCE_TWILIO_PRODUCTION_NUMBER
+  //     : process.env.NEXT_PUBLIC_WEG_INSURANCE_DEVELOPMENT_TEST_NUMBER;
   const user = user_phone;
+  console.log("user_phone provided: ", user);
 
   try {
     // get me all messages SENT from WEG INSURANCE to this user
