@@ -1,5 +1,3 @@
-import { getAuth, signInWithCustomToken } from "firebase/auth";
-
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { DesktopSideBar } from "@/components/DesktopSideBar";
 import Link from "next/link";
@@ -7,7 +5,8 @@ import { MobileSideBar } from "@/components/MobileSideBar";
 // this is the old navigation links used for PAGES and not for the new UI
 import { NavigationLinks } from "@/components/navigation/links";
 import { Wrapper } from "@/components/Wrapper";
-import { firebaseApp } from "@/lib/firebaseConfig";
+import { auth } from "@/_lib/firebase/clientApp";
+import { signInWithCustomToken } from "firebase/auth";
 import { useAuth } from "@clerk/nextjs";
 import { useEffect } from "react";
 
@@ -16,7 +15,6 @@ import { useEffect } from "react";
 
 export const Layout = () => {
   const { getToken } = useAuth();
-
 
   // TODO: identify who is more likely to benefit from this hook, probably the Wrapper component
   // const { errorIdentifyingUser } =
@@ -27,13 +25,12 @@ export const Layout = () => {
   useEffect(() => {
     const signInWithClerk = async () => {
       try {
-        const auth = getAuth(firebaseApp);
         const token = await getToken({
           template: "integration_firebase",
         });
 
         if (token) {
-          const userCredentials = await signInWithCustomToken(auth, token);
+          const userCredentials = await signInWithCustomToken(auth, token || '');
           return userCredentials.user;
         }
         return null;
