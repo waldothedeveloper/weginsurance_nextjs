@@ -22,6 +22,7 @@
       "@/styles/*": ["styles/*"],
       "@/utils/*": ["utils/*"],
       "@/lib/*": ["lib/*"],
+      "@/_lib/*": ["app/_lib/*"],
       "@/hooks/*": ["hooks/*"],
       "@/interfaces/*": ["interfaces/*"],
       "@/actions/*": ["actions/*"],
