@@ -1,12 +1,11 @@
 import { Message, VirtualizedConversationType } from "@/interfaces/index";
+import { VirtualItem, Virtualizer } from "@tanstack/react-virtual";
 
 import { ChatMessage } from "@/components/messaging/components/ChatMessage";
 import { TimeDivider } from "@/components/messaging/TimeDivider";
-import { VirtualItem } from "@tanstack/react-virtual";
-import { Virtualizer } from "@tanstack/react-virtual";
 
 type ChatWindowProps = {
-  items: VirtualItem[];
+  items: VirtualItem<Element>[];
   virtualizer: Virtualizer<Element, Element>;
   messages: VirtualizedConversationType | null
 };
