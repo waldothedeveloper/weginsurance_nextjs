@@ -5,12 +5,13 @@ import {
   ChatBubbleBottomCenterTextIcon,
   DocumentTextIcon,
   Square3Stack3DIcon,
+  UserPlusIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
 
-import Link from "next/link";
 import { classNames } from "@/utils/classNames";
-import { usePathname } from 'next/navigation'
+import Link from "next/link";
+import { usePathname } from 'next/navigation';
 
 const navigation = [
   {
@@ -48,11 +49,18 @@ const navigation = [
     icon: DocumentTextIcon,
     current: false,
   },
+  {
+    name: "Usuarios",
+    href: "users",
+    link: "/users",
+    icon: UserPlusIcon,
+    current: false,
+    hidden: process.env.NODE_ENV === "production" ? true : false,
+  },
 ];
 
 export const NewNavigationLinks = () => {
   const pathname = usePathname()
-
 
   return (
     <nav className="mt-16 flex-1" aria-label="Sidebar">
@@ -62,9 +70,10 @@ export const NewNavigationLinks = () => {
             key={item.name}
             href={item?.link}
             className={classNames(
-              pathname?.includes(item?.href)
-                ? "border-r-[5px] border-orange-600 bg-white py-4 text-blue-600"
-                : " text-slate-900 hover:bg-blue-50",
+              item?.hidden ? "hidden" :
+                pathname?.includes(item?.href)
+                  ? "border-r-[5px] border-orange-600 bg-white py-4 text-blue-600"
+                  : " text-slate-900 hover:bg-blue-50",
               "group flex w-full items-center rounded-tl-md rounded-bl-md py-4 pl-3 text-sm font-medium"
             )}
           >
