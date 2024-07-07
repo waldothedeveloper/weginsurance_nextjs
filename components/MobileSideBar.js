@@ -5,7 +5,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import Link from "next/link";
 import { LoggedInUserButton } from "@/components/auth/LoggedInUserButton";
-import { NavigationLinks } from "@/components/navigation/links";
+import { NewNavigationLinks } from "@/components/ui/NewNavigationLinks";
+// import { NavigationLinks } from "@/components/navigation/links";
 import { NovuNotificationsCenter } from "@/components/notifications/NovuConfig";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
@@ -79,7 +80,7 @@ export const MobileSideBar = () => {
                     </span>
                   </Link>
                 </div>
-                <NavigationLinks />
+                <NewNavigationLinks />
               </div>
               <div className="flex flex-shrink-0 border-t border-slate-200 p-4">
                 <div className="flex w-full items-center justify-between">
