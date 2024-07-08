@@ -18,6 +18,8 @@ import {
 } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 
+import { UsersList } from "./_components/users-list";
+
 const navigation = [
   { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
   { name: "Team", href: "#", icon: UsersIcon, current: false },
@@ -81,7 +83,7 @@ export default function DashboardLayout({
                   <div className="flex h-16 shrink-0 items-center">
                     <img
                       alt="Your Company"
-                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                      src="https://tailwindui.com/img/logos/mark.svg?color=blue&shade=600"
                       className="h-8 w-auto"
                     />
                   </div>
@@ -95,8 +97,8 @@ export default function DashboardLayout({
                                 href={item.href}
                                 className={classNames(
                                   item.current
-                                    ? "bg-gray-50 text-indigo-600"
-                                    : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600",
+                                    ? "bg-gray-50 text-blue-600"
+                                    : "text-gray-700 hover:bg-gray-50 hover:text-blue-600",
                                   "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
                                 )}
                               >
@@ -104,8 +106,8 @@ export default function DashboardLayout({
                                   aria-hidden="true"
                                   className={classNames(
                                     item.current
-                                      ? "text-indigo-600"
-                                      : "text-gray-400 group-hover:text-indigo-600",
+                                      ? "text-blue-600"
+                                      : "text-gray-400 group-hover:text-blue-600",
                                     "h-6 w-6 shrink-0"
                                   )}
                                 />
@@ -126,16 +128,16 @@ export default function DashboardLayout({
                                 href={team.href}
                                 className={classNames(
                                   team.current
-                                    ? "bg-gray-50 text-indigo-600"
-                                    : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600",
+                                    ? "bg-gray-50 text-blue-600"
+                                    : "text-gray-700 hover:bg-gray-50 hover:text-blue-600",
                                   "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
                                 )}
                               >
                                 <span
                                   className={classNames(
                                     team.current
-                                      ? "border-indigo-600 text-indigo-600"
-                                      : "border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600",
+                                      ? "border-blue-600 text-blue-600"
+                                      : "border-gray-200 text-gray-400 group-hover:border-blue-600 group-hover:text-blue-600",
                                     "flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium"
                                   )}
                                 >
@@ -161,7 +163,7 @@ export default function DashboardLayout({
               <div className="flex h-16 shrink-0 items-center">
                 <img
                   alt="Your Company"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                  src="https://tailwindui.com/img/logos/mark.svg?color=blue&shade=600"
                   className="h-8 w-auto"
                 />
               </div>
@@ -175,8 +177,8 @@ export default function DashboardLayout({
                             href={item.href}
                             className={classNames(
                               item.current
-                                ? "bg-gray-50 text-indigo-600"
-                                : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600",
+                                ? "bg-gray-50 text-blue-600"
+                                : "text-gray-700 hover:bg-gray-50 hover:text-blue-600",
                               "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
                             )}
                           >
@@ -184,8 +186,8 @@ export default function DashboardLayout({
                               aria-hidden="true"
                               className={classNames(
                                 item.current
-                                  ? "text-indigo-600"
-                                  : "text-gray-400 group-hover:text-indigo-600",
+                                  ? "text-blue-600"
+                                  : "text-gray-400 group-hover:text-blue-600",
                                 "h-6 w-6 shrink-0"
                               )}
                             />
@@ -206,16 +208,16 @@ export default function DashboardLayout({
                             href={team.href}
                             className={classNames(
                               team.current
-                                ? "bg-gray-50 text-indigo-600"
-                                : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600",
+                                ? "bg-gray-50 text-blue-600"
+                                : "text-gray-700 hover:bg-gray-50 hover:text-blue-600",
                               "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
                             )}
                           >
                             <span
                               className={classNames(
                                 team.current
-                                  ? "border-indigo-600 text-indigo-600"
-                                  : "border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600",
+                                  ? "border-blue-600 text-blue-600"
+                                  : "border-gray-200 text-gray-400 group-hover:border-blue-600 group-hover:text-blue-600",
                                 "flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium"
                               )}
                             >
@@ -274,9 +276,8 @@ export default function DashboardLayout({
               </div>
             </div>
           </main>
-          <aside className="fixed inset-y-0 left-72 hidden w-96 overflow-y-auto border-r border-gray-200 px-4 py-6 sm:px-6 lg:px-8 xl:block">
-            {/* Secondary column (hidden on smaller screens) */}
-            wtf
+          <aside className="fixed inset-y-0 left-72 hidden w-96 overflow-y-auto border-r border-gray-200 py-6 xl:block">
+            <UsersList />
           </aside>
         </div>
       </div>
