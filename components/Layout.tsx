@@ -2,9 +2,9 @@ import { Bars3Icon } from "@heroicons/react/24/outline";
 import { DesktopSideBar } from "@/components/DesktopSideBar";
 import Link from "next/link";
 import { MobileSideBar } from "@/components/MobileSideBar";
-// this is the old navigation links used for PAGES and not for the new UI
 import { NavigationLinks } from "@/components/navigation/links";
 import { Wrapper } from "@/components/Wrapper";
+// this is the old navigation links used for PAGES and not for the new UI
 import { auth } from "@/_lib/firebase/clientApp";
 import { signInWithCustomToken } from "firebase/auth";
 import { useAuth } from "@clerk/nextjs";
