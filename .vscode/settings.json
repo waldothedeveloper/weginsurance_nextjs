@@ -24,5 +24,6 @@
     "editor.bracketPairColorization.enabled": true,
     "editor.cursorStyle": "line",
     "editor.cursorBlinking": "expand"
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "typeRoots": ["./types", "./node_modules/@types"],
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -21,6 +22,7 @@
       "@/public/*": ["public/*"],
       "@/styles/*": ["styles/*"],
       "@/utils/*": ["utils/*"],
+      "@/appUtils/*": ["app/_utils/*"],
       "@/lib/*": ["lib/*"],
       "@/_lib/*": ["app/_lib/*"],
       "@/hooks/*": ["hooks/*"],

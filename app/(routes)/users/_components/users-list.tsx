@@ -1,75 +1,14 @@
-"use client";
+import { femenine, masculine } from "@/appUtils/avatars-config";
+import { useContext, useEffect, useState } from "react";
 
-import { useEffect, useState } from "react";
-
+import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
+import { UserContext } from "../_hooks/useUser";
 import UserSkeleton from "./user-skeleton";
 import { createAvatar } from "@dicebear/core";
 import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
 import { getUsersSnapshot } from "@/_lib/firebase/firestore";
 import { lorelei } from "@dicebear/collection";
-
-type DirectoryEntry = {
-  id: string;
-  activeUser: boolean;
-  email: string;
-  firstTimeVisit: boolean;
-  firstname: string;
-  fullname: string;
-  gender: string;
-  insuranceCompany: string;
-  lastname: string;
-  notes: string;
-  pdfData?: {
-    agent: string;
-    expirationDate: string;
-    language: string;
-    signerBirthdate: string;
-    signerEid: string;
-  };
-  phone: string;
-  secondLastname: string;
-  secondName: string;
-};
-
-type Variant =
-  | "variant01"
-  | "variant02"
-  | "variant03"
-  | "variant04"
-  | "variant08"
-  | "variant09"
-  | "variant25"
-  | "variant27"
-  | "variant28"
-  | "variant47"
-  | "variant10"
-  | "variant13"
-  | "variant14"
-  | "variant15"
-  | "variant16"
-  | "variant17"
-  | "variant18"
-  | "variant19"
-  | "variant21"
-  | "variant23"
-  | "variant24"
-  | "variant26"
-  | "variant29"
-  | "variant30"
-  | "variant31"
-  | "variant32"
-  | "variant33"
-  | "variant35"
-  | "variant38"
-  | "variant40"
-  | "variant41"
-  | "variant42"
-  | "variant45"
-  | "variant46"
-  | "variant48";
-
-type Directory = Record<string, DirectoryEntry[]>;
 
 function transformData(data: any[]): Directory {
   const directory: Directory = {};
@@ -82,6 +21,12 @@ function transformData(data: any[]): Directory {
 
     directory[firstLetter].push({
       ...item,
+      avatar: createAvatar(lorelei, {
+        seed: item.id,
+        hair: item.gender === "Femenino" ? femenine : masculine,
+        beardProbability: item.gender === "Masculino" ? 50 : 0,
+        earringsProbability: item.gender === "Femenino" ? 50 : 0,
+      }).toDataUri(),
     });
   });
 
@@ -94,52 +39,10 @@ function transformData(data: any[]): Directory {
   return directory;
 }
 
-const femenine: Variant[] = [
-  "variant10",
-  "variant13",
-  "variant14",
-  "variant15",
-  "variant16",
-  "variant17",
-  "variant18",
-  "variant19",
-  "variant21",
-  "variant23",
-  "variant24",
-  "variant26",
-  "variant29",
-  "variant30",
-  "variant31",
-  "variant32",
-  "variant33",
-  "variant35",
-  "variant38",
-  "variant40",
-  "variant41",
-  "variant42",
-  "variant45",
-  "variant46",
-  "variant48",
-];
-
-const masculine: Variant[] = [
-  "variant01",
-  "variant02",
-  "variant03",
-  "variant04",
-  "variant08",
-  "variant09",
-  "variant25",
-  "variant27",
-  "variant28",
-  "variant47",
-];
-function getRandomInt(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-export default function UsersList() {
+export const UsersList = () => {
   const [users, setUsers] = useState<Directory | null>(null);
+  const { setSelectedUser } = useContext(UserContext);
+
 
   useEffect(() => {
     const unsubscribe = getUsersSnapshot((data) => {
@@ -154,7 +57,7 @@ export default function UsersList() {
 
   return (
     <nav aria-label="Directory" className="h-full overflow-y-auto">
-      {users ?
+      {users ? (
         Object.keys(users)
           .sort()
           .map((letter) => (
@@ -165,43 +68,55 @@ export default function UsersList() {
               <ul role="list" className="divide-y divide-gray-100">
                 {users &&
                   users[letter].map((person) => (
-                    <li key={person.id} className="flex gap-x-4 px-3 py-5">
-                      <div className="h-12 w-12 relative">
-                        <Image
-                          fill
-                          alt={person.fullname}
-                          src={createAvatar(lorelei, {
-                            hair:
-                              person.gender === "Femenino"
-                                ? femenine
-                                : masculine,
-                            seed: person.id,
-                            beardProbability:
-                              person.gender === "Masculino"
-                                ? getRandomInt(50, 100)
-                                : 0,
-                            earringsProbability:
-                              person.gender === "Femenino"
-                                ? getRandomInt(50, 100)
-                                : 0,
-                          }).toDataUri()}
-                          className="flex-none rounded-full bg-gray-50"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        />
+                    <li
+                      key={person.id}
+                      onClick={() => setSelectedUser(person)}
+                      className="flex justify-between gap-x-4 px-3 py-5 items-center hover:bg-gray-50"
+                    >
+                      <div className="flex">
+                        <div className="h-12 w-12 relative">
+                          <Image
+                            fill
+                            alt={person.fullname}
+                            src={
+                              person?.avatar ||
+                              createAvatar(lorelei, {
+                                seed: person.id,
+                                hair:
+                                  person.gender === "Femenino"
+                                    ? femenine
+                                    : masculine,
+                                beardProbability:
+                                  person.gender === "Masculino" ? 50 : 0,
+                                earringsProbability:
+                                  person.gender === "Femenino" ? 50 : 0,
+                              }).toDataUri()
+                            }
+                            className="flex-none rounded-full bg-blue-50 shadow-md shadow-blue-500/25"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
+                        </div>
+                        <div className="min-w-0 ml-3">
+                          <p className="text-sm font-semibold leading-6 text-gray-900">
+                            {person.fullname}
+                          </p>
+                          <p className="mt-1 truncate text-xs leading-5 text-gray-500">
+                            {formatPhoneNumberToNationalUSAformat(person.phone)}
+                          </p>
+                        </div>
                       </div>
-                      <div className="min-w-0">
-                        <p className="text-sm font-semibold leading-6 text-gray-900">
-                          {person.fullname}
-                        </p>
-                        <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                          {formatPhoneNumberToNationalUSAformat(person.phone)}
-                        </p>
-                      </div>
+                      <ChevronRightIcon
+                        aria-hidden="true"
+                        className="h-5 w-5 flex-none text-gray-400"
+                      />
                     </li>
                   ))}
               </ul>
             </div>
-          )) : <UserSkeleton />}
+          ))
+      ) : (
+        <UserSkeleton />
+      )}
     </nav>
   );
-}
+};
