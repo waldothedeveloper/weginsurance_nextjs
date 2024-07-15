@@ -1,7 +1,14 @@
 {
   "compilerOptions": {
-    "typeRoots": ["./types", "./node_modules/@types"],
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "typeRoots": [
+      "./types",
+      "./node_modules/@types"
+    ],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -17,18 +24,42 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/components/*": ["components/*"],
-      "@/pages/*": ["pages/*"],
-      "@/public/*": ["public/*"],
-      "@/styles/*": ["styles/*"],
-      "@/utils/*": ["utils/*"],
-      "@/appUtils/*": ["app/_utils/*"],
-      "@/lib/*": ["lib/*"],
-      "@/_lib/*": ["app/_lib/*"],
-      "@/hooks/*": ["hooks/*"],
-      "@/interfaces/*": ["interfaces/*"],
-      "@/actions/*": ["actions/*"],
-      "@/documents/*": ["documents/*"]
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/pages/*": [
+        "pages/*"
+      ],
+      "@/public/*": [
+        "public/*"
+      ],
+      "@/styles/*": [
+        "styles/*"
+      ],
+      "@/utils/*": [
+        "utils/*"
+      ],
+      "@/appUtils/*": [
+        "app/_utils/*"
+      ],
+      "@/lib/*": [
+        "lib/*"
+      ],
+      "@/_lib/*": [
+        "app/_lib/*"
+      ],
+      "@/hooks/*": [
+        "hooks/*"
+      ],
+      "@/interfaces/*": [
+        "interfaces/*"
+      ],
+      "@/actions/*": [
+        "actions/*"
+      ],
+      "@/documents/*": [
+        "documents/*"
+      ]
     },
     "plugins": [
       {
@@ -45,5 +76,7 @@
     // "pages/api/notifications/add_user_to_sms_notifications.js",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
