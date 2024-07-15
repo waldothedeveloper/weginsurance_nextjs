@@ -1,4 +1,5 @@
-import { FunnelIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import SearchOptions from "./search-options";
 
 export const SearchUsers: React.FC = () => {
   return (
@@ -28,13 +29,7 @@ export const SearchUsers: React.FC = () => {
             />
           </div>
         </div>
-        <button
-          type="submit"
-          className="inline-flex justify-center rounded-md bg-white px-3 py-2 text-gray-400 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-        >
-          <FunnelIcon aria-hidden="true" className="h-5 w-5" />
-          <span className="sr-only">Search</span>
-        </button>
+        <SearchOptions />
       </form>
     </div>
   );

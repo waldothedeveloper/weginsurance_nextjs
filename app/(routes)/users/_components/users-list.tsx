@@ -1,10 +1,11 @@
+'use client'
+
 import { femenine, masculine } from "@/appUtils/avatars-config";
 import { useContext, useEffect, useState } from "react";
 
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import { UserContext } from "../_hooks/useUser";
-import UserSkeleton from "./user-skeleton";
 import { createAvatar } from "@dicebear/core";
 import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
 import { getUsersSnapshot } from "@/_lib/firebase/firestore";
@@ -39,7 +40,7 @@ function transformData(data: any[]): Directory {
   return directory;
 }
 
-export const UsersList = () => {
+export const UsersList = ({ children }: { children: React.ReactNode }) => {
   const [users, setUsers] = useState<Directory | null>(null);
   const { setSelectedUser } = useContext(UserContext);
 
@@ -114,9 +115,9 @@ export const UsersList = () => {
               </ul>
             </div>
           ))
-      ) : (
-        <UserSkeleton />
-      )}
+      ) :
+        children
+      }
     </nav>
   );
 };

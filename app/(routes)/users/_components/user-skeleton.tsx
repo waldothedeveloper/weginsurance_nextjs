@@ -3,6 +3,7 @@ interface Directory {
   [key: string]: Array<{ id: number;[key: string]: any }>;
 }
 
+import { ChevronRightIcon } from "@heroicons/react/20/solid";
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 const directory: Directory = {};
 let idCounter = 1;
@@ -26,12 +27,16 @@ export default function UserSkeleton() {
             </div>
             <ul role="list" className="divide-y divide-gray-100 animate-pulse">
               {directory[letter].map((obj) => (
-                <li key={obj.id} className="flex gap-x-4 px-3 py-5">
+                <li key={obj.id} className="flex justify-between gap-x-4 px-3 py-5 items-center">
                   <div className="size-12 relative bg-gray-400 rounded-full" />
                   <div className="min-w-0 pt-3">
-                    <p className="text-sm font-semibold leading-6 h-3 bg-gray-400 w-32 rounded-sm" />
-                    <p className="mt-1 truncate text-xs leading-5 h-2 bg-gray-400 w-48 rounded-sm" />
+                    <p className="text-sm font-semibold leading-6 h-3 bg-gray-400 w-32 rounded-md" />
+                    <p className="mt-1 truncate text-xs leading-5 h-2 bg-gray-400 w-48 rounded-md" />
                   </div>
+                  <ChevronRightIcon
+                    aria-hidden="true"
+                    className="h-5 w-5 flex-none text-gray-400"
+                  />
                 </li>
               ))}
             </ul>

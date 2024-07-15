@@ -1,9 +1,11 @@
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
+'use client'
+
+import { DocumentTextIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { femenine, masculine } from "@/appUtils/avatars-config";
 import { useContext, useState } from "react";
 
 import Image from "next/image";
-import NoUserSelected from "./empty";
+import NoUserSelected from "./no-user-selected";
 import { UserContext } from "../../_hooks/useUser";
 import { classNames } from "@/utils/classNames";
 import { createAvatar } from "@dicebear/core";
@@ -63,6 +65,16 @@ export const UserProfile = () => {
                 </h1>
               </div>
               <div className="mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-x-4 sm:space-y-0">
+                <button
+                  type="button"
+                  className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                >
+                  <DocumentTextIcon
+                    aria-hidden="true"
+                    className="-ml-0.5 h-5 w-5 text-gray-400"
+                  />
+                  PDF
+                </button>
                 <button
                   type="button"
                   className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
