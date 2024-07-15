@@ -1,4 +1,3 @@
-
 export const WorkInfo = () => {
   return (
     <div className="mt-10 sm:mt-0">
@@ -58,19 +57,17 @@ export const WorkInfo = () => {
                     htmlFor="wages"
                     className="block text-sm font-medium text-gray-800"
                   >
-                    Ingresos Anuales (aprox)
+                    Ingresos Anuales <span className="text-gray-400">(aproximadamente)</span>
                   </label>
                   <div className="mt-1 relative rounded-md shadow-sm">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <span className=" text-gray-500 sm:text-sm">$</span>
+                    <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
+                      {/* <span className=" text-gray-500 sm:text-sm">$</span> */}
                     </div>
                     <input
-                      // onChange={handleChange}
-                      // value={values.prima || ""}
-                      type="number"
+                      type="text"
                       name="wages"
                       id="wages"
-                      className="focus:ring-blue-500 focus:border-blue-500  block w-full placeholder-gray-400 pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
+                      className="focus:ring-blue-500 focus:border-blue-500 block w-full placeholder-gray-400 pr-12 sm:text-sm border-gray-300 rounded-md"
                       placeholder="$110.000"
                       aria-describedby="wages"
                     />
@@ -85,28 +82,10 @@ export const WorkInfo = () => {
                   </div>
                 </div>
               </div>
-
-              {/* Contact info such as tel & email */}
-              <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="number"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Telefono de la compañia
-                </label>
-                <input
-                  placeholder="+1-555-5555"
-                  type="number"
-                  name="number"
-                  id="company-phone"
-                  autoComplete="tel"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                />
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

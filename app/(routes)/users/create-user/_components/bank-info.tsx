@@ -14,7 +14,7 @@ export const BankInfo = () => {
           </div>
         </div>
         <div className="mt-5 md:mt-0 md:col-span-2">
-          <div className="px-4 py-5 bg-gray-100 sm:p-6 rounded-md shadow-lg">
+          <div className="px-4 py-5 bg-gray-50 sm:p-6 rounded-md shadow-lg">
             <div>
               <h2 className="text-lg font-medium text-gray-900">
                 Metodos de pago
@@ -75,7 +75,7 @@ export const BankInfo = () => {
                       htmlFor="numero_de_cuenta_2"
                       className="block text-sm font-medium text-gray-800"
                     >
-                      Numero de Cuenta (debe coincidir)
+                      Numero de Cuenta <span className="text-gray-400"> (debe coincidir)</span>
                     </label>
                     <input
                       placeholder="091000019"
