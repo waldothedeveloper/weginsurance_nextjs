@@ -7,14 +7,15 @@ import {
 import { numberOfFilesUploadedAtom, progressPercentageAtom } from "@/lib/state/atoms";
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { forwardRef } from "react";
 import { useAtomValue } from "jotai";
 
-export const CarouselLoaderSkeleton = () => {
+export const CarouselLoaderSkeleton = forwardRef<HTMLDivElement>((props, ref) => {
   const numberOfFilesUploaded = useAtomValue(numberOfFilesUploadedAtom);
   const progress = useAtomValue(progressPercentageAtom);
 
   return (
-    <div className="absolute inset-0 z-50 flex h-full flex-1 flex-col">
+    <div {...props} ref={ref} className="absolute inset-0 z-50 flex h-full flex-1 flex-col">
       <div className="relative flex flex-1 flex-col bg-slate-50 p-16">
         <div className="absolute left-0 top-0 hidden pl-4 pt-4 sm:block">
           <button
@@ -81,4 +82,4 @@ export const CarouselLoaderSkeleton = () => {
       </div>
     </div>
   );
-};
+});

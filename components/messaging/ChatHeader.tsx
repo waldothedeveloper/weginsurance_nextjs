@@ -3,7 +3,7 @@ import {
   EllipsisVerticalIcon,
 } from "@heroicons/react/20/solid";
 import { FaUserEdit, FaUserMinus, } from "react-icons/fa";
-import { Menu, Transition } from "@headlessui/react";
+import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
 import { pdfDataAtom, selectedUserAtom } from "@/lib/state/atoms";
 
 import { BsFiletypePdf } from "react-icons/bs";
@@ -56,10 +56,10 @@ export const ChatHeader = () => {
         <div className="flex flex-shrink-0 self-center">
           <Menu as="div" className="relative inline-block text-left">
             <div>
-              <Menu.Button className="-m-2 flex items-center rounded-full p-2 text-slate-400 hover:text-slate-600">
+              <MenuButton className="-m-2 flex items-center rounded-full p-2 text-slate-400 hover:text-slate-600">
                 <span className="sr-only">Open options</span>
                 <EllipsisVerticalIcon className="h-5 w-5" aria-hidden="true" />
-              </Menu.Button>
+              </MenuButton>
             </div>
 
             <Transition
@@ -71,9 +71,9 @@ export const ChatHeader = () => {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div className="py-1">
-                  <Menu.Item>
+                  <MenuItem>
                     {({ active }) => (
                       <button
                         className={classNames(
@@ -90,8 +90,8 @@ export const ChatHeader = () => {
                         <span>Actualizar Usuario</span>
                       </button>
                     )}
-                  </Menu.Item>
-                  <Menu.Item>
+                  </MenuItem>
+                  <MenuItem>
                     {({ active }) => (
                       <button
                         onClick={initPdfModal}
@@ -109,8 +109,8 @@ export const ChatHeader = () => {
                         <span>Documentos PDF</span>
                       </button>
                     )}
-                  </Menu.Item>
-                  <Menu.Item>
+                  </MenuItem>
+                  <MenuItem>
                     {({ active }) => (
                       <button
                         className={classNames(
@@ -127,9 +127,9 @@ export const ChatHeader = () => {
                         <span>Eliminar Usuario</span>
                       </button>
                     )}
-                  </Menu.Item>
+                  </MenuItem>
                 </div>
-              </Menu.Items>
+              </MenuItems>
             </Transition>
           </Menu>
         </div>

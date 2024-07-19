@@ -15,12 +15,19 @@ type ConversationProps = {
   errorFromTwilioAPI: Error | null | unknown;
   saveDateHeadersError: Error | null | unknown;
   messages: VirtualizedConversationType | null;
-}
+};
 
-// 
-export const Conversation = ({ messages, isLoading, error, saveDateHeadersError, isLoadingMessagesFromTwilioAPI, errorFromTwilioAPI, isSavingMessagesToDb, errorSavingMessagesToDb }: ConversationProps) => {
-
-
+//
+export const Conversation = ({
+  messages,
+  isLoading,
+  error,
+  saveDateHeadersError,
+  isLoadingMessagesFromTwilioAPI,
+  errorFromTwilioAPI,
+  isSavingMessagesToDb,
+  errorSavingMessagesToDb,
+}: ConversationProps) => {
   if (isLoading || isLoadingMessagesFromTwilioAPI || isSavingMessagesToDb) {
     return (
       <div className="grid h-screen place-items-center overflow-hidden">
@@ -29,10 +36,22 @@ export const Conversation = ({ messages, isLoading, error, saveDateHeadersError,
     );
   }
 
-  if (error || saveDateHeadersError || errorFromTwilioAPI || errorSavingMessagesToDb) {
+  if (
+    error ||
+    saveDateHeadersError ||
+    errorFromTwilioAPI ||
+    errorSavingMessagesToDb
+  ) {
     return (
       <div className="grid h-screen place-items-center overflow-hidden">
-        <ErrorComponent error_message={error || saveDateHeadersError || errorFromTwilioAPI || errorSavingMessagesToDb} />
+        <ErrorComponent
+          error_message={
+            error ||
+            saveDateHeadersError ||
+            errorFromTwilioAPI ||
+            errorSavingMessagesToDb
+          }
+        />
       </div>
     );
   }
@@ -55,15 +74,12 @@ export const Conversation = ({ messages, isLoading, error, saveDateHeadersError,
     );
   }
 
-
   return (
     <div className="relative flex h-screen flex-1 flex-col pb-6">
-      <>
-        <ChatHeader />
-        <CarouselWrapper />
-        <VirtualizedConversation messages={messages} />
-        <EditorWrapper />
-      </>
+      <ChatHeader />
+      <CarouselWrapper />
+      <VirtualizedConversation messages={messages} />
+      <EditorWrapper />
     </div>
   );
 };
