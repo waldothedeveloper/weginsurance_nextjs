@@ -1,3 +1,5 @@
+import { openResourceUploadModalAtom, uploadedFilesAtom } from "@/lib/state/atoms";
+
 import { CarouselLoaderSkeleton } from "@/components/messaging/carousel/CarouselLoaderSkeleton";
 import { CarouselSlider } from "@/components/messaging/carousel/CarouselSlider";
 import { EditorWithAttachments } from "@/components/messaging/EditorWithAttachments";
@@ -10,10 +12,6 @@ import { calculateFileSize } from "@/utils/calculateFileSize";
 import { currentSelectedFile } from "@/utils/currentSelectedFile";
 import { getFileExtensionFromName } from "@/utils/getFileExtensionFromName";
 import { getNameFromFile } from "@/utils/getNameFromFile";
-import {
-  openResourceUploadModalAtom,
-} from "@/lib/state/atoms";
-import { uploadedFilesAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
 import { useDeleteAllUploadedFiles } from "@/hooks/fileUploader/useDeleteAllUploadedFiles";
 import { useEditorWithImages } from "@/hooks/messaging/useEditorWithImages";
@@ -21,24 +19,17 @@ import { useSelectedUploadedFile } from "@/hooks/fileUploader/useSelectedUploade
 import { useSendOutboundMessage } from "@/hooks/messaging/useSendOutboundMessage";
 
 export const CarouselWrapper = () => {
-  const openCloseResourceUploadModal = useAtomValue(openResourceUploadModalAtom);
+  const openCloseResourceUploadModal = useAtomValue(
+    openResourceUploadModalAtom
+  );
   const editorWithImages = useEditorWithImages();
   const uploadedResources = useAtomValue(uploadedFilesAtom);
   const handleDeleteAllFiles = useDeleteAllUploadedFiles();
   const { handleSelectedFile, selectedFile } = useSelectedUploadedFile();
   const { handleSubmitMessage } = useSendOutboundMessage();
 
-
   return (
-    <Transition
-      show={openCloseResourceUploadModal}
-      enter="transition-opacity duration-75"
-      enterFrom="opacity-0"
-      enterTo="opacity-100"
-      leave="transition-opacity duration-150"
-      leaveFrom="opacity-100"
-      leaveTo="opacity-0"
-    >
+    <Transition show={openCloseResourceUploadModal}>
       {uploadedResources.length > 0 ? (
         <form
           onSubmit={(e) => handleSubmitMessage(e, editorWithImages)}
@@ -102,7 +93,9 @@ export const CarouselWrapper = () => {
             />
           </div>
         </form>
-      ) : (<CarouselLoaderSkeleton />)}
+      ) : (
+        <CarouselLoaderSkeleton />
+      )}
     </Transition>
   );
 };
