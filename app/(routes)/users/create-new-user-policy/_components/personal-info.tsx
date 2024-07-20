@@ -1,4 +1,10 @@
-export const PersonalInfo = () => {
+import { UseFormRegister } from "react-hook-form";
+
+export default function PersonalInfo({
+  register,
+}: {
+  register: UseFormRegister<UserPolicyInputs>;
+}) {
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -14,22 +20,19 @@ export const PersonalInfo = () => {
         </div>
         <div className="mt-5 md:mt-0 md:col-span-2">
           <div className="px-4 py-5 bg-gray-50 sm:p-6 rounded-md shadow-lg">
-
             <div className="grid grid-cols-6 gap-6">
               {/* Acepta Cobertura Medica SI O NO */}
               <div className="col-span-6 sm:col-span-6">
                 <label
-                  htmlFor="accepts-insurance"
+                  htmlFor="accepts_insurance"
                   className="block text-sm font-medium text-gray-800"
                 >
                   Acepta Cobertura Medica
                   <span className="text-red-500 ">{` *`}</span>
                 </label>
                 <select
-                  required
-                  id="accepts-insurance"
-                  name="accepts-insurance"
-                  autoComplete="accepts-insurance"
+                  id="accepts_insurance"
+                  {...register("accepts_insurance", { required: true })}
                   className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 >
                   <option>Seleccione una opcion</option>
@@ -47,12 +50,11 @@ export const PersonalInfo = () => {
                   <span className="text-red-500 ">{` *`}</span>
                 </label>
                 <input
-                  placeholder="Jose"
-                  type="text"
-                  name="firstname"
                   id="firstname"
+                  {...register("firstname", { required: true })}
+                  type="text"
+                  placeholder="Jose"
                   autoComplete="given-name"
-                  required
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
@@ -64,10 +66,10 @@ export const PersonalInfo = () => {
                   Segundo Nombre
                 </label>
                 <input
-                  placeholder="Julian"
-                  type="text"
-                  name="second_name"
                   id="second_name"
+                  {...register("second_name")}
+                  type="text"
+                  placeholder="Julian"
                   autoComplete="second-name"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
@@ -82,11 +84,10 @@ export const PersonalInfo = () => {
                   <span className="text-red-500 ">{` *`}</span>
                 </label>
                 <input
-                  required
-                  placeholder="Marti"
-                  type="text"
-                  name="lastname"
                   id="lastname"
+                  {...register("lastname", { required: true })}
+                  type="text"
+                  placeholder="Marti"
                   autoComplete="family-name"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
@@ -100,13 +101,54 @@ export const PersonalInfo = () => {
                   Segundo Apellido
                 </label>
                 <input
-                  placeholder="Perez"
+                  {...register("second_lastname")}
                   type="text"
-                  name="second_lastname"
+                  placeholder="Perez"
                   id="second_lastname"
                   autoComplete="family-name"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
+              </div>
+
+              <div className="col-span-6 sm:col-span-4">
+                <label
+                  htmlFor="civil-status"
+                  className="block text-sm font-medium text-gray-800"
+                >
+                  Estado Civil
+                </label>
+                <select
+                  id="civil_status"
+                  {...register("civil_status")}
+                  autoComplete="civil_status"
+                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                >
+                  <option>Selecione una opcion</option>
+                  <option>Soltero</option>
+                  <option>Casado</option>
+                  <option>Divorciado</option>
+                  <option>Viudo(a)</option>
+                  <option>Separado(a)</option>
+                </select>
+              </div>
+              <div className="col-span-6 sm:col-span-6">
+                <label
+                  htmlFor="genre"
+                  className="block text-sm font-medium text-gray-800"
+                >
+                  Genero
+                  <span className="text-red-500 ">{` *`}</span>
+                </label>
+                <select
+                  id="genre"
+                  {...register("genre", { required: true })}
+                  autoComplete="genre"
+                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                >
+                  <option>Selecione una opcion</option>
+                  <option>Masculino</option>
+                  <option>Femenino</option>
+                </select>
               </div>
 
               <div className="col-span-6 sm:col-span-3">
@@ -117,10 +159,10 @@ export const PersonalInfo = () => {
                   Correo Electronico
                 </label>
                 <input
-                  placeholder="ejemplo@prueba.com"
-                  type="email"
-                  name="email"
                   id="email"
+                  {...register("email")}
+                  type="email"
+                  placeholder="ejemplo@prueba.com"
                   autoComplete="email"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
@@ -134,67 +176,66 @@ export const PersonalInfo = () => {
                   Numero de Seguro Social
                 </label>
                 <input
-                  placeholder="111-11-1111"
-                  type="number"
-                  name="ssn"
                   id="ssn"
+                  {...register("ssn")}
+                  type="number"
+                  placeholder="111-11-1111"
                   autoComplete="ssn"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
               <div className="col-span-6 sm:col-span-3">
                 <label
-                  htmlFor="fecha-de-nacimiento"
+                  htmlFor="birthdate"
                   className="block text-sm font-medium text-gray-800"
                 >
                   Fecha de nacimiento
                 </label>
                 <input
-
+                  id="birthdate"
+                  {...register("birthdate")}
                   type="date"
-                  name="fecha_de_inscripcion"
-                  id="fecha-de-nacimiento"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500  block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
               {/* Contact info such as tel & email */}
               <div className="col-span-6 sm:col-span-3">
                 <label
-                  htmlFor="number"
+                  htmlFor="phone"
                   className="block text-sm font-medium text-gray-800"
                 >
                   Telefono
                   <span className="text-red-500 ">{` *`}</span>
                 </label>
                 <input
-                  required
+                  id="phone"
+                  {...register("phone", { required: true })}
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   placeholder="+1-786-521-3075"
-                  type="number"
-                  name="number"
-                  id="number"
-                  autoComplete="tel"
+                  autoComplete="tel-national"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
               {/* Age auto calc after birth date, READ-ONLY */}
               <div className="col-span-6 sm:col-span-4">
                 <label
-                  htmlFor="edad"
+                  htmlFor="age"
                   className="block text-sm font-medium text-gray-800"
                 >
                   Edad
                 </label>
                 <input
+                  id="age"
+                  {...register("age")}
                   readOnly
                   placeholder="basado en la fecha de nacimiento..."
                   type="number"
-                  name="edad"
-                  id="edad"
                   autoComplete="age"
                   className="mt-1 focus:outline-none focus:border-none block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-gray-400 bg-gray-100"
                 />
               </div>
-
 
               {/* Address */}
               <div className="col-span-6 sm:col-span-3">
@@ -205,11 +246,11 @@ export const PersonalInfo = () => {
                   Pais / Region
                 </label>
                 <input
+                  id="country"
+                  {...register("country")}
                   value="United States"
                   readOnly
                   type="text"
-                  name="country"
-                  id="country"
                   autoComplete="country"
                   className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-100 focus:outline-none focus:border-none text-gray-400"
                 />
@@ -217,15 +258,15 @@ export const PersonalInfo = () => {
 
               <div className="col-span-6">
                 <label
-                  htmlFor="street-address"
+                  htmlFor="street_address"
                   className="block text-sm font-medium text-gray-800"
                 >
                   Direccion (calle, etc)
                 </label>
                 <input
+                  id="street_address"
+                  {...register("street_address")}
                   type="text"
-                  name="street-address"
-                  id="street-address"
                   autoComplete="street-address"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
@@ -239,9 +280,9 @@ export const PersonalInfo = () => {
                   Ciudad
                 </label>
                 <input
-                  type="text"
-                  name="city"
                   id="city"
+                  {...register("city")}
+                  type="text"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
@@ -254,24 +295,24 @@ export const PersonalInfo = () => {
                   Estado / Provincia
                 </label>
                 <input
-                  type="text"
-                  name="state"
                   id="state"
+                  {...register("state")}
+                  type="text"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
 
               <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                 <label
-                  htmlFor="postal-code"
+                  htmlFor="postal_code"
                   className="block text-sm font-medium text-gray-800"
                 >
                   ZIP / Codigo Postal
                 </label>
                 <input
+                  id="postal_code"
+                  {...register("postal_code")}
                   type="text"
-                  name="postal-code"
-                  id="postal-code"
                   autoComplete="postal-code"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
@@ -281,5 +322,5 @@ export const PersonalInfo = () => {
         </div>
       </div>
     </div>
-  )
+  );
 }
