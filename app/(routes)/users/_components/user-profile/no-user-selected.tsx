@@ -51,7 +51,7 @@ export default function NoUserSelected() {
               </div>
               <div>
                 <h3 className="text-sm font-medium text-gray-900">
-                  <Link href="/users/create-user" className="focus:outline-none">
+                  <Link href="/users/create-new-user-policy" className="focus:outline-none">
                     <span aria-hidden="true" className="absolute inset-0" />
                     <span>{item.title}</span>
                     <span aria-hidden="true"> &rarr;</span>

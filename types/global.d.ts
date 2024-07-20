@@ -58,4 +58,40 @@ declare global {
   }
 
   type Directory = Record<string, DirectoryEntry[]>;
+
+  interface CreateNewUserPolicyMultiStepForm {
+    id: number;
+    tag: string;
+    status: string;
+    icon: React.ReactNode;
+    title: string;
+    description: string;
+    data: Record<string, unknown>;
+  }
+
+  interface CreateNewUserPolicyContextType {
+    steps: CreateUserMultiStepForm;
+    handleNextStep: () => void;
+    handlePreviousStep: () => void;
+  }
+
+  interface UserPolicyInputs {
+    accepts_insurance: boolean;
+    firstname: string;
+    second_name: string;
+    lastname: string;
+    second_lastname: string;
+    civil_status: string;
+    genre: string;
+    email: string;
+    ssn: number;
+    birthdate: string;
+    phone: string;
+    age: number;
+    country: string;
+    street_address: string;
+    city: string;
+    state: string;
+    postal_code: string;
+  }
 }
