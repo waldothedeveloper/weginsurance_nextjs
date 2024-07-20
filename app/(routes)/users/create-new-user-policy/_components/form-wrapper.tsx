@@ -35,7 +35,6 @@ export const FormWrapper = () => {
     <>
       {/* <CreateUserHeader /> */}
       <HeadStepper currStep={currStep} handlePreviousStep={handlePreviousStep} handleNextStep={handleSubmit(onSubmit)} />
-
       <div className="border-t border-gray-100 mt-6 flex flex-col justify-center items-start size-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 lg:py-12">
         <form onSubmit={handleSubmit(onSubmit)}>
           <PersonalInfo register={register} />
@@ -63,7 +62,7 @@ export const FormWrapper = () => {
               type="button"
               className="inline-flex justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
             >
-              Siguiente
+              {currStep?.id === 3 ? "Finalizar" : "Siguiente"}
             </button>
           </div>
           <Stepper steps={steps} />
