@@ -6,14 +6,11 @@ export const SignInComponent = () => {
       <SignIn
         appearance={{
           elements: {
-            logoImage: "rounded-full h-20",
+            logoImage: "rounded-full size-12",
             footer: "hidden",
-            formButtonPrimary: "bg-sky-700 hover:bg-sky-500 py-4",
           },
         }}
         path="/sign-in"
-        routing="path"
-        signUpUrl="/sign-up"
       />
     </div>
   );

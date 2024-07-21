@@ -1,4 +1,0 @@
-{
-  "extends": ["eslint:recommended", "next/core-web-vitals", "next", "prettier"],
-  "env": { "es6": true, "jest": true }
-}

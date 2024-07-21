@@ -14,7 +14,6 @@ export default function App({ Component, pageProps }: AppProps) {
       </ClerkProvider>
       <Analytics />
       <SpeedInsights />
-
     </>
   );
 }

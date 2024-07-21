@@ -1,26 +1,16 @@
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
-// import { Blog } from "@/components/landingPageSections/Blog"
-import { Dialog } from '@headlessui/react'
-import { Footer } from "@/components/landingPageSections/Footer"
-import { Hero } from "@/components/landingPageSections/Hero"
+import { Dialog } from '@headlessui/react';
+import { Footer } from "@/components/landingPageSections/Footer";
+import { Hero } from "@/components/landingPageSections/Hero";
 import Image from "next/image";
-import { ImageBanner } from "@/components/landingPageSections/ImageBanner"
+import { ImageBanner } from "@/components/landingPageSections/ImageBanner";
 import Link from "next/link";
-import { LogoCloud } from '@/components/landingPageSections/LogoCloud'
+import { LogoCloud } from '@/components/landingPageSections/LogoCloud';
 import { Mission } from '@/components/landingPageSections/Mission';
-import React from 'react'
 import { Team } from '@/components/landingPageSections/Team';
 import { Values } from '@/components/landingPageSections/Values';
-import { useState } from 'react'
-
-// const navigation = [
-//   { name: 'Product', href: '#' },
-//   { name: 'Features', href: '#' },
-//   { name: 'Resources', href: '#' },
-//   { name: 'Company', href: '#' },
-// ]
-
+import { useState } from 'react';
 
 export const AppRoot = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
