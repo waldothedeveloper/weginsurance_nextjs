@@ -10,7 +10,7 @@ const isPublicRoute = createRouteMatcher([
   "/monitoring(.*)",
 ]);
 
-export default clerkMiddleware(async (auth, request) => {
+export default clerkMiddleware((auth, request) => {
   if (!auth().userId && !isPublicRoute(request)) {
     return auth().redirectToSignIn();
   }
