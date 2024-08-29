@@ -55,7 +55,7 @@
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.53.0",
     "react-icons": "^4.10.1",
-    "react-instantsearch-hooks-web": "^6.47.3",
+    "react-instantsearch": "^7.0.0",
     "server-only": "^0.0.1",
     "sharp": "^0.32.5",
     "swr": "^2.2.5",
