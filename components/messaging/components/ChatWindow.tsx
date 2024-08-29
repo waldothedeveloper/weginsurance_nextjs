@@ -5,7 +5,7 @@ import { ChatMessage } from "@/components/messaging/components/ChatMessage";
 import { TimeDivider } from "@/components/messaging/TimeDivider";
 
 type ChatWindowProps = {
-  items: VirtualItem<Element>[];
+  items: VirtualItem[];
   virtualizer: Virtualizer<Element, Element>;
   messages: VirtualizedConversationType | null
 };
