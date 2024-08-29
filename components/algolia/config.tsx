@@ -1,7 +1,6 @@
 import { ReactNode, useEffect } from "react";
 
-import { InstantSearch } from "react-instantsearch-hooks-web";
-import React from "react";
+import { InstantSearch } from "react-instantsearch";
 import algoliasearch from "algoliasearch/lite";
 
 const searchClient = algoliasearch(

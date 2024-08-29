@@ -1,5 +1,5 @@
-import React from 'react'
-import { useInstantSearch } from 'react-instantsearch-hooks-web';
+import React from 'react';
+import { useInstantSearch } from 'react-instantsearch';
 
 type EmptyQueryBoundaryProps = { children: React.ReactNode; fallback: React.ReactNode | null }
 

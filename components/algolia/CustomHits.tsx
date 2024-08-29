@@ -2,13 +2,13 @@ import { Atom, useAtomValue, useSetAtom } from "jotai";
 import { FakeUser, RealUser } from "@/interfaces/index";
 import { selectedUserAtom, userPhoneAtom } from "@/lib/state/atoms";
 
-import React from 'react'
+import React from 'react';
 import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
 import { normalizeString } from "@/utils/normalizeString";
-import { useHits } from 'react-instantsearch-hooks-web';
+import { useHits } from 'react-instantsearch';
 
 // eslint-disable-next-line no-unused-vars
 export const CustomHits = ({ isProcessingInfo }: { isProcessingInfo: boolean }) => {

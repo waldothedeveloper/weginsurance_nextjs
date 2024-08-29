@@ -1,7 +1,7 @@
-import { UseSearchBoxProps, useSearchBox } from 'react-instantsearch-hooks-web';
+import { UseSearchBoxProps, useSearchBox } from 'react-instantsearch';
 
-import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
-import React from 'react'
+import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+import React from 'react';
 
 // 
 export const CustomSearchBox = (props: UseSearchBoxProps) => {
