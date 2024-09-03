@@ -57,24 +57,6 @@ declare global {
     annual_income: string;
   }
 
-  type Directory = Record<string, DirectoryEntry[]>;
-
-  interface CreateNewUserPolicyMultiStepForm {
-    id: number;
-    tag: string;
-    status: string;
-    icon: React.ReactNode;
-    title: string;
-    description: string;
-    data: Record<string, unknown>;
-  }
-
-  interface CreateNewUserPolicyContextType {
-    steps: CreateUserMultiStepForm;
-    handleNextStep: () => void;
-    handlePreviousStep: () => void;
-  }
-
   interface UserPolicyInputs {
     accepts_insurance: boolean;
     firstname: string;
@@ -93,5 +75,26 @@ declare global {
     city: string;
     state: string;
     postal_code: string;
+  }
+
+  type Directory = Record<string, DirectoryEntry[]>;
+
+  interface CreateNewUserPolicyMultiStepForm {
+    id: number;
+    tag: string;
+    status: string;
+    icon: React.ReactNode;
+    title: string;
+    description: string;
+    data: UserPolicyInputs | {};
+  }
+
+  interface CreateNewUserPolicyContextType {
+    steps: CreateNewUserPolicyMultiStepForm[];
+    dispatchSteps: React.Dispatch<{
+      type: string;
+      data: UserPolicyInputs | {};
+      stepNumber: number;
+    }>;
   }
 }
