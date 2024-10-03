@@ -17,7 +17,7 @@ export async function signInWithCustomClerkToken() {
 
   try {
     const res = await signInWithCustomToken(auth, token || "");
-    console.log("res firebase custom token sign in?: ", res);
+    // console.log("res firebase custom token sign in?: ", res);
   } catch (error) {
     console.error(
       "Error signing in with custom token from Clerk in Firebase",

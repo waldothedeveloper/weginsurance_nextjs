@@ -23,7 +23,7 @@ export async function getUsers(db: any) {
 
 export function getUsersSnapshot(cb: (results: any) => void) {
   if (typeof cb !== "function") {
-    console.log("Error: The callback parameter is not a function");
+    // console.log("Error: The callback parameter is not a function");
     return;
   }
   // Large_User_DB

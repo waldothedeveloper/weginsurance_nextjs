@@ -45,7 +45,7 @@ const stepsData: CreateNewUserPolicyMultiStepForm[] = [
 
 const additionalDependants = (id: number) => {
   return {
-    id: id,
+    id,
     tag: "dependientes adicionales",
     status: "current",
     icon: <TbUsersGroup className="rounded-full shadow-inner size-12" />,
@@ -58,7 +58,7 @@ const additionalDependants = (id: number) => {
 
 function reducer(
   draft: CreateNewUserPolicyMultiStepForm[],
-  action: { type: string; data: UserPolicyInputs | {}; stepNumber: number }
+  action: { type: string; data: UserPolicyInputs | object; stepNumber: number }
 ) {
   switch (action.type) {
     case "previous":

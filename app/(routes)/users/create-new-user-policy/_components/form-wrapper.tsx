@@ -21,7 +21,7 @@ export const FormWrapper = () => {
   const [addMoreDependants, setAddMoreDependants] = useState(false);
   const [userEventDispatch, setUserEventDispatch] = useState<string>("");
   const { steps, dispatchSteps } = useCreateUserPolicy();
-  console.log("steps: ", steps);
+  // console.log("steps: ", steps);
   const currStep = steps.find(
     (step: CreateNewUserPolicyMultiStepForm) => step.status === "current"
   )!;
@@ -48,7 +48,7 @@ export const FormWrapper = () => {
 
   const onSubmit: SubmitHandler<UserPolicyInputs> = (data) => {
     if (currStep.id === steps.length - 1 && userEventDispatch !== "previous") {
-      console.log(`is this the last step? ${currStep.id === steps.length}`);
+      // console.log(`is this the last step? ${currStep.id === steps.length}`);
       setOpenAdditionalDependantDialog(true);
     } else {
       dispatchSteps({
