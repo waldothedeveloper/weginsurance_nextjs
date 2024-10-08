@@ -1,9 +1,10 @@
-import { UseFormRegister } from "react-hook-form";
-
+import { Control, Controller, UseFormRegister } from "react-hook-form";
 export default function PersonalInfo({
   register,
+  control,
 }: {
   register: UseFormRegister<UserPolicyInputs>;
+  control: Control<UserPolicyInputs, any>;
 }) {
   return (
     <div className="mt-10 sm:mt-0">
@@ -23,22 +24,33 @@ export default function PersonalInfo({
             <div className="grid grid-cols-6 gap-6">
               {/* Acepta Cobertura Medica SI O NO */}
               <div className="col-span-6 sm:col-span-6">
-                <label
-                  htmlFor="accepts_insurance"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Acepta Cobertura Medica
-                  <span className="text-red-500 ">{` *`}</span>
-                </label>
-                <select
-                  id="accepts_insurance"
-                  {...register("accepts_insurance", { required: true })}
-                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                >
-                  <option>Seleccione una opcion</option>
-                  <option>Si</option>
-                  <option>No</option>
-                </select>
+                <Controller
+                  control={control}
+                  rules={{ required: true }}
+                  name="accepts_insurance"
+                  render={({ field: { onChange, onBlur, value, ref } }) => (
+                    <>
+                      <label
+                        htmlFor="accepts_insurance"
+                        className="block text-sm font-medium text-gray-800"
+                      >
+                        Acepta Cobertura Medica
+                        <span className="text-red-500 ">{` *`}</span>
+                      </label>
+                      <select
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        ref={ref}
+                        value={value ?? "Seleccione una opcion"}
+                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      >
+                        <option>Seleccione una opcion</option>
+                        <option>Si</option>
+                        <option>No</option>
+                      </select>
+                    </>
+                  )}
+                />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
@@ -111,44 +123,66 @@ export default function PersonalInfo({
               </div>
 
               <div className="col-span-6 sm:col-span-4">
-                <label
-                  htmlFor="civil-status"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Estado Civil
-                </label>
-                <select
-                  id="civil_status"
-                  {...register("civil_status")}
-                  autoComplete="civil_status"
-                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                >
-                  <option>Selecione una opcion</option>
-                  <option>Soltero</option>
-                  <option>Casado</option>
-                  <option>Divorciado</option>
-                  <option>Viudo(a)</option>
-                  <option>Separado(a)</option>
-                </select>
+                <Controller
+                  control={control}
+                  rules={{ required: true }}
+                  name="civil_status"
+                  render={({ field: { onChange, onBlur, value, ref } }) => (
+                    <>
+                      <label
+                        htmlFor="civil-status"
+                        className="block text-sm font-medium text-gray-800"
+                      >
+                        Estado Civil
+                      </label>
+                      <select
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        ref={ref}
+                        value={value ?? "Seleccione una opcion"}
+                        autoComplete="civil_status"
+                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      >
+                        <option>Selecione una opcion</option>
+                        <option>Soltero</option>
+                        <option>Casado</option>
+                        <option>Divorciado</option>
+                        <option>Viudo(a)</option>
+                        <option>Separado(a)</option>
+                      </select>
+                    </>
+                  )}
+                />
               </div>
               <div className="col-span-6 sm:col-span-6">
-                <label
-                  htmlFor="genre"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Genero
-                  <span className="text-red-500 ">{` *`}</span>
-                </label>
-                <select
-                  id="genre"
-                  {...register("genre", { required: true })}
-                  autoComplete="genre"
-                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                >
-                  <option>Selecione una opcion</option>
-                  <option>Masculino</option>
-                  <option>Femenino</option>
-                </select>
+                <Controller
+                  control={control}
+                  rules={{ required: true }}
+                  name="genre"
+                  render={({ field: { onChange, onBlur, value, ref } }) => (
+                    <>
+                      <label
+                        htmlFor="genre"
+                        className="block text-sm font-medium text-gray-800"
+                      >
+                        Genero
+                        <span className="text-red-500 ">{` *`}</span>
+                      </label>
+                      <select
+                        id="genre"
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        ref={ref}
+                        value={value ?? "Seleccione una opcion"}
+                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      >
+                        <option>Selecione una opcion</option>
+                        <option>Masculino</option>
+                        <option>Femenino</option>
+                      </select>
+                    </>
+                  )}
+                />
               </div>
 
               <div className="col-span-6 sm:col-span-3">

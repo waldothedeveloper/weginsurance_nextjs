@@ -58,13 +58,18 @@ declare global {
   }
 
   interface UserPolicyInputs {
-    accepts_insurance: boolean;
+    accepts_insurance: "Si" | "No";
     firstname: string;
     second_name: string;
     lastname: string;
     second_lastname: string;
-    civil_status: string;
-    genre: string;
+    civil_status:
+      | "Soltero"
+      | "Casado"
+      | "Divorciado"
+      | "Viudo(a)"
+      | "Separado(a)";
+    genre: "Masculino" | "Femenino";
     email: string;
     ssn: number;
     birthdate: string;
@@ -75,6 +80,25 @@ declare global {
     city: string;
     state: string;
     postal_code: string;
+    legal_status:
+      | "Residente"
+      | "Ciudadano"
+      | "Permiso de Trabajo"
+      | "Huellas"
+      | "En Tramites"
+      | "Sin Estatus"
+      | string;
+    legal_status_notes: string;
+    bank_account: string;
+    routing_number: number;
+    bank_account_number: number;
+    bank_account_number_confirmation: number;
+    payment_method_credit: boolean;
+    payment_method_debit: boolean;
+    card_number: number;
+    card_holder_fullname: string;
+    card_expiration_date: string;
+    card_cvv: number;
   }
 
   type Directory = Record<string, DirectoryEntry[]>;
