@@ -1,4 +1,9 @@
-export const BankInfo = () => {
+import { UseFormRegister } from "react-hook-form";
+export const BankInfo = ({
+  register,
+}: {
+  register: UseFormRegister<UserPolicyInputs>;
+}) => {
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -25,63 +30,68 @@ export const BankInfo = () => {
                 <div className="grid grid-cols-6 gap-6">
                   <div className="col-span-6 sm:col-span-3">
                     <label
-                      htmlFor="cuenta_de_banco"
+                      htmlFor="bank_account"
                       className="block text-sm font-medium text-gray-800"
                     >
                       Cuenta de Banco
                     </label>
                     <input
+                      {...register("bank_account")}
                       placeholder="Chase"
                       type="text"
-                      name="cuenta_de_banco"
-                      id="cuenta_de_banco"
+                      name="bank_account"
+                      id="bank_account"
                       className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
 
                   <div className="col-span-6 sm:col-span-3">
                     <label
-                      htmlFor="numero_de_ruta"
+                      htmlFor="routing_number"
                       className="block text-sm font-medium text-gray-800"
                     >
                       Numero de Ruta
                     </label>
                     <input
+                      {...register("routing_number")}
                       placeholder="3530111333300000"
                       type="number"
-                      name="numero_de_ruta"
-                      id="numero_de_ruta"
+                      name="routing_number"
+                      id="routing_number"
                       className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
                   {/* Account number */}
                   <div className="col-span-6 sm:col-span-3">
                     <label
-                      htmlFor="numero_de_cuenta"
+                      htmlFor="bank_account_number"
                       className="block text-sm font-medium text-gray-800"
                     >
                       Numero de Cuenta
                     </label>
                     <input
+                      {...register("bank_account_number")}
                       placeholder="091000019"
                       type="number"
-                      name="numero_de_cuenta"
-                      id="numero_de_cuenta"
+                      name="bank_account_number"
+                      id="bank_account_number"
                       className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
                     <label
-                      htmlFor="numero_de_cuenta_2"
+                      htmlFor="bank_account_number_confirmation"
                       className="block text-sm font-medium text-gray-800"
                     >
-                      Numero de Cuenta <span className="text-gray-400"> (debe coincidir)</span>
+                      Numero de Cuenta{" "}
+                      <span className="text-gray-400"> (debe coincidir)</span>
                     </label>
                     <input
+                      {...register("bank_account_number_confirmation")}
                       placeholder="091000019"
                       type="number"
-                      name="numero_de_cuenta_2"
-                      id="numero_de_cuenta_2"
+                      name="bank_account_number_confirmation"
+                      id="bank_account_number_confirmation"
                       className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
@@ -93,14 +103,15 @@ export const BankInfo = () => {
                 <div className="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-10">
                   <div className="flex items-center">
                     <input
-                      name="metodo_de_pago"
+                      {...register("payment_method_credit")}
+                      name="payment_method_credit"
                       value="Credito"
-                      id="Credito"
+                      id="payment_method_credit"
                       type="radio"
                       className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300"
                     />
                     <label
-                      htmlFor="Credito"
+                      htmlFor="payment_method_credit"
                       className="ml-3 block text-sm font-medium text-gray-800"
                     >
                       Credito
@@ -108,14 +119,15 @@ export const BankInfo = () => {
                   </div>
                   <div className="flex items-center">
                     <input
-                      name="metodo_de_pago"
+                      {...register("payment_method_debit")}
+                      name="payment_method_debit"
                       value="Debito"
-                      id="Debito"
+                      id="payment_method_debit"
                       type="radio"
                       className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
                     />
                     <label
-                      htmlFor="Debito"
+                      htmlFor="payment_method_debit"
                       className="ml-3 block text-sm font-medium text-gray-800"
                     >
                       Debito
@@ -123,7 +135,7 @@ export const BankInfo = () => {
                   </div>
                 </div>
               </fieldset>
-              {/* credit/debit card details */}
+
               {/* credit/debit card details */}
               <div className="mt-6 grid grid-cols-6 gap-y-6 gap-x-4">
                 <div className="col-span-6 sm:col-span-3">
@@ -133,27 +145,29 @@ export const BankInfo = () => {
                     </legend>
                     <div className="mt-1 bg-white rounded-md shadow-sm -space-y-px">
                       <div>
-                        <label htmlFor="card-number" className="sr-only">
+                        <label htmlFor="card_number" className="sr-only">
                           Card number
                         </label>
                         <input
-                          name="numero_de_tarjeta"
+                          {...register("card_number")}
+                          name="card_number"
                           type="text"
-                          id="card-number"
+                          id="card_number"
                           className="focus:ring-blue-500 focus:border-blue-500 relative block w-full rounded-none rounded-t-md bg-transparent focus:z-10 sm:text-sm border-gray-300"
                           placeholder="4242-4242-4242"
                         />
                       </div>
                       {/* titular de la tarjeta */}
                       <div>
-                        <label htmlFor="card-number" className="sr-only">
+                        <label htmlFor="card_holder_name" className="sr-only">
                           Cardholder full name
                         </label>
                         <input
-                          name="nombre_del_titular"
-                          placeholder="William Gola "
+                          {...register("card_holder_fullname")}
+                          name="card_holder_name"
+                          placeholder="William Gola"
                           type="text"
-                          id="nombre_del_titular"
+                          id="card_holder_name"
                           autoComplete="cc-name"
                           className="focus:ring-blue-500 focus:border-blue-500 relative block w-full bg-transparent focus:z-10 sm:text-sm border-gray-300"
                         />
@@ -162,26 +176,28 @@ export const BankInfo = () => {
                       <div className="flex -space-x-px">
                         <div className="w-1/2 flex-1 min-w-0">
                           <label
-                            htmlFor="card-expiration-date"
+                            htmlFor="card_expiration_date"
                             className="sr-only"
                           >
                             Expiration date
                           </label>
                           <input
+                            {...register("card_expiration_date")}
                             type="text"
-                            name="fecha_de_expiracion"
-                            id="card-expiration-date"
+                            name="card_expiration_date"
+                            id="card_expiration_date"
                             className="focus:ring-blue-500 focus:border-blue-500 relative block w-full rounded-none rounded-bl-md bg-transparent focus:z-10 sm:text-sm border-gray-300"
                             placeholder="MM / YY"
                           />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <label htmlFor="cvc" className="sr-only">
+                          <label htmlFor="card_cvv" className="sr-only">
                             CVC
                           </label>
                           <input
+                            {...register("card_cvv")}
                             type="number"
-                            id="cvc"
+                            id="card_cvv"
                             className="focus:ring-blue-500 focus:border-blue-500 relative block w-full rounded-none rounded-br-md bg-transparent focus:z-10 sm:text-sm border-gray-300"
                             placeholder="CVC"
                           />

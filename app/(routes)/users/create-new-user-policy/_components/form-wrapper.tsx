@@ -1,19 +1,19 @@
 "use client";
 
-import { SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
+import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
 import { AddMoreDependantsDialog } from "./add-more-dependants-dialog";
 import { BankInfo } from "./bank-info";
 import { Divider } from "./divider";
+import { Stepper } from "./footer-stepper";
 import { HeadStepper } from "./head-stepper";
 import { InsuranceInfo } from "./insurance-info";
 import { LegalStatus } from "./legal-status";
 import { Notes } from "./notes";
 import PersonalInfo from "./personal-info";
-import { Stepper } from "./footer-stepper";
 import { WorkInfo } from "./work-info";
-import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
 
 export const FormWrapper = () => {
   const [openAdditionalDependantsDialog, setOpenAdditionalDependantDialog] =
@@ -42,9 +42,11 @@ export const FormWrapper = () => {
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<UserPolicyInputs>();
+  console.log("errors: ", errors);
 
   const onSubmit: SubmitHandler<UserPolicyInputs> = (data) => {
     if (currStep.id === steps.length - 1 && userEventDispatch !== "previous") {
@@ -66,11 +68,11 @@ export const FormWrapper = () => {
         setUserEventDispatch={setUserEventDispatch}
       />
       <div className="border-t border-gray-100 mt-6 flex flex-col justify-center items-start size-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 lg:py-12">
-        <PersonalInfo register={register} />
+        <PersonalInfo register={register} control={control} />
         <Divider />
-        <LegalStatus />
+        <LegalStatus register={register} control={control} />
         <Divider />
-        <BankInfo />
+        <BankInfo register={register} />
         <Divider />
         <WorkInfo />
         <Divider />
