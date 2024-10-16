@@ -93,12 +93,19 @@ declare global {
     routing_number: number;
     bank_account_number: number;
     bank_account_number_confirmation: number;
-    payment_method_credit: boolean;
-    payment_method_debit: boolean;
+    payment_method: string;
     card_number: number;
     card_holder_fullname: string;
     card_expiration_date: string;
     card_cvv: number;
+    work_type: "W2" | "1099";
+    company_name: string;
+    wages: string;
+    prima: number;
+    insurance_policy_number: number;
+    policy_start_date: string;
+    notes: string;
+    insurance_plan_type: "Bronze" | "Silver" | "Gold" | "Platinum";
   }
 
   type Directory = Record<string, DirectoryEntry[]>;

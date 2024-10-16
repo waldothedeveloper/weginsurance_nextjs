@@ -1,5 +1,14 @@
+import { Control, Controller, UseFormRegister } from "react-hook-form";
 
-export const InsuranceInfo = () => {
+import { InsuranceCompanies } from "../_ui-components/insurance-companies";
+
+export const InsuranceInfo = ({
+  register,
+  control,
+}: {
+  register: UseFormRegister<UserPolicyInputs>;
+  control: Control<UserPolicyInputs, any>;
+}) => {
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6 mt-10">
@@ -19,32 +28,38 @@ export const InsuranceInfo = () => {
             <div className="grid grid-cols-6 gap-6">
               <div className="col-span-6 sm:col-span-3">
                 <label
-                  htmlFor="fecha-de-inscripcion"
+                  htmlFor="policy_start_date"
                   className="block text-sm font-medium text-gray-800"
                 >
                   Fecha de Inscripción
                 </label>
                 <input
+                  {...register("policy_start_date", {
+                    valueAsDate: true,
+                  })}
                   type="date"
-                  name="fecha_de_inscripcion"
-                  id="fecha-de-inscripcion"
+                  name="policy_start_date"
+                  id="policy_start_date"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500  block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
                 <label
-                  htmlFor="numero-de-poliza"
+                  htmlFor="insurance_policy_number"
                   className="block text-sm font-medium text-gray-800"
                 >
                   Numero de poliza
                 </label>
                 <input
+                  {...register("insurance_policy_number", {
+                    valueAsNumber: true,
+                  })}
                   placeholder="55-55-555"
                   type="number"
-                  name="numero_de_poliza"
-                  id="numero-de-poliza"
-                  autoComplete="family-name"
+                  inputMode="numeric"
+                  name="insurance_policy_number"
+                  id="insurance_policy_number"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
@@ -62,7 +77,11 @@ export const InsuranceInfo = () => {
                       <span className=" text-gray-500 sm:text-sm">$</span>
                     </div>
                     <input
+                      {...register("prima", {
+                        valueAsNumber: true,
+                      })}
                       type="number"
+                      inputMode="numeric"
                       name="prima"
                       id="prima"
                       className="focus:ring-blue-500 focus:border-blue-500  block w-full placeholder-gray-400 pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
@@ -83,37 +102,47 @@ export const InsuranceInfo = () => {
 
               {/* Companias de Seguros */}
               <div className="col-span-6 sm:col-span-3">
-                <p className="font-semibold text-red-500"> insurance companies NEED TO go here!!!</p>
+                <InsuranceCompanies />
               </div>
 
               <div className="col-span-6 sm:col-span-6 lg:col-span-3">
-                <div>
-                  <label
-                    htmlFor="location"
-                    className="block text-sm font-medium text-gray-800"
-                  >
-                    Tipo de Plan
-                  </label>
-                  <select
-                    id="location"
-                    name="plan"
-                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500  sm:text-sm rounded-md"
-                    defaultValue="Canada"
-                  >
-                    <option value="Avanzado">Seleccione un plan</option>
-                    <option value="Basico">Bronze</option>
-                    <option value="Medio">Silver</option>
-                    <option value="Avanzado">Gold</option>
-                    <option value="Avanzado">Platinum</option>
-                  </select>
-                </div>
+                <Controller
+                  control={control}
+                  rules={{ required: true }}
+                  name="insurance_plan_type"
+                  render={({ field: { onChange, onBlur, value, ref } }) => (
+                    <>
+                      <div>
+                        <label
+                          htmlFor="insurance_plan_type"
+                          className="block text-sm font-medium text-gray-800"
+                        >
+                          Tipo de Plan
+                        </label>
+                        <select
+                          onChange={onChange}
+                          onBlur={onBlur}
+                          value={value ?? "Selleccione un plan"}
+                          ref={ref}
+                          id="insurance_plan_type"
+                          name="insurance_plan_type"
+                          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500  sm:text-sm rounded-md"
+                        >
+                          <option value="Avanzado">Seleccione un plan</option>
+                          <option value="Basico">Bronze</option>
+                          <option value="Medio">Silver</option>
+                          <option value="Avanzado">Gold</option>
+                          <option value="Avanzado">Platinum</option>
+                        </select>
+                      </div>
+                    </>
+                  )}
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
-}
-
-
+  );
+};

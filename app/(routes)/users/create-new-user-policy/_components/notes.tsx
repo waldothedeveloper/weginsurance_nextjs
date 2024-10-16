@@ -1,5 +1,9 @@
-
-export const Notes = () => {
+import { UseFormRegister } from "react-hook-form";
+export const Notes = ({
+  register,
+}: {
+  register: UseFormRegister<UserPolicyInputs>;
+}) => {
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -24,6 +28,7 @@ export const Notes = () => {
               </label>
               <div className="mt-1">
                 <textarea
+                  {...register("notes")}
                   placeholder="ejemplo: La poliza de Ambetter tiene que ser renovada en 6 meses."
                   id="notes"
                   name="notes"
