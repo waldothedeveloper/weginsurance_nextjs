@@ -38,6 +38,7 @@ export default function PersonalInfo({
                         <span className="text-red-500 ">{` *`}</span>
                       </label>
                       <select
+                        id="accepts_insurance"
                         onChange={onChange}
                         onBlur={onBlur}
                         ref={ref}
@@ -82,7 +83,7 @@ export default function PersonalInfo({
                   {...register("second_name")}
                   type="text"
                   placeholder="Julian"
-                  autoComplete="second-name"
+                  autoComplete="additional-name"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
@@ -130,17 +131,17 @@ export default function PersonalInfo({
                   render={({ field: { onChange, onBlur, value, ref } }) => (
                     <>
                       <label
-                        htmlFor="civil-status"
+                        htmlFor="civil_status"
                         className="block text-sm font-medium text-gray-800"
                       >
                         Estado Civil
                       </label>
                       <select
+                        id="civil_status"
                         onChange={onChange}
                         onBlur={onBlur}
                         ref={ref}
                         value={value ?? "Seleccione una opcion"}
-                        autoComplete="civil_status"
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                       >
                         <option>Selecione una opcion</option>
@@ -211,7 +212,9 @@ export default function PersonalInfo({
                 </label>
                 <input
                   id="ssn"
-                  {...register("ssn")}
+                  {...register("ssn", {
+                    valueAsNumber: true,
+                  })}
                   type="number"
                   placeholder="111-11-1111"
                   autoComplete="ssn"
@@ -227,7 +230,9 @@ export default function PersonalInfo({
                 </label>
                 <input
                   id="birthdate"
-                  {...register("birthdate")}
+                  {...register("birthdate", {
+                    valueAsDate: true,
+                  })}
                   type="date"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500  block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
@@ -262,7 +267,9 @@ export default function PersonalInfo({
                 </label>
                 <input
                   id="age"
-                  {...register("age")}
+                  {...register("age", {
+                    valueAsNumber: true,
+                  })}
                   readOnly
                   placeholder="basado en la fecha de nacimiento..."
                   type="number"

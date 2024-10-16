@@ -1,19 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 
-import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
 import { AddMoreDependantsDialog } from "./add-more-dependants-dialog";
 import { BankInfo } from "./bank-info";
 import { Divider } from "./divider";
-import { Stepper } from "./footer-stepper";
 import { HeadStepper } from "./head-stepper";
 import { InsuranceInfo } from "./insurance-info";
 import { LegalStatus } from "./legal-status";
 import { Notes } from "./notes";
 import PersonalInfo from "./personal-info";
+import { Stepper } from "./footer-stepper";
 import { WorkInfo } from "./work-info";
+import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
 
 export const FormWrapper = () => {
   const [openAdditionalDependantsDialog, setOpenAdditionalDependantDialog] =
@@ -21,7 +21,7 @@ export const FormWrapper = () => {
   const [addMoreDependants, setAddMoreDependants] = useState(false);
   const [userEventDispatch, setUserEventDispatch] = useState<string>("");
   const { steps, dispatchSteps } = useCreateUserPolicy();
-  // console.log("steps: ", steps);
+  // console.log("steps: ", steps[0].data);
   const currStep = steps.find(
     (step: CreateNewUserPolicyMultiStepForm) => step.status === "current"
   )!;
@@ -46,11 +46,10 @@ export const FormWrapper = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<UserPolicyInputs>();
-  console.log("errors: ", errors);
+  // console.log("errors: ", errors);
 
   const onSubmit: SubmitHandler<UserPolicyInputs> = (data) => {
     if (currStep.id === steps.length - 1 && userEventDispatch !== "previous") {
-      // console.log(`is this the last step? ${currStep.id === steps.length}`);
       setOpenAdditionalDependantDialog(true);
     } else {
       dispatchSteps({
@@ -74,11 +73,11 @@ export const FormWrapper = () => {
         <Divider />
         <BankInfo register={register} />
         <Divider />
-        <WorkInfo />
+        <WorkInfo register={register} control={control} />
         <Divider />
-        <InsuranceInfo />
+        <InsuranceInfo register={register} control={control} />
         <Divider />
-        <Notes />
+        <Notes register={register} />
         <Divider />
         <div className="mt-6 flex items-center justify-end space-x-3">
           <button
