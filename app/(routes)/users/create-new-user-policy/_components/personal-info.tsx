@@ -1,10 +1,15 @@
 import { Control, Controller, UseFormRegister } from "react-hook-form";
+
+import { z } from "zod";
+import { registrationSchema } from "../registrationSchema";
+
+//
 export default function PersonalInfo({
   register,
   control,
 }: {
-  register: UseFormRegister<UserPolicyInputs>;
-  control: Control<UserPolicyInputs, any>;
+  register: UseFormRegister<z.infer<typeof registrationSchema>>;
+  control: Control<z.infer<typeof registrationSchema>, any>;
 }) {
   return (
     <div className="mt-10 sm:mt-0">
@@ -212,10 +217,9 @@ export default function PersonalInfo({
                 </label>
                 <input
                   id="ssn"
-                  {...register("ssn", {
-                    valueAsNumber: true,
-                  })}
-                  type="number"
+                  {...register("ssn")}
+                  type="string"
+                  inputMode="numeric"
                   placeholder="111-11-1111"
                   autoComplete="ssn"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -269,6 +273,7 @@ export default function PersonalInfo({
                   id="age"
                   {...register("age", {
                     valueAsNumber: true,
+                    setValueAs: (value) => 0,
                   })}
                   readOnly
                   placeholder="basado en la fecha de nacimiento..."
