@@ -1,11 +1,15 @@
 import { Control, Controller, UseFormRegister } from "react-hook-form";
 
+import { z } from "zod";
+import { registrationSchema } from "../registrationSchema";
+
+//
 export const WorkInfo = ({
   register,
   control,
 }: {
-  register: UseFormRegister<UserPolicyInputs>;
-  control: Control<UserPolicyInputs, any>;
+  register: UseFormRegister<z.infer<typeof registrationSchema>>;
+  control: Control<z.infer<typeof registrationSchema>, any>;
 }) => {
   return (
     <div className="mt-10 sm:mt-0">

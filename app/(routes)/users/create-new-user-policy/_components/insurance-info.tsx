@@ -1,13 +1,15 @@
 import { Control, Controller, UseFormRegister } from "react-hook-form";
 
+import { z } from "zod";
 import { InsuranceCompanies } from "../_ui-components/insurance-companies";
+import { registrationSchema } from "../registrationSchema";
 
 export const InsuranceInfo = ({
   register,
   control,
 }: {
-  register: UseFormRegister<UserPolicyInputs>;
-  control: Control<UserPolicyInputs, any>;
+  register: UseFormRegister<z.infer<typeof registrationSchema>>;
+  control: Control<z.infer<typeof registrationSchema>, any>;
 }) => {
   return (
     <div className="mt-10 sm:mt-0">
@@ -34,9 +36,7 @@ export const InsuranceInfo = ({
                   Fecha de Inscripción
                 </label>
                 <input
-                  {...register("policy_start_date", {
-                    valueAsDate: true,
-                  })}
+                  {...register("policy_start_date")}
                   type="date"
                   name="policy_start_date"
                   id="policy_start_date"

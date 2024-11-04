@@ -1,5 +1,6 @@
 import { UseFormRegister } from "react-hook-form";
-
+import { z } from "zod";
+import { registrationSchema } from "../registrationSchema";
 const paymentMethod = [
   {
     value: "Credito",
@@ -15,7 +16,7 @@ const paymentMethod = [
 export const BankInfo = ({
   register,
 }: {
-  register: UseFormRegister<UserPolicyInputs>;
+  register: UseFormRegister<z.infer<typeof registrationSchema>>;
 }) => {
   return (
     <div className="mt-10 sm:mt-0">
@@ -71,6 +72,7 @@ export const BankInfo = ({
                       })}
                       placeholder="3530111333300000"
                       type="number"
+                      inputMode="numeric"
                       name="routing_number"
                       id="routing_number"
                       className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -90,6 +92,7 @@ export const BankInfo = ({
                       })}
                       placeholder="091000019"
                       type="number"
+                      inputMode="numeric"
                       name="bank_account_number"
                       id="bank_account_number"
                       className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -109,6 +112,7 @@ export const BankInfo = ({
                       })}
                       placeholder="091000019"
                       type="number"
+                      inputMode="numeric"
                       name="bank_account_number_confirmation"
                       id="bank_account_number_confirmation"
                       className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -154,6 +158,7 @@ export const BankInfo = ({
                           {...register("card_number")}
                           name="card_number"
                           type="text"
+                          inputMode="numeric"
                           id="card_number"
                           className="focus:ring-blue-500 focus:border-blue-500 relative block w-full rounded-none rounded-t-md bg-transparent focus:z-10 sm:text-sm border-gray-300"
                           placeholder="4242-4242-4242"
@@ -204,6 +209,7 @@ export const BankInfo = ({
                               valueAsNumber: true,
                             })}
                             type="number"
+                            inputMode="numeric"
                             id="card_cvv"
                             className="focus:ring-blue-500 focus:border-blue-500 relative block w-full rounded-none rounded-br-md bg-transparent focus:z-10 sm:text-sm border-gray-300"
                             placeholder="CVC"

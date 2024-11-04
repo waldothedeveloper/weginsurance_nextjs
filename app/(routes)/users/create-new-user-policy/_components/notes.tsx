@@ -1,8 +1,12 @@
 import { UseFormRegister } from "react-hook-form";
+import { z } from "zod";
+import { registrationSchema } from "../registrationSchema";
+
+//
 export const Notes = ({
   register,
 }: {
-  register: UseFormRegister<UserPolicyInputs>;
+  register: UseFormRegister<z.infer<typeof registrationSchema>>;
 }) => {
   return (
     <div className="mt-10 sm:mt-0">
