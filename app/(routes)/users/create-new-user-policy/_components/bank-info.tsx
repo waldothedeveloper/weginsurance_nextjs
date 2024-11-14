@@ -67,9 +67,7 @@ export const BankInfo = ({
                       Numero de Ruta
                     </label>
                     <input
-                      {...register("routing_number", {
-                        valueAsNumber: true,
-                      })}
+                      {...register("routing_number")}
                       placeholder="3530111333300000"
                       type="number"
                       inputMode="numeric"
@@ -87,9 +85,7 @@ export const BankInfo = ({
                       Numero de Cuenta
                     </label>
                     <input
-                      {...register("bank_account_number", {
-                        valueAsNumber: true,
-                      })}
+                      {...register("bank_account_number")}
                       placeholder="091000019"
                       type="number"
                       inputMode="numeric"
@@ -107,9 +103,7 @@ export const BankInfo = ({
                       <span className="text-gray-400"> (debe coincidir)</span>
                     </label>
                     <input
-                      {...register("bank_account_number_confirmation", {
-                        valueAsNumber: true,
-                      })}
+                      {...register("bank_account_number_confirmation")}
                       placeholder="091000019"
                       type="number"
                       inputMode="numeric"
@@ -155,6 +149,9 @@ export const BankInfo = ({
                           Card number
                         </label>
                         <input
+                          maxLength={16}
+                          pattern="\d{16}"
+                          autoComplete="cc-number"
                           {...register("card_number")}
                           name="card_number"
                           type="text"
@@ -205,9 +202,9 @@ export const BankInfo = ({
                             CVC
                           </label>
                           <input
-                            {...register("card_cvv", {
-                              valueAsNumber: true,
-                            })}
+                            maxLength={4}
+                            autoComplete="cc-csc"
+                            {...register("card_cvv")}
                             type="number"
                             inputMode="numeric"
                             id="card_cvv"

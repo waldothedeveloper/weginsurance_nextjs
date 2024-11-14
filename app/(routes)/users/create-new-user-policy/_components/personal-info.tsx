@@ -271,10 +271,7 @@ export default function PersonalInfo({
                 </label>
                 <input
                   id="age"
-                  {...register("age", {
-                    valueAsNumber: true,
-                    setValueAs: (value) => 0,
-                  })}
+                  {...register("age")}
                   readOnly
                   placeholder="basado en la fecha de nacimiento..."
                   type="number"

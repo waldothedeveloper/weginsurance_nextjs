@@ -28,7 +28,6 @@ export const registrationSchema = z.object({
     .union([z.string().email(), z.string().length(0)])
     .optional()
     .transform((e) => (e === "" ? undefined : e)),
-  // make your mind here are you gonna use a number, convert to a number or keep it as a string
   ssn: z
     .union([z.string().trim().min(9), z.string().length(0)])
     .optional()
@@ -44,6 +43,9 @@ export const registrationSchema = z.object({
     .number()
     .min(0, {
       message: "La edad no puede ser negativa.",
+    })
+    .max(121, {
+      message: "La edad no puede ser mayor a 120 años.",
     })
     .optional(),
   country: z
@@ -76,31 +78,97 @@ export const registrationSchema = z.object({
     .optional(),
   legal_status_notes: z.string().trim().optional(),
   bank_account: z.string().trim().optional(),
-  routing_number: z.number().optional(),
-  bank_account_number: z.number().optional(),
-  bank_account_number_confirmation: z.number().optional(),
+  routing_number: z
+    .union([
+      z
+        .string()
+        .trim()
+        .length(9)
+        .regex(
+          /^\d+$/,
+          "El número de ruta del banco debe contener solo dígitos"
+        ),
+      z.string().trim().length(0),
+    ])
+    .optional()
+    .transform((e) => (e === "" ? undefined : e)),
+  bank_account_number: z
+    .union([
+      z
+        .string()
+        .trim()
+        .regex(/^\d+$/, "El número de cuenta debe contener solo dígitos"),
+      z.string().length(0),
+    ])
+    .optional()
+    .transform((e) => (e === "" ? undefined : e)),
+  bank_account_number_confirmation: z
+    .union([
+      z
+        .string()
+        .trim()
+        .regex(/^\d+$/, "El número de cuenta debe contener solo dígitos"),
+      z.string().length(0),
+    ])
+    .optional()
+    .transform((e) => (e === "" ? undefined : e)),
   payment_method: z.enum(["Credito", "Debito", ""]).optional(),
   card_number: z
     .union([
-      z.number().min(12),
-      z.number().transform((num) => (num === 0 ? 0 : false)),
+      z
+        .string()
+        .trim()
+        .regex(/^\d{13,19}$/, "Número de tarjeta inválido"),
+      z.string().length(0),
     ])
-    .optional(),
+    .optional()
+    .transform((e) => (e === "" ? undefined : e)),
   card_holder_fullname: z.string().trim().optional(),
-  card_expiration_date: z.string().optional(),
+  card_expiration_date: z
+    .union([
+      z
+        .string()
+        .trim()
+        .regex(/^(0[1-9]|1[0-2])\/([0-9]{2})$/, "Formato debe ser MM/YY"),
+      z.string().length(0),
+    ])
+    .optional()
+    .transform((e) => (e === "" ? undefined : e)),
   card_cvv: z
     .union([
-      z.number().min(3),
-      z.number().transform((num) => (num === 0 ? 0 : false)),
+      z
+        .string()
+        .trim()
+        .regex(/^\d{3,4}$/, "CVV debe tener 3 o 4 dígitos"),
+      z.string().length(0),
     ])
-    .optional(),
+    .optional()
+    .transform((e) => (e === "" ? undefined : e)),
   work_type: z.enum(["W2", "1099", ""]).optional(),
   company_name: z.string().trim().optional(),
   wages: z.string().trim().optional(),
-  prima: z.number().optional(),
-  insurance_policy_number: z.number().optional(),
+  prima: z
+    .union([z.string().trim().length(10), z.string().length(0)])
+    .optional()
+    .transform((e) => (e === "" ? undefined : e)),
+  insurance_policy_number: z
+    .union([
+      z
+        .string()
+        .trim()
+        .regex(/^\d+$/, "El número de póliza debe contener solo dígitos"),
+      z.string().length(0),
+    ])
+    .optional()
+    .transform((e) => (e === "" ? undefined : e)),
   policy_start_date: z
-    .union([z.date(), z.string().length(0)])
+    .union([
+      z.date({
+        required_error: "La fecha de inicio es requerida",
+        invalid_type_error: "Formato de fecha inválido",
+      }),
+      z.string().length(0),
+    ])
     .optional()
     .transform((e) => (e === "" ? undefined : e)),
   notes: z.string().trim().optional(),
