@@ -36,3 +36,7 @@ functions/**/node_modules
 
 # Sentry Auth Token
 .sentryclirc
+
+
+# ignore vscode
+.vscode

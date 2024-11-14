@@ -52,11 +52,9 @@ export const InsuranceInfo = ({
                   Numero de poliza
                 </label>
                 <input
-                  {...register("insurance_policy_number", {
-                    valueAsNumber: true,
-                  })}
+                  {...register("insurance_policy_number")}
                   placeholder="55-55-555"
-                  type="number"
+                  type="text"
                   inputMode="numeric"
                   name="insurance_policy_number"
                   id="insurance_policy_number"
@@ -77,10 +75,8 @@ export const InsuranceInfo = ({
                       <span className=" text-gray-500 sm:text-sm">$</span>
                     </div>
                     <input
-                      {...register("prima", {
-                        valueAsNumber: true,
-                      })}
-                      type="number"
+                      {...register("prima")}
+                      type="string"
                       inputMode="numeric"
                       name="prima"
                       id="prima"
