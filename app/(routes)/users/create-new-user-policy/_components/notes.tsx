@@ -1,12 +1,12 @@
 import { UseFormRegister } from "react-hook-form";
+import { principalClientSchema } from "../principalClientSchema";
 import { z } from "zod";
-import { registrationSchema } from "../registrationSchema";
 
 //
 export const Notes = ({
   register,
 }: {
-  register: UseFormRegister<z.infer<typeof registrationSchema>>;
+  register: UseFormRegister<z.infer<typeof principalClientSchema>>;
 }) => {
   return (
     <div className="mt-10 sm:mt-0">

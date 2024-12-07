@@ -1,19 +1,15 @@
 import { z } from "zod";
 
-export const registrationSchema = z.object({
+export const significantPartnerSchema = z.object({
   accepts_insurance: z.enum(["Si", "No"], {
     required_error: "La cobertura medica es mandatoria.",
   }),
-  firstname: z.string().trim().min(1, {
-    message: "Primer nombre es mandatorio.",
-  }),
+  firstname: z.string().trim().optional(),
   second_name: z
     .union([z.string().length(0), z.string().trim().max(80)])
     .optional()
     .transform((e) => (e === "" ? undefined : e)),
-  lastname: z.string().trim().min(1, {
-    message: "Apellidos es mandatorio.",
-  }),
+  lastname: z.string().trim().optional(),
   second_lastname: z
     .union([z.string().length(0), z.string().trim().max(80)])
     .optional()
@@ -21,9 +17,7 @@ export const registrationSchema = z.object({
   civil_status: z
     .enum(["Soltero", "Casado", "Divorciado", "Viudo(a)", "Separado(a)", ""])
     .optional(),
-  genre: z.enum(["Masculino", "Femenino"], {
-    required_error: "Genero es mandatorio.",
-  }),
+  genre: z.union([z.enum(["Masculino", "Femenino"]), z.string()]).optional(),
   email: z
     .union([z.string().email(), z.string().length(0)])
     .optional()
@@ -36,9 +30,13 @@ export const registrationSchema = z.object({
     .union([z.date(), z.string().length(0)])
     .optional()
     .transform((e) => (e === "" ? undefined : e)),
-  phone: z.string().trim().min(10, {
-    message: "El telefono es mandatorio y debe contener 10 digitos.",
-  }),
+  phone: z
+    .string()
+    .trim()
+    .min(10, {
+      message: "El telefono es mandatorio y debe contener 10 digitos.",
+    })
+    .optional(),
   age: z
     .number()
     .min(0, {
@@ -64,7 +62,7 @@ export const registrationSchema = z.object({
     .union([z.string().trim(), z.string().length(0)])
     .optional()
     .transform((e) => (e === "" ? undefined : e)),
-  postal_code: z.string().trim().optional(),
+  postal_code: z.string().trim().max(5).optional(),
   legal_status: z
     .enum([
       "Residente",
@@ -148,7 +146,13 @@ export const registrationSchema = z.object({
   company_name: z.string().trim().optional(),
   wages: z.string().trim().optional(),
   prima: z
-    .union([z.string().trim().length(10), z.string().length(0)])
+    .union([
+      z
+        .string()
+        .trim()
+        .regex(/^\d+$/, "El número de cuenta debe contener solo dígitos"),
+      z.string().length(0),
+    ])
     .optional()
     .transform((e) => (e === "" ? undefined : e)),
   insurance_policy_number: z
@@ -161,16 +165,7 @@ export const registrationSchema = z.object({
     ])
     .optional()
     .transform((e) => (e === "" ? undefined : e)),
-  policy_start_date: z
-    .union([
-      z.date({
-        required_error: "La fecha de inicio es requerida",
-        invalid_type_error: "Formato de fecha inválido",
-      }),
-      z.string().length(0),
-    ])
-    .optional()
-    .transform((e) => (e === "" ? undefined : e)),
+  policy_start_date: z.date().optional(),
   notes: z.string().trim().optional(),
   insurance_plan_type: z
     .enum(["Bronze", "Silver", "Gold", "Platinum", ""])

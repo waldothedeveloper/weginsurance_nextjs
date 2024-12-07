@@ -1,15 +1,15 @@
 import { Control, Controller, UseFormRegister } from "react-hook-form";
 
-import { z } from "zod";
 import { InsuranceCompanies } from "../_ui-components/insurance-companies";
-import { registrationSchema } from "../registrationSchema";
+import { principalClientSchema } from "../principalClientSchema";
+import { z } from "zod";
 
 export const InsuranceInfo = ({
   register,
   control,
 }: {
-  register: UseFormRegister<z.infer<typeof registrationSchema>>;
-  control: Control<z.infer<typeof registrationSchema>, any>;
+  register: UseFormRegister<z.infer<typeof principalClientSchema>>;
+  control: Control<z.infer<typeof principalClientSchema>, any>;
 }) => {
   return (
     <div className="mt-10 sm:mt-0">
@@ -36,7 +36,9 @@ export const InsuranceInfo = ({
                   Fecha de Inscripción
                 </label>
                 <input
-                  {...register("policy_start_date")}
+                  {...register("policy_start_date", {
+                    valueAsDate: true,
+                  })}
                   type="date"
                   name="policy_start_date"
                   id="policy_start_date"
@@ -76,7 +78,7 @@ export const InsuranceInfo = ({
                     </div>
                     <input
                       {...register("prima")}
-                      type="string"
+                      type="text"
                       inputMode="numeric"
                       name="prima"
                       id="prima"
@@ -118,17 +120,19 @@ export const InsuranceInfo = ({
                         <select
                           onChange={onChange}
                           onBlur={onBlur}
-                          value={value ?? "Selleccione un plan"}
+                          value={value ?? "Seleccione un plan"}
                           ref={ref}
                           id="insurance_plan_type"
                           name="insurance_plan_type"
                           className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500  sm:text-sm rounded-md"
                         >
-                          <option value="Avanzado">Seleccione un plan</option>
-                          <option value="Basico">Bronze</option>
-                          <option value="Medio">Silver</option>
-                          <option value="Avanzado">Gold</option>
-                          <option value="Avanzado">Platinum</option>
+                          <option value="Seleccione un plan">
+                            Seleccione un plan
+                          </option>
+                          <option value="Bronze">Bronze</option>
+                          <option value="Silver">Silver</option>
+                          <option value="Gold">Gold</option>
+                          <option value="Platinum">Platinum</option>
                         </select>
                       </div>
                     </>

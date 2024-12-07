@@ -1,15 +1,15 @@
 import { Control, Controller, UseFormRegister } from "react-hook-form";
 
+import { principalClientSchema } from "../principalClientSchema";
 import { z } from "zod";
-import { registrationSchema } from "../registrationSchema";
 
 //
 export default function PersonalInfo({
   register,
   control,
 }: {
-  register: UseFormRegister<z.infer<typeof registrationSchema>>;
-  control: Control<z.infer<typeof registrationSchema>, any>;
+  register: UseFormRegister<z.infer<typeof principalClientSchema>>;
+  control: Control<z.infer<typeof principalClientSchema>>;
 }) {
   return (
     <div className="mt-10 sm:mt-0">
@@ -218,7 +218,7 @@ export default function PersonalInfo({
                 <input
                   id="ssn"
                   {...register("ssn")}
-                  type="string"
+                  type="text"
                   inputMode="numeric"
                   placeholder="111-11-1111"
                   autoComplete="ssn"
@@ -275,7 +275,6 @@ export default function PersonalInfo({
                   readOnly
                   placeholder="basado en la fecha de nacimiento..."
                   type="number"
-                  autoComplete="age"
                   className="mt-1 focus:outline-none focus:border-none block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-gray-400 bg-gray-100"
                 />
               </div>
