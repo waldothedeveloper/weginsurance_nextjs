@@ -1,22 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useEffect, useRef, useState } from "react";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
-import { registrationSchema } from "../registrationSchema";
 import { AddMoreDependantsDialog } from "./add-more-dependants-dialog";
 import { BankInfo } from "./bank-info";
 import { Divider } from "./divider";
-import { Stepper } from "./footer-stepper";
 import { HeadStepper } from "./head-stepper";
 import { InsuranceInfo } from "./insurance-info";
 import { LegalStatus } from "./legal-status";
 import { Notes } from "./notes";
 import PersonalInfo from "./personal-info";
+import { Stepper } from "./footer-stepper";
 import { WorkInfo } from "./work-info";
+import { principalClientSchema } from "../principalClientSchema";
+import { significantPartnerSchema } from "../significantPartnerSchema";
+import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const FormWrapper = () => {
   const [openAdditionalDependantsDialog, setOpenAdditionalDependantDialog] =
@@ -24,15 +25,12 @@ export const FormWrapper = () => {
   const [addMoreDependants, setAddMoreDependants] = useState(false);
   const [userEventDispatch, setUserEventDispatch] = useState<string>("");
   const { steps, dispatchSteps } = useCreateUserPolicy();
-  // console.log(
-  //   "steps: ",
-  //   steps.map((step) => JSON.stringify(step.data, null, 2))
-  // );
+
   const currStep = steps.find(
     (step: CreateNewUserPolicyMultiStepForm) => step.status === "current"
   )!;
 
-  // console.log(`Current step:`, currStep?.data);
+  // console.log(`Current step:`, currStep);
 
   // create one more step for the additional dependants
   useEffect(() => {
@@ -48,13 +46,17 @@ export const FormWrapper = () => {
     return () => setAddMoreDependants(false);
   }, [addMoreDependants]);
 
+  const validationSchema =
+    currStep.id === 0 ? principalClientSchema : significantPartnerSchema;
+
   const {
     register,
     control,
     handleSubmit,
+    // watch,
     formState: { errors },
-  } = useForm<z.infer<typeof registrationSchema>>({
-    resolver: zodResolver(registrationSchema),
+  } = useForm<z.infer<typeof principalClientSchema>>({
+    resolver: zodResolver(principalClientSchema),
     defaultValues: {
       second_name: "",
       second_lastname: "",
@@ -84,17 +86,17 @@ export const FormWrapper = () => {
       wages: "",
       prima: "",
       insurance_policy_number: "",
-      policy_start_date: "",
+      policy_start_date: new Date(""),
       notes: "",
       insurance_plan_type: "",
     },
   });
-  console.log("errors: ", errors);
+  // const formValues = watch();
+  // console.log(`Form values:`, formValues);
+  // console.log("errors: ", errors);
   const formRef = useRef<HTMLFormElement>(null);
-  const onSubmit: SubmitHandler<z.infer<typeof registrationSchema>> = (
-    data
-  ) => {
-    console.log(`Data being submitted`, data);
+  const onSubmit: SubmitHandler<z.infer<typeof validationSchema>> = (data) => {
+    // console.log(`Data being submitted`, data);
     if (currStep.id === steps.length - 1 && userEventDispatch !== "previous") {
       setOpenAdditionalDependantDialog(true);
     } else {
@@ -114,11 +116,7 @@ export const FormWrapper = () => {
       onSubmit={(evt) => {
         evt.preventDefault();
         handleSubmit(onSubmit)(evt);
-        // handleSubmit(() => {
-        //   formAction(new FormData(formRef.current!));
-        // })(evt);
       }}
-      // onSubmit={handleSubmit(onSubmit)}
     >
       <HeadStepper
         currStep={currStep}

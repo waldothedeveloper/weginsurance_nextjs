@@ -1,6 +1,6 @@
 import { UseFormRegister } from "react-hook-form";
+import { principalClientSchema } from "../principalClientSchema";
 import { z } from "zod";
-import { registrationSchema } from "../registrationSchema";
 const paymentMethod = [
   {
     value: "Credito",
@@ -16,7 +16,7 @@ const paymentMethod = [
 export const BankInfo = ({
   register,
 }: {
-  register: UseFormRegister<z.infer<typeof registrationSchema>>;
+  register: UseFormRegister<z.infer<typeof principalClientSchema>>;
 }) => {
   return (
     <div className="mt-10 sm:mt-0">
@@ -189,7 +189,9 @@ export const BankInfo = ({
                             Expiration date
                           </label>
                           <input
-                            {...register("card_expiration_date")}
+                            {...register("card_expiration_date", {
+                              setValueAs: (value) => value.replace(/\s+/g, ""),
+                            })}
                             type="text"
                             name="card_expiration_date"
                             id="card_expiration_date"
