@@ -4,12 +4,12 @@ import {
   uploadedFilesAtom,
 } from "@/lib/state/atoms";
 
-import { failureNotification } from "@/components/notifications/failureNotification";
-import { useUploadFilesWithProgressFeedback } from "@/hooks/fileUploader/useUploadFilesWithProgressFeedback";
 import { UploadedFile } from "@/interfaces/index";
 import { addUniqueId } from "@/utils/addUniqueID";
-import { useSetAtom } from "jotai";
+import { failureNotification } from "@/components/notifications/failureNotification";
 import { useDropzone } from "react-dropzone";
+import { useSetAtom } from "jotai";
+import { useUploadFilesWithProgressFeedback } from "@/hooks/fileUploader/useUploadFilesWithProgressFeedback";
 
 /*
 The onDrop function will take the selected files (images or documents) and do the following things:
@@ -93,7 +93,6 @@ export const useDropAndUploadFiles = () => {
     },
     multiple: true,
     onDrop: (acceptedFiles) => {
-      console.log(`DO I PASS THIS LINE GUYS?, ${acceptedFiles}`);
       if (!acceptedFiles || acceptedFiles.length === 0) return;
       setOpenResourceUploadModal(true);
       // this will help with the loading carousel skeleton when uploading documents
@@ -106,7 +105,6 @@ export const useDropAndUploadFiles = () => {
       );
     },
     onDropRejected: (rejectedFiles) => {
-      console.log("PDF and such document rejectedFiles: ", rejectedFiles);
       if (rejectedFiles.length === 1) {
         failureNotification(
           `El siguiente documento adjunto es mayor de 600KB: ${rejectedFiles[0]?.file?.name}. Por favor seleccione un adjunto igual o menor a 600KB.`
