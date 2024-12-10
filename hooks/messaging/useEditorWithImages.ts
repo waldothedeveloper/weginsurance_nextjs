@@ -8,6 +8,7 @@ import { useEditor } from "@tiptap/react";
 export const useEditorWithImages = () => {
   //
   const editorWithImages = useEditor({
+    immediatelyRender: false,
     content: "",
     extensions: [
       Underline.configure({
