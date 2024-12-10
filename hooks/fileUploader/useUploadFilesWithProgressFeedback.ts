@@ -15,6 +15,7 @@ export const useUploadFilesWithProgressFeedback = () => {
     const uploadedFiles: UploadedFile[] = [];
 
     for (const file of files) {
+      console.log("file being uploaded: ", file);
       const metadata = {
         contentType: file.type,
       };

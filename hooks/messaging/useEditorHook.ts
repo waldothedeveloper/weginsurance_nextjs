@@ -7,6 +7,7 @@ import { useEditor } from "@tiptap/react";
 
 export const useEditorHook = () => {
   const editor = useEditor({
+    immediatelyRender: false,
     content: "",
     extensions: [
       Underline.configure({
