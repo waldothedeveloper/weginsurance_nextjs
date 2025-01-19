@@ -1,13 +1,8 @@
-import { UseFormRegister } from "react-hook-form";
-import { principalClientSchema } from "../principalClientSchema";
-import { z } from "zod";
+import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
 
 //
-export const Notes = ({
-  register,
-}: {
-  register: UseFormRegister<z.infer<typeof principalClientSchema>>;
-}) => {
+export const Notes = () => {
+  const { register } = useCreateUserPolicy();
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6">

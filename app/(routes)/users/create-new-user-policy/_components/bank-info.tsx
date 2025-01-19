@@ -1,6 +1,5 @@
-import { UseFormRegister } from "react-hook-form";
-import { principalClientSchema } from "../principalClientSchema";
-import { z } from "zod";
+import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
+
 const paymentMethod = [
   {
     value: "Credito",
@@ -13,11 +12,8 @@ const paymentMethod = [
 ];
 
 //
-export const BankInfo = ({
-  register,
-}: {
-  register: UseFormRegister<z.infer<typeof principalClientSchema>>;
-}) => {
+export const BankInfo = () => {
+  const { register } = useCreateUserPolicy();
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -190,7 +186,8 @@ export const BankInfo = ({
                           </label>
                           <input
                             {...register("card_expiration_date", {
-                              setValueAs: (value) => value.replace(/\s+/g, ""),
+                              setValueAs: (value: string) =>
+                                value.replace(/\s+/g, ""),
                             })}
                             type="text"
                             name="card_expiration_date"

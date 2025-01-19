@@ -1,16 +1,9 @@
-import { Control, Controller, UseFormRegister } from "react-hook-form";
-
-import { principalClientSchema } from "../principalClientSchema";
-import { z } from "zod";
+import { Controller } from "react-hook-form";
+import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
 
 //
-export default function PersonalInfo({
-  register,
-  control,
-}: {
-  register: UseFormRegister<z.infer<typeof principalClientSchema>>;
-  control: Control<z.infer<typeof principalClientSchema>>;
-}) {
+export default function PersonalInfo() {
+  const { register, control } = useCreateUserPolicy();
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -234,9 +227,7 @@ export default function PersonalInfo({
                 </label>
                 <input
                   id="birthdate"
-                  {...register("birthdate", {
-                    valueAsDate: true,
-                  })}
+                  {...register("birthdate")}
                   type="date"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500  block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />

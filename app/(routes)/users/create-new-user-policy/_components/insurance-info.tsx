@@ -1,16 +1,9 @@
-import { Control, Controller, UseFormRegister } from "react-hook-form";
-
+import { Controller } from "react-hook-form";
 import { InsuranceCompanies } from "../_ui-components/insurance-companies";
-import { principalClientSchema } from "../principalClientSchema";
-import { z } from "zod";
+import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
 
-export const InsuranceInfo = ({
-  register,
-  control,
-}: {
-  register: UseFormRegister<z.infer<typeof principalClientSchema>>;
-  control: Control<z.infer<typeof principalClientSchema>, any>;
-}) => {
+export const InsuranceInfo = () => {
+  const { register, control } = useCreateUserPolicy();
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6 mt-10">
@@ -35,10 +28,11 @@ export const InsuranceInfo = ({
                 >
                   Fecha de Inscripción
                 </label>
-                <input
-                  {...register("policy_start_date", {
+                {/* , {
                     valueAsDate: true,
-                  })}
+                  } */}
+                <input
+                  {...register("policy_start_date")}
                   type="date"
                   name="policy_start_date"
                   id="policy_start_date"
