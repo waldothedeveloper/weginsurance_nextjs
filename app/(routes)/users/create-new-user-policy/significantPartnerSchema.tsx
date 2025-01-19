@@ -1,9 +1,11 @@
 import { z } from "zod";
 
 export const significantPartnerSchema = z.object({
-  accepts_insurance: z.enum(["Si", "No"], {
-    required_error: "La cobertura medica es mandatoria.",
-  }),
+  accepts_insurance: z
+    .enum(["Si", "No"], {
+      required_error: "La cobertura medica es mandatoria.",
+    })
+    .optional(),
   firstname: z.string().trim().optional(),
   second_name: z
     .union([z.string().length(0), z.string().trim().max(80)])
@@ -27,16 +29,10 @@ export const significantPartnerSchema = z.object({
     .optional()
     .transform((e) => (e === "" ? undefined : e)),
   birthdate: z
-    .union([z.date(), z.string().length(0)])
+    .union([z.date(), z.nullable(z.string())])
     .optional()
-    .transform((e) => (e === "" ? undefined : e)),
-  phone: z
-    .string()
-    .trim()
-    .min(10, {
-      message: "El telefono es mandatorio y debe contener 10 digitos.",
-    })
-    .optional(),
+    .transform((e) => (e === "" ? "" : e)),
+  phone: z.string().trim().optional(),
   age: z
     .number()
     .min(0, {
@@ -165,7 +161,10 @@ export const significantPartnerSchema = z.object({
     ])
     .optional()
     .transform((e) => (e === "" ? undefined : e)),
-  policy_start_date: z.date().optional(),
+  policy_start_date: z
+    .union([z.date(), z.nullable(z.string())])
+    .optional()
+    .transform((e) => (e === "" ? "" : e)),
   notes: z.string().trim().optional(),
   insurance_plan_type: z
     .enum(["Bronze", "Silver", "Gold", "Platinum", ""])

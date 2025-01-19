@@ -33,7 +33,7 @@ export const principalClientSchema = z.object({
     .optional()
     .transform((e) => (e === "" ? "" : e)),
   birthdate: z
-    .union([z.date(), z.string().length(0)])
+    .union([z.date(), z.nullable(z.string())])
     .optional()
     .transform((e) => (e === "" ? "" : e)),
   phone: z.string().trim().min(10, {
@@ -167,7 +167,11 @@ export const principalClientSchema = z.object({
     ])
     .optional()
     .transform((e) => (e === "" ? "" : e)),
-  policy_start_date: z.date().optional(),
+  //
+  policy_start_date: z
+    .union([z.date(), z.nullable(z.string())])
+    .optional()
+    .transform((e) => (e === "" ? "" : e)),
   notes: z.string().trim().optional(),
   insurance_plan_type: z
     .enum(["Bronze", "Silver", "Gold", "Platinum", ""])

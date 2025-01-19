@@ -122,10 +122,19 @@ declare global {
 
   interface CreateNewUserPolicyContextType {
     steps: CreateNewUserPolicyMultiStepForm[];
+    openMoreDependantsDialog?: boolean;
+    setOpenMoreDependantsDialog: React.Dispatch<React.SetStateAction<boolean>>;
     dispatchSteps: React.Dispatch<{
       type: string;
       data: UserPolicyInputs | {};
       stepNumber: number;
     }>;
+    handleSubmit;
+    register;
+    control;
+    validationSchema;
+    currStep;
   }
 }
+
+// TODO: handleSubmit, register, control, validationSchema and currStep are right now as any, they should be typed
