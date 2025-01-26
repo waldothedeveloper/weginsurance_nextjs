@@ -1,9 +1,67 @@
+// import { faker } from "@faker-js/faker";
+// import { useEffect } from "react";
 import { Controller } from "react-hook-form";
 import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
-
 //
 export default function PersonalInfo() {
   const { register, control } = useCreateUserPolicy();
+  //todo:  this useEffect is for testing purposes only, we will DELETE this later
+  // useEffect(() => {
+  //   const firstname = document.getElementById(
+  //     "firstname"
+  //   ) as HTMLInputElement | null;
+  //   const secondName = document.getElementById(
+  //     "second_name"
+  //   ) as HTMLInputElement | null;
+  //   const lastname = document.getElementById(
+  //     "lastname"
+  //   ) as HTMLInputElement | null;
+  //   const secondLastname = document.getElementById(
+  //     "second_lastname"
+  //   ) as HTMLInputElement | null;
+  //   const email = document.getElementById("email") as HTMLInputElement | null;
+  //   const phone = document.getElementById("phone") as HTMLInputElement | null;
+  //   const birthdate = document.getElementById(
+  //     "birthdate"
+  //   ) as HTMLInputElement | null;
+  //   const takeInsurance = document.getElementById(
+  //     "accepts_insurance"
+  //   ) as HTMLSelectElement | null;
+  //   const civilStatus = document.getElementById(
+  //     "civil_status"
+  //   ) as HTMLInputElement | null;
+  //   const street = document.getElementById(
+  //     "street_address"
+  //   ) as HTMLInputElement | null;
+  //   const genre = document.getElementById("genre") as HTMLSelectElement | null;
+  //   const city = document.getElementById("city") as HTMLInputElement | null;
+  //   const state = document.getElementById("state") as HTMLInputElement | null;
+  //   const zipcode = document.getElementById(
+  //     "postal_code"
+  //   ) as HTMLInputElement | null;
+
+  //   const ssn = document.getElementById("ssn") as HTMLInputElement | null;
+
+  //   if (takeInsurance) takeInsurance.selectedIndex = 1;
+  //   if (genre) genre.selectedIndex = Math.floor(Math.random() * 2) + 1;
+  //   if (civilStatus) civilStatus.value = "Soltero";
+  //   if (firstname) firstname.value = faker.person.firstName();
+  //   if (secondName) secondName.value = faker.person.firstName();
+  //   if (lastname) lastname.value = faker.person.lastName();
+  //   if (secondLastname) secondLastname.value = faker.person.lastName();
+  //   if (email) email.value = faker.internet.email();
+  //   if (phone) phone.value = faker.phone.number({ style: "national" });
+  //   if (birthdate) birthdate.value = "1990-01-01";
+  //   if (street) street.value = faker.location.streetAddress();
+  //   if (city) city.value = faker.location.city();
+  //   if (state) state.value = faker.location.state();
+  //   if (zipcode) zipcode.value = faker.location.zipCode();
+  //   if (ssn)
+  //     ssn.value = faker.number
+  //       .int({ min: 100000000, max: 999999999 })
+  //       .toString();
+  // });
+
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -213,7 +271,7 @@ export default function PersonalInfo() {
                   {...register("ssn")}
                   type="text"
                   inputMode="numeric"
-                  placeholder="111-11-1111"
+                  placeholder="123-45-6789"
                   autoComplete="ssn"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
@@ -246,7 +304,7 @@ export default function PersonalInfo() {
                   {...register("phone", { required: true })}
                   type="text"
                   inputMode="numeric"
-                  pattern="[0-9]*"
+                  // pattern="[0-9]*"
                   placeholder="+1-786-521-3075"
                   autoComplete="tel-national"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -262,7 +320,9 @@ export default function PersonalInfo() {
                 </label>
                 <input
                   id="age"
-                  {...register("age")}
+                  {...register("age", {
+                    valueAsDate: true,
+                  })}
                   readOnly
                   placeholder="basado en la fecha de nacimiento..."
                   type="number"
@@ -283,8 +343,8 @@ export default function PersonalInfo() {
                   {...register("country")}
                   value="United States"
                   readOnly
+                  placeholder="United States"
                   type="text"
-                  autoComplete="country"
                   className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-100 focus:outline-none focus:border-none text-gray-400"
                 />
               </div>
