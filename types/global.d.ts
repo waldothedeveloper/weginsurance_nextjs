@@ -4,7 +4,7 @@ declare global {
   interface DirectoryEntry {
     id: string;
     ssn?: string;
-    birthdate?: Date;
+    birthdate?: string;
     avatar?: string;
     activeUser: boolean;
     email: string;
