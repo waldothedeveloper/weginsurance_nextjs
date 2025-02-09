@@ -58,7 +58,7 @@ declare global {
   }
 
   interface UserPolicyInputs {
-    accepts_insurance: "Si" | "No";
+    accepts_insurance: "Si" | "No" | "Selecione una opcion";
     firstname: string;
     second_name: string;
     lastname: string;
@@ -71,7 +71,7 @@ declare global {
       | "Separado(a)";
     genre: "Masculino" | "Femenino";
     email: string;
-    ssn: number;
+    ssn: string;
     birthdate: string;
     phone: string;
     age: number;
@@ -80,29 +80,28 @@ declare global {
     city: string;
     state: string;
     postal_code: string;
-    legal_status:
+    legal_status?:
       | "Residente"
       | "Ciudadano"
       | "Permiso de Trabajo"
       | "Huellas"
       | "En Tramites"
-      | "Sin Estatus"
-      | string;
+      | "Sin Estatus";
     legal_status_notes: string;
     bank_account: string;
-    routing_number: number;
-    bank_account_number: number;
-    bank_account_number_confirmation: number;
-    payment_method: string;
-    card_number: number;
+    routing_number: string;
+    bank_account_number: string;
+    bank_account_number_confirmation: string;
+    payment_method?: "Credito" | "Debito";
+    card_number: string;
     card_holder_fullname: string;
     card_expiration_date: string;
-    card_cvv: number;
+    card_cvv: string;
     work_type: "W2" | "1099";
     company_name: string;
     wages: string;
-    prima: number;
-    insurance_policy_number: number;
+    prima: string;
+    insurance_policy_number: string;
     policy_start_date: string;
     notes: string;
     insurance_plan_type: "Bronze" | "Silver" | "Gold" | "Platinum";
@@ -117,7 +116,7 @@ declare global {
     icon: React.ReactNode;
     title: string;
     description: string;
-    data: UserPolicyInputs | {};
+    data: Partial<UserPolicyInputs>;
   }
 
   interface CreateNewUserPolicyContextType {
@@ -126,13 +125,9 @@ declare global {
     setOpenMoreDependantsDialog: React.Dispatch<React.SetStateAction<boolean>>;
     dispatchSteps: React.Dispatch<{
       type: string;
-      data: UserPolicyInputs | {};
+      data: Partial<UserPolicyInputs>;
       stepNumber: number;
     }>;
-    handleSubmit;
-    register;
-    control;
-    validationSchema;
     currStep;
   }
 }

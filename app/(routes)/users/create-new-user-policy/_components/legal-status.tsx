@@ -1,9 +1,8 @@
-import { Controller } from "react-hook-form";
-import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
+import { Controller, useFormContext } from "react-hook-form";
 
 //
 export const LegalStatus = () => {
-  const { register, control } = useCreateUserPolicy();
+  const { register, control } = useFormContext();
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6">

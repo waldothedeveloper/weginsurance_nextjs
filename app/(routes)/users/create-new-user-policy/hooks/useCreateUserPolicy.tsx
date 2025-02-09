@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { ReactNode, createContext, useContext, useState } from "react";
 import {
   TbBabyCarriage,
   TbUserHeart,
@@ -14,12 +8,7 @@ import {
   TbUsersGroup,
 } from "react-icons/tb";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { useImmerReducer } from "use-immer";
-import { z } from "zod";
-import { principalClientSchema } from "../principalClientSchema";
-import { significantPartnerSchema } from "../significantPartnerSchema";
 
 //
 const stepsData: CreateNewUserPolicyMultiStepForm[] = [
@@ -75,72 +64,15 @@ const CreateNewUserPolicyContext = createContext<
 const CreateNewUserPolicyProvider = ({ children }: { children: ReactNode }) => {
   const [openMoreDependantsDialog, setOpenMoreDependantsDialog] =
     useState(false);
-
   const [steps, dispatchSteps] = useImmerReducer(reducer, stepsData);
-  console.log(
-    "steps: ",
-    steps.map((step) => step.data)
-  );
-
-  const currStep: CreateNewUserPolicyMultiStepForm | undefined = steps.find(
-    (step: CreateNewUserPolicyMultiStepForm) => step.status === "current"
-  )!;
-  const validationSchema =
-    currStep?.id === 0 ? principalClientSchema : significantPartnerSchema;
-
-  const {
-    reset,
-    register,
-    control,
-    handleSubmit,
-    watch,
-    formState,
-    formState: { errors },
-  } = useForm<z.infer<typeof validationSchema>>({
-    resolver: zodResolver(validationSchema),
-    defaultValues: {
-      second_name: "",
-      second_lastname: "",
-      civil_status: "",
-      email: "",
-      ssn: "",
-      birthdate: "",
-      age: 0,
-      country: "",
-      street_address: "",
-      city: "",
-      state: "",
-      postal_code: "",
-      legal_status: "",
-      legal_status_notes: "",
-      bank_account: "",
-      routing_number: "",
-      bank_account_number: "",
-      bank_account_number_confirmation: "",
-      payment_method: "",
-      card_number: "",
-      card_holder_fullname: "",
-      card_expiration_date: "",
-      card_cvv: "",
-      work_type: "",
-      company_name: "",
-      wages: "",
-      prima: "",
-      insurance_policy_number: "",
-      policy_start_date: "",
-      notes: "",
-      insurance_plan_type: "",
-    },
-  });
-  // const formValues = watch();
-  // console.log(`Form values:`, formValues.policy_start_date);
-  console.log(`errors in the form `, errors);
-
-  useEffect(() => {
-    if (formState.isSubmitSuccessful) {
-      reset();
-    }
-  }, [reset, formState]);
+  // console.log(
+  //   "steps: ",
+  //   JSON.stringify(
+  //     steps.map((step) => step.data),
+  //     null,
+  //     2
+  //   )
+  // );
 
   function reducer(
     draft: CreateNewUserPolicyMultiStepForm[],
@@ -158,7 +90,6 @@ const CreateNewUserPolicyProvider = ({ children }: { children: ReactNode }) => {
         return void draft;
       case "next":
         if (action.stepNumber === draft.length - 1) {
-          // console.log(`CASE WHEN action.stepNumber === draft.length - 1`);
           setOpenMoreDependantsDialog(true);
           draft[action.stepNumber].data = action.data;
           draft[action.stepNumber].status = "complete";
@@ -170,15 +101,21 @@ const CreateNewUserPolicyProvider = ({ children }: { children: ReactNode }) => {
         return void draft;
 
       case "additional_dependants":
-        // console.log(`CASE WHEN action.type === additional_dependants`);
         draft.push(additionalDependants(draft.length));
         // draft[action.stepNumber].data = action.data;
         // draft[action.stepNumber].status = "complete";
+        return void draft;
+      case "finish":
+        // this should just save the data in the database and redirect somewhere else like a successfully saved or error saving page
         return void draft;
       default:
         return void draft;
     }
   }
+
+  const currStep: CreateNewUserPolicyMultiStepForm | undefined = steps.find(
+    (step: CreateNewUserPolicyMultiStepForm) => step.status === "current"
+  )!;
 
   return (
     <CreateNewUserPolicyContext.Provider
@@ -187,10 +124,6 @@ const CreateNewUserPolicyProvider = ({ children }: { children: ReactNode }) => {
         dispatchSteps,
         openMoreDependantsDialog,
         setOpenMoreDependantsDialog,
-        handleSubmit,
-        register,
-        control,
-        validationSchema,
         currStep,
       }}
     >
