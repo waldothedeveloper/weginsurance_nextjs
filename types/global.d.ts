@@ -105,6 +105,7 @@ declare global {
     policy_start_date: string;
     notes: string;
     insurance_plan_type: "Bronze" | "Silver" | "Gold" | "Platinum";
+    insurance_company: string;
   }
 
   type Directory = Record<string, DirectoryEntry[]>;

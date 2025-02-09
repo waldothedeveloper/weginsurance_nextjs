@@ -176,4 +176,5 @@ export const principalClientSchema = z.object({
   insurance_plan_type: z
     .enum(["Bronze", "Silver", "Gold", "Platinum", ""])
     .optional(),
+  insurance_company: z.string().trim().optional(),
 });
