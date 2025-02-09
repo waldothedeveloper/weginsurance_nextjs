@@ -1,9 +1,10 @@
 import { Controller, useFormContext } from "react-hook-form";
 
-import { InsuranceCompanies } from "../_ui-components/insurance-companies";
+import { useGetCompanies } from "../hooks/useGetCompanies";
 
 export const InsuranceInfo = () => {
   const { register, control } = useFormContext();
+  const { companies } = useGetCompanies();
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6 mt-10">
@@ -94,7 +95,44 @@ export const InsuranceInfo = () => {
 
               {/* Companias de Seguros */}
               <div className="col-span-6 sm:col-span-3">
-                <InsuranceCompanies />
+                <Controller
+                  control={control}
+                  rules={{ required: true }}
+                  name="insurance_company"
+                  render={({ field: { onChange, onBlur, value, ref } }) => (
+                    <>
+                      <div>
+                        <label
+                          htmlFor="insurance_company"
+                          className="block text-sm font-medium text-gray-800"
+                        >
+                          Compañias de Seguros
+                        </label>
+                        <select
+                          onChange={onChange}
+                          onBlur={onBlur}
+                          value={value ?? "Seleccione un plan"}
+                          ref={ref}
+                          id="insurance_company"
+                          name="insurance_company"
+                          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500  sm:text-sm rounded-md"
+                        >
+                          {companies && companies.length > 0 ? (
+                            companies.map((company) => (
+                              <option key={company.name} value={company.name}>
+                                {company.name}
+                              </option>
+                            ))
+                          ) : (
+                            <option className="text-gray-400">
+                              Cargando Compañias...
+                            </option>
+                          )}
+                        </select>
+                      </div>
+                    </>
+                  )}
+                />
               </div>
 
               <div className="col-span-6 sm:col-span-6 lg:col-span-3">
