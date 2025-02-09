@@ -1,8 +1,8 @@
-import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
+import { useFormContext } from "react-hook-form";
 
 //
 export const Notes = () => {
-  const { register } = useCreateUserPolicy();
+  const { register } = useFormContext();
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6">

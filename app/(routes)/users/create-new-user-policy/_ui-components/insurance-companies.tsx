@@ -1,3 +1,4 @@
+import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import {
   Label,
   Listbox,
@@ -5,15 +6,13 @@ import {
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
-import { useState } from "react";
 import { useGetCompanies } from "../hooks/useGetCompanies";
+import { useState } from "react";
 
 export function InsuranceCompanies() {
   const { companies } = useGetCompanies();
   const [selected, setSelected] = useState(companies[0]);
-  // console.log("selected: ", selected);
 
   return companies && companies?.length > 0 ? (
     <Listbox value={selected ?? companies[0]} onChange={setSelected}>

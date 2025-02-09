@@ -1,4 +1,6 @@
-export function calculateAge(birthdate: string | undefined): number {
+export function calculateAge(
+  birthdate: string | Date | null | undefined
+): number {
   if (!birthdate) return 0;
   const birthDate = new Date(birthdate);
   const today = new Date();

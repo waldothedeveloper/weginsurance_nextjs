@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const significantPartnerSchema = z.object({
   accepts_insurance: z
-    .enum(["Si", "No"], {
+    .enum(["Si", "No", "Selecione una opcion"], {
       required_error: "La cobertura medica es mandatoria.",
     })
     .optional(),
@@ -106,7 +106,7 @@ export const significantPartnerSchema = z.object({
     ])
     .optional()
     .transform((e) => (e === "" ? undefined : e)),
-  payment_method: z.enum(["Credito", "Debito", ""]).optional(),
+  payment_method: z.enum(["Credito", "Debito"]).nullable().optional(),
   card_number: z
     .union([
       z

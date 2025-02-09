@@ -1,9 +1,9 @@
-import { Controller } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
+
 import { InsuranceCompanies } from "../_ui-components/insurance-companies";
-import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
 
 export const InsuranceInfo = () => {
-  const { register, control } = useCreateUserPolicy();
+  const { register, control } = useFormContext();
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6 mt-10">

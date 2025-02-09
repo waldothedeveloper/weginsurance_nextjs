@@ -112,7 +112,7 @@ export const principalClientSchema = z.object({
     ])
     .optional()
     .transform((e) => (e === "" ? "" : e)),
-  payment_method: z.enum(["Credito", "Debito", ""]).optional(),
+  payment_method: z.enum(["Credito", "Debito"]).nullable().optional(),
   card_number: z
     .union([
       z

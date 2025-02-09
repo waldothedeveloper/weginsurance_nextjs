@@ -1,67 +1,7 @@
-// import { faker } from "@faker-js/faker";
-// import { useEffect } from "react";
-import { Controller } from "react-hook-form";
-import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
-//
+import { Controller, useFormContext } from "react-hook-form";
+
 export default function PersonalInfo() {
-  const { register, control } = useCreateUserPolicy();
-  //todo:  this useEffect is for testing purposes only, we will DELETE this later
-  // useEffect(() => {
-  //   const firstname = document.getElementById(
-  //     "firstname"
-  //   ) as HTMLInputElement | null;
-  //   const secondName = document.getElementById(
-  //     "second_name"
-  //   ) as HTMLInputElement | null;
-  //   const lastname = document.getElementById(
-  //     "lastname"
-  //   ) as HTMLInputElement | null;
-  //   const secondLastname = document.getElementById(
-  //     "second_lastname"
-  //   ) as HTMLInputElement | null;
-  //   const email = document.getElementById("email") as HTMLInputElement | null;
-  //   const phone = document.getElementById("phone") as HTMLInputElement | null;
-  //   const birthdate = document.getElementById(
-  //     "birthdate"
-  //   ) as HTMLInputElement | null;
-  //   const takeInsurance = document.getElementById(
-  //     "accepts_insurance"
-  //   ) as HTMLSelectElement | null;
-  //   const civilStatus = document.getElementById(
-  //     "civil_status"
-  //   ) as HTMLInputElement | null;
-  //   const street = document.getElementById(
-  //     "street_address"
-  //   ) as HTMLInputElement | null;
-  //   const genre = document.getElementById("genre") as HTMLSelectElement | null;
-  //   const city = document.getElementById("city") as HTMLInputElement | null;
-  //   const state = document.getElementById("state") as HTMLInputElement | null;
-  //   const zipcode = document.getElementById(
-  //     "postal_code"
-  //   ) as HTMLInputElement | null;
-
-  //   const ssn = document.getElementById("ssn") as HTMLInputElement | null;
-
-  //   if (takeInsurance) takeInsurance.selectedIndex = 1;
-  //   if (genre) genre.selectedIndex = Math.floor(Math.random() * 2) + 1;
-  //   if (civilStatus) civilStatus.value = "Soltero";
-  //   if (firstname) firstname.value = faker.person.firstName();
-  //   if (secondName) secondName.value = faker.person.firstName();
-  //   if (lastname) lastname.value = faker.person.lastName();
-  //   if (secondLastname) secondLastname.value = faker.person.lastName();
-  //   if (email) email.value = faker.internet.email();
-  //   if (phone) phone.value = faker.phone.number({ style: "national" });
-  //   if (birthdate) birthdate.value = "1990-01-01";
-  //   if (street) street.value = faker.location.streetAddress();
-  //   if (city) city.value = faker.location.city();
-  //   if (state) state.value = faker.location.state();
-  //   if (zipcode) zipcode.value = faker.location.zipCode();
-  //   if (ssn)
-  //     ssn.value = faker.number
-  //       .int({ min: 100000000, max: 999999999 })
-  //       .toString();
-  // });
-
+  const { register, control } = useFormContext();
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -98,10 +38,10 @@ export default function PersonalInfo() {
                         onChange={onChange}
                         onBlur={onBlur}
                         ref={ref}
-                        value={value ?? "Seleccione una opcion"}
+                        value={value ?? "Selecione una opcion"}
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                       >
-                        <option>Seleccione una opcion</option>
+                        <option>Selecione una opcion</option>
                         <option>Si</option>
                         <option>No</option>
                       </select>
@@ -276,20 +216,7 @@ export default function PersonalInfo() {
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
-              <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="birthdate"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Fecha de nacimiento
-                </label>
-                <input
-                  id="birthdate"
-                  {...register("birthdate")}
-                  type="date"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500  block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                />
-              </div>
+
               {/* Contact info such as tel & email */}
               <div className="col-span-6 sm:col-span-3">
                 <label
@@ -310,6 +237,21 @@ export default function PersonalInfo() {
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
+              {/* Birthdate  */}
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="birthdate"
+                  className="block text-sm font-medium text-gray-800"
+                >
+                  Fecha de nacimiento
+                </label>
+                <input
+                  id="birthdate"
+                  {...register("birthdate")}
+                  type="date"
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500  block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                />
+              </div>
               {/* Age auto calc after birth date, READ-ONLY */}
               <div className="col-span-6 sm:col-span-4">
                 <label
@@ -321,12 +263,13 @@ export default function PersonalInfo() {
                 <input
                   id="age"
                   {...register("age", {
-                    valueAsDate: true,
+                    valueAsNumber: true,
                   })}
-                  readOnly
-                  placeholder="basado en la fecha de nacimiento..."
+                  defaultValue={0}
+                  placeholder="86"
                   type="number"
-                  className="mt-1 focus:outline-none focus:border-none block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-gray-400 bg-gray-100"
+                  pattern="[0-9]*"
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
 
