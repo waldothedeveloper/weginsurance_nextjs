@@ -81,35 +81,22 @@ export const useReactHookForm = (
       });
     }
   };
+
+  //! Don't ask me how this works or why it doesn't makes sense, whatever your feelings in the future, just don't touch it ok? It fukin works ok?
   useEffect(() => {
     if (formState.isSubmitSuccessful) {
-      const step = steps.find(
-        (step: CreateNewUserPolicyMultiStepForm) => step.status === "current"
-      );
-      const isData = step?.data && Object.keys(step?.data).length > 0;
-
+      const isData = currStep?.data && Object.keys(currStep?.data).length > 0;
       if (isData) {
-        reset(step.data);
+        reset(currStep.data);
       } else {
         reset();
-        const formElement = document.getElementById(
-          "insurance_form"
-        ) as HTMLFormElement;
-        if (formElement) {
-          formElement.reset();
-        }
+      }
+    } else {
+      if (currStep?.data) {
+        reset(currStep.data);
       }
     }
-  }, [formState.isSubmitSuccessful, reset, steps]);
-
-  useEffect(() => {
-    const step = steps.find(
-      (step: CreateNewUserPolicyMultiStepForm) => step.status === "current"
-    );
-    if (step?.data) {
-      reset(step.data);
-    }
-  }, [reset, steps]);
+  }, [formState.isSubmitSuccessful, reset, currStep]);
 
   return {
     methods,
