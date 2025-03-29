@@ -1,5 +1,5 @@
-import { principalClientSchema } from "../principalClientSchema";
-import { significantPartnerSchema } from "../significantPartnerSchema";
+import { principalClientSchema } from "../schemas/principalClientSchema";
+import { significantPartnerSchema } from "../schemas/significantPartnerSchema";
 
 export const provideValidationSchema = (
   currentStep: CreateNewUserPolicyMultiStepForm | undefined

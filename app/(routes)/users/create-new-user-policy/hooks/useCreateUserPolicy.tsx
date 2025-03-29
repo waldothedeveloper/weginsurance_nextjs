@@ -10,8 +10,7 @@ import {
 
 import { useImmerReducer } from "use-immer";
 
-//
-const stepsData: CreateNewUserPolicyMultiStepForm[] = [
+export const stepsData: CreateNewUserPolicyMultiStepForm[] = [
   {
     id: 0,
     tag: "cliente principal",
@@ -62,17 +61,18 @@ const CreateNewUserPolicyContext = createContext<
 >(undefined);
 
 const CreateNewUserPolicyProvider = ({ children }: { children: ReactNode }) => {
+  const [formReadyToSubmit, setFormReadyToSubmit] = useState(false);
   const [openMoreDependantsDialog, setOpenMoreDependantsDialog] =
     useState(false);
   const [steps, dispatchSteps] = useImmerReducer(reducer, stepsData);
-  // console.log(
-  //   "steps: ",
-  //   JSON.stringify(
-  //     steps.map((step) => step.data),
-  //     null,
-  //     2
-  //   )
-  // );
+  console.log(
+    "steps: ",
+    JSON.stringify(
+      steps.map((step) => step.data),
+      null,
+      2
+    )
+  );
 
   function reducer(
     draft: CreateNewUserPolicyMultiStepForm[],
@@ -102,11 +102,18 @@ const CreateNewUserPolicyProvider = ({ children }: { children: ReactNode }) => {
 
       case "additional_dependants":
         draft.push(additionalDependants(draft.length));
-        // draft[action.stepNumber].data = action.data;
-        // draft[action.stepNumber].status = "complete";
+        3;
         return void draft;
       case "finish":
-        // this should just save the data in the database and redirect somewhere else like a successfully saved or error saving page
+        setFormReadyToSubmit(true);
+        return void draft;
+      case "make_changes":
+        draft[0].status = "current";
+        // set the rest of the statuses to "upcoming"
+        for (let i = 1; i < draft.length; i++) {
+          draft[i].status = "upcoming";
+        }
+        setFormReadyToSubmit(false);
         return void draft;
       default:
         return void draft;
@@ -116,6 +123,7 @@ const CreateNewUserPolicyProvider = ({ children }: { children: ReactNode }) => {
   const currStep: CreateNewUserPolicyMultiStepForm | undefined = steps.find(
     (step: CreateNewUserPolicyMultiStepForm) => step.status === "current"
   )!;
+  // console.log("currStep: ", currStep);
 
   return (
     <CreateNewUserPolicyContext.Provider
@@ -125,6 +133,7 @@ const CreateNewUserPolicyProvider = ({ children }: { children: ReactNode }) => {
         openMoreDependantsDialog,
         setOpenMoreDependantsDialog,
         currStep,
+        formReadyToSubmit,
       }}
     >
       {children}

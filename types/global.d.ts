@@ -130,6 +130,7 @@ declare global {
       stepNumber: number;
     }>;
     currStep;
+    formReadyToSubmit: boolean;
   }
 }
 
