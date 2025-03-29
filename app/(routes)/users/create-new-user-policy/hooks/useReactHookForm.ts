@@ -1,8 +1,8 @@
 import { Dispatch, useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { principalClientSchema } from "../principalClientSchema";
-import { significantPartnerSchema } from "../significantPartnerSchema";
+import { principalClientSchema } from "../schemas/principalClientSchema";
+import { significantPartnerSchema } from "../schemas/significantPartnerSchema";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -61,8 +61,6 @@ export const useReactHookForm = (
       insurance_plan_type: "",
     },
   });
-
-  // console.log(`errors in the form `, errors);
 
   const { reset, formState } = methods;
 

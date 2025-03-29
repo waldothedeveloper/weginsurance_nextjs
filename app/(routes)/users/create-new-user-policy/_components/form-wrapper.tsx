@@ -1,18 +1,20 @@
 "use client";
 
+import { FormProvider } from "react-hook-form";
+import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
+import { useReactHookForm } from "../hooks/useReactHookForm";
 import { AddMoreDependantsDialog } from "./add-more-dependants-dialog";
 import { BankInfo } from "./bank-info";
 import { Divider } from "./divider";
-import { FormProvider } from "react-hook-form";
+import { Stepper } from "./footer-stepper";
 import { HeadStepper } from "./head-stepper";
 import { InsuranceInfo } from "./insurance-info";
 import { LegalStatus } from "./legal-status";
 import { Notes } from "./notes";
 import PersonalInfo from "./personal-info";
-import { Stepper } from "./footer-stepper";
+import { VerifyInfo } from "./verify-info";
+import { VerifyInfoHeader } from "./verify-info-header";
 import { WorkInfo } from "./work-info";
-import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
-import { useReactHookForm } from "../hooks/useReactHookForm";
 
 export const FormWrapper = () => {
   const {
@@ -21,6 +23,7 @@ export const FormWrapper = () => {
     openMoreDependantsDialog,
     setOpenMoreDependantsDialog,
     currStep,
+    formReadyToSubmit,
   } = useCreateUserPolicy();
 
   const { methods, onSubmit, setUserEventDispatch, formRef } = useReactHookForm(
@@ -28,6 +31,16 @@ export const FormWrapper = () => {
     dispatchSteps,
     steps
   );
+
+  if (formReadyToSubmit) {
+    return (
+      // className="-mt-12"
+      <div>
+        <VerifyInfoHeader dispatchSteps={dispatchSteps} steps={steps} />
+        <VerifyInfo />
+      </div>
+    );
+  }
 
   return (
     <FormProvider {...methods}>
