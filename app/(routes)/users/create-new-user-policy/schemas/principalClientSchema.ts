@@ -4,66 +4,101 @@ export const principalClientSchema = z.object({
   accepts_insurance: z.enum(["Si", "No"], {
     required_error: "La cobertura medica es mandatoria.",
   }),
-  firstname: z.string().trim().min(1, {
-    message: "Primer nombre es mandatorio.",
-  }),
+  firstname: z
+    .string()
+    .trim()
+    .min(1, {
+      message: "Primer nombre es mandatorio.",
+    })
+    .max(150, {
+      message: "El primer nombre no puede tener más de 150 caracteres.",
+    }),
   second_name: z
-    .union([z.string().length(0), z.string().trim().max(80)])
+    .union([z.string().length(0), z.string().trim().max(150)])
     .optional()
-    .transform((e) => (e === "" ? "" : e)),
-  lastname: z.string().trim().min(1, {
-    message: "Apellidos es mandatorio.",
-  }),
+    .transform((e) => (e === "" ? null : e)),
+  lastname: z
+    .string()
+    .trim()
+    .min(1, {
+      message: "Apellidos es mandatorio.",
+    })
+    .max(150, {
+      message: "El apellido no puede tener más de 150 caracteres.",
+    }),
   second_lastname: z
-    .union([z.string().length(0), z.string().trim().max(80)])
+    .union([z.string().length(0), z.string().trim().max(150)])
     .optional()
-    .transform((e) => (e === "" ? "" : e)),
+    .transform((e) => (e === "" ? null : e)),
   civil_status: z
     .enum(["Soltero", "Casado", "Divorciado", "Viudo(a)", "Separado(a)", ""])
     .optional(),
-  genre: z.enum(["Masculino", "Femenino"], {
+  genre: z.enum(["Masculino", "Femenino", "Selecione una opcion"], {
     required_error: "Genero es mandatorio.",
   }),
   email: z
     .union([z.string().email(), z.string().length(0)])
     .optional()
-    .transform((e) => (e === "" ? "" : e)),
+    .transform((e) => (e === "" ? null : e)),
   ssn: z
-    .union([z.string().trim().min(9), z.string().length(0)])
+    .union([
+      z
+        .string()
+        .trim()
+        .regex(
+          /^\d{9}$/,
+          "El número de seguridad social debe contener exactamente 9 dígitos"
+        ),
+      z.string().length(0),
+    ])
     .optional()
-    .transform((e) => (e === "" ? "" : e)),
+    .transform((e) => (e === "" ? null : e)),
   birthdate: z
-    .union([z.date(), z.nullable(z.string())])
-    .optional()
-    .transform((e) => (e === "" ? "" : e)),
-  phone: z.string().trim().min(10, {
-    message: "El telefono es mandatorio y debe contener 10 digitos.",
-  }),
+    .preprocess(
+      (arg) => {
+        if (typeof arg === "string" && arg.trim() !== "") {
+          const date = new Date(arg);
+          if (!isNaN(date.getTime())) return date;
+        }
+        return arg;
+      },
+      z.date({
+        required_error:
+          "Fecha de nacimiento es obligatoria y debe ser una fecha válida.",
+      })
+    )
+    .optional(),
+  phone: z
+    .string()
+    .trim()
+    .regex(/^\d{10}$/, {
+      message: "El telefono es mandatorio y debe contener 10 digitos.",
+    }),
   age: z
     .number()
     .min(0, {
       message: "La edad no puede ser negativa.",
     })
-    .max(121, {
+    .max(120, {
       message: "La edad no puede ser mayor a 120 años.",
     })
     .optional(),
   country: z
     .union([z.string().trim(), z.string().length(0)])
     .optional()
-    .transform((e) => (e === "" ? "" : e)),
+    .transform((e) => (e === "" ? null : e)),
   street_address: z
     .union([z.string().trim(), z.string().length(0)])
     .optional()
-    .transform((e) => (e === "" ? "" : e)),
+    .transform((e) => (e === "" ? null : e)),
   city: z
     .union([z.string().trim(), z.string().length(0)])
     .optional()
-    .transform((e) => (e === "" ? "" : e)),
+    .transform((e) => (e === "" ? null : e)),
   state: z
     .union([z.string().trim(), z.string().length(0)])
     .optional()
-    .transform((e) => (e === "" ? "" : e)),
+    .transform((e) => (e === "" ? null : e)),
   postal_code: z.string().trim().optional(),
   legal_status: z
     .enum([
@@ -91,7 +126,7 @@ export const principalClientSchema = z.object({
       z.string().trim().length(0),
     ])
     .optional()
-    .transform((e) => (e === "" ? "" : e)),
+    .transform((e) => (e === "" ? null : e)),
   bank_account_number: z
     .union([
       z
@@ -101,7 +136,7 @@ export const principalClientSchema = z.object({
       z.string().length(0),
     ])
     .optional()
-    .transform((e) => (e === "" ? "" : e)),
+    .transform((e) => (e === "" ? null : e)),
   bank_account_number_confirmation: z
     .union([
       z
@@ -111,7 +146,7 @@ export const principalClientSchema = z.object({
       z.string().length(0),
     ])
     .optional()
-    .transform((e) => (e === "" ? "" : e)),
+    .transform((e) => (e === "" ? null : e)),
   payment_method: z.enum(["Credito", "Debito"]).nullable().optional(),
   card_number: z
     .union([
@@ -122,7 +157,7 @@ export const principalClientSchema = z.object({
       z.string().length(0),
     ])
     .optional()
-    .transform((e) => (e === "" ? "" : e)),
+    .transform((e) => (e === "" ? null : e)),
   card_holder_fullname: z.string().trim().optional(),
   card_expiration_date: z
     .union([
@@ -133,7 +168,7 @@ export const principalClientSchema = z.object({
       z.string().length(0),
     ])
     .optional()
-    .transform((e) => (e === "" ? "" : e)),
+    .transform((e) => (e === "" ? null : e)),
   card_cvv: z
     .union([
       z
@@ -143,7 +178,7 @@ export const principalClientSchema = z.object({
       z.string().length(0),
     ])
     .optional()
-    .transform((e) => (e === "" ? "" : e)),
+    .transform((e) => (e === "" ? null : e)),
   work_type: z.enum(["W2", "1099", ""]).optional(),
   company_name: z.string().trim().optional(),
   wages: z.string().trim().optional(),
@@ -156,7 +191,7 @@ export const principalClientSchema = z.object({
       z.string().length(0),
     ])
     .optional()
-    .transform((e) => (e === "" ? "" : e)),
+    .transform((e) => (e === "" ? null : e)),
   insurance_policy_number: z
     .union([
       z
@@ -166,12 +201,12 @@ export const principalClientSchema = z.object({
       z.string().length(0),
     ])
     .optional()
-    .transform((e) => (e === "" ? "" : e)),
+    .transform((e) => (e === "" ? null : e)),
   //
   policy_start_date: z
     .union([z.date(), z.nullable(z.string())])
     .optional()
-    .transform((e) => (e === "" ? "" : e)),
+    .transform((e) => (e === "" ? null : e)),
   notes: z.string().trim().optional(),
   insurance_plan_type: z
     .enum(["Bronze", "Silver", "Gold", "Platinum", ""])

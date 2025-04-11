@@ -1,6 +1,6 @@
 import { Dispatch } from "react";
 
-export const VerifyInfoHeader = ({
+export const VerifyInfoFooter = ({
   dispatchSteps,
   steps,
 }: {
@@ -12,15 +12,7 @@ export const VerifyInfoHeader = ({
   }>;
 }) => {
   return (
-    <div className="md:flex md:items-center md:justify-between border-b border-gray-200 py-4">
-      <div className="min-w-0 flex-1">
-        <h2 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
-          Verificar Informacion
-        </h2>
-        <p className="mt-2 max-w-screen-sm text-gray-700">
-          Revise la informacion para asegurarse que todo esta correcto.
-        </p>
-      </div>
+    <div className="md:flex md:items-center md:justify-end py-8">
       <div className="mt-4 flex md:ml-4 md:mt-0">
         <button
           onClick={() =>

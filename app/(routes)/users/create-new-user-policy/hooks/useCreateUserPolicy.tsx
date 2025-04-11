@@ -1,6 +1,13 @@
 "use client";
 
-import { ReactNode, createContext, useContext, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
 import {
   TbBabyCarriage,
   TbUserHeart,
@@ -8,6 +15,7 @@ import {
   TbUsersGroup,
 } from "react-icons/tb";
 
+import { createOrUpdateUserAccount } from "../actions";
 import { useImmerReducer } from "use-immer";
 
 export const stepsData: CreateNewUserPolicyMultiStepForm[] = [
@@ -61,18 +69,42 @@ const CreateNewUserPolicyContext = createContext<
 >(undefined);
 
 const CreateNewUserPolicyProvider = ({ children }: { children: ReactNode }) => {
+  const [isPending, startTransition] = useTransition();
+  const [submittingForm, setSubmittingForm] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [submissionError, setSubmissionError] = useState(false);
+  const [submissionErrorMessage, setSubmissionErrorMessage] = useState("");
   const [formReadyToSubmit, setFormReadyToSubmit] = useState(false);
   const [openMoreDependantsDialog, setOpenMoreDependantsDialog] =
     useState(false);
   const [steps, dispatchSteps] = useImmerReducer(reducer, stepsData);
-  console.log(
-    "steps: ",
-    JSON.stringify(
-      steps.map((step) => step.data),
-      null,
-      2
-    )
-  );
+
+  useEffect(() => {
+    if (submittingForm) {
+      startTransition(() => {
+        const submitData = async () => {
+          try {
+            const dataToSubmit = JSON.stringify(steps);
+            const result = await createOrUpdateUserAccount(dataToSubmit);
+            if (!result.success) {
+              throw new Error(
+                "Validation failed in useCreateUserPolicy hook, check the useEffect"
+              );
+            }
+            //! remove this later
+            // await new Promise((resolve) => setTimeout(resolve, 2000));
+            setSuccess(true);
+          } catch (error) {
+            setSubmissionError(true);
+            setSubmissionErrorMessage(`${error}`);
+          } finally {
+            setSubmittingForm(false);
+          }
+        };
+        submitData();
+      });
+    }
+  }, [submittingForm, steps]);
 
   function reducer(
     draft: CreateNewUserPolicyMultiStepForm[],
@@ -102,7 +134,6 @@ const CreateNewUserPolicyProvider = ({ children }: { children: ReactNode }) => {
 
       case "additional_dependants":
         draft.push(additionalDependants(draft.length));
-        3;
         return void draft;
       case "finish":
         setFormReadyToSubmit(true);
@@ -115,6 +146,9 @@ const CreateNewUserPolicyProvider = ({ children }: { children: ReactNode }) => {
         }
         setFormReadyToSubmit(false);
         return void draft;
+      case "save_and_continue":
+        setSubmittingForm(true);
+        return void draft;
       default:
         return void draft;
     }
@@ -123,7 +157,6 @@ const CreateNewUserPolicyProvider = ({ children }: { children: ReactNode }) => {
   const currStep: CreateNewUserPolicyMultiStepForm | undefined = steps.find(
     (step: CreateNewUserPolicyMultiStepForm) => step.status === "current"
   )!;
-  // console.log("currStep: ", currStep);
 
   return (
     <CreateNewUserPolicyContext.Provider
@@ -134,6 +167,14 @@ const CreateNewUserPolicyProvider = ({ children }: { children: ReactNode }) => {
         setOpenMoreDependantsDialog,
         currStep,
         formReadyToSubmit,
+        submittingForm,
+        setSubmittingForm,
+        success,
+        setSuccess,
+        isPending,
+        submissionError,
+        submissionErrorMessage,
+        setSubmissionError,
       }}
     >
       {children}
