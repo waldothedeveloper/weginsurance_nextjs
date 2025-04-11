@@ -131,6 +131,14 @@ declare global {
     }>;
     currStep;
     formReadyToSubmit: boolean;
+    submittingForm: boolean;
+    setSubmittingForm: React.Dispatch<React.SetStateAction<boolean>>;
+    success: boolean;
+    setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+    isPending: boolean;
+    submissionError: boolean;
+    submissionErrorMessage: string;
+    setSubmissionError: React.Dispatch<React.SetStateAction<boolean>>;
   }
 }
 

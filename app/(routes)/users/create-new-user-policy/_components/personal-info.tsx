@@ -231,8 +231,7 @@ export default function PersonalInfo() {
                   {...register("phone", { required: true })}
                   type="text"
                   inputMode="numeric"
-                  // pattern="[0-9]*"
-                  placeholder="+1-786-521-3075"
+                  placeholder="(555)-555-5555"
                   autoComplete="tel-national"
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />

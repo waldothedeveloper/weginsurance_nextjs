@@ -32,7 +32,7 @@ export const useReactHookForm = (
       civil_status: "",
       email: "",
       ssn: "",
-      birthdate: "",
+      birthdate: undefined,
       age: 0,
       country: "",
       street_address: "",
@@ -85,13 +85,13 @@ export const useReactHookForm = (
     if (formState.isSubmitSuccessful) {
       const isData = currStep?.data && Object.keys(currStep?.data).length > 0;
       if (isData) {
-        reset(currStep.data);
+        reset(currStep.data as z.infer<typeof validationSchema>);
       } else {
         reset();
       }
     } else {
       if (currStep?.data) {
-        reset(currStep.data);
+        reset(currStep.data as z.infer<typeof validationSchema>);
       }
     }
   }, [formState.isSubmitSuccessful, reset, currStep]);
