@@ -1,16 +1,16 @@
 "use client";
 
 import {
-  CheckIcon,
-  ExclamationCircleIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import {
   Dialog,
   DialogBackdrop,
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
+import {
+  CheckIcon,
+  ExclamationCircleIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { Dispatch, SetStateAction } from "react";
 
 export const SavingModal = ({
@@ -115,7 +115,7 @@ export const SavingModal = ({
                 >
                   {success && "¡Listo!"}
                   {open && "Guardando..."}
-                  {submissionError && "Error al guardar los datos"}
+                  {submissionError && "Error al intentar guardar los datos"}
                 </DialogTitle>
                 <div className="mt-2">
                   <p className="text-sm text-gray-500">
@@ -123,7 +123,7 @@ export const SavingModal = ({
                     {open &&
                       "Por favor espere mientras guardamos la información."}
                     {submissionError &&
-                      `Lo sentimos, ha ocurrido un error al guardar los datos. Intentelo nuevamente. Si el error persiste, contacte al soporte tecnico.`}
+                      `${submissionErrorMessage}. Si el error persiste, contacte al soporte tecnico.`}
                   </p>
                 </div>
               </div>

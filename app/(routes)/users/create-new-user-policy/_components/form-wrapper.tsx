@@ -1,22 +1,22 @@
 "use client";
 
+import { FormProvider } from "react-hook-form";
+import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
+import { useReactHookForm } from "../hooks/useReactHookForm";
 import { AddMoreDependantsDialog } from "./add-more-dependants-dialog";
 import { BankInfo } from "./bank-info";
 import { Divider } from "./divider";
+import { Stepper } from "./footer-stepper";
 import { FooterStepperButtons } from "./footer-stepper-buttons";
-import { FormProvider } from "react-hook-form";
 import { HeadStepper } from "./head-stepper";
 import { InsuranceInfo } from "./insurance-info";
 import { LegalStatus } from "./legal-status";
 import { Notes } from "./notes";
 import PersonalInfo from "./personal-info";
-import { Stepper } from "./footer-stepper";
 import { VerifyInfo } from "./verify-info";
 import { VerifyInfoFooter } from "./verify-info-footer";
 import { VerifyInfoHeader } from "./verify-info-header";
 import { WorkInfo } from "./work-info";
-import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
-import { useReactHookForm } from "../hooks/useReactHookForm";
 
 export const FormWrapper = () => {
   const {
