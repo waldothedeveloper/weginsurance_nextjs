@@ -1,13 +1,18 @@
 import {
+  DocumentData,
+  addDoc,
   collection,
   getDocs,
   limit,
   onSnapshot,
   orderBy,
   query,
+  where,
 } from "firebase/firestore";
 
-import { db } from "@/_lib/firebase/clientApp";
+import { db } from "@/lib/firebaseConfig";
+
+// TODO: THIS IS A TEMPORARY FIX, WE NEED TO PASS THE AUTHENTICATED DB THAT"S ALREADY COMING WITH THE FIREBASE AUTH TOKEN COOKIE SET BEFORE
 
 export async function getUsers(db: any) {
   let q = query(collection(db, "Users"), orderBy("firstname"));
@@ -41,4 +46,53 @@ export function getUsersSnapshot(cb: (results: any) => void) {
   });
 
   return unsubscribe;
+}
+
+// get firebase user by phone
+export async function getFirebaseUserByPhone(
+  phone: string | null | undefined,
+  dbParam: any
+): Promise<DocumentData | null> {
+  if (!phone) throw new Error("Please provide a phone number first");
+
+  try {
+    const querySnapshot = await getDocs(
+      query(collection(dbParam, "Users"), where("phone", "==", phone))
+    );
+
+    if (querySnapshot.empty) {
+      return null;
+    } else {
+      const tempUser = querySnapshot.docs[0].data();
+      tempUser.id = querySnapshot.docs[0]?.id;
+      return tempUser;
+    }
+  } catch (error) {
+    console.error("Error checking existing user:", error);
+    throw error;
+  }
+}
+
+// create firebase user
+export async function createFirebaseUser(user: DocumentData, fireDB: any) {
+  if (!user) throw new Error("Please provide a user object first");
+  if (!user.phone) throw new Error("Please provide a phone number first");
+  try {
+    const existingUser = await getFirebaseUserByPhone(user.phone, fireDB);
+    if (existingUser) {
+      throw new Error(
+        `El usuario que usted trata de guardar con ese numero telefonico ya existe`
+      );
+    }
+  } catch (error) {
+    console.error("Error checking existing user:", error);
+    throw error;
+  }
+  try {
+    const docRef = await addDoc(collection(fireDB, "Users"), user);
+    return docRef.id;
+  } catch (error) {
+    console.error("Error creating user:", error);
+    throw error;
+  }
 }

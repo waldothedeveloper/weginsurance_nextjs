@@ -4,6 +4,8 @@ import { SearchUsers } from "./_components/search-users";
 import { UserProvider } from "./_hooks/useUser";
 import UserSkeleton from "../users/_components/user-skeleton";
 import { UsersList } from "../users/_components/users-list";
+export const dynamic = "force-dynamic";
+
 export default function UsersLayout({
   children,
 }: {

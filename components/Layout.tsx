@@ -1,10 +1,11 @@
+import { deleteCookie, setCookie } from "cookies-next";
+
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { DesktopSideBar } from "@/components/DesktopSideBar";
 import Link from "next/link";
 import { MobileSideBar } from "@/components/MobileSideBar";
 import { NavigationLinks } from "@/components/navigation/links";
 import { Wrapper } from "@/components/Wrapper";
-// this is the old navigation links used for PAGES and not for the new UI
 import { auth } from "@/_lib/firebase/clientApp";
 import { signInWithCustomToken } from "firebase/auth";
 import { useAuth } from "@clerk/nextjs";
@@ -13,6 +14,7 @@ import { useEffect } from "react";
 // import { useHandleNotifications } from "@/hooks/notifications/useHandleNotifications";
 // import { useIdentifyIncomingUserFromInboundSMS } from "@/hooks/messaging/useIdentifyIncomingUserFromInboundSMS";
 
+// this is the old navigation links used for PAGES and not for the new UI
 export const Layout = () => {
   const { getToken } = useAuth();
 
@@ -30,7 +32,18 @@ export const Layout = () => {
         });
 
         if (token) {
-          const userCredentials = await signInWithCustomToken(auth, token || '');
+          const userCredentials = await signInWithCustomToken(
+            auth,
+            token || ""
+          );
+
+          if (userCredentials.user) {
+            const gToken = await userCredentials.user.getIdToken();
+            await setCookie("__firebase_session", gToken);
+          } else {
+            console.error("User credentials not found after sign-in");
+            deleteCookie("__firebase_session");
+          }
           return userCredentials.user;
         }
         return null;
@@ -40,8 +53,6 @@ export const Layout = () => {
     };
 
     signInWithClerk();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -68,8 +79,8 @@ export const Layout = () => {
                 <button
                   type="button"
                   className="-mr-3 inline-flex h-12 w-12 items-center justify-center rounded-md text-slate-500 hover:text-slate-900"
-                // TODO: see what you're doing here since you moved this state into the MobileSideBar component
-                // onClick={handleOpenSideBar}
+                  // TODO: see what you're doing here since you moved this state into the MobileSideBar component
+                  // onClick={handleOpenSideBar}
                 >
                   <span className="sr-only">Open sidebar</span>
                   <Bars3Icon className="h-6 w-6" aria-hidden="true" />

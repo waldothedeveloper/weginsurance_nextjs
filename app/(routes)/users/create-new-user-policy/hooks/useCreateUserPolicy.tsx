@@ -15,8 +15,8 @@ import {
   TbUsersGroup,
 } from "react-icons/tb";
 
-import { createOrUpdateUserAccount } from "../actions";
 import { useImmerReducer } from "use-immer";
+import { createOrUpdateUserAccount } from "../actions";
 
 export const stepsData: CreateNewUserPolicyMultiStepForm[] = [
   {
