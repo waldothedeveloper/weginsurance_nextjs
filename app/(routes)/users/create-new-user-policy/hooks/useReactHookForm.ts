@@ -29,7 +29,7 @@ export const useReactHookForm = (
       lastname: "",
       second_lastname: "",
       phone: "",
-      civil_status: "",
+      civil_status: "Soltero",
       email: "",
       ssn: "",
       birthdate: undefined,

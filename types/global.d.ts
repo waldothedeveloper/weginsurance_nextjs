@@ -1,6 +1,7 @@
 export {};
 
 declare global {
+  // DirectoryEntry is simply each user  in the user's directory.
   interface DirectoryEntry {
     id: string;
     ssn?: string;
@@ -33,9 +34,9 @@ declare global {
     secondLastname: string;
     secondName: string;
     address?: {
+      street: string;
       city: string;
       state: string;
-      street: string;
       zipcode: string;
     };
     bank_information?: {
@@ -60,9 +61,9 @@ declare global {
   interface UserPolicyInputs {
     accepts_insurance: "Si" | "No" | "Selecione una opcion";
     firstname: string;
-    second_name: string;
+    second_name: string | null;
     lastname: string;
-    second_lastname: string;
+    second_lastname: string | null;
     civil_status:
       | "Soltero"
       | "Casado"
@@ -107,14 +108,14 @@ declare global {
     insurance_plan_type: "Bronze" | "Silver" | "Gold" | "Platinum";
     insurance_company: string;
   }
-
+  // this type would hold the directory of users
   type Directory = Record<string, DirectoryEntry[]>;
 
   interface CreateNewUserPolicyMultiStepForm {
     id: number;
     tag: string;
     status: string;
-    icon: React.ReactNode;
+    icon?: React.ReactNode;
     title: string;
     description: string;
     data: Partial<UserPolicyInputs>;
@@ -142,4 +143,84 @@ declare global {
   }
 }
 
-// TODO: handleSubmit, register, control, validationSchema and currStep are right now as any, they should be typed
+// we're gonna start auditing who's saving the data and when
+type ClerkUser = {
+  clerkID: string;
+  firstName: string;
+  lastName: string;
+};
+
+// clients
+type User = {
+  personal_info: {
+    firstname: string;
+    secondName: string;
+    lastname: string;
+    secondLastname: string;
+    email: string;
+    phone: string;
+    // ssn: string;
+    birthdate: string;
+    age: number;
+    notes: string;
+  };
+  legal_info: {
+    legalStatus:
+      | "Residente"
+      | "Ciudadano"
+      | "Permiso de Trabajo"
+      | "Huellas"
+      | "En Tramites"
+      | "Sin Estatus";
+    legalStatusNotes: string;
+  };
+  address: {
+    streetAddress: string;
+    city: string;
+    state: string;
+    postalCode: string;
+  };
+  // bank_info: {
+  //   accountNumber: string;
+  //   routingNumber: string;
+  //   accountType: string;
+  // };
+  employment_info: {
+    employerName: string;
+    //TODO:  this should be stored as cents
+    income: string;
+  };
+  insurance_info: {
+    policyNumber: string;
+    policyStartDate: string;
+    //TODO:  we should later on have a type for insurance companies or something
+    insuranceCompany: string;
+    planType: "Bronze" | "Silver" | "Gold" | "Platinum" | "";
+    // this should be stored as cents
+    policyAmount: string;
+  };
+  // payment_info: {
+  //   cardNumber: string;
+  //   cardHolderName: string;
+  //   cardExpirationDate: string;
+  //   cardCVV: string;
+  //   cardType: "Debito" | "Credito";
+  //   cardZipcode: number;
+  // };
+};
+
+// this will be the new schema to save users and for anything in the application that refers to a user
+export type UserSchema = {
+  // THIS WILL BE THE SMS CONVERSATIONS EACH USER HAS WITH THE INSURANCE COMPANY
+  conversations?: string[];
+  activeRecord: boolean;
+  created: Date;
+  updated: Date | null;
+  createdBy: ClerkUser | null;
+  updatedBy: ClerkUser | null;
+  // how many times this record has been updated
+  updates: number;
+  user: User;
+  spouse: User | null;
+  dependants: User[] | null;
+};

@@ -31,7 +31,7 @@ export const principalClientSchema = z.object({
     .optional()
     .transform((e) => (e === "" ? null : e)),
   civil_status: z
-    .enum(["Soltero", "Casado", "Divorciado", "Viudo(a)", "Separado(a)", ""])
+    .enum(["Soltero", "Casado", "Divorciado", "Viudo(a)", "Separado(a)"])
     .optional(),
   genre: z.enum(["Masculino", "Femenino", "Selecione una opcion"], {
     required_error: "Genero es mandatorio.",

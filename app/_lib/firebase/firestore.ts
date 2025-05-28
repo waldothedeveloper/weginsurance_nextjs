@@ -1,5 +1,6 @@
 import {
   DocumentData,
+  Firestore,
   addDoc,
   collection,
   getDocs,
@@ -10,11 +11,12 @@ import {
   where,
 } from "firebase/firestore";
 
+import { UserSchema } from "types/global";
 import { db } from "@/lib/firebaseConfig";
 
 // TODO: THIS IS A TEMPORARY FIX, WE NEED TO PASS THE AUTHENTICATED DB THAT"S ALREADY COMING WITH THE FIREBASE AUTH TOKEN COOKIE SET BEFORE
 
-export async function getUsers(db: any) {
+export async function getUsers(db: Firestore) {
   let q = query(collection(db, "Users"), orderBy("firstname"));
 
   const results = await getDocs(q);
@@ -74,11 +76,15 @@ export async function getFirebaseUserByPhone(
 }
 
 // create firebase user
-export async function createFirebaseUser(user: DocumentData, fireDB: any) {
-  if (!user) throw new Error("Please provide a user object first");
-  if (!user.phone) throw new Error("Please provide a phone number first");
+export async function createFirebaseUser(data: UserSchema, fireDB: Firestore) {
+  if (!data) throw new Error("Please provide a user object first");
+  if (!data.user.personal_info.phone)
+    throw new Error("Please provide a phone number first");
   try {
-    const existingUser = await getFirebaseUserByPhone(user.phone, fireDB);
+    const existingUser = await getFirebaseUserByPhone(
+      data.user.personal_info.phone,
+      fireDB
+    );
     if (existingUser) {
       throw new Error(
         `El usuario que usted trata de guardar con ese numero telefonico ya existe`
@@ -89,7 +95,7 @@ export async function createFirebaseUser(user: DocumentData, fireDB: any) {
     throw error;
   }
   try {
-    const docRef = await addDoc(collection(fireDB, "Users"), user);
+    const docRef = await addDoc(collection(fireDB, "Users"), data);
     return docRef.id;
   } catch (error) {
     console.error("Error creating user:", error);

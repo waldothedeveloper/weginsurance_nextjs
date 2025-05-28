@@ -15,8 +15,8 @@ import {
   TbUsersGroup,
 } from "react-icons/tb";
 
+import { createUserRecord } from "../actions";
 import { useImmerReducer } from "use-immer";
-import { createOrUpdateUserAccount } from "../actions";
 
 export const stepsData: CreateNewUserPolicyMultiStepForm[] = [
   {
@@ -78,6 +78,7 @@ const CreateNewUserPolicyProvider = ({ children }: { children: ReactNode }) => {
   const [openMoreDependantsDialog, setOpenMoreDependantsDialog] =
     useState(false);
   const [steps, dispatchSteps] = useImmerReducer(reducer, stepsData);
+  // console.log("steps: ", steps);
 
   useEffect(() => {
     if (submittingForm) {
@@ -85,8 +86,8 @@ const CreateNewUserPolicyProvider = ({ children }: { children: ReactNode }) => {
         const submitData = async () => {
           try {
             const dataToSubmit = JSON.stringify(steps);
-            const result = await createOrUpdateUserAccount(dataToSubmit);
-            if (!result.success) {
+            const result = await createUserRecord(dataToSubmit);
+            if (!result) {
               throw new Error(
                 "Validation failed in useCreateUserPolicy hook, check the useEffect"
               );
