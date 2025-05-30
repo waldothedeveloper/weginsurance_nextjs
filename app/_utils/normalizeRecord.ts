@@ -5,7 +5,6 @@ import { currentUser } from "@clerk/nextjs/server";
 
 // Typing this is driving me crazy, so I'm leaving it as any for now
 export const normalizeRecord = async (submittedData: any) => {
-  console.log("submittedData: ", submittedData);
   const clerkUser = await currentUser();
   const { data } = submittedData;
   let normalizedRecord: Partial<UserSchema> = {};
