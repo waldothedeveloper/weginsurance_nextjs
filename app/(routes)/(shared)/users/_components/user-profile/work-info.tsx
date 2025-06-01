@@ -1,4 +1,4 @@
-import { UserContext } from "../../_hooks/useUser";
+import { UserContext } from "../../../../../global-hooks/useUser";
 import { useContext } from "react";
 // Employment information
 export default function WorkInfo() {
@@ -12,7 +12,7 @@ export default function WorkInfo() {
               Tipo de Empleo
             </dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
-              {selectedUser?.employment_type || " - "}
+              {selectedUser?.user.employment_info.employment_type || " - "}
             </dd>
           </div>
           <div className="px-4 py-6 sm:col-span-1 sm:px-0">
@@ -20,7 +20,7 @@ export default function WorkInfo() {
               Nombre de la Compañia
             </dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
-              {selectedUser?.company_name || " - "}
+              {selectedUser?.user.employment_info.employerName || " - "}
             </dd>
           </div>
           <div className="px-4 py-6 sm:col-span-1 sm:px-0">
@@ -28,11 +28,19 @@ export default function WorkInfo() {
               Ingresos Anuales (aproximados)
             </dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
-              {selectedUser?.annual_income || " - "}
+              {selectedUser?.user.employment_info.income || " - "}
+            </dd>
+          </div>
+          <div className="px-4 py-6 sm:col-span-1 sm:px-0">
+            <dt className="text-sm font-medium leading-6 text-gray-900">
+              Estatus de Empleo
+            </dt>
+            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
+              {selectedUser?.user.employment_info.employmentStatus || " - "}
             </dd>
           </div>
         </dl>
       </div>
     </div>
-  )
+  );
 }

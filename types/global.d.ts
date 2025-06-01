@@ -159,10 +159,10 @@ type User = {
     secondLastname: string;
     email: string;
     phone: string;
-    // ssn: string;
     birthdate: string;
     age: number;
     notes: string;
+    gender: "Masculino" | "Femenino";
   };
   legal_info: {
     legalStatus:
@@ -180,15 +180,18 @@ type User = {
     state: string;
     postalCode: string;
   };
-  // bank_info: {
-  //   accountNumber: string;
-  //   routingNumber: string;
-  //   accountType: string;
-  // };
+
   employment_info: {
     employerName: string;
     //TODO:  this should be stored as cents
     income: string;
+    employment_type: string; // "W2" | "1099"
+    employmentStatus:
+      | "Empleado"
+      | "Desempleado"
+      | "Por Cuenta Propia"
+      | "Jubilado"
+      | "Otro";
   };
   insurance_info: {
     policyNumber: string;
@@ -198,15 +201,8 @@ type User = {
     planType: "Bronze" | "Silver" | "Gold" | "Platinum" | "";
     // this should be stored as cents
     policyAmount: string;
+    accepts_insurance: "Si" | "No" | "Selecione una opcion";
   };
-  // payment_info: {
-  //   cardNumber: string;
-  //   cardHolderName: string;
-  //   cardExpirationDate: string;
-  //   cardCVV: string;
-  //   cardType: "Debito" | "Credito";
-  //   cardZipcode: number;
-  // };
 };
 
 // this will be the new schema to save users and for anything in the application that refers to a user
@@ -223,4 +219,17 @@ export type UserSchema = {
   user: User;
   spouse: User | null;
   dependants: User[] | null;
+};
+
+export type Message = {
+  body: string;
+  from: string;
+  to: string;
+  direction: "inbound" | "outbound-api" | "outbound-reply";
+  numMedia: number;
+  uri: string;
+  status: "queued" | "sending" | "sent" | "failed" | "delivered";
+  sid: string;
+  dateCreated: string;
+  dateSent: string | null;
 };

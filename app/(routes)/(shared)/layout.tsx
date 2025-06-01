@@ -1,17 +1,15 @@
+export const dynamic = "force-dynamic"; // This layout is dynamic and should not be cached
+
 import { DesktopSideBar } from "@/components/DesktopSideBar";
 import Link from "next/link";
 import { MobileSideBar } from "@/components/MobileSideBar";
 import { NewNavigationLinks } from "@/components/ui/NewNavigationLinks";
-import React from "react";
-// import { DesktopNavigation } from "@/components/ui/desktop-navigation";
-// import { MobileSidebarNavigation } from "@/components/ui/mobile-sidebar-navigation";
-import { SearchUsers } from "../users/_components/search-users";
-import UserSkeleton from "../users/_components/user-skeleton";
-import { UsersList } from "../users/_components/users-list";
+import { SearchUsers } from "./users/_components/search-users";
+import { UserProvider } from "../../global-hooks/useUser";
+import UserSkeleton from "./users/_components/user-skeleton";
+import { UsersList } from "./users/_components/users-list";
 
-export const dynamic = "force-dynamic";
-
-export default function MessagesLayout({
+export default function SharedLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -39,21 +37,24 @@ export default function MessagesLayout({
             </div>
           </div>
           {/* Main column which is used for main operations like chat, create new user, etc */}
-          <main className="lg:pl-72">
-            <div className="xl:pl-8">
-              <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
-                {children}
+          <UserProvider>
+            <main className="lg:pl-72">
+              <div className="xl:pl-8">
+                <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
+                  {children}
+                </div>
               </div>
-            </div>
-          </main>
+            </main>
 
-          {/* Secondary column (hidden on smaller screens) */}
-          <aside className="fixed inset-y-0 left-64 hidden w-[22rem] border-r border-gray-200 xl:block h-screen overflow-hidden">
-            <SearchUsers />
-            <UsersList>
-              <UserSkeleton />
-            </UsersList>
-          </aside>
+            {/* Secondary column (hidden on smaller screens) */}
+            {/* The UserProvider is a client component passing the selected user information down  */}
+            <aside className="fixed inset-y-0 left-64 hidden w-[22rem] border-r border-gray-200 xl:block h-screen overflow-hidden">
+              <SearchUsers />
+              <UsersList>
+                <UserSkeleton />
+              </UsersList>
+            </aside>
+          </UserProvider>
         </div>
       </div>
     </>

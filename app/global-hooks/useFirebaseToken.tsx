@@ -39,7 +39,6 @@ export const useFirebaseToken = () => {
               firebaseTokenError: null,
             });
           } else {
-            console.error("User credentials not found after sign-in");
             deleteCookie("__firebase_session");
             setFirebaseState({
               firebaseTokenAuth: null,
@@ -51,7 +50,6 @@ export const useFirebaseToken = () => {
           return userCredentials.user;
         }
         return () => {
-          // clear cookies upon exiting the /users route
           deleteCookie("__firebase_session");
           setFirebaseState({
             firebaseTokenAuth: null,
