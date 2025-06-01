@@ -60,6 +60,7 @@ export const normalizeRecord = async (submittedData: any) => {
             birthdate: record.data.birthdate || "",
             age: record.data.age || 0,
             notes: record.data.notes || "",
+            gender: record.data.gender || "Masculino",
           },
           legal_info: {
             legalStatus: record.data.legal_status!,
@@ -78,8 +79,11 @@ export const normalizeRecord = async (submittedData: any) => {
             insuranceCompany: record.data.insurance_company || "",
             planType: record.data.insurance_plan_type || "",
             policyAmount: record.data.prima || "0",
+            accepts_insurance: record.data.accepts_insurance || " - ",
           },
           employment_info: {
+            employment_type: record.data.employment_type || " - ",
+            employmentStatus: record.data.employment_status || " - ",
             employerName: record.data.company_name || "",
             income: record.data.wages || "0",
           },
@@ -102,6 +106,7 @@ export const normalizeRecord = async (submittedData: any) => {
             birthdate: record.data.birthdate || "",
             age: record.data.age || 0,
             notes: record.data.notes || "",
+            gender: record.data.gender || "Masculino",
           },
           legal_info: {
             legalStatus: record.data.legal_status!,
@@ -119,8 +124,11 @@ export const normalizeRecord = async (submittedData: any) => {
             insuranceCompany: record.data.insurance_company || "",
             planType: record.data.insurance_plan_type || "",
             policyAmount: record.data.prima || "0",
+            accepts_insurance: record.data.accepts_insurance || " - ",
           },
           employment_info: {
+            employment_type: record.data.employment_type || " - ",
+            employmentStatus: record.data.employment_status || " - ",
             employerName: record.data.company_name || "",
             income: record.data.wages || "0",
           },
@@ -141,7 +149,7 @@ export const normalizeRecord = async (submittedData: any) => {
               secondLastname: record.data.second_lastname || "",
               email: record.data.email || "",
               phone: record.data.phone || "",
-
+              gender: record.data.gender || "Masculino",
               birthdate: record.data.birthdate || "",
               age: record.data.age || 0,
               notes: record.data.notes || "",
@@ -163,8 +171,11 @@ export const normalizeRecord = async (submittedData: any) => {
               insuranceCompany: record.data.insurance_company || "",
               planType: record.data.insurance_plan_type || "",
               policyAmount: record.data.prima || "0",
+              accepts_insurance: record.data.accepts_insurance || " - ",
             },
             employment_info: {
+              employment_type: record.data.employment_type || " - ",
+              employmentStatus: record.data.employment_status || " - ",
               employerName: record.data.company_name || "",
               income: record.data.wages || "0",
             },

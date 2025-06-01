@@ -1,6 +1,7 @@
 import {
   DocumentData,
   Firestore,
+  FirestoreDataConverter,
   addDoc,
   collection,
   getDocs,
@@ -14,7 +15,15 @@ import {
 import { UserSchema } from "types/global";
 import { db } from "@/lib/firebaseConfig";
 
-// TODO: THIS IS A TEMPORARY FIX, WE NEED TO PASS THE AUTHENTICATED DB THAT"S ALREADY COMING WITH THE FIREBASE AUTH TOKEN COOKIE SET BEFORE
+const userConverter: FirestoreDataConverter<UserSchema> = {
+  toFirestore(user) {
+    return { ...user };
+  },
+  fromFirestore(snapshot, options) {
+    const data = snapshot.data(options)!;
+    return { ...data } as UserSchema;
+  },
+};
 
 export async function getUsers(db: Firestore) {
   let q = query(collection(db, "Users"), orderBy("firstname"));
@@ -28,22 +37,16 @@ export async function getUsers(db: Firestore) {
   });
 }
 
-export function getUsersSnapshot(cb: (results: any) => void) {
-  if (typeof cb !== "function") {
-    // console.log("Error: The callback parameter is not a function");
-    return;
-  }
-  // Large_User_DB
-  let q = query(collection(db, "Users"), orderBy("firstname"), limit(200));
+export function getUsersSnapshot(cb: (results: UserSchema[]) => void) {
+  const usersCol = collection(db, "Users").withConverter(userConverter);
+  const q = query(
+    usersCol,
+    orderBy("user.personal_info.firstname"),
+    limit(200)
+  );
 
-  const unsubscribe = onSnapshot(q, (querySnapshot) => {
-    const results = querySnapshot.docs.map((doc) => {
-      return {
-        id: doc.id,
-        ...doc.data(),
-      };
-    });
-
+  const unsubscribe = onSnapshot(q, (snap) => {
+    const results = snap.docs.map((d) => d.data());
     cb(results);
   });
 

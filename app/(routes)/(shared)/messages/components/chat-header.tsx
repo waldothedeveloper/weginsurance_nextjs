@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export const ChatHeader = () => {
   return (
-    <div className="border-b border-gray-200 pb-5">
+    <div className="border-b border-slate-200 pb-5">
       <div className="sm:flex sm:items-center sm:justify-between">
         <div className="flex items-start space-x-5 ml-3">
           <div className="shrink-0">
@@ -28,14 +28,10 @@ export const ChatHeader = () => {
           but preserve the same layout if the text wraps without making the image jump around.
         */}
           <div className="pt-1.5">
-            <h1 className="text-2xl font-bold text-gray-900">Ricardo Cooper</h1>
-            <p className="text-sm font-medium text-gray-500">
-              Applied for{" "}
-              <a href="#" className="text-gray-900">
-                Front End Developer
-              </a>{" "}
-              on <time dateTime="2020-08-25">August 25, 2020</time>
-            </p>
+            <h1 className="text-2xl font-bold text-slate-900">
+              Ricardo Cooper
+            </h1>
+            <p className="text-sm text-slate-500">(786) 876-7395</p>
           </div>
         </div>
 
@@ -45,7 +41,7 @@ export const ChatHeader = () => {
           </span>
           <Menu as="div" className="relative ml-3 inline-block text-left">
             <div>
-              <MenuButton className="-my-2 flex items-center rounded-full bg-white p-2 text-gray-400 hover:text-gray-600 focus:ring-2 focus:ring-indigo-500 focus:outline-hidden">
+              <MenuButton className="-my-2 flex items-center rounded-full bg-white p-2 text-slate-400 hover:text-slate-600 focus:ring-2 focus:ring-indigo-500 focus:outline-hidden">
                 <span className="sr-only">Open options</span>
                 <EllipsisVerticalIcon aria-hidden="true" className="size-5" />
               </MenuButton>
@@ -59,7 +55,7 @@ export const ChatHeader = () => {
                 <MenuItem>
                   <a
                     href="#"
-                    className="flex justify-between px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
+                    className="flex justify-between px-4 py-2 text-sm text-slate-700 data-focus:bg-slate-100 data-focus:text-slate-900 data-focus:outline-hidden"
                   >
                     <span>Edit</span>
                   </a>
@@ -67,7 +63,7 @@ export const ChatHeader = () => {
                 <MenuItem>
                   <a
                     href="#"
-                    className="flex justify-between px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
+                    className="flex justify-between px-4 py-2 text-sm text-slate-700 data-focus:bg-slate-100 data-focus:text-slate-900 data-focus:outline-hidden"
                   >
                     <span>Duplicate</span>
                   </a>
@@ -75,7 +71,7 @@ export const ChatHeader = () => {
                 <MenuItem>
                   <button
                     type="button"
-                    className="flex w-full justify-between px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
+                    className="flex w-full justify-between px-4 py-2 text-sm text-slate-700 data-focus:bg-slate-100 data-focus:text-slate-900 data-focus:outline-hidden"
                   >
                     <span>Archive</span>
                   </button>

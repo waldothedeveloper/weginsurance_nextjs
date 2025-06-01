@@ -1,4 +1,4 @@
-import { UserContext } from "../../_hooks/useUser";
+import { UserContext } from "../../../../../global-hooks/useUser";
 import { useContext } from "react";
 
 export default function LegalStatus() {
@@ -12,7 +12,8 @@ export default function LegalStatus() {
               Estatus Legal
             </dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
-              {selectedUser?.legal_status || "No hay informacion sobre el estatus legal de este usuario"}
+              {selectedUser?.user.legal_info.legalStatus ||
+                "No hay informacion sobre el estatus legal de este usuario"}
             </dd>
           </div>
           {/* Notes */}
@@ -21,11 +22,12 @@ export default function LegalStatus() {
               Notas
             </dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
-              {selectedUser?.legal_status_notes || "No hay notas del estatus legal sobre este usuario"}
+              {selectedUser?.user.legal_info?.legalStatusNotes ||
+                "No hay notas del estatus legal sobre este usuario"}
             </dd>
           </div>
         </dl>
       </div>
     </div>
-  )
+  );
 }

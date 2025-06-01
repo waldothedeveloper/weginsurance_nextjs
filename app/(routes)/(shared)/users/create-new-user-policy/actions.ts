@@ -22,7 +22,6 @@ export async function createUserRecord(data: string) {
     }
 
     const normalizedRecord = await normalizeRecord(result);
-    // Add the new user to the database
     const dbResult = await createFirebaseUser(normalizedRecord, db);
 
     if (!dbResult) {
