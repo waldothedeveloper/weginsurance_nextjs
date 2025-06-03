@@ -12,16 +12,17 @@ export async function createUserRecord(data: string) {
   const db = getFirestore(firebaseServerApp);
 
   try {
-    const parsedData: CreateNewUserPolicyMultiStepForm[] = JSON.parse(data);
-    // Validate the parsed data against the schema
-    const result = stepsDataSchema.safeParse(parsedData);
+    const parsed = JSON.parse(data);
+    const result = stepsDataSchema.safeParse(parsed);
 
     if (!result.success) {
-      console.error("Validation failed:", result.error);
+      // console.error("Validation failed:", result.error);
       throw new Error("Validation failed");
     }
 
-    const normalizedRecord = await normalizeRecord(result);
+    const validSteps: CreateNewUserPolicyMultiStepForm[] = result.data;
+
+    const normalizedRecord = await normalizeRecord(validSteps);
     const dbResult = await createFirebaseUser(normalizedRecord, db);
 
     if (!dbResult) {

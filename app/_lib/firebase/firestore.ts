@@ -78,13 +78,34 @@ export async function getFirebaseUserByPhone(
   }
 }
 
+export const doesFirebaseUserExist = async (
+  phone: string | null | undefined,
+  dbParam: Firestore
+): Promise<boolean> => {
+  if (!phone) throw new Error("Please provide a phone number first");
+
+  try {
+    const querySnapshot = await getDocs(
+      query(
+        collection(dbParam, "Users"),
+        where("user.personal_info.phone", "==", phone)
+      )
+    );
+
+    return !querySnapshot.empty;
+  } catch (error) {
+    console.error("Error checking existing user:", error);
+    throw error;
+  }
+};
+
 // create firebase user
 export async function createFirebaseUser(data: UserSchema, fireDB: Firestore) {
   if (!data) throw new Error("Please provide a user object first");
   if (!data.user.personal_info.phone)
     throw new Error("Please provide a phone number first");
   try {
-    const existingUser = await getFirebaseUserByPhone(
+    const existingUser = await doesFirebaseUserExist(
       data.user.personal_info.phone,
       fireDB
     );

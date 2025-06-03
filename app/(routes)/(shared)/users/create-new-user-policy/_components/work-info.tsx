@@ -35,7 +35,7 @@ export const WorkInfo = () => {
                       <select
                         onChange={onChange}
                         onBlur={onBlur}
-                        value={value ?? "Selleccione una opcion"}
+                        value={value ?? "Seleccione una opcion"}
                         ref={ref}
                         id="work_type"
                         name="work_type"
@@ -45,6 +45,8 @@ export const WorkInfo = () => {
                         <option>Seleccione una opcion</option>
                         <option>W2</option>
                         <option>1099</option>
+                        <option>SSA-1099</option>
+                        <option>1099-R</option>
                       </select>
                     </>
                   )}

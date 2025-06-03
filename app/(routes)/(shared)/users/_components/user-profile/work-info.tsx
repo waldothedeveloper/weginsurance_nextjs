@@ -31,14 +31,6 @@ export default function WorkInfo() {
               {selectedUser?.user.employment_info.income || " - "}
             </dd>
           </div>
-          <div className="px-4 py-6 sm:col-span-1 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">
-              Estatus de Empleo
-            </dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
-              {selectedUser?.user.employment_info.employmentStatus || " - "}
-            </dd>
-          </div>
         </dl>
       </div>
     </div>

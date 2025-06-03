@@ -26,7 +26,7 @@ export const VerifyInfo = () => {
       />
       {steps.map((step) => (
         <section
-          className="mt-12"
+          className="mt-12 px-6"
           key={step.id}
           aria-labelledby="applicant-information-title"
         >
