@@ -6,7 +6,7 @@ const stepSchema = z.object({
   id: z.number(),
   tag: z.string(),
   status: z.enum(["current", "upcoming", "complete"]),
-  icon: z.any(), // Adjust this based on the actual type of icon
+  icon: z.any().optional(),
   title: z.string(),
   description: z.string(),
   data: z.union([principalClientSchema, significantPartnerSchema]),

@@ -22,7 +22,7 @@ export default function PersonalInfo() {
               <div className="col-span-6 sm:col-span-6">
                 <Controller
                   control={control}
-                  rules={{ required: true }}
+                  // rules={{ required: true }}
                   name="accepts_insurance"
                   render={({ field: { onChange, onBlur, value, ref } }) => (
                     <>
@@ -38,10 +38,10 @@ export default function PersonalInfo() {
                         onChange={onChange}
                         onBlur={onBlur}
                         ref={ref}
-                        value={value ?? "Selecione una opcion"}
+                        value={value ?? "Seleccione una opcion"}
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                       >
-                        <option>Selecione una opcion</option>
+                        <option>Seleccione una opcion</option>
                         <option>Si</option>
                         <option>No</option>
                       </select>
@@ -140,7 +140,7 @@ export default function PersonalInfo() {
                         value={value ?? "Seleccione una opcion"}
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                       >
-                        <option>Selecione una opcion</option>
+                        <option>Seleccione una opcion</option>
                         <option>Soltero</option>
                         <option>Casado</option>
                         <option>Divorciado</option>
@@ -173,7 +173,7 @@ export default function PersonalInfo() {
                         value={value ?? "Seleccione una opcion"}
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                       >
-                        <option>Selecione una opcion</option>
+                        <option>Seleccione una opcion</option>
                         <option>Masculino</option>
                         <option>Femenino</option>
                       </select>

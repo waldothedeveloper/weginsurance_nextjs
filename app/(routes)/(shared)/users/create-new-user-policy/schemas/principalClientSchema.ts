@@ -16,7 +16,7 @@ export const principalClientSchema = z.object({
   second_name: z
     .union([z.string().length(0), z.string().trim().max(150)])
     .optional()
-    .transform((e) => (e === "" ? null : e)),
+    .transform((e) => (e === "" ? undefined : e)),
   lastname: z
     .string()
     .trim()
@@ -29,17 +29,17 @@ export const principalClientSchema = z.object({
   second_lastname: z
     .union([z.string().length(0), z.string().trim().max(150)])
     .optional()
-    .transform((e) => (e === "" ? null : e)),
+    .transform((e) => (e === "" ? undefined : e)),
   civil_status: z
     .enum(["Soltero", "Casado", "Divorciado", "Viudo(a)", "Separado(a)"])
     .optional(),
-  genre: z.enum(["Masculino", "Femenino", "Selecione una opcion"], {
+  genre: z.enum(["Masculino", "Femenino"], {
     required_error: "Genero es mandatorio.",
   }),
   email: z
     .union([z.string().email(), z.string().length(0)])
     .optional()
-    .transform((e) => (e === "" ? null : e)),
+    .transform((e) => (e === "" ? undefined : e)),
   ssn: z
     .union([
       z
@@ -52,7 +52,7 @@ export const principalClientSchema = z.object({
       z.string().length(0),
     ])
     .optional()
-    .transform((e) => (e === "" ? null : e)),
+    .transform((e) => (e === "" ? undefined : e)),
   birthdate: z
     .preprocess(
       (arg) => {
@@ -60,13 +60,14 @@ export const principalClientSchema = z.object({
           const date = new Date(arg);
           if (!isNaN(date.getTime())) return date;
         }
-        return arg;
+        return undefined;
       },
       z.date({
         required_error:
           "Fecha de nacimiento es obligatoria y debe ser una fecha válida.",
       })
     )
+    .transform((d) => d.toISOString())
     .optional(),
   phone: z
     .string()
@@ -86,19 +87,19 @@ export const principalClientSchema = z.object({
   country: z
     .union([z.string().trim(), z.string().length(0)])
     .optional()
-    .transform((e) => (e === "" ? null : e)),
+    .transform((e) => (e === "" ? undefined : e)),
   street_address: z
     .union([z.string().trim(), z.string().length(0)])
     .optional()
-    .transform((e) => (e === "" ? null : e)),
+    .transform((e) => (e === "" ? undefined : e)),
   city: z
     .union([z.string().trim(), z.string().length(0)])
     .optional()
-    .transform((e) => (e === "" ? null : e)),
+    .transform((e) => (e === "" ? undefined : e)),
   state: z
     .union([z.string().trim(), z.string().length(0)])
     .optional()
-    .transform((e) => (e === "" ? null : e)),
+    .transform((e) => (e === "" ? undefined : e)),
   postal_code: z.string().trim().optional(),
   legal_status: z
     .enum([
@@ -108,7 +109,6 @@ export const principalClientSchema = z.object({
       "Huellas",
       "En Tramites",
       "Sin Estatus",
-      "",
     ])
     .optional(),
   legal_status_notes: z.string().trim().optional(),
@@ -126,7 +126,7 @@ export const principalClientSchema = z.object({
       z.string().trim().length(0),
     ])
     .optional()
-    .transform((e) => (e === "" ? null : e)),
+    .transform((e) => (e === "" ? undefined : e)),
   bank_account_number: z
     .union([
       z
@@ -136,7 +136,7 @@ export const principalClientSchema = z.object({
       z.string().length(0),
     ])
     .optional()
-    .transform((e) => (e === "" ? null : e)),
+    .transform((e) => (e === "" ? undefined : e)),
   bank_account_number_confirmation: z
     .union([
       z
@@ -146,8 +146,8 @@ export const principalClientSchema = z.object({
       z.string().length(0),
     ])
     .optional()
-    .transform((e) => (e === "" ? null : e)),
-  payment_method: z.enum(["Credito", "Debito"]).nullable().optional(),
+    .transform((e) => (e === "" ? undefined : e)),
+  payment_method: z.enum(["Credito", "Debito"]).optional(),
   card_number: z
     .union([
       z
@@ -157,7 +157,7 @@ export const principalClientSchema = z.object({
       z.string().length(0),
     ])
     .optional()
-    .transform((e) => (e === "" ? null : e)),
+    .transform((e) => (e === "" ? undefined : e)),
   card_holder_fullname: z.string().trim().optional(),
   card_expiration_date: z
     .union([
@@ -168,7 +168,7 @@ export const principalClientSchema = z.object({
       z.string().length(0),
     ])
     .optional()
-    .transform((e) => (e === "" ? null : e)),
+    .transform((e) => (e === "" ? undefined : e)),
   card_cvv: z
     .union([
       z
@@ -178,8 +178,8 @@ export const principalClientSchema = z.object({
       z.string().length(0),
     ])
     .optional()
-    .transform((e) => (e === "" ? null : e)),
-  work_type: z.enum(["W2", "1099", ""]).optional(),
+    .transform((e) => (e === "" ? undefined : e)),
+  work_type: z.enum(["W2", "1099", "SSA-1099", "1099-R"]).optional(),
   company_name: z.string().trim().optional(),
   wages: z.string().trim().optional(),
   prima: z
@@ -191,7 +191,7 @@ export const principalClientSchema = z.object({
       z.string().length(0),
     ])
     .optional()
-    .transform((e) => (e === "" ? null : e)),
+    .transform((e) => (e === "" ? undefined : e)),
   insurance_policy_number: z
     .union([
       z
@@ -201,15 +201,26 @@ export const principalClientSchema = z.object({
       z.string().length(0),
     ])
     .optional()
-    .transform((e) => (e === "" ? null : e)),
-  //
+    .transform((e) => (e === "" ? undefined : e)),
+
   policy_start_date: z
-    .union([z.date(), z.nullable(z.string())])
-    .optional()
-    .transform((e) => (e === "" ? null : e)),
+    .preprocess(
+      (arg) => {
+        if (arg instanceof Date) {
+          return arg;
+        }
+        if (typeof arg === "string" && arg.trim() !== "") {
+          return arg;
+        }
+        return undefined;
+      },
+      z.union([z.date(), z.string()])
+    )
+    .transform((v) => (v instanceof Date ? v.toISOString() : v))
+    .optional(),
   notes: z.string().trim().optional(),
   insurance_plan_type: z
-    .enum(["Bronze", "Silver", "Gold", "Platinum", ""])
+    .enum(["Bronze", "Silver", "Gold", "Platinum"])
     .optional(),
   insurance_company: z.string().trim().optional(),
 });

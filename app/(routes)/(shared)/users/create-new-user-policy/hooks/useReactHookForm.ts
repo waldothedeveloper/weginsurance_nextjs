@@ -23,7 +23,7 @@ export const useReactHookForm = (
   const methods = useForm<z.infer<typeof validationSchema>>({
     resolver: zodResolver(validationSchema),
     defaultValues: {
-      accepts_insurance: "Selecione una opcion",
+      accepts_insurance: undefined,
       firstname: "",
       second_name: "",
       lastname: "",
@@ -39,30 +39,36 @@ export const useReactHookForm = (
       city: "",
       state: "",
       postal_code: "",
-      genre: "Selecione una opcion",
-      legal_status: "",
+      genre: undefined,
+      legal_status: undefined,
       legal_status_notes: "",
       bank_account: "",
       routing_number: "",
       bank_account_number: "",
       bank_account_number_confirmation: "",
-      payment_method: null,
+      payment_method: undefined,
       card_number: "",
       card_holder_fullname: "",
       card_expiration_date: "",
       card_cvv: "",
-      work_type: "",
+      work_type: undefined,
       company_name: "",
       wages: "",
       prima: "",
       insurance_policy_number: "",
       policy_start_date: "",
       notes: "",
-      insurance_plan_type: "",
+      insurance_plan_type: undefined,
     },
   });
 
-  const { reset, formState } = methods;
+  const {
+    reset,
+    formState,
+    formState: { errors },
+  } = methods;
+  // console.log("form errors: ", errors);
+  // console.log(`steps: `, steps);
 
   const onSubmit: SubmitHandler<z.infer<typeof validationSchema>> = (data) => {
     if (data.firstname === "" && data.lastname === "") {
@@ -80,7 +86,8 @@ export const useReactHookForm = (
     }
   };
 
-  //! Don't ask me how this works or why it doesn't makes sense, whatever your feelings in the future, just don't touch it ok? It fukin works ok?
+  //! Don't ask me how this works or why it doesn't makes sense, whatever your feelings in the future, just don't touch it ok?
+  //! It fukin works ok?
   useEffect(() => {
     if (formState.isSubmitSuccessful) {
       const isData = currStep?.data && Object.keys(currStep?.data).length > 0;

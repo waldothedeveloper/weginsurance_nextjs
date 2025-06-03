@@ -16,7 +16,7 @@ export default function SharedLayout({
 }) {
   return (
     <>
-      <div className="flex h-screen">
+      <div className="flex h-screen overflow-hidden">
         <MobileSideBar />
         <DesktopSideBar>
           <NewNavigationLinks />
@@ -38,9 +38,9 @@ export default function SharedLayout({
           </div>
           {/* Main column which is used for main operations like chat, create new user, etc */}
           <UserProvider>
-            <main className="lg:pl-72">
+            <main className="lg:pl-72 flex-1 overflow-y-auto">
               <div className="xl:pl-8">
-                <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
+                <div className="px-4 pt-10 sm:px-6 lg:px-8 lg:pt-6">
                   {children}
                 </div>
               </div>

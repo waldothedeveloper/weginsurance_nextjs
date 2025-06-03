@@ -41,6 +41,7 @@ export const UserProfile = () => {
         <div className="h-32 w-full lg:h-48 bg-gradient-to-r from-blue-50 to-cyan-100"></div>
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
+            {/* TODO: PUT THIS BACK LATER PLEASE */}
             {/* <div className="rounded-full ring-4 ring-gray-100 sm:size-32 size-24 relative bg-gray-50">
               {selectedUser && (
                 <Image

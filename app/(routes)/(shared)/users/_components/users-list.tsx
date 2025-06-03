@@ -1,16 +1,14 @@
 "use client";
 
-import { femenine, masculine } from "@/appUtils/avatars-config";
 import { useContext, useEffect, useState } from "react";
 
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import { UserContext } from "../../../../global-hooks/useUser";
 import { UserSchema } from "types/global";
-import { createAvatar } from "@dicebear/core";
+import { createAvatarImage } from "@/appUtils/create-avatar";
 import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
 import { getUsersSnapshot } from "@/_lib/firebase/firestore";
-import { lorelei } from "@dicebear/collection";
 
 export const UsersList = ({ children }: { children: React.ReactNode }) => {
   const [users, setUsers] = useState<UserSchema[]>([]);
@@ -27,7 +25,6 @@ export const UsersList = ({ children }: { children: React.ReactNode }) => {
     <nav aria-label="Directory" className="h-full overflow-y-auto">
       {users.length > 0 ? (
         ALPHABET.map((letter) => {
-          // 2. filter and sort per-letter
           const bucket = users
             .filter(
               (u) =>
@@ -68,21 +65,10 @@ export const UsersList = ({ children }: { children: React.ReactNode }) => {
                           <Image
                             fill
                             alt={full}
-                            src={createAvatar(lorelei, {
-                              seed: person.created.toString(),
-                              hair:
-                                person.user.personal_info.gender === "Femenino"
-                                  ? femenine
-                                  : masculine,
-                              beardProbability:
-                                person.user.personal_info.gender === "Masculino"
-                                  ? 50
-                                  : 0,
-                              earringsProbability:
-                                person.user.personal_info.gender === "Femenino"
-                                  ? 50
-                                  : 0,
-                            }).toDataUri()}
+                            src={
+                              person.user.personal_info.avatar ||
+                              createAvatarImage(person.user.personal_info)
+                            }
                             className="rounded-full bg-blue-50 shadow-md shadow-blue-500/25"
                             sizes="(max-width: 768px) 100vw, 33vw"
                           />

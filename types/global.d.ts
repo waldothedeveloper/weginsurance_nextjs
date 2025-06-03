@@ -59,11 +59,11 @@ declare global {
   }
 
   interface UserPolicyInputs {
-    accepts_insurance: "Si" | "No" | "Selecione una opcion";
+    accepts_insurance: "Si" | "No";
     firstname: string;
-    second_name: string | null;
+    second_name: string | undefined;
     lastname: string;
-    second_lastname: string | null;
+    second_lastname: string | undefined;
     civil_status:
       | "Soltero"
       | "Casado"
@@ -71,16 +71,17 @@ declare global {
       | "Viudo(a)"
       | "Separado(a)";
     genre: "Masculino" | "Femenino";
-    email: string;
-    ssn: string;
-    birthdate: string;
-    phone: string;
-    age: number;
-    country: string;
-    street_address: string;
-    city: string;
-    state: string;
-    postal_code: string;
+    gender?: "Masculino" | "Femenino";
+    email: string | undefined;
+    ssn: string | undefined;
+    birthdate: string | undefined;
+    phone: string | undefined;
+    age: number | undefined;
+    country: string | undefined;
+    street_address: string | undefined;
+    city: string | undefined;
+    state: string | undefined;
+    postal_code: string | undefined;
     legal_status?:
       | "Residente"
       | "Ciudadano"
@@ -88,25 +89,25 @@ declare global {
       | "Huellas"
       | "En Tramites"
       | "Sin Estatus";
-    legal_status_notes: string;
-    bank_account: string;
-    routing_number: string;
-    bank_account_number: string;
-    bank_account_number_confirmation: string;
+    legal_status_notes: string | undefined;
+    bank_account: string | undefined;
+    routing_number: string | undefined;
+    bank_account_number: string | undefined;
+    bank_account_number_confirmation: string | undefined;
     payment_method?: "Credito" | "Debito";
-    card_number: string;
-    card_holder_fullname: string;
-    card_expiration_date: string;
-    card_cvv: string;
-    work_type: "W2" | "1099";
-    company_name: string;
-    wages: string;
-    prima: string;
-    insurance_policy_number: string;
-    policy_start_date: string;
-    notes: string;
+    card_number: string | undefined;
+    card_holder_fullname: string | undefined;
+    card_expiration_date: string | undefined;
+    card_cvv: string | undefined;
+    work_type: "W2" | "1099" | "SSA-1099" | "1099-R";
+    company_name: string | undefined;
+    wages: string | undefined;
+    prima: string | undefined;
+    insurance_policy_number: string | undefined;
+    policy_start_date: string | undefined;
+    notes: string | undefined;
     insurance_plan_type: "Bronze" | "Silver" | "Gold" | "Platinum";
-    insurance_company: string;
+    insurance_company: string | undefined;
   }
   // this type would hold the directory of users
   type Directory = Record<string, DirectoryEntry[]>;
@@ -163,6 +164,7 @@ type User = {
     age: number;
     notes: string;
     gender: "Masculino" | "Femenino";
+    avatar: string; // URL to the avatar image
   };
   legal_info: {
     legalStatus:
@@ -171,7 +173,9 @@ type User = {
       | "Permiso de Trabajo"
       | "Huellas"
       | "En Tramites"
-      | "Sin Estatus";
+      | "Sin Estatus"
+      | ""
+      | undefined;
     legalStatusNotes: string;
   };
   address: {
@@ -185,13 +189,7 @@ type User = {
     employerName: string;
     //TODO:  this should be stored as cents
     income: string;
-    employment_type: string; // "W2" | "1099"
-    employmentStatus:
-      | "Empleado"
-      | "Desempleado"
-      | "Por Cuenta Propia"
-      | "Jubilado"
-      | "Otro";
+    employment_type: "W2" | "1099" | "SSA-1099" | "1099-R" | "";
   };
   insurance_info: {
     policyNumber: string;
@@ -201,7 +199,7 @@ type User = {
     planType: "Bronze" | "Silver" | "Gold" | "Platinum" | "";
     // this should be stored as cents
     policyAmount: string;
-    accepts_insurance: "Si" | "No" | "Selecione una opcion";
+    accepts_insurance: "Si" | "No";
   };
 };
 

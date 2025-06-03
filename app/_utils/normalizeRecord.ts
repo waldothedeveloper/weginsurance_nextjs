@@ -1,12 +1,18 @@
 import "server-only";
 
 import { UserSchema } from "types/global";
+import { createAvatarImage } from "./create-avatar";
 import { currentUser } from "@clerk/nextjs/server";
 
+// TODO: Make sure we're not adding the +1 on the phone numbers and we used a proper method from utils to format the phone numbers to the format Twilio expects
+
+
 // Typing this is driving me crazy, so I'm leaving it as any for now
-export const normalizeRecord = async (submittedData: any) => {
+export const normalizeRecord = async (
+  submittedData: CreateNewUserPolicyMultiStepForm[]
+) => {
+  console.log("submittedData: ", submittedData);
   const clerkUser = await currentUser();
-  const { data } = submittedData;
   let normalizedRecord: Partial<UserSchema> = {};
 
   if (!clerkUser) {
@@ -22,13 +28,13 @@ export const normalizeRecord = async (submittedData: any) => {
     lastName: clerkLastName,
   } = clerkUser;
 
-  if (!data || data.length === 0) {
+  if (!submittedData || submittedData.length === 0) {
     throw new Error(
       "No data found in the submitted data record. Verify the information and try again."
     );
   }
 
-  for (const record of data) {
+  for (const record of submittedData) {
     // the first data object of record.data can never be empty
     if (record.id === 0 && !record.data) {
       throw new Error(
@@ -61,9 +67,10 @@ export const normalizeRecord = async (submittedData: any) => {
             age: record.data.age || 0,
             notes: record.data.notes || "",
             gender: record.data.gender || "Masculino",
+            avatar: createAvatarImage(record.data),
           },
           legal_info: {
-            legalStatus: record.data.legal_status!,
+            legalStatus: record.data.legal_status || "",
             legalStatusNotes: record.data.legal_status_notes || "",
           },
           address: {
@@ -79,11 +86,10 @@ export const normalizeRecord = async (submittedData: any) => {
             insuranceCompany: record.data.insurance_company || "",
             planType: record.data.insurance_plan_type || "",
             policyAmount: record.data.prima || "0",
-            accepts_insurance: record.data.accepts_insurance || " - ",
+            accepts_insurance: record.data.accepts_insurance!,
           },
           employment_info: {
-            employment_type: record.data.employment_type || " - ",
-            employmentStatus: record.data.employment_status || " - ",
+            employment_type: record.data.work_type || "",
             employerName: record.data.company_name || "",
             income: record.data.wages || "0",
           },
@@ -102,14 +108,15 @@ export const normalizeRecord = async (submittedData: any) => {
             lastname: record.data.lastname || "",
             secondLastname: record.data.second_lastname || "",
             email: record.data.email || "",
-            phone: record.data.phone || "",
+            phone: `+1${record.data.phone}` || "",
             birthdate: record.data.birthdate || "",
             age: record.data.age || 0,
             notes: record.data.notes || "",
             gender: record.data.gender || "Masculino",
+            avatar: createAvatarImage(record.data),
           },
           legal_info: {
-            legalStatus: record.data.legal_status!,
+            legalStatus: record.data.legal_status || "",
             legalStatusNotes: record.data.legal_status_notes || "",
           },
           address: {
@@ -124,11 +131,10 @@ export const normalizeRecord = async (submittedData: any) => {
             insuranceCompany: record.data.insurance_company || "",
             planType: record.data.insurance_plan_type || "",
             policyAmount: record.data.prima || "0",
-            accepts_insurance: record.data.accepts_insurance || " - ",
+            accepts_insurance: record.data.accepts_insurance!,
           },
           employment_info: {
-            employment_type: record.data.employment_type || " - ",
-            employmentStatus: record.data.employment_status || " - ",
+            employment_type: record.data.work_type || "",
             employerName: record.data.company_name || "",
             income: record.data.wages || "0",
           },
@@ -136,6 +142,7 @@ export const normalizeRecord = async (submittedData: any) => {
       };
     }
 
+    // rest of the data objects are dependants
     if (record.id >= 2 && Object.keys(record.data).length > 0) {
       normalizedRecord = {
         ...normalizedRecord,
@@ -148,14 +155,15 @@ export const normalizeRecord = async (submittedData: any) => {
               lastname: record.data.lastname || "",
               secondLastname: record.data.second_lastname || "",
               email: record.data.email || "",
-              phone: record.data.phone || "",
+              phone: `+1${record.data.phone}` || "",
               gender: record.data.gender || "Masculino",
               birthdate: record.data.birthdate || "",
               age: record.data.age || 0,
               notes: record.data.notes || "",
+              avatar: createAvatarImage(record.data),
             },
             legal_info: {
-              legalStatus: record.data.legal_status!,
+              legalStatus: record.data.legal_status || "",
               legalStatusNotes: record.data.legal_status_notes || "",
             },
             address: {
@@ -171,11 +179,10 @@ export const normalizeRecord = async (submittedData: any) => {
               insuranceCompany: record.data.insurance_company || "",
               planType: record.data.insurance_plan_type || "",
               policyAmount: record.data.prima || "0",
-              accepts_insurance: record.data.accepts_insurance || " - ",
+              accepts_insurance: record.data.accepts_insurance!,
             },
             employment_info: {
-              employment_type: record.data.employment_type || " - ",
-              employmentStatus: record.data.employment_status || " - ",
+              employment_type: record.data.work_type || "",
               employerName: record.data.company_name || "",
               income: record.data.wages || "0",
             },
