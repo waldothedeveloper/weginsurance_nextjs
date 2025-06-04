@@ -51,7 +51,7 @@ export const BankInfo = () => {
                       type="text"
                       name="bank_account"
                       id="bank_account"
-                      className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
 
@@ -69,7 +69,7 @@ export const BankInfo = () => {
                       inputMode="numeric"
                       name="routing_number"
                       id="routing_number"
-                      className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
                   {/* Account number */}
@@ -87,7 +87,7 @@ export const BankInfo = () => {
                       inputMode="numeric"
                       name="bank_account_number"
                       id="bank_account_number"
-                      className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
@@ -105,7 +105,7 @@ export const BankInfo = () => {
                       inputMode="numeric"
                       name="bank_account_number_confirmation"
                       id="bank_account_number_confirmation"
-                      className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
                 </div>
@@ -139,7 +139,7 @@ export const BankInfo = () => {
                     <legend className="block text-sm font-medium text-gray-800">
                       Detalles de la tarjeta
                     </legend>
-                    <div className="mt-1 bg-white rounded-md shadow-sm -space-y-px">
+                    <div className="mt-1 bg-white rounded-md shadow-xs -space-y-px">
                       <div>
                         <label htmlFor="card_number" className="sr-only">
                           Card number

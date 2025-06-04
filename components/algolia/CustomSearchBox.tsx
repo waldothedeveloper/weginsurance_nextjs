@@ -1,15 +1,16 @@
-import { UseSearchBoxProps, useSearchBox } from 'react-instantsearch';
+import { UseSearchBoxProps, useSearchBox } from "react-instantsearch";
 
-import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
-import React from 'react';
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import React from "react";
 
-// 
+//
 export const CustomSearchBox = (props: UseSearchBoxProps) => {
   const { query, refine } = useSearchBox(props);
 
-  const handleInputChange = (event: React.FormEvent<HTMLInputElement>): void => {
+  const handleInputChange = (
+    event: React.FormEvent<HTMLInputElement>
+  ): void => {
     refine(event.currentTarget.value);
-
   };
 
   return (
@@ -18,9 +19,12 @@ export const CustomSearchBox = (props: UseSearchBoxProps) => {
         <label htmlFor="search" className="sr-only">
           Search
         </label>
-        <div className="relative rounded-md shadow-sm">
+        <div className="relative rounded-md shadow-xs">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+            <MagnifyingGlassIcon
+              className="h-5 w-5 text-gray-400"
+              aria-hidden="true"
+            />
           </div>
           <input
             value={query} // Set the input value to the current search query
@@ -33,7 +37,6 @@ export const CustomSearchBox = (props: UseSearchBoxProps) => {
           />
         </div>
       </div>
-
     </div>
-  )
-}
+  );
+};

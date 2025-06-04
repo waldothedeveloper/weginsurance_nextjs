@@ -37,7 +37,7 @@ export const InsuranceInfo = () => {
                   type="date"
                   name="policy_start_date"
                   id="policy_start_date"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500  block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500  block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
 
@@ -55,7 +55,7 @@ export const InsuranceInfo = () => {
                   inputMode="numeric"
                   name="insurance_policy_number"
                   id="insurance_policy_number"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
 
@@ -67,7 +67,7 @@ export const InsuranceInfo = () => {
                   >
                     Prima
                   </label>
-                  <div className="mt-1 relative rounded-md shadow-sm">
+                  <div className="mt-1 relative rounded-md shadow-xs">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <span className=" text-gray-500 sm:text-sm">$</span>
                     </div>

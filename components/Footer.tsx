@@ -5,7 +5,7 @@ export const Footer = () => {
     <footer className="flex flex-col w-full items-center justify-center">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex">
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <PhoneIcon className="h-6 w-6 text-gray-400" aria-hidden="true" />
           </div>
           <div className="ml-3 text-base text-gray-500">
@@ -16,7 +16,7 @@ export const Footer = () => {
           </div>
         </div>
         <div className="mt-6 flex">
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <EnvelopeIcon className="h-6 w-6 text-gray-400" aria-hidden="true" />
           </div>
           <div className="ml-3 text-base text-gray-500">

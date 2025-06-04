@@ -1,7 +1,7 @@
-import { EllipsisVerticalIcon, UserPlusIcon } from '@heroicons/react/20/solid'
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { EllipsisVerticalIcon, UserPlusIcon } from "@heroicons/react/20/solid";
 
-import Link from 'next/link'
+import Link from "next/link";
 
 export default function SearchOptions() {
   return (
@@ -14,13 +14,14 @@ export default function SearchOptions() {
       </div>
       <MenuItems
         transition
-        className="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+        className="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-black-5 transition focus:outline-none data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-leave:duration-75 data-enter:ease-out data-leave:ease-in"
       >
         <div className="py-1">
           <MenuItem>
             <Link
-              className="group flex items-center px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
-              href="/users/create-new-user-policy">
+              className="group flex items-center px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900"
+              href="/users/create-new-user-policy"
+            >
               <UserPlusIcon
                 aria-hidden="true"
                 className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
@@ -31,7 +32,7 @@ export default function SearchOptions() {
           <MenuItem>
             <a
               href="#"
-              className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
+              className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900"
             >
               Support
             </a>
@@ -39,14 +40,13 @@ export default function SearchOptions() {
           <MenuItem>
             <a
               href="#"
-              className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
+              className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900"
             >
               License
             </a>
           </MenuItem>
-
         </div>
       </MenuItems>
     </Menu>
-  )
+  );
 }

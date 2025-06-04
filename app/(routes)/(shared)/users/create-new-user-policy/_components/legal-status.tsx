@@ -39,7 +39,7 @@ export const LegalStatus = () => {
                         onBlur={onBlur}
                         value={value}
                         ref={ref}
-                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                       >
                         <option>Seleccione una opcion</option>
                         <option>Residente</option>
@@ -67,7 +67,7 @@ export const LegalStatus = () => {
                     id="legal_status_notes"
                     name="legal_status_notes"
                     rows={3}
-                    className="shadow-sm focus:ring-blue-500 focus:border-blue-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                    className="shadow-xs focus:ring-blue-500 focus:border-blue-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
                     placeholder="ejemplo: 2 meses para el permiso de trabajo."
                   />
                 </div>

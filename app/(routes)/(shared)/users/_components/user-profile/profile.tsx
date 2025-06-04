@@ -5,17 +5,14 @@ import {
   PencilSquareIcon,
   TrashIcon,
 } from "@heroicons/react/20/solid";
-// import { femenine, masculine } from "@/appUtils/avatars-config";
 import { useContext, useState } from "react";
 
+import Image from "next/image";
 import NoUserSelected from "./no-user-selected";
 import { UserContext } from "../../../../../global-hooks/useUser";
-// import Image from "next/image";
 import { classNames } from "@/utils/classNames";
-// import { createAvatar } from "@dicebear/core";
+import { createAvatarImage } from "@/appUtils/create-avatar";
 import dynamic from "next/dynamic";
-
-// import { lorelei } from "@dicebear/collection";
 
 // TODO: Implement React.lazy with Suspense instead of dynamic imports because it will give a nice loading state instead of just a blank page for these components
 const UserInfo = dynamic(() => import("./info"), { ssr: false });
@@ -28,7 +25,7 @@ const WorkInfo = dynamic(() => import("./work-info"), { ssr: false });
 
 export const UserProfile = () => {
   const { selectedUser } = useContext(UserContext);
-  console.log("selectedUser in profile: ", selectedUser);
+
   const [tabs, setTabs] = useState([
     { name: "Personal", current: true },
     { name: "Seguros", current: false },
@@ -37,41 +34,24 @@ export const UserProfile = () => {
   ]);
   return selectedUser ? (
     <article>
-      <div>
-        <div className="h-32 w-full lg:h-48 bg-gradient-to-r from-blue-50 to-cyan-100"></div>
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
-            {/* TODO: PUT THIS BACK LATER PLEASE */}
-            {/* <div className="rounded-full ring-4 ring-gray-100 sm:size-32 size-24 relative bg-gray-50">
+      <div className="h-32 w-full lg:h-48 bg-linear-to-r from-blue-50 to-cyan-100"></div>
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
+          <div className="rounded-full ring-4 ring-gray-100 sm:size-32 size-24 relative bg-gray-50">
+            <div className="rounded-full ring-4 ring-gray-100 sm:size-32 size-24 relative bg-gray-50">
               {selectedUser && (
                 <Image
                   fill
-                  alt={
-                    selectedUser.user.personal_info.firstname || "unknown user"
-                  }
                   src={
-                    selectedUser?.avatar ||
-                    createAvatar(lorelei, {
-                      seed: selectedUser.user.personal_info.birthdate,
-                      hair:
-                        selectedUser.user.personal_info.gender === "Femenino"
-                          ? femenine
-                          : masculine,
-                      beardProbability:
-                        selectedUser.user.personal_info.gender === "Masculino"
-                          ? 50
-                          : 0,
-                      earringsProbability:
-                        selectedUser.user.personal_info.gender === "Femenino"
-                          ? 50
-                          : 0,
-                    }).toDataUri()
+                    selectedUser.user.personal_info.avatar ||
+                    createAvatarImage(selectedUser.user.personal_info)
                   }
                   className="rounded-full shadow-md"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  alt="User Avatar"
                 />
               )}
-            </div> */}
+            </div>
             <div className="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
               <div className="mt-6 min-w-0 flex-1 sm:hidden 2xl:block">
                 <h1 className="truncate text-2xl font-bold text-gray-900">
@@ -81,7 +61,7 @@ export const UserProfile = () => {
               <div className="mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-x-4 sm:space-y-0">
                 <button
                   type="button"
-                  className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                 >
                   <DocumentTextIcon
                     aria-hidden="true"
@@ -91,7 +71,7 @@ export const UserProfile = () => {
                 </button>
                 <button
                   type="button"
-                  className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                 >
                   <PencilSquareIcon
                     aria-hidden="true"
@@ -101,7 +81,7 @@ export const UserProfile = () => {
                 </button>
                 <button
                   type="button"
-                  className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                 >
                   <TrashIcon
                     aria-hidden="true"

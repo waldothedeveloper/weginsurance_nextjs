@@ -97,7 +97,7 @@ export const UsersUI = () => {
             <button
               onClick={handleCreateUserModal}
               type="button"
-              className="hidden items-center gap-x-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:inline-flex lg:ml-4"
+              className="hidden items-center gap-x-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:inline-flex lg:ml-4"
             >
               <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
               Crear usuario
@@ -106,7 +106,7 @@ export const UsersUI = () => {
               <button
                 onClick={handleCreateUserModal}
                 type="button"
-                className="ml-4 inline-flex items-center gap-x-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                className="ml-4 inline-flex items-center gap-x-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-blue-600"
               >
                 <UserPlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
               </button>
@@ -146,8 +146,9 @@ export const UsersUI = () => {
           </h1>
           <p className="mt-2 text-sm text-slate-700">
             {Object.keys(rowSelection).length > 0
-              ? `Ha seleccionado ${Object.keys(rowSelection).length
-              } de un total de ${totalUserCount} usuarios`
+              ? `Ha seleccionado ${
+                  Object.keys(rowSelection).length
+                } de un total de ${totalUserCount} usuarios`
               : `Directorio de busqueda de ${totalUserCount} usuarios`}
           </p>
         </div>
@@ -158,7 +159,7 @@ export const UsersUI = () => {
             name="search"
             value={globalFilter ?? ""}
             onChange={(value) => setGlobalFilter(String(value))}
-            cssValues="block w-full rounded-md border-0 py-1.5 pr-32 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+            cssValues="block w-full rounded-md border-0 py-1.5 pr-32 text-slate-900 shadow-xs ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
             placeholder="Buscar usuarios..."
           />
 
@@ -168,7 +169,7 @@ export const UsersUI = () => {
               <button
                 onClick={() => handleOpenDeleteMultipleUsersModal(rowSelection)}
                 type="button"
-                className="hidden items-center gap-x-2 rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 md:inline-flex lg:ml-4"
+                className="hidden items-center gap-x-2 rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-red-600 md:inline-flex lg:ml-4"
               >
                 <TrashIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
                 Eliminar {Object.keys(rowSelection).length} usuarios
@@ -178,7 +179,7 @@ export const UsersUI = () => {
             <button
               onClick={handleCreateUserModal}
               type="button"
-              className="hidden items-center gap-x-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:inline-flex lg:ml-4"
+              className="hidden items-center gap-x-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:inline-flex lg:ml-4"
             >
               <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
               Crear usuario
@@ -187,7 +188,7 @@ export const UsersUI = () => {
               <button
                 onClick={handleCreateUserModal}
                 type="button"
-                className="ml-4 inline-flex items-center gap-x-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                className="ml-4 inline-flex items-center gap-x-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-blue-600"
               >
                 <UserPlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
               </button>

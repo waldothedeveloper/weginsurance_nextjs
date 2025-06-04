@@ -1,6 +1,11 @@
-import { FieldErrors, FieldValues, UseFormRegister, UseFormSetValue } from "react-hook-form";
+import {
+  FieldErrors,
+  FieldValues,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
 
-import { Dialog } from "@headlessui/react";
+import { DialogTitle } from "@headlessui/react";
 import { ErrorComponent } from "@/components/Error";
 import { Input } from "@/components/directory/Input";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
@@ -9,20 +14,17 @@ import { Select } from "@/components/directory/Select";
 import { userFormLabels } from "@/utils/userFormLabels";
 
 type UpdateUserFormProps = {
-  setValue: UseFormSetValue<FieldValues>,
-  register: UseFormRegister<FieldValues>,
-  errors: FieldErrors<FieldValues>,
-  handleSubmit: any,
+  setValue: UseFormSetValue<FieldValues>;
+  register: UseFormRegister<FieldValues>;
+  errors: FieldErrors<FieldValues>;
+  handleSubmit: any;
   // eslint-disable-next-line no-unused-vars
-  submitUpdateUser: (user: RealUser) => Promise<void>,
-  isSubmitting: boolean,
-  handleCloseModal: () => void,
-  companies: { value: string; id: string | undefined; }[] | undefined,
-  companiesError: unknown,
-}
-
-
-
+  submitUpdateUser: (user: RealUser) => Promise<void>;
+  isSubmitting: boolean;
+  handleCloseModal: () => void;
+  companies: { value: string; id: string | undefined }[] | undefined;
+  companiesError: unknown;
+};
 
 export const UpdateUserForm = ({
   setValue,
@@ -35,12 +37,6 @@ export const UpdateUserForm = ({
   companies,
   companiesError,
 }: UpdateUserFormProps) => {
-
-
-
-
-
-
   if (companiesError) {
     return (
       <ErrorComponent
@@ -55,19 +51,19 @@ export const UpdateUserForm = ({
     <>
       <div className="px-4 py-5 sm:px-6">
         <div className="flex items-center space-x-3">
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <PencilSquareIcon
               className="h-8 w-8 rounded-full text-blue-600"
               aria-hidden="true"
             />
           </div>
           <div className="min-w-0 flex-1">
-            <Dialog.Title
+            <DialogTitle
               as="h3"
               className="text-base font-semibold leading-6 text-slate-900"
             >
               Editar Usuario
-            </Dialog.Title>
+            </DialogTitle>
           </div>
         </div>
       </div>
@@ -147,7 +143,7 @@ export const UpdateUserForm = ({
                     id="notes"
                     name="notes"
                     rows={3}
-                    className="block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    className="block w-full rounded-md border border-slate-300 shadow-xs focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     defaultValue={""}
                   />
                 </div>
@@ -161,15 +157,15 @@ export const UpdateUserForm = ({
             disabled={isSubmitting || Object.keys(errors).length > 0}
             className={
               isSubmitting || Object.keys(errors).length > 0
-                ? "inline-flex w-full justify-center rounded-md bg-slate-200 px-3 py-2 text-sm font-semibold text-slate-400 shadow-sm sm:ml-3 sm:w-auto"
-                : "inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+                ? "inline-flex w-full justify-center rounded-md bg-slate-200 px-3 py-2 text-sm font-semibold text-slate-400 shadow-xs sm:ml-3 sm:w-auto"
+                : "inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 sm:ml-3 sm:w-auto"
             }
           >
             Actualizar
           </button>
           <button
             type="button"
-            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 sm:mt-0 sm:w-auto"
+            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 shadow-xs ring-1 ring-inset ring-slate-300 hover:bg-slate-50 sm:mt-0 sm:w-auto"
             onClick={handleCloseModal}
           >
             Cancelar
@@ -179,4 +175,3 @@ export const UpdateUserForm = ({
     </>
   );
 };
-

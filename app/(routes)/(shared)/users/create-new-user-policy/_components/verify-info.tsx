@@ -1,6 +1,6 @@
-import { SavingModal } from "./saving-modal";
 import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
 import { useCreateUserPolicy } from "../hooks/useCreateUserPolicy";
+import { SavingModal } from "./saving-modal";
 export const VerifyInfo = () => {
   const {
     steps,
@@ -30,7 +30,7 @@ export const VerifyInfo = () => {
           key={step.id}
           aria-labelledby="applicant-information-title"
         >
-          <div className="bg-white shadow sm:rounded-lg">
+          <div className="bg-white shadow-sm sm:rounded-lg">
             <div className="px-4 py-5 sm:px-6">
               <h2
                 id="applicant-information-title"

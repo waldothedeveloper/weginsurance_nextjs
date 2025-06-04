@@ -13,7 +13,7 @@ export const SearchUsers: React.FC = () => {
           <label htmlFor="search" className="sr-only">
             Search
           </label>
-          <div className="relative rounded-md shadow-sm">
+          <div className="relative rounded-md shadow-xs">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <MagnifyingGlassIcon
                 aria-hidden="true"

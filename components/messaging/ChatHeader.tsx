@@ -1,28 +1,35 @@
+import { pdfDataAtom, selectedUserAtom } from "@/lib/state/atoms";
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+  Transition,
+} from "@headlessui/react";
 import {
   ChatBubbleLeftEllipsisIcon,
   EllipsisVerticalIcon,
 } from "@heroicons/react/20/solid";
-import { FaUserEdit, FaUserMinus, } from "react-icons/fa";
-import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
-import { pdfDataAtom, selectedUserAtom } from "@/lib/state/atoms";
+import { FaUserEdit, FaUserMinus } from "react-icons/fa";
 
-import { BsFiletypePdf } from "react-icons/bs";
 import { DateSelect } from "@/components/documents/DateSelect";
 import { DocumentModal } from "@/components/documents/DocumentModal";
-import { Fragment } from "react";
+import { usePDFWizard } from "@/components/documents/hooks/usePDFWizard";
 import { Questions } from "@/components/documents/Questions";
 import { URLCopy } from "@/components/documents/URLCopy";
-import { UserIcon } from "@heroicons/react/24/outline";
+import { pdfModalTitles } from "@/components/documents/utils/pdfModalTitles";
 import { classNames } from "@/utils/classNames";
 import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
-import { pdfModalTitles } from "@/components/documents/utils/pdfModalTitles";
+import { UserIcon } from "@heroicons/react/24/outline";
 import { useAtomValue } from "jotai";
-import { usePDFWizard } from "@/components/documents/hooks/usePDFWizard";
+import { Fragment } from "react";
+import { BsFiletypePdf } from "react-icons/bs";
 
 export const ChatHeader = () => {
   const selectedUser = useAtomValue(selectedUserAtom);
   const pdfData = useAtomValue(pdfDataAtom);
-  const { isOpen,
+  const {
+    isOpen,
     canDoNextStep,
     error,
     urlCopied,
@@ -32,11 +39,13 @@ export const ChatHeader = () => {
     step,
     handleNextStep,
     handleResetStep,
-    handlePrevStep, isLoading } = usePDFWizard();
+    handlePrevStep,
+    isLoading,
+  } = usePDFWizard();
   return (
     <div className="border-b-2 border-b-slate-200 px-4 py-5 sm:px-6">
       <div className="flex space-x-3">
-        <div className="relative flex-shrink-0">
+        <div className="relative shrink-0">
           <UserIcon className="h-16 w-16 rounded-full bg-slate-50 p-2 font-light text-slate-400" />
           <span className="absolute -bottom-0.5 -right-1 rounded-tl bg-white px-0.5 py-px">
             <ChatBubbleLeftEllipsisIcon
@@ -53,7 +62,7 @@ export const ChatHeader = () => {
             {formatPhoneNumberToNationalUSAformat(selectedUser?.phone) || ""}
           </p>
         </div>
-        <div className="flex flex-shrink-0 self-center">
+        <div className="flex shrink-0 self-center">
           <Menu as="div" className="relative inline-block text-left">
             <div>
               <MenuButton className="-m-2 flex items-center rounded-full p-2 text-slate-400 hover:text-slate-600">
@@ -71,7 +80,7 @@ export const ChatHeader = () => {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-black-5 focus:outline-none">
                 <div className="py-1">
                   <MenuItem>
                     {({ active }) => (
@@ -134,16 +143,65 @@ export const ChatHeader = () => {
           </Menu>
         </div>
       </div>
-      <DocumentModal canDoNextStep={canDoNextStep} urlCopied={urlCopied} error={error} isLoading={isLoading} questions={pdfModalTitles(pdfData?.agent.includes("William"))} isOpen={isOpen} step={step} handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} handleResetStep={handleResetStep}>
+      <DocumentModal
+        canDoNextStep={canDoNextStep}
+        urlCopied={urlCopied}
+        error={error}
+        isLoading={isLoading}
+        questions={pdfModalTitles(pdfData?.agent.includes("William"))}
+        isOpen={isOpen}
+        step={step}
+        handleNextStep={handleNextStep}
+        handlePrevStep={handlePrevStep}
+        handleResetStep={handleResetStep}
+      >
         {/* Select the language of the PDF template */}
-        <Questions step={step} name="language" subtitle="El documento PDF sera enviado con el idioma selecionado." options={[{ id: 'en', item: 'Ingles' }, { id: 'es', item: 'Español' }]} />
+        <Questions
+          step={step}
+          name="language"
+          subtitle="El documento PDF sera enviado con el idioma selecionado."
+          options={[
+            { id: "en", item: "Ingles" },
+            { id: "es", item: "Español" },
+          ]}
+        />
         {/* Select the insurance agent */}
-        <Questions step={step} name="agent" subtitle="El documento PDF sera enviado con los datos del agente selecionado." options={[{ id: 'agent1', item: 'William Gola-Romero' }, { id: 'agent2', item: 'Lorena Zozaya' }]} />
-        {pdfData?.agent.includes("William") && (<Questions step={step} name="optionalAgentPhone" subtitle="Para clientes de Texas escoja el telefono privado. Para cualquier otro cliente, escoja el telefono general." options={[{ id: 'privado', item: process.env.NEXT_PUBLIC_PERSONAL_PHONE as string }, { id: 'general', item: process.env.NEXT_PUBLIC_WILLIAM_GENERAL_PHONE as string }]} />)}
+        <Questions
+          step={step}
+          name="agent"
+          subtitle="El documento PDF sera enviado con los datos del agente selecionado."
+          options={[
+            { id: "agent1", item: "William Gola-Romero" },
+            { id: "agent2", item: "Lorena Zozaya" },
+          ]}
+        />
+        {pdfData?.agent.includes("William") && (
+          <Questions
+            step={step}
+            name="optionalAgentPhone"
+            subtitle="Para clientes de Texas escoja el telefono privado. Para cualquier otro cliente, escoja el telefono general."
+            options={[
+              {
+                id: "privado",
+                item: process.env.NEXT_PUBLIC_PERSONAL_PHONE as string,
+              },
+              {
+                id: "general",
+                item: process.env.NEXT_PUBLIC_WILLIAM_GENERAL_PHONE as string,
+              },
+            ]}
+          />
+        )}
         {/* Choose the birth date of the user */}
-        <DateSelect name="signerBirthdate" subtitle="Escoja la fecha de nacimiento del usuario que va a firmar este documento." />
+        <DateSelect
+          name="signerBirthdate"
+          subtitle="Escoja la fecha de nacimiento del usuario que va a firmar este documento."
+        />
         {/* Choose the expiration date of the PDF */}
-        <DateSelect name="expirationDate" subtitle="La fecha por defecto son 10 años. Puede escoger otra fecha si desea." />
+        <DateSelect
+          name="expirationDate"
+          subtitle="La fecha por defecto son 10 años. Puede escoger otra fecha si desea."
+        />
         {/* Choose the expiration date of the PDF */}
         <URLCopy url={url} copy={copyToClipboard} urlCopied={urlCopied} />
       </DocumentModal>

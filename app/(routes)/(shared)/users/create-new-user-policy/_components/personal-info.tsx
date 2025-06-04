@@ -39,7 +39,7 @@ export default function PersonalInfo() {
                         onBlur={onBlur}
                         ref={ref}
                         value={value ?? "Seleccione una opcion"}
-                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                       >
                         <option>Seleccione una opcion</option>
                         <option>Si</option>
@@ -64,7 +64,7 @@ export default function PersonalInfo() {
                   type="text"
                   placeholder="Jose"
                   autoComplete="given-name"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
               <div className="col-span-6 sm:col-span-3">
@@ -80,7 +80,7 @@ export default function PersonalInfo() {
                   type="text"
                   placeholder="Julian"
                   autoComplete="additional-name"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
 
@@ -98,7 +98,7 @@ export default function PersonalInfo() {
                   type="text"
                   placeholder="Marti"
                   autoComplete="family-name"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
 
@@ -115,7 +115,7 @@ export default function PersonalInfo() {
                   placeholder="Perez"
                   id="second_lastname"
                   autoComplete="family-name"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
 
@@ -138,7 +138,7 @@ export default function PersonalInfo() {
                         onBlur={onBlur}
                         ref={ref}
                         value={value ?? "Seleccione una opcion"}
-                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                       >
                         <option>Seleccione una opcion</option>
                         <option>Soltero</option>
@@ -171,7 +171,7 @@ export default function PersonalInfo() {
                         onBlur={onBlur}
                         ref={ref}
                         value={value ?? "Seleccione una opcion"}
-                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                       >
                         <option>Seleccione una opcion</option>
                         <option>Masculino</option>
@@ -195,7 +195,7 @@ export default function PersonalInfo() {
                   type="email"
                   placeholder="ejemplo@prueba.com"
                   autoComplete="email"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
 
@@ -213,7 +213,7 @@ export default function PersonalInfo() {
                   inputMode="numeric"
                   placeholder="123-45-6789"
                   autoComplete="ssn"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
 
@@ -233,7 +233,7 @@ export default function PersonalInfo() {
                   inputMode="numeric"
                   placeholder="(555)-555-5555"
                   autoComplete="tel-national"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
               {/* Birthdate  */}
@@ -248,7 +248,7 @@ export default function PersonalInfo() {
                   id="birthdate"
                   {...register("birthdate")}
                   type="date"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500  block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500  block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
               {/* Age auto calc after birth date, READ-ONLY */}
@@ -268,7 +268,7 @@ export default function PersonalInfo() {
                   placeholder="86"
                   type="number"
                   pattern="[0-9]*"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
 
@@ -287,7 +287,7 @@ export default function PersonalInfo() {
                   readOnly
                   placeholder="United States"
                   type="text"
-                  className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-100 focus:outline-none focus:border-none text-gray-400"
+                  className="mt-1 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md bg-gray-100 focus:outline-none focus:border-none text-gray-400"
                 />
               </div>
 
@@ -303,7 +303,7 @@ export default function PersonalInfo() {
                   {...register("street_address")}
                   type="text"
                   autoComplete="street-address"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
 
@@ -318,7 +318,7 @@ export default function PersonalInfo() {
                   id="city"
                   {...register("city")}
                   type="text"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
 
@@ -333,7 +333,7 @@ export default function PersonalInfo() {
                   id="state"
                   {...register("state")}
                   type="text"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
 
@@ -349,7 +349,7 @@ export default function PersonalInfo() {
                   {...register("postal_code")}
                   type="text"
                   autoComplete="postal-code"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
             </div>

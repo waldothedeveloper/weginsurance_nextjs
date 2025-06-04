@@ -84,7 +84,7 @@ export const FloatingMenuButtons = ({ editor }) => {
       >
         bullet list
       </button> */}
-      {/* this last element has a rounded right corner */}
+      {/* this last element has a rounded-sm right corner */}
       {/* <button
         type="button"
         onClick={() => editor.chain().focus().toggleOrderedList().run()}

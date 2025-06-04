@@ -15,7 +15,7 @@ export const AttachmentDropDown = () => {
   const [showDocsToolTip, setShowDocsToolTip] = useState(false);
   const [showImagesToolTip, setShowImagesToolTip] = useState(false);
   const toolTipStyles =
-    "absolute left-8 top-8 px-3 py-2 w-max text-xs font-medium text-white bg-slate-800 rounded-full shadow-sm";
+    "absolute left-8 top-8 px-3 py-2 w-max text-xs font-medium text-white bg-slate-800 rounded-full shadow-xs";
 
   const ref = useClickAway(() => {
     setShowAttachments(false);
@@ -41,7 +41,7 @@ export const AttachmentDropDown = () => {
               {...documentDropZone.getRootProps()}
               className="relative flex"
             >
-              <div className="rounded-full bg-gradient-to-tr from-blue-500 to-blue-700 p-3 text-white duration-300 ease-in-out hover:scale-105">
+              <div className="rounded-full bg-linear-to-tr from-blue-500 to-blue-700 p-3 text-white duration-300 ease-in-out hover:scale-105">
                 <DocumentIcon className="size-5" />
                 <input {...documentDropZone.getInputProps()} />
               </div>
@@ -57,7 +57,7 @@ export const AttachmentDropDown = () => {
             onClick={() => setShowImagesToolTip(false)}
           >
             <span {...imageDropZone.getRootProps()} className="relative flex">
-              <div className="rounded-full bg-gradient-to-tr from-emerald-400 to-green-600 p-3 text-white duration-300 ease-in-out hover:scale-105">
+              <div className="rounded-full bg-linear-to-tr from-emerald-400 to-green-600 p-3 text-white duration-300 ease-in-out hover:scale-105">
                 <PhotoIcon className="size-5" />
                 <input {...imageDropZone.getInputProps()} />
               </div>

@@ -1,4 +1,3 @@
-import { ChevronUpIcon, PaperClipIcon } from "@heroicons/react/20/solid";
 import {
   Menu,
   MenuButton,
@@ -6,6 +5,7 @@ import {
   MenuItems,
   Transition,
 } from "@headlessui/react";
+import { ChevronUpIcon, PaperClipIcon } from "@heroicons/react/20/solid";
 
 import { Fragment } from "react";
 
@@ -17,7 +17,7 @@ const items = [
 
 export const FloatingMenuTextButton = ({ editor }) => {
   return (
-    <div className="inline-flex rounded-md shadow-sm">
+    <div className="inline-flex rounded-md shadow-xs">
       <button
         type="button"
         className={
@@ -34,7 +34,7 @@ export const FloatingMenuTextButton = ({ editor }) => {
           <ChevronUpIcon className="h-5 w-5" aria-hidden="true" />
         </MenuButton>
         <Transition as={Fragment}>
-          <MenuItems className="absolute -top-36 left-0 z-50 mt-5 -mr-1 w-56 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <MenuItems className="absolute -top-36 left-0 z-50 mt-5 -mr-1 w-56 rounded-md bg-white shadow-lg ring-1 ring-black ring-black-5 focus:outline-none">
             <div className="flex flex-col items-center justify-start py-1">
               {items.map((item) => (
                 <MenuItem key={item.name}>

@@ -158,7 +158,7 @@ export default async function Page({
                       <tr key={item.eid}>
                         <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                           <div className="flex items-center">
-                            <div className="h-11 w-11 flex-shrink-0">
+                            <div className="h-11 w-11 shrink-0">
                               <UserIcon className="h-11 w-11 flex-none rounded-full text-gray-400 bg-gray-100 p-2" />
                             </div>
                             <div className="ml-4">
