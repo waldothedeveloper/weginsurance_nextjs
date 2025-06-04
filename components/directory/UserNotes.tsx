@@ -1,6 +1,10 @@
-import { FieldValues, UseFormRegister } from "react-hook-form"
+import { FieldValues, UseFormRegister } from "react-hook-form";
 
-export const UserNotes = ({ register }: { register: UseFormRegister<FieldValues> }) => {
+export const UserNotes = ({
+  register,
+}: {
+  register: UseFormRegister<FieldValues>;
+}) => {
   return (
     <div className="mt-12">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -30,7 +34,7 @@ export const UserNotes = ({ register }: { register: UseFormRegister<FieldValues>
                   id="notes"
                   name="notes"
                   rows={3}
-                  className="block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  className="block w-full rounded-md border border-slate-300 shadow-xs focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                   defaultValue={""}
                 />
               </div>

@@ -1,6 +1,11 @@
 "use client";
 
-import { Dialog, Transition } from "@headlessui/react";
+import {
+  Dialog,
+  DialogPanel,
+  Transition,
+  TransitionChild,
+} from "@headlessui/react";
 
 import { Fragment } from "react";
 import Link from "next/link";
@@ -17,13 +22,13 @@ export const MobileSideBar = () => {
   const handleCloseSideBar = () => setSidebarOpen(false);
   // const handleOpenSideBar = () => setSidebarOpen(true);
   return (
-    <Transition.Root show={sidebarOpen} as={Fragment}>
+    <Transition show={sidebarOpen} as={Fragment}>
       <Dialog
         as="div"
         className="relative z-40 lg:hidden"
         onClose={setSidebarOpen}
       >
-        <Transition.Child
+        <TransitionChild
           as={Fragment}
           enter="transition-opacity ease-linear duration-300"
           enterFrom="opacity-0"
@@ -32,11 +37,11 @@ export const MobileSideBar = () => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-slate-600/75 backdrop-blur-sm" />
-        </Transition.Child>
+          <div className="fixed inset-0 bg-slate-600/75 backdrop-blur-xs" />
+        </TransitionChild>
 
         <div className="fixed inset-0 z-40 flex">
-          <Transition.Child
+          <TransitionChild
             as={Fragment}
             enter="transition ease-in-out duration-300 transform"
             enterFrom="-translate-x-full"
@@ -45,8 +50,8 @@ export const MobileSideBar = () => {
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-slate-100 focus:outline-none">
-              <Transition.Child
+            <DialogPanel className="relative flex w-full max-w-xs flex-1 flex-col bg-slate-100 focus:outline-none">
+              <TransitionChild
                 as={Fragment}
                 enter="ease-in-out duration-300"
                 enterFrom="opacity-0"
@@ -68,9 +73,9 @@ export const MobileSideBar = () => {
                     />
                   </button>
                 </div>
-              </Transition.Child>
+              </TransitionChild>
               <div className="h-0 flex-1 overflow-y-auto pb-4 pt-5">
-                <div className="flex flex-shrink-0 items-center px-4">
+                <div className="flex shrink-0 items-center px-4">
                   <Link href="/admin/dashboard">
                     <span className="text-xl font-bold uppercase tracking-tight text-blue-600">
                       weg <br /> insurance
@@ -82,19 +87,19 @@ export const MobileSideBar = () => {
                 </div>
                 <NewNavigationLinks />
               </div>
-              <div className="flex flex-shrink-0 border-t border-slate-200 p-4">
+              <div className="flex shrink-0 border-t border-slate-200 p-4">
                 <div className="flex w-full items-center justify-between">
                   <LoggedInUserButton />
                   <NovuNotificationsCenter />
                 </div>
               </div>
-            </Dialog.Panel>
-          </Transition.Child>
-          <div className="w-14 flex-shrink-0" aria-hidden="true">
+            </DialogPanel>
+          </TransitionChild>
+          <div className="w-14 shrink-0" aria-hidden="true">
             {/* Force sidebar to shrink to fit close icon */}
           </div>
         </div>
       </Dialog>
-    </Transition.Root>
+    </Transition>
   );
 };

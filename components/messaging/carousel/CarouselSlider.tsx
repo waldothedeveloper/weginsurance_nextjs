@@ -1,15 +1,15 @@
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
-import Image from "next/image";
 import { ShowFileTypeIcon } from "@/components/messaging/carousel/ShowFileTypeIcon";
-import { UploadedFile } from "@/interfaces/index";
-import { classNames } from "@/utils/classNames";
-import { splitFileName } from "@/utils/splitFileName";
-import { uploadedFilesAtom } from "@/lib/state/atoms";
-import { useAtomValue } from "jotai";
 import { useDeleteUploadedFileOneByOne } from "@/hooks/fileUploader/useDeleteUploadedFileOneByOne";
 import { useDropAndUploadFiles } from "@/hooks/fileUploader/useDropAndUploadFiles";
 import { useHoverFile } from "@/hooks/fileUploader/useHoverFile";
+import { UploadedFile } from "@/interfaces/index";
+import { uploadedFilesAtom } from "@/lib/state/atoms";
+import { classNames } from "@/utils/classNames";
+import { splitFileName } from "@/utils/splitFileName";
+import { useAtomValue } from "jotai";
+import Image from "next/image";
 
 type CarouselSliderProps = {
   // eslint-disable-next-line no-unused-vars
@@ -31,7 +31,7 @@ export const CarouselSlider = ({
   //
   return (
     <div className="mt-6 flex items-center justify-center space-x-2">
-      <ul className="scrollbar flex max-w-[72rem] space-x-2 overflow-x-scroll scroll-smooth px-2">
+      <ul className="scrollbar flex max-w-6xl space-x-2 overflow-x-scroll scroll-smooth px-2">
         {uploadedResources.length > 0 &&
           uploadedResources.map((file, index) => (
             <li
@@ -48,12 +48,12 @@ export const CarouselSlider = ({
                   file?.id === selectedImage
                     ? "ring ring-blue-500 ring-offset-0"
                     : "ring ring-slate-300 ring-offset-0",
-                  "relative block h-14 w-14 overflow-hidden rounded-sm duration-300 ease-in-out"
+                  "relative block h-14 w-14 overflow-hidden rounded-xs duration-300 ease-in-out"
                 )}
               >
                 {file?.type?.startsWith("image/") ? (
                   <Image
-                    className="rounded-sm object-cover"
+                    className="rounded-xs object-cover"
                     src={file?.url}
                     alt={file?.name}
                     fill
@@ -70,7 +70,7 @@ export const CarouselSlider = ({
               </button>
               {isCurrentHoveredFile === index && (
                 <div>
-                  <div className="absolute inset-0 h-5 bg-slate-500/50 backdrop-blur-sm backdrop-opacity-75" />
+                  <div className="absolute inset-0 h-5 bg-slate-500/50 backdrop-blur-xs backdrop-opacity-75" />
 
                   <div className="absolute right-0 top-0">
                     <button
@@ -96,7 +96,7 @@ export const CarouselSlider = ({
             <button
               {...imageDropZone.getRootProps()}
               type="button"
-              className="mt-1.5 rounded-sm border border-slate-300 bg-slate-50 p-0 text-white shadow-sm duration-300 ease-in-out hover:bg-slate-100 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-300"
+              className="mt-1.5 rounded-xs border border-slate-300 bg-slate-50 p-0 text-white shadow-xs duration-300 ease-in-out hover:bg-slate-100 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-300"
             >
               <span className="flex h-14 w-14 items-center justify-center">
                 <PlusIcon
@@ -114,7 +114,7 @@ export const CarouselSlider = ({
             <button
               {...documentDropZone.getRootProps()}
               type="button"
-              className="mt-1.5 rounded-sm border border-slate-300 bg-slate-50 p-0 text-white shadow-sm duration-300 ease-in-out hover:bg-slate-100 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-300"
+              className="mt-1.5 rounded-xs border border-slate-300 bg-slate-50 p-0 text-white shadow-xs duration-300 ease-in-out hover:bg-slate-100 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-300"
             >
               <span className="flex h-14 w-14 items-center justify-center">
                 <PlusIcon

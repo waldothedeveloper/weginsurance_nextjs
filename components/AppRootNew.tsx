@@ -1,24 +1,27 @@
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Dialog, DialogPanel } from "@headlessui/react";
 
-import { Dialog } from '@headlessui/react';
 import { Footer } from "@/components/landingPageSections/Footer";
 import { Hero } from "@/components/landingPageSections/Hero";
 import Image from "next/image";
 import { ImageBanner } from "@/components/landingPageSections/ImageBanner";
 import Link from "next/link";
-import { LogoCloud } from '@/components/landingPageSections/LogoCloud';
-import { Mission } from '@/components/landingPageSections/Mission';
-import { Team } from '@/components/landingPageSections/Team';
-import { Values } from '@/components/landingPageSections/Values';
-import { useState } from 'react';
+import { LogoCloud } from "@/components/landingPageSections/LogoCloud";
+import { Mission } from "@/components/landingPageSections/Mission";
+import { Team } from "@/components/landingPageSections/Team";
+import { Values } from "@/components/landingPageSections/Values";
+import { useState } from "react";
 
 export const AppRoot = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="bg-white">
       <header className="absolute inset-x-0 top-0 z-50">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+        <nav
+          className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+          aria-label="Global"
+        >
           <div className="flex lg:flex-1">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">WEG Insurance</span>
@@ -49,14 +52,22 @@ export const AppRoot = () => {
             ))}
           </div> */}
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <Link href="/admin/dashboard" className="text-sm font-semibold leading-6 text-slate-900">
+            <Link
+              href="/admin/dashboard"
+              className="text-sm font-semibold leading-6 text-slate-900"
+            >
               Entrar <span aria-hidden="true">&rarr;</span>
             </Link>
           </div>
         </nav>
-        <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
+        <Dialog
+          as="div"
+          className="lg:hidden"
+          open={mobileMenuOpen}
+          onClose={setMobileMenuOpen}
+        >
           <div className="fixed inset-0 z-50" />
-          <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-slate-900/10">
+          <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-slate-900/10">
             <div className="flex items-center justify-between">
               <a href="#" className="-m-1.5 p-1.5">
                 <span className="sr-only">WEG Insurance company logo</span>
@@ -100,7 +111,7 @@ export const AppRoot = () => {
                 </div>
               </div>
             </div>
-          </Dialog.Panel>
+          </DialogPanel>
         </Dialog>
       </header>
       <main className="isolate">
@@ -118,5 +129,5 @@ export const AppRoot = () => {
       {/* Footer */}
       <Footer />
     </div>
-  )
-}
+  );
+};

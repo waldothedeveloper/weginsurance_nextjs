@@ -44,7 +44,7 @@ export default function NoUserSelected() {
               <div
                 className={classNames(
                   item.background,
-                  'flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-lg',
+                  'flex h-16 w-16 shrink-0 items-center justify-center rounded-lg',
                 )}
               >
                 <item.icon aria-hidden="true" className="h-6 w-6 text-white" />

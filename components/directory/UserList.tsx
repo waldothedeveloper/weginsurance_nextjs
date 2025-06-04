@@ -2,13 +2,13 @@ import { FakeUser, RealUser } from "@/interfaces/index";
 import { selectedUserAtom, userPhoneAtom } from "@/lib/state/atoms";
 import { useAtomValue, useSetAtom } from "jotai";
 
-import { UserIcon } from "@heroicons/react/24/outline";
 import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
 import { normalizeString } from "@/utils/normalizeString";
+import { UserIcon } from "@heroicons/react/24/outline";
 
 export const UserList = ({
   user,
-  isProcessingInfo
+  isProcessingInfo,
 }: {
   user: RealUser | FakeUser | null;
   isProcessingInfo: boolean;
@@ -17,17 +17,16 @@ export const UserList = ({
   const setUserPhone = useSetAtom(userPhoneAtom);
   const setSelectedUser = useSetAtom(selectedUserAtom);
 
-
   return (
     <>
       <li
         className={
           selectedUser?.id === user?.id
-            ? "my-3 flex items-center space-x-3 rounded-2xl bg-slate-100 px-6 py-6 outline-none focus-within:ring-2 focus-within:ring-inset focus:ring-red-50"
-            : "my-3 flex items-center space-x-3 rounded-2xl px-6 py-6 outline-none focus-within:ring-2 focus-within:ring-inset hover:bg-slate-50 focus:outline-none"
+            ? "my-3 flex items-center space-x-3 rounded-2xl bg-slate-100 px-6 py-6 outline-hidden focus-within:ring-2 focus-within:ring-inset focus:ring-red-50"
+            : "my-3 flex items-center space-x-3 rounded-2xl px-6 py-6 outline-hidden focus-within:ring-2 focus-within:ring-inset hover:bg-slate-50 focus:outline-none"
         }
       >
-        <div className="flex-shrink-0">
+        <div className="shrink-0">
           <UserIcon
             className={
               selectedUser?.id === user?.id
@@ -67,7 +66,7 @@ export const UserList = ({
                     : "relative inline-flex items-center rounded-full border border-slate-200 px-2 py-0.5 text-sm"
                 }
               >
-                <span className="absolute flex flex-shrink-0 items-center justify-center">
+                <span className="absolute flex shrink-0 items-center justify-center">
                   <span className="h-1 w-1 rounded-full" aria-hidden="true" />
                 </span>
                 <span

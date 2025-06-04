@@ -60,7 +60,7 @@ export const FormWrapper = () => {
           currStep={currStep}
           setUserEventDispatch={setUserEventDispatch}
         />
-        <div className="border-t border-gray-100 mt-6 flex flex-col justify-center items-start size-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 lg:py-12">
+        <div className="border-t border-gray-100 mt-6 flex flex-col justify-center items-start size-full max-w-(--breakpoint-2xl) mx-auto px-4 sm:px-6 lg:px-8 lg:py-12">
           <PersonalInfo />
           <Divider />
           <LegalStatus />

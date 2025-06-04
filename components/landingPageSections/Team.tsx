@@ -30,7 +30,7 @@ export const Team = () => {
       >
         {team.map((person) => (
           <li className="relative" key={person.name}>
-            <Image width={96} height={96} className="mx-auto rounded-full w-24 h-24 object-cover aspect-[2/3]" src={person.imageUrl} alt="" />
+            <Image width={96} height={96} className="mx-auto rounded-full w-24 h-24 object-cover aspect-2/3" src={person.imageUrl} alt="" />
             <h3 className="mt-6 text-base font-semibold leading-7 tracking-tight text-slate-900">{person.name}</h3>
             <p className="text-sm leading-6 text-slate-600">{person.role}</p>
           </li>

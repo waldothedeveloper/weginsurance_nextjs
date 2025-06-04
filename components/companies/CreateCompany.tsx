@@ -1,6 +1,11 @@
-import { FieldErrors, FieldValues, UseFormHandleSubmit, UseFormRegister } from "react-hook-form"
+import {
+  FieldErrors,
+  FieldValues,
+  UseFormHandleSubmit,
+  UseFormRegister,
+} from "react-hook-form";
 
-import { Dialog } from "@headlessui/react";
+import { DialogTitle } from "@headlessui/react";
 import { DragAndDrop } from "@/components/companies/DragAndDrop";
 import { Input } from "@/components/directory/Input";
 import { InsuranceCompany } from "@/interfaces/index";
@@ -9,17 +14,17 @@ import { UploadProgressBar } from "@/components/companies/UploadProgressBar";
 import { companyFormLabels } from "@/utils/companyFormLabels";
 import { progressPercentageAtom } from "@/lib/state/atoms";
 import { useAtomValue } from "jotai";
-import { useDeleteAllUploadedFiles } from "@/hooks/fileUploader/useDeleteAllUploadedFiles"
+import { useDeleteAllUploadedFiles } from "@/hooks/fileUploader/useDeleteAllUploadedFiles";
 
 type CreateCompanyProps = {
-  isSubmitting: boolean,
-  register: UseFormRegister<FieldValues>,
-  errors: FieldErrors<FieldValues>,
+  isSubmitting: boolean;
+  register: UseFormRegister<FieldValues>;
+  errors: FieldErrors<FieldValues>;
   // eslint-disable-next-line no-unused-vars
-  onSubmit: (values: InsuranceCompany) => void,
-  handleSubmit: UseFormHandleSubmit<FieldValues>,
-  closeModal: () => void,
-}
+  onSubmit: (values: InsuranceCompany) => void;
+  handleSubmit: UseFormHandleSubmit<FieldValues>;
+  closeModal: () => void;
+};
 
 export const CreateCompany = ({
   isSubmitting,
@@ -30,26 +35,26 @@ export const CreateCompany = ({
   closeModal,
 }: CreateCompanyProps) => {
   const progress = useAtomValue(progressPercentageAtom);
-  const handleDeleteAllFiles = useDeleteAllUploadedFiles()
+  const handleDeleteAllFiles = useDeleteAllUploadedFiles();
   return (
     <>
       <div className="px-4 py-5 sm:px-6">
         {progress > 0 && <UploadProgressBar progress={progress} />}
 
         <div className="flex items-center space-x-3">
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <PencilSquareIcon
               className="h-8 w-8 rounded-full text-blue-600"
               aria-hidden="true"
             />
           </div>
           <div className="min-w-0 flex-1">
-            <Dialog.Title
+            <DialogTitle
               as="h3"
               className="text-base font-semibold leading-6 text-slate-900"
             >
               Crear Compañia
-            </Dialog.Title>
+            </DialogTitle>
           </div>
         </div>
       </div>
@@ -95,7 +100,7 @@ export const CreateCompany = ({
                     placeholder="ejemplo: La poliza de Ambetter tiene que ser renovada en 6 meses."
                     name="notes"
                     rows={3}
-                    className="block w-full rounded-md border border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    className="block w-full rounded-md border border-slate-300 shadow-xs focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     defaultValue={""}
                   />
                 </div>
@@ -109,17 +114,17 @@ export const CreateCompany = ({
             disabled={isSubmitting}
             className={
               isSubmitting
-                ? "inline-flex w-full justify-center rounded-md bg-slate-300 px-3 py-2 text-sm font-semibold text-slate-400 shadow-sm sm:ml-3 sm:w-auto"
-                : "inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+                ? "inline-flex w-full justify-center rounded-md bg-slate-300 px-3 py-2 text-sm font-semibold text-slate-400 shadow-xs sm:ml-3 sm:w-auto"
+                : "inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 sm:ml-3 sm:w-auto"
             }
           >
             Crear
           </button>
           <button
             type="button"
-            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 sm:mt-0 sm:w-auto"
+            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-slate-900 shadow-xs ring-1 ring-inset ring-slate-300 hover:bg-slate-50 sm:mt-0 sm:w-auto"
             onClick={() => {
-              handleDeleteAllFiles()
+              handleDeleteAllFiles();
               closeModal();
             }}
           >

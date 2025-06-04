@@ -105,7 +105,7 @@ export const ChatHistory = async () => {
   //               className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
   //             >
   //               {message.sender === "other" && (
-  //                 <div className="relative h-8 w-8 rounded-full overflow-hidden mr-2 flex-shrink-0">
+  //                 <div className="relative h-8 w-8 rounded-full overflow-hidden mr-2 shrink-0">
   //                   <Image
   //                     src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=2680&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
   //                     alt="User Avatar"
@@ -116,7 +116,7 @@ export const ChatHistory = async () => {
   //                 </div>
   //               )}
   //               <div
-  //                 className={`max-w-[75%] ${message.sender === "user" ? "bg-blue-500 text-white" : "bg-white text-slate-800"} rounded-2xl px-4 py-2 shadow-sm`}
+  //                 className={`max-w-[75%] ${message.sender === "user" ? "bg-blue-500 text-white" : "bg-white text-slate-800"} rounded-2xl px-4 py-2 shadow-xs`}
   //               >
   //                 <p>{message.content}</p>
   //                 <div
@@ -124,7 +124,7 @@ export const ChatHistory = async () => {
   //                 >
   //                   <span>{formatTime(message.timestamp)}</span>
   //                   {message.sender === "user" && (
-  //                     <div className="flex-shrink-0">
+  //                     <div className="shrink-0">
   //                       {renderStatusIndicator(message.status)}
   //                     </div>
   //                   )}

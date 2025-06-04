@@ -1,22 +1,25 @@
-import { openResourceUploadModalAtom, uploadedFilesAtom } from "@/lib/state/atoms";
+import {
+  openResourceUploadModalAtom,
+  uploadedFilesAtom,
+} from "@/lib/state/atoms";
 
 import { CarouselLoaderSkeleton } from "@/components/messaging/carousel/CarouselLoaderSkeleton";
 import { CarouselSlider } from "@/components/messaging/carousel/CarouselSlider";
-import { EditorWithAttachments } from "@/components/messaging/EditorWithAttachments";
-import Image from "next/image";
 import { ShowFileTypeIcon } from "@/components/messaging/carousel/ShowFileTypeIcon";
-import { Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { EditorWithAttachments } from "@/components/messaging/EditorWithAttachments";
+import { useDeleteAllUploadedFiles } from "@/hooks/fileUploader/useDeleteAllUploadedFiles";
+import { useSelectedUploadedFile } from "@/hooks/fileUploader/useSelectedUploadedFile";
+import { useEditorWithImages } from "@/hooks/messaging/useEditorWithImages";
+import { useSendOutboundMessage } from "@/hooks/messaging/useSendOutboundMessage";
 import { areAllFilesTypeOfImage } from "@/utils/areAllFilesTypeOfImage";
 import { calculateFileSize } from "@/utils/calculateFileSize";
 import { currentSelectedFile } from "@/utils/currentSelectedFile";
 import { getFileExtensionFromName } from "@/utils/getFileExtensionFromName";
 import { getNameFromFile } from "@/utils/getNameFromFile";
+import { Transition } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useAtomValue } from "jotai";
-import { useDeleteAllUploadedFiles } from "@/hooks/fileUploader/useDeleteAllUploadedFiles";
-import { useEditorWithImages } from "@/hooks/messaging/useEditorWithImages";
-import { useSelectedUploadedFile } from "@/hooks/fileUploader/useSelectedUploadedFile";
-import { useSendOutboundMessage } from "@/hooks/messaging/useSendOutboundMessage";
+import Image from "next/image";
 
 export const CarouselWrapper = () => {
   const openCloseResourceUploadModal = useAtomValue(
@@ -51,7 +54,7 @@ export const CarouselWrapper = () => {
                 uploadedResources.length > 0 &&
                 areAllFilesTypeOfImage(uploadedResources) && (
                   <Image
-                    className="absolute top-0 h-full w-full rounded-sm object-contain drop-shadow-md"
+                    className="absolute top-0 h-full w-full rounded-xs object-contain drop-shadow-sm-md"
                     src={currentSelectedFile(uploadedResources, selectedFile)}
                     alt="file preview"
                     fill

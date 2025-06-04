@@ -48,7 +48,7 @@ export default function SharedLayout({
 
             {/* Secondary column (hidden on smaller screens) */}
             {/* The UserProvider is a client component passing the selected user information down  */}
-            <aside className="fixed inset-y-0 left-64 hidden w-[22rem] border-r border-gray-200 xl:block h-screen overflow-hidden">
+            <aside className="fixed inset-y-0 left-64 hidden w-88 border-r border-gray-200 xl:block h-screen overflow-hidden">
               <SearchUsers />
               <UsersList>
                 <UserSkeleton />

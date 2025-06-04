@@ -36,7 +36,7 @@ export const Blog = () => {
             className="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-slate-900 px-8 pb-8 pt-80 sm:pt-48 lg:pt-80"
           >
             <Image fill src={post.imageUrl} alt="" className="absolute inset-0 -z-10 h-full w-full object-cover" />
-            <div className="absolute inset-0 -z-10 bg-gradient-to-t from-slate-900 via-slate-900/40" />
+            <div className="absolute inset-0 -z-10 bg-linear-to-t from-slate-900 via-slate-900/40" />
             <div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-slate-900/10" />
 
             <div className="flex flex-wrap items-center gap-y-1 overflow-hidden text-sm leading-6 text-slate-300">

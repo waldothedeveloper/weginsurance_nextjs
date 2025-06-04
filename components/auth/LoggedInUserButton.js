@@ -6,8 +6,9 @@ export const LoggedInUserButton = () => {
       showName
       appearance={{
         elements: {
-          userButtonBox: "flex flex-row-reverse",
-          userButtonOuterIdentifier: "text-sm font-medium text-slate-900",
+          userButtonBox: {
+            flexDirection: "row-reverse",
+          },
         },
       }}
     />
