@@ -82,11 +82,17 @@ export const principalClientSchema = z.object({
       message: "El telefono es mandatorio y debe contener 10 digitos.",
     }),
   age: z
-    .number()
-    .min(1, {
+    .number({
+      invalid_type_error: "La edad debe ser un número.",
+    })
+    .int({
+      message:
+        "La edad debe ser un número entero. Numeros decimales no son permitidos.",
+    })
+    .min(0, {
       message: "La edad no puede ser menor a 1.",
     })
-    .max(120, {
+    .max(150, {
       message: "La edad no puede ser mayor a 120 años.",
     })
     .optional(),
@@ -210,19 +216,19 @@ export const principalClientSchema = z.object({
     .transform((e) => (e === "" ? undefined : e)),
 
   policy_start_date: z
-    .preprocess(
-      (arg) => {
-        if (arg instanceof Date) {
-          return arg;
+    .union([z.date(), z.string().length(0), z.string().trim()])
+    .transform((v) => {
+      if (v instanceof Date) {
+        return v.toISOString();
+      }
+      if (typeof v === "string" && v.trim() !== "") {
+        const date = new Date(v);
+        if (!isNaN(date.getTime())) {
+          return date.toISOString();
         }
-        if (typeof arg === "string" && arg.trim() !== "") {
-          return arg;
-        }
-        return undefined;
-      },
-      z.union([z.date(), z.string()])
-    )
-    .transform((v) => (v instanceof Date ? v.toISOString() : v))
+      }
+      return undefined;
+    })
     .optional(),
   notes: z.string().trim().optional(),
   insurance_plan_type: z

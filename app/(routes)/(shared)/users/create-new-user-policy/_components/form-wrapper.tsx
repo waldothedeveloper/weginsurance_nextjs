@@ -28,8 +28,11 @@ export const FormWrapper = () => {
     formReadyToSubmit,
   } = useCreateUserPolicy();
 
-  const { methods, onSubmit, setUserEventDispatch, formRef, formErrors } =
-    useReactHookForm(currStep, dispatchSteps, steps);
+  const { methods, onSubmit, setUserEventDispatch, formRef } = useReactHookForm(
+    currStep,
+    dispatchSteps,
+    steps
+  );
 
   if (formReadyToSubmit) {
     return (

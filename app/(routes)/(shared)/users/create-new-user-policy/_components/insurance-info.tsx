@@ -33,6 +33,7 @@ export const InsuranceInfo = () => {
                   formErrors={errors?.policy_start_date}
                   errorMessage={errors?.policy_start_date?.message}
                   readOnly={false}
+                  mandatory={false}
                 />
               </div>
 
