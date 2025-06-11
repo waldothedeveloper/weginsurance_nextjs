@@ -1,15 +1,12 @@
-import { FieldErrors, useFormContext } from "react-hook-form";
-
 import { CustomInput } from "../utils/custom-input";
 import { CustomSelect } from "../utils/custom-select";
+import { useFormContext } from "react-hook-form";
 
 //
-export const WorkInfo = ({
-  formErrors,
-}: {
-  formErrors?: FieldErrors<Partial<UserPolicyInputs>>;
-}) => {
-  const { register } = useFormContext();
+export const WorkInfo = () => {
+  const {
+    formState: { errors },
+  } = useFormContext<Partial<UserPolicyInputs>>();
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -38,8 +35,8 @@ export const WorkInfo = ({
                   ]}
                   mandatory={false}
                   label="Tipo de Empleo"
-                  formErrors={formErrors?.work_type}
-                  errorMessage={formErrors?.work_type?.message}
+                  formErrors={errors?.work_type}
+                  errorMessage={errors?.work_type?.message}
                 />
               </div>
 
@@ -49,8 +46,8 @@ export const WorkInfo = ({
                   placeholder="Apple"
                   mandatory={false}
                   label="Nombre de la compañia"
-                  formErrors={formErrors?.company_name}
-                  errorMessage={formErrors?.company_name?.message}
+                  formErrors={errors?.company_name}
+                  errorMessage={errors?.company_name?.message}
                   type="text"
                 />
               </div>
@@ -61,8 +58,8 @@ export const WorkInfo = ({
                   placeholder="$110.000"
                   mandatory={false}
                   label="Ingresos Anuales (aproximadamente)"
-                  formErrors={formErrors?.wages}
-                  errorMessage={formErrors?.wages?.message}
+                  formErrors={errors?.wages}
+                  errorMessage={errors?.wages?.message}
                   type="text"
                   pattern="[0-9]*"
                   inputMode="numeric"

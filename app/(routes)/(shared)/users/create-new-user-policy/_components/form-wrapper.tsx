@@ -58,15 +58,15 @@ export const FormWrapper = () => {
           setUserEventDispatch={setUserEventDispatch}
         />
         <div className="border-t border-gray-100 mt-6 flex flex-col justify-center items-start size-full max-w-(--breakpoint-2xl) mx-auto px-4 sm:px-6 lg:px-8 lg:py-12">
-          <PersonalInfo formErrors={formErrors} />
+          <PersonalInfo />
           <Divider />
-          <LegalStatus formErrors={formErrors} />
+          <LegalStatus />
           <Divider />
-          <BankInfo formErrors={formErrors} />
+          <BankInfo />
           <Divider />
-          <WorkInfo formErrors={formErrors} />
+          <WorkInfo />
           <Divider />
-          <InsuranceInfo formErrors={formErrors} />
+          <InsuranceInfo />
           <Divider />
           <Notes />
           <Divider />
