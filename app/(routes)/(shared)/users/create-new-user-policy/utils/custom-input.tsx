@@ -46,6 +46,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
       </label>
       <div className="mt-2 grid grid-cols-1">
         <input
+          required={mandatory}
           inputMode={inputMode}
           readOnly={readOnly}
           id={htmlFor}

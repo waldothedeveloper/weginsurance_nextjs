@@ -62,13 +62,7 @@ export const useReactHookForm = (
     },
   });
 
-  const {
-    reset,
-    formState,
-    formState: { errors },
-  } = methods;
-  // console.log("form errors: ", errors);
-  // console.log(`steps: `, steps);
+  const { reset, formState } = methods;
 
   const onSubmit: SubmitHandler<z.infer<typeof validationSchema>> = (data) => {
     if (data.firstname === "" && data.lastname === "") {
@@ -108,6 +102,5 @@ export const useReactHookForm = (
     onSubmit,
     setUserEventDispatch,
     formRef,
-    formErrors: errors,
   };
 };

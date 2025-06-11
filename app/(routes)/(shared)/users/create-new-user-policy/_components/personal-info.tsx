@@ -43,7 +43,6 @@ export default function PersonalInfo() {
                   htmlFor="firstname"
                   autoComplete="given-name"
                   placeholder="Jose"
-                  mandatory={true}
                   label="Primer Nombre"
                   formErrors={errors?.firstname}
                   errorMessage={errors?.firstname?.message}
@@ -67,7 +66,6 @@ export default function PersonalInfo() {
                   htmlFor="lastname"
                   autoComplete="family-name"
                   placeholder="Marti"
-                  mandatory={true}
                   label="Primer Apellido"
                   formErrors={errors?.lastname}
                   errorMessage={errors?.lastname?.message}
