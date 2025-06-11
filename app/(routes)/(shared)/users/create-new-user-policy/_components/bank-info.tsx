@@ -1,4 +1,6 @@
-import { useFormContext } from "react-hook-form";
+import { FieldErrors, useFormContext } from "react-hook-form";
+
+import { CustomInput } from "../utils/custom-input";
 
 const paymentMethod = [
   {
@@ -12,7 +14,11 @@ const paymentMethod = [
 ];
 
 //
-export const BankInfo = () => {
+export const BankInfo = ({
+  formErrors,
+}: {
+  formErrors?: FieldErrors<Partial<UserPolicyInputs>>;
+}) => {
   const { register } = useFormContext();
   return (
     <div className="mt-10 sm:mt-0">
@@ -39,73 +45,57 @@ export const BankInfo = () => {
               <div className="mt-4">
                 <div className="grid grid-cols-6 gap-6">
                   <div className="col-span-6 sm:col-span-3">
-                    <label
+                    <CustomInput
                       htmlFor="bank_account"
-                      className="block text-sm font-medium text-gray-800"
-                    >
-                      Cuenta de Banco
-                    </label>
-                    <input
-                      {...register("bank_account")}
                       placeholder="Chase"
+                      mandatory={false}
+                      label="Cuenta de Banco"
+                      formErrors={formErrors?.bank_account}
+                      errorMessage={formErrors?.bank_account?.message}
                       type="text"
-                      name="bank_account"
-                      id="bank_account"
-                      className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
 
                   <div className="col-span-6 sm:col-span-3">
-                    <label
+                    <CustomInput
                       htmlFor="routing_number"
-                      className="block text-sm font-medium text-gray-800"
-                    >
-                      Numero de Ruta
-                    </label>
-                    <input
-                      {...register("routing_number")}
                       placeholder="3530111333300000"
+                      mandatory={false}
+                      label="Numero de Ruta"
+                      formErrors={formErrors?.routing_number}
+                      errorMessage={formErrors?.routing_number?.message}
                       type="number"
                       inputMode="numeric"
-                      name="routing_number"
-                      id="routing_number"
-                      className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
+                      readOnly={false}
                     />
                   </div>
                   {/* Account number */}
                   <div className="col-span-6 sm:col-span-3">
-                    <label
+                    <CustomInput
                       htmlFor="bank_account_number"
-                      className="block text-sm font-medium text-gray-800"
-                    >
-                      Numero de Cuenta
-                    </label>
-                    <input
-                      {...register("bank_account_number")}
                       placeholder="091000019"
+                      mandatory={false}
+                      label="Numero de Cuenta"
+                      formErrors={formErrors?.bank_account_number}
+                      errorMessage={formErrors?.bank_account_number?.message}
                       type="number"
                       inputMode="numeric"
-                      name="bank_account_number"
-                      id="bank_account_number"
-                      className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
+                      readOnly={false}
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
-                    <label
+                    <CustomInput
                       htmlFor="bank_account_number_confirmation"
-                      className="block text-sm font-medium text-gray-800"
-                    >
-                      Numero de Cuenta{" "}
-                      <span className="text-gray-400"> (debe coincidir)</span>
-                    </label>
-                    <input
-                      {...register("bank_account_number_confirmation")}
                       placeholder="091000019"
+                      mandatory={false}
+                      label="Numero de Cuenta (debe coincidir)"
+                      formErrors={formErrors?.bank_account_number_confirmation}
+                      errorMessage={
+                        formErrors?.bank_account_number_confirmation?.message
+                      }
                       type="number"
                       inputMode="numeric"
-                      name="bank_account_number_confirmation"
-                      id="bank_account_number_confirmation"
-                      className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
+                      readOnly={false}
                     />
                   </div>
                 </div>
@@ -153,7 +143,7 @@ export const BankInfo = () => {
                           type="text"
                           inputMode="numeric"
                           id="card_number"
-                          className="focus:ring-blue-500 focus:border-blue-500 relative block w-full rounded-none rounded-t-md bg-transparent focus:z-10 sm:text-sm border-gray-300"
+                          className="block w-full rounded-t-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:relative focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6"
                           placeholder="4242-4242-4242"
                         />
                       </div>
@@ -172,7 +162,7 @@ export const BankInfo = () => {
                           type="text"
                           id="card_holder_fullname"
                           autoComplete="cc-name"
-                          className="focus:ring-blue-500 focus:border-blue-500 relative block w-full bg-transparent focus:z-10 sm:text-sm border-gray-300"
+                          className="block w-full bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:relative focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6"
                         />
                       </div>
                       {/* fecha de expiracion y cvc */}
@@ -192,7 +182,7 @@ export const BankInfo = () => {
                             type="text"
                             name="card_expiration_date"
                             id="card_expiration_date"
-                            className="focus:ring-blue-500 focus:border-blue-500 relative block w-full rounded-none rounded-bl-md bg-transparent focus:z-10 sm:text-sm border-gray-300"
+                            className="block w-full rounded-bl-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:relative focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6"
                             placeholder="MM / YY"
                           />
                         </div>
@@ -207,7 +197,7 @@ export const BankInfo = () => {
                             type="number"
                             inputMode="numeric"
                             id="card_cvv"
-                            className="focus:ring-blue-500 focus:border-blue-500 relative block w-full rounded-none rounded-br-md bg-transparent focus:z-10 sm:text-sm border-gray-300"
+                            className="block w-full rounded-br-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:relative focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6"
                             placeholder="CVC"
                           />
                         </div>

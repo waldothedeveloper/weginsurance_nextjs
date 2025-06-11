@@ -108,5 +108,6 @@ export const useReactHookForm = (
     onSubmit,
     setUserEventDispatch,
     formRef,
+    formErrors: errors,
   };
 };

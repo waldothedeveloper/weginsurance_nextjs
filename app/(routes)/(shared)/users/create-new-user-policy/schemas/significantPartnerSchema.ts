@@ -69,8 +69,8 @@ export const significantPartnerSchema = z.object({
     .optional(),
   age: z
     .number()
-    .min(0, {
-      message: "La edad no puede ser negativa.",
+    .min(1, {
+      message: "La edad no puede ser menor a 1.",
     })
     .max(120, {
       message: "La edad no puede ser mayor a 120 años.",

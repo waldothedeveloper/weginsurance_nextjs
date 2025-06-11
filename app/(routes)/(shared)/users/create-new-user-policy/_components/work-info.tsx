@@ -1,8 +1,15 @@
-import { Controller, useFormContext } from "react-hook-form";
+import { FieldErrors, useFormContext } from "react-hook-form";
+
+import { CustomInput } from "../utils/custom-input";
+import { CustomSelect } from "../utils/custom-select";
 
 //
-export const WorkInfo = () => {
-  const { register, control } = useFormContext();
+export const WorkInfo = ({
+  formErrors,
+}: {
+  formErrors?: FieldErrors<Partial<UserPolicyInputs>>;
+}) => {
+  const { register } = useFormContext();
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -20,91 +27,46 @@ export const WorkInfo = () => {
           <div className="px-4 py-5 bg-gray-50 sm:p-6 rounded-md shadow-lg">
             <div className="grid grid-cols-6 gap-6">
               <div className="col-span-6 sm:col-span-3">
-                <Controller
-                  control={control}
-                  rules={{ required: true }}
-                  name="work_type"
-                  render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <>
-                      <label
-                        htmlFor="work_type"
-                        className="block text-sm font-medium text-gray-800"
-                      >
-                        Tipo de Empleo
-                      </label>
-                      <select
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        value={value ?? "Seleccione una opcion"}
-                        ref={ref}
-                        id="work_type"
-                        name="work_type"
-                        autoComplete="work_type"
-                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                      >
-                        <option>Seleccione una opcion</option>
-                        <option>W2</option>
-                        <option>1099</option>
-                        <option>SSA-1099</option>
-                        <option>1099-R</option>
-                      </select>
-                    </>
-                  )}
+                <CustomSelect
+                  htmlFor="work_type"
+                  options={[
+                    { label: "Seleccione una opcion" },
+                    { label: "W2" },
+                    { label: "1099" },
+                    { label: "SSA-1099" },
+                    { label: "1099-R" },
+                  ]}
+                  mandatory={false}
+                  label="Tipo de Empleo"
+                  formErrors={formErrors?.work_type}
+                  errorMessage={formErrors?.work_type?.message}
                 />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
-                <label
+                <CustomInput
                   htmlFor="company_name"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Nombre de la compañia
-                </label>
-                <input
-                  {...register("company_name")}
                   placeholder="Apple"
+                  mandatory={false}
+                  label="Nombre de la compañia"
+                  formErrors={formErrors?.company_name}
+                  errorMessage={formErrors?.company_name?.message}
                   type="text"
-                  name="company_name"
-                  id="company_name"
-                  autoComplete="organization"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
               {/* Ingresos anuales */}
               <div className="col-span-6 sm:col-span-3">
-                <div>
-                  <label
-                    htmlFor="wages"
-                    className="block text-sm font-medium text-gray-800"
-                  >
-                    Ingresos Anuales{" "}
-                    <span className="text-gray-400">(aproximadamente)</span>
-                  </label>
-                  <div className="mt-1 relative rounded-md shadow-xs">
-                    <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
-                      {/* <span className=" text-gray-500 sm:text-sm">$</span> */}
-                    </div>
-                    <input
-                      {...register("wages")}
-                      type="text"
-                      name="wages"
-                      id="wages"
-                      className="focus:ring-blue-500 focus:border-blue-500 block w-full placeholder-gray-400 pr-12 sm:text-sm border-gray-300 rounded-md"
-                      placeholder="$110.000"
-                      aria-describedby="wages"
-                      pattern="[0-9]*"
-                      inputMode="numeric"
-                    />
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                      <span
-                        className="text-gray-500 sm:text-sm"
-                        id="price-currency"
-                      >
-                        USD
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <CustomInput
+                  htmlFor="wages"
+                  placeholder="$110.000"
+                  mandatory={false}
+                  label="Ingresos Anuales (aproximadamente)"
+                  formErrors={formErrors?.wages}
+                  errorMessage={formErrors?.wages?.message}
+                  type="text"
+                  pattern="[0-9]*"
+                  inputMode="numeric"
+                />
               </div>
             </div>
           </div>

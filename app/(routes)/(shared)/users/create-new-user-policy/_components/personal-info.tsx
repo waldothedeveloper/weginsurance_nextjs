@@ -1,7 +1,12 @@
-import { Controller, useFormContext } from "react-hook-form";
+import { CustomInput } from "../utils/custom-input";
+import { CustomSelect } from "../utils/custom-select";
+import { FieldErrors } from "react-hook-form";
 
-export default function PersonalInfo() {
-  const { register, control } = useFormContext();
+export default function PersonalInfo({
+  formErrors,
+}: {
+  formErrors?: FieldErrors<Partial<UserPolicyInputs>>;
+}) {
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -16,340 +21,217 @@ export default function PersonalInfo() {
           </div>
         </div>
         <div className="mt-5 md:mt-0 md:col-span-2">
+          {/* Acepta Cobertura Medica SI O NO */}
           <div className="px-4 py-5 bg-gray-50 sm:p-6 rounded-md shadow-lg">
             <div className="grid grid-cols-6 gap-6">
-              {/* Acepta Cobertura Medica SI O NO */}
               <div className="col-span-6 sm:col-span-6">
-                <Controller
-                  control={control}
-                  // rules={{ required: true }}
-                  name="accepts_insurance"
-                  render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <>
-                      <label
-                        htmlFor="accepts_insurance"
-                        className="block text-sm font-medium text-gray-800"
-                      >
-                        Acepta Cobertura Medica
-                        <span className="text-red-500 ">{` *`}</span>
-                      </label>
-                      <select
-                        id="accepts_insurance"
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        ref={ref}
-                        value={value ?? "Seleccione una opcion"}
-                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                      >
-                        <option>Seleccione una opcion</option>
-                        <option>Si</option>
-                        <option>No</option>
-                      </select>
-                    </>
-                  )}
+                <CustomSelect
+                  htmlFor="accepts_insurance"
+                  options={[
+                    { label: "Seleccione una opcion" },
+                    { label: "Si" },
+                    { label: "No" },
+                  ]}
+                  mandatory={true}
+                  label="Acepta Cobertura Medica"
+                  formErrors={formErrors?.accepts_insurance}
+                  errorMessage={formErrors?.accepts_insurance?.message}
                 />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
-                <label
+                <CustomInput
                   htmlFor="firstname"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Primer Nombre
-                  <span className="text-red-500 ">{` *`}</span>
-                </label>
-                <input
-                  id="firstname"
-                  {...register("firstname", { required: true })}
-                  type="text"
-                  placeholder="Jose"
                   autoComplete="given-name"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
+                  placeholder="Jose"
+                  mandatory={true}
+                  label="Primer Nombre"
+                  formErrors={formErrors?.firstname}
+                  errorMessage={formErrors?.firstname?.message}
+                  type="text"
                 />
               </div>
               <div className="col-span-6 sm:col-span-3">
-                <label
+                <CustomInput
                   htmlFor="second_name"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Segundo Nombre
-                </label>
-                <input
-                  id="second_name"
-                  {...register("second_name")}
-                  type="text"
-                  placeholder="Julian"
                   autoComplete="additional-name"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
+                  placeholder="Julian"
+                  label="Segundo Nombre"
+                  formErrors={formErrors?.second_name}
+                  errorMessage={formErrors?.second_name?.message}
+                  type="text"
                 />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
-                <label
+                <CustomInput
                   htmlFor="lastname"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Primer Apellido
-                  <span className="text-red-500 ">{` *`}</span>
-                </label>
-                <input
-                  id="lastname"
-                  {...register("lastname", { required: true })}
-                  type="text"
-                  placeholder="Marti"
                   autoComplete="family-name"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
+                  placeholder="Marti"
+                  mandatory={true}
+                  label="Primer Apellido"
+                  formErrors={formErrors?.lastname}
+                  errorMessage={formErrors?.lastname?.message}
+                  type="text"
                 />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
-                <label
+                <CustomInput
                   htmlFor="second_lastname"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Segundo Apellido
-                </label>
-                <input
-                  {...register("second_lastname")}
-                  type="text"
-                  placeholder="Perez"
-                  id="second_lastname"
                   autoComplete="family-name"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
+                  placeholder="Perez"
+                  label="Segundo Apellido"
+                  formErrors={formErrors?.second_lastname}
+                  errorMessage={formErrors?.second_lastname?.message}
+                  type="text"
                 />
               </div>
 
               <div className="col-span-6 sm:col-span-4">
-                <Controller
-                  control={control}
-                  rules={{ required: true }}
-                  name="civil_status"
-                  render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <>
-                      <label
-                        htmlFor="civil_status"
-                        className="block text-sm font-medium text-gray-800"
-                      >
-                        Estado Civil
-                      </label>
-                      <select
-                        id="civil_status"
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        ref={ref}
-                        value={value ?? "Seleccione una opcion"}
-                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                      >
-                        <option>Seleccione una opcion</option>
-                        <option>Soltero</option>
-                        <option>Casado</option>
-                        <option>Divorciado</option>
-                        <option>Viudo(a)</option>
-                        <option>Separado(a)</option>
-                      </select>
-                    </>
-                  )}
+                <CustomSelect
+                  htmlFor="civil_status"
+                  options={[
+                    { label: "Seleccione una opcion" },
+                    { label: "Soltero" },
+                    { label: "Casado" },
+                    { label: "Divorciado" },
+                    { label: "Viudo(a)" },
+                    { label: "Separado(a)" },
+                  ]}
+                  label="Estado Civil"
+                  formErrors={formErrors?.civil_status}
+                  errorMessage={formErrors?.civil_status?.message}
                 />
               </div>
               <div className="col-span-6 sm:col-span-6">
-                <Controller
-                  control={control}
-                  rules={{ required: true }}
-                  name="genre"
-                  render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <>
-                      <label
-                        htmlFor="genre"
-                        className="block text-sm font-medium text-gray-800"
-                      >
-                        Genero
-                        <span className="text-red-500 ">{` *`}</span>
-                      </label>
-                      <select
-                        id="genre"
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        ref={ref}
-                        value={value ?? "Seleccione una opcion"}
-                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                      >
-                        <option>Seleccione una opcion</option>
-                        <option>Masculino</option>
-                        <option>Femenino</option>
-                      </select>
-                    </>
-                  )}
+                <CustomSelect
+                  htmlFor="genre"
+                  options={[
+                    { label: "Seleccione una opcion" },
+                    { label: "Masculino" },
+                    { label: "Femenino" },
+                  ]}
+                  mandatory={true}
+                  label="Genero"
+                  formErrors={formErrors?.genre}
+                  errorMessage={formErrors?.genre?.message}
                 />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
-                <label
+                <CustomInput
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Correo Electronico
-                </label>
-                <input
-                  id="email"
-                  {...register("email")}
-                  type="email"
-                  placeholder="ejemplo@prueba.com"
                   autoComplete="email"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
+                  placeholder="ejemplo@prueba.com"
+                  label="Correo Electronico"
+                  formErrors={formErrors?.email}
+                  errorMessage={formErrors?.email?.message}
+                  type="email"
                 />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
-                <label
+                <CustomInput
                   htmlFor="ssn"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Numero de Seguro Social
-                </label>
-                <input
-                  id="ssn"
-                  {...register("ssn")}
+                  autoComplete="ssn"
+                  placeholder="123-45-6789"
+                  label="Numero de Seguro Social"
+                  formErrors={formErrors?.ssn}
+                  errorMessage={formErrors?.ssn?.message}
                   type="text"
                   inputMode="numeric"
-                  placeholder="123-45-6789"
-                  autoComplete="ssn"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
 
               {/* Contact info such as tel & email */}
               <div className="col-span-6 sm:col-span-3">
-                <label
+                <CustomInput
                   htmlFor="phone"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Telefono
-                  <span className="text-red-500 ">{` *`}</span>
-                </label>
-                <input
-                  id="phone"
-                  {...register("phone", { required: true })}
+                  autoComplete="tel-national"
+                  placeholder="(555)-555-5555"
+                  label="Telefono"
+                  formErrors={formErrors?.phone}
+                  errorMessage={formErrors?.phone?.message}
                   type="text"
                   inputMode="numeric"
-                  placeholder="(555)-555-5555"
-                  autoComplete="tel-national"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
               {/* Birthdate  */}
               <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="birthdate"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Fecha de nacimiento
-                </label>
-                <input
-                  id="birthdate"
-                  {...register("birthdate")}
+                <CustomInput
                   type="date"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500  block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
+                  htmlFor="birthdate"
+                  autoComplete="bday"
+                  placeholder="YYYY-MM-DD"
+                  label="Fecha de Nacimiento"
+                  formErrors={formErrors?.birthdate}
+                  errorMessage={formErrors?.birthdate?.message}
                 />
               </div>
               {/* Age auto calc after birth date, READ-ONLY */}
               <div className="col-span-6 sm:col-span-4">
-                <label
+                <CustomInput
                   htmlFor="age"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Edad
-                </label>
-                <input
-                  id="age"
-                  {...register("age", {
-                    valueAsNumber: true,
-                  })}
-                  defaultValue={0}
-                  placeholder="86"
+                  autoComplete="age"
+                  placeholder="Edad"
+                  label="Edad"
+                  formErrors={formErrors?.age}
+                  errorMessage={formErrors?.age?.message}
                   type="number"
-                  pattern="[0-9]*"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
+                  inputMode="numeric"
+                  expectsNumber={true}
                 />
               </div>
 
               {/* Address */}
-              <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="country"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Pais / Region
-                </label>
-                <input
-                  id="country"
-                  {...register("country")}
-                  value="United States"
-                  readOnly
-                  placeholder="United States"
-                  type="text"
-                  className="mt-1 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md bg-gray-100 focus:outline-none focus:border-none text-gray-400"
-                />
-              </div>
 
               <div className="col-span-6">
-                <label
+                <CustomInput
                   htmlFor="street_address"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Direccion (calle, etc)
-                </label>
-                <input
-                  id="street_address"
-                  {...register("street_address")}
-                  type="text"
                   autoComplete="street-address"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
+                  placeholder="123 Main St, Apt 4B"
+                  label="Direccion (calle, etc)"
+                  formErrors={formErrors?.street_address}
+                  errorMessage={formErrors?.street_address?.message}
+                  type="text"
                 />
               </div>
 
               <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                <label
+                <CustomInput
                   htmlFor="city"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Ciudad
-                </label>
-                <input
-                  id="city"
-                  {...register("city")}
+                  autoComplete="address-level2"
+                  placeholder="Ciudad"
+                  label="Ciudad"
+                  formErrors={formErrors?.city}
+                  errorMessage={formErrors?.city?.message}
                   type="text"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
 
               <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                <label
+                <CustomInput
                   htmlFor="state"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Estado / Provincia
-                </label>
-                <input
-                  id="state"
-                  {...register("state")}
+                  autoComplete="address-level1"
+                  placeholder="Estado"
+                  label="Estado / Provincia"
+                  formErrors={formErrors?.state}
+                  errorMessage={formErrors?.state?.message}
                   type="text"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
 
               <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                <label
+                <CustomInput
                   htmlFor="postal_code"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  ZIP / Codigo Postal
-                </label>
-                <input
-                  id="postal_code"
-                  {...register("postal_code")}
-                  type="text"
                   autoComplete="postal-code"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
+                  placeholder="ZIP / Codigo Postal"
+                  label="Codigo Postal"
+                  formErrors={formErrors?.postal_code}
+                  errorMessage={formErrors?.postal_code?.message}
+                  type="number"
+                  inputMode="numeric"
                 />
               </div>
             </div>

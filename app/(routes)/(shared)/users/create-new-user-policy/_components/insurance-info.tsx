@@ -1,9 +1,15 @@
-import { Controller, useFormContext } from "react-hook-form";
+import { FieldErrors, useFormContext } from "react-hook-form";
 
+import { CustomInput } from "../utils/custom-input";
+import { CustomSelect } from "../utils/custom-select";
 import { useGetCompanies } from "../hooks/useGetCompanies";
 
-export const InsuranceInfo = () => {
-  const { register, control } = useFormContext();
+export const InsuranceInfo = ({
+  formErrors,
+}: {
+  formErrors?: FieldErrors<Partial<UserPolicyInputs>>;
+}) => {
+  const { control } = useFormContext();
   const { companies } = useGetCompanies();
   return (
     <div className="mt-10 sm:mt-0">
@@ -23,152 +29,71 @@ export const InsuranceInfo = () => {
           <div className="px-4 py-5 bg-gray-50 sm:p-6 rounded-md shadow-lg">
             <div className="grid grid-cols-6 gap-6">
               <div className="col-span-6 sm:col-span-3">
-                <label
+                <CustomInput
                   htmlFor="policy_start_date"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Fecha de Inscripción
-                </label>
-                {/* , {
-                    valueAsDate: true,
-                  } */}
-                <input
-                  {...register("policy_start_date")}
                   type="date"
-                  name="policy_start_date"
-                  id="policy_start_date"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500  block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
+                  label="Fecha de Inscripción"
+                  formErrors={formErrors?.policy_start_date}
+                  errorMessage={formErrors?.policy_start_date?.message}
+                  readOnly={false}
                 />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
-                <label
+                <CustomInput
                   htmlFor="insurance_policy_number"
-                  className="block text-sm font-medium text-gray-800"
-                >
-                  Numero de poliza
-                </label>
-                <input
-                  {...register("insurance_policy_number")}
                   placeholder="55-55-555"
-                  type="text"
                   inputMode="numeric"
-                  name="insurance_policy_number"
-                  id="insurance_policy_number"
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md"
+                  pattern="[0-9]*"
+                  mandatory={false}
+                  label="Numero de poliza"
+                  formErrors={formErrors?.insurance_policy_number}
+                  errorMessage={formErrors?.insurance_policy_number?.message}
+                  type="text"
                 />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
-                <div>
-                  <label
-                    htmlFor="prima"
-                    className="block text-sm font-medium text-gray-800"
-                  >
-                    Prima
-                  </label>
-                  <div className="mt-1 relative rounded-md shadow-xs">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <span className=" text-gray-500 sm:text-sm">$</span>
-                    </div>
-                    <input
-                      {...register("prima")}
-                      type="text"
-                      inputMode="numeric"
-                      name="prima"
-                      id="prima"
-                      className="focus:ring-blue-500 focus:border-blue-500  block w-full placeholder-gray-400 pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
-                      placeholder="0.00"
-                      aria-describedby="price-currency"
-                    />
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                      <span
-                        className="text-gray-500 sm:text-sm"
-                        id="price-currency"
-                      >
-                        USD
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <CustomInput
+                  htmlFor="prima"
+                  placeholder="$0.00"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  mandatory={false}
+                  label="Prima"
+                  formErrors={formErrors?.prima}
+                  errorMessage={formErrors?.prima?.message}
+                  type="text"
+                />
               </div>
 
               {/* Companias de Seguros */}
               <div className="col-span-6 sm:col-span-3">
-                <Controller
-                  control={control}
-                  rules={{ required: true }}
-                  name="insurance_company"
-                  render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <>
-                      <div>
-                        <label
-                          htmlFor="insurance_company"
-                          className="block text-sm font-medium text-gray-800"
-                        >
-                          Compañias de Seguros
-                        </label>
-                        <select
-                          onChange={onChange}
-                          onBlur={onBlur}
-                          value={value ?? "Seleccione un plan"}
-                          ref={ref}
-                          id="insurance_company"
-                          name="insurance_company"
-                          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500  sm:text-sm rounded-md"
-                        >
-                          {companies && companies.length > 0 ? (
-                            companies.map((company) => (
-                              <option key={company.name} value={company.name}>
-                                {company.name}
-                              </option>
-                            ))
-                          ) : (
-                            <option className="text-gray-400">
-                              Cargando Compañias...
-                            </option>
-                          )}
-                        </select>
-                      </div>
-                    </>
-                  )}
+                <CustomSelect
+                  htmlFor="insurance_company"
+                  label="Compañias de Seguros"
+                  options={companies.map((company) => ({
+                    value: company.name,
+                    label: company.name,
+                  }))}
+                  formErrors={formErrors?.insurance_company}
+                  errorMessage={formErrors?.insurance_company?.message}
                 />
               </div>
 
               <div className="col-span-6 sm:col-span-6 lg:col-span-3">
-                <Controller
-                  control={control}
-                  rules={{ required: true }}
-                  name="insurance_plan_type"
-                  render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <>
-                      <div>
-                        <label
-                          htmlFor="insurance_plan_type"
-                          className="block text-sm font-medium text-gray-800"
-                        >
-                          Tipo de Plan
-                        </label>
-                        <select
-                          onChange={onChange}
-                          onBlur={onBlur}
-                          value={value ?? "Seleccione un plan"}
-                          ref={ref}
-                          id="insurance_plan_type"
-                          name="insurance_plan_type"
-                          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500  sm:text-sm rounded-md"
-                        >
-                          <option value="Seleccione un plan">
-                            Seleccione un plan
-                          </option>
-                          <option value="Bronze">Bronze</option>
-                          <option value="Silver">Silver</option>
-                          <option value="Gold">Gold</option>
-                          <option value="Platinum">Platinum</option>
-                        </select>
-                      </div>
-                    </>
-                  )}
+                <CustomSelect
+                  htmlFor="insurance_plan_type"
+                  label="Tipo de Plan"
+                  options={[
+                    { label: "Seleccione un plan" },
+                    { label: "Bronze" },
+                    { label: "Silver" },
+                    { label: "Gold" },
+                    { label: "Platinum" },
+                  ]}
+                  formErrors={formErrors?.insurance_plan_type}
+                  errorMessage={formErrors?.insurance_plan_type?.message}
                 />
               </div>
             </div>
