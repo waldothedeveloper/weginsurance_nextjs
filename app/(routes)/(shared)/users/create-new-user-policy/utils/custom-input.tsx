@@ -1,7 +1,8 @@
-import { FieldErrors, useFormContext } from "react-hook-form";
+import type { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 
 import { ExclamationCircleIcon } from "@heroicons/react/16/solid";
 import type { InputHTMLAttributes } from "react";
+import { useFormContext } from "react-hook-form";
 
 interface CustomInputProps {
   htmlFor: keyof UserPolicyInputs;
@@ -9,8 +10,9 @@ interface CustomInputProps {
   placeholder?: string;
   mandatory?: boolean;
   label: string;
-  formErrors?: FieldErrors<Partial<UserPolicyInputs>>;
+  formErrors?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
   errorMessage?: string;
+
   type: string;
   readOnly?: boolean;
   inputMode?: InputHTMLAttributes<HTMLInputElement>["inputMode"];

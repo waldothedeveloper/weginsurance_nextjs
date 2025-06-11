@@ -1,6 +1,5 @@
-import { FieldErrors, useFormContext } from "react-hook-form";
-
 import { CustomInput } from "../utils/custom-input";
+import { useFormContext } from "react-hook-form";
 
 const paymentMethod = [
   {
@@ -14,12 +13,11 @@ const paymentMethod = [
 ];
 
 //
-export const BankInfo = ({
-  formErrors,
-}: {
-  formErrors?: FieldErrors<Partial<UserPolicyInputs>>;
-}) => {
-  const { register } = useFormContext();
+export const BankInfo = () => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<Partial<UserPolicyInputs>>();
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -50,8 +48,8 @@ export const BankInfo = ({
                       placeholder="Chase"
                       mandatory={false}
                       label="Cuenta de Banco"
-                      formErrors={formErrors?.bank_account}
-                      errorMessage={formErrors?.bank_account?.message}
+                      formErrors={errors?.bank_account}
+                      errorMessage={errors?.bank_account?.message}
                       type="text"
                     />
                   </div>
@@ -62,8 +60,8 @@ export const BankInfo = ({
                       placeholder="3530111333300000"
                       mandatory={false}
                       label="Numero de Ruta"
-                      formErrors={formErrors?.routing_number}
-                      errorMessage={formErrors?.routing_number?.message}
+                      formErrors={errors?.routing_number}
+                      errorMessage={errors?.routing_number?.message}
                       type="number"
                       inputMode="numeric"
                       readOnly={false}
@@ -76,8 +74,8 @@ export const BankInfo = ({
                       placeholder="091000019"
                       mandatory={false}
                       label="Numero de Cuenta"
-                      formErrors={formErrors?.bank_account_number}
-                      errorMessage={formErrors?.bank_account_number?.message}
+                      formErrors={errors?.bank_account_number}
+                      errorMessage={errors?.bank_account_number?.message}
                       type="number"
                       inputMode="numeric"
                       readOnly={false}
@@ -89,9 +87,9 @@ export const BankInfo = ({
                       placeholder="091000019"
                       mandatory={false}
                       label="Numero de Cuenta (debe coincidir)"
-                      formErrors={formErrors?.bank_account_number_confirmation}
+                      formErrors={errors?.bank_account_number_confirmation}
                       errorMessage={
-                        formErrors?.bank_account_number_confirmation?.message
+                        errors?.bank_account_number_confirmation?.message
                       }
                       type="number"
                       inputMode="numeric"

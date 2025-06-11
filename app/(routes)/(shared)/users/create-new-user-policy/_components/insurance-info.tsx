@@ -1,15 +1,12 @@
-import { FieldErrors, useFormContext } from "react-hook-form";
-
 import { CustomInput } from "../utils/custom-input";
 import { CustomSelect } from "../utils/custom-select";
+import { useFormContext } from "react-hook-form";
 import { useGetCompanies } from "../hooks/useGetCompanies";
 
-export const InsuranceInfo = ({
-  formErrors,
-}: {
-  formErrors?: FieldErrors<Partial<UserPolicyInputs>>;
-}) => {
-  const { control } = useFormContext();
+export const InsuranceInfo = () => {
+  const {
+    formState: { errors },
+  } = useFormContext<Partial<UserPolicyInputs>>();
   const { companies } = useGetCompanies();
   return (
     <div className="mt-10 sm:mt-0">
@@ -33,8 +30,8 @@ export const InsuranceInfo = ({
                   htmlFor="policy_start_date"
                   type="date"
                   label="Fecha de Inscripción"
-                  formErrors={formErrors?.policy_start_date}
-                  errorMessage={formErrors?.policy_start_date?.message}
+                  formErrors={errors?.policy_start_date}
+                  errorMessage={errors?.policy_start_date?.message}
                   readOnly={false}
                 />
               </div>
@@ -47,8 +44,8 @@ export const InsuranceInfo = ({
                   pattern="[0-9]*"
                   mandatory={false}
                   label="Numero de poliza"
-                  formErrors={formErrors?.insurance_policy_number}
-                  errorMessage={formErrors?.insurance_policy_number?.message}
+                  formErrors={errors?.insurance_policy_number}
+                  errorMessage={errors?.insurance_policy_number?.message}
                   type="text"
                 />
               </div>
@@ -61,8 +58,8 @@ export const InsuranceInfo = ({
                   pattern="[0-9]*"
                   mandatory={false}
                   label="Prima"
-                  formErrors={formErrors?.prima}
-                  errorMessage={formErrors?.prima?.message}
+                  formErrors={errors?.prima}
+                  errorMessage={errors?.prima?.message}
                   type="text"
                 />
               </div>
@@ -76,8 +73,8 @@ export const InsuranceInfo = ({
                     value: company.name,
                     label: company.name,
                   }))}
-                  formErrors={formErrors?.insurance_company}
-                  errorMessage={formErrors?.insurance_company?.message}
+                  formErrors={errors?.insurance_company}
+                  errorMessage={errors?.insurance_company?.message}
                 />
               </div>
 
@@ -92,8 +89,8 @@ export const InsuranceInfo = ({
                     { label: "Gold" },
                     { label: "Platinum" },
                   ]}
-                  formErrors={formErrors?.insurance_plan_type}
-                  errorMessage={formErrors?.insurance_plan_type?.message}
+                  formErrors={errors?.insurance_plan_type}
+                  errorMessage={errors?.insurance_plan_type?.message}
                 />
               </div>
             </div>

@@ -1,12 +1,11 @@
 import { CustomInput } from "../utils/custom-input";
 import { CustomSelect } from "../utils/custom-select";
-import { FieldErrors } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
-export default function PersonalInfo({
-  formErrors,
-}: {
-  formErrors?: FieldErrors<Partial<UserPolicyInputs>>;
-}) {
+export default function PersonalInfo() {
+  const {
+    formState: { errors },
+  } = useFormContext<Partial<UserPolicyInputs>>();
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -34,8 +33,8 @@ export default function PersonalInfo({
                   ]}
                   mandatory={true}
                   label="Acepta Cobertura Medica"
-                  formErrors={formErrors?.accepts_insurance}
-                  errorMessage={formErrors?.accepts_insurance?.message}
+                  formErrors={errors?.accepts_insurance}
+                  errorMessage={errors?.accepts_insurance?.message}
                 />
               </div>
 
@@ -46,8 +45,8 @@ export default function PersonalInfo({
                   placeholder="Jose"
                   mandatory={true}
                   label="Primer Nombre"
-                  formErrors={formErrors?.firstname}
-                  errorMessage={formErrors?.firstname?.message}
+                  formErrors={errors?.firstname}
+                  errorMessage={errors?.firstname?.message}
                   type="text"
                 />
               </div>
@@ -57,8 +56,8 @@ export default function PersonalInfo({
                   autoComplete="additional-name"
                   placeholder="Julian"
                   label="Segundo Nombre"
-                  formErrors={formErrors?.second_name}
-                  errorMessage={formErrors?.second_name?.message}
+                  formErrors={errors?.second_name}
+                  errorMessage={errors?.second_name?.message}
                   type="text"
                 />
               </div>
@@ -70,8 +69,8 @@ export default function PersonalInfo({
                   placeholder="Marti"
                   mandatory={true}
                   label="Primer Apellido"
-                  formErrors={formErrors?.lastname}
-                  errorMessage={formErrors?.lastname?.message}
+                  formErrors={errors?.lastname}
+                  errorMessage={errors?.lastname?.message}
                   type="text"
                 />
               </div>
@@ -82,8 +81,8 @@ export default function PersonalInfo({
                   autoComplete="family-name"
                   placeholder="Perez"
                   label="Segundo Apellido"
-                  formErrors={formErrors?.second_lastname}
-                  errorMessage={formErrors?.second_lastname?.message}
+                  formErrors={errors?.second_lastname}
+                  errorMessage={errors?.second_lastname?.message}
                   type="text"
                 />
               </div>
@@ -100,8 +99,8 @@ export default function PersonalInfo({
                     { label: "Separado(a)" },
                   ]}
                   label="Estado Civil"
-                  formErrors={formErrors?.civil_status}
-                  errorMessage={formErrors?.civil_status?.message}
+                  formErrors={errors?.civil_status}
+                  errorMessage={errors?.civil_status?.message}
                 />
               </div>
               <div className="col-span-6 sm:col-span-6">
@@ -114,8 +113,8 @@ export default function PersonalInfo({
                   ]}
                   mandatory={true}
                   label="Genero"
-                  formErrors={formErrors?.genre}
-                  errorMessage={formErrors?.genre?.message}
+                  formErrors={errors?.genre}
+                  errorMessage={errors?.genre?.message}
                 />
               </div>
 
@@ -125,8 +124,8 @@ export default function PersonalInfo({
                   autoComplete="email"
                   placeholder="ejemplo@prueba.com"
                   label="Correo Electronico"
-                  formErrors={formErrors?.email}
-                  errorMessage={formErrors?.email?.message}
+                  formErrors={errors?.email}
+                  errorMessage={errors?.email?.message}
                   type="email"
                 />
               </div>
@@ -137,8 +136,8 @@ export default function PersonalInfo({
                   autoComplete="ssn"
                   placeholder="123-45-6789"
                   label="Numero de Seguro Social"
-                  formErrors={formErrors?.ssn}
-                  errorMessage={formErrors?.ssn?.message}
+                  formErrors={errors?.ssn}
+                  errorMessage={errors?.ssn?.message}
                   type="text"
                   inputMode="numeric"
                 />
@@ -151,8 +150,8 @@ export default function PersonalInfo({
                   autoComplete="tel-national"
                   placeholder="(555)-555-5555"
                   label="Telefono"
-                  formErrors={formErrors?.phone}
-                  errorMessage={formErrors?.phone?.message}
+                  formErrors={errors?.phone}
+                  errorMessage={errors?.phone?.message}
                   type="text"
                   inputMode="numeric"
                 />
@@ -165,8 +164,8 @@ export default function PersonalInfo({
                   autoComplete="bday"
                   placeholder="YYYY-MM-DD"
                   label="Fecha de Nacimiento"
-                  formErrors={formErrors?.birthdate}
-                  errorMessage={formErrors?.birthdate?.message}
+                  formErrors={errors?.birthdate}
+                  errorMessage={errors?.birthdate?.message}
                 />
               </div>
               {/* Age auto calc after birth date, READ-ONLY */}
@@ -176,8 +175,8 @@ export default function PersonalInfo({
                   autoComplete="age"
                   placeholder="Edad"
                   label="Edad"
-                  formErrors={formErrors?.age}
-                  errorMessage={formErrors?.age?.message}
+                  formErrors={errors?.age}
+                  errorMessage={errors?.age?.message}
                   type="number"
                   inputMode="numeric"
                   expectsNumber={true}
@@ -192,8 +191,8 @@ export default function PersonalInfo({
                   autoComplete="street-address"
                   placeholder="123 Main St, Apt 4B"
                   label="Direccion (calle, etc)"
-                  formErrors={formErrors?.street_address}
-                  errorMessage={formErrors?.street_address?.message}
+                  formErrors={errors?.street_address}
+                  errorMessage={errors?.street_address?.message}
                   type="text"
                 />
               </div>
@@ -204,8 +203,8 @@ export default function PersonalInfo({
                   autoComplete="address-level2"
                   placeholder="Ciudad"
                   label="Ciudad"
-                  formErrors={formErrors?.city}
-                  errorMessage={formErrors?.city?.message}
+                  formErrors={errors?.city}
+                  errorMessage={errors?.city?.message}
                   type="text"
                 />
               </div>
@@ -216,8 +215,8 @@ export default function PersonalInfo({
                   autoComplete="address-level1"
                   placeholder="Estado"
                   label="Estado / Provincia"
-                  formErrors={formErrors?.state}
-                  errorMessage={formErrors?.state?.message}
+                  formErrors={errors?.state}
+                  errorMessage={errors?.state?.message}
                   type="text"
                 />
               </div>
@@ -228,8 +227,8 @@ export default function PersonalInfo({
                   autoComplete="postal-code"
                   placeholder="ZIP / Codigo Postal"
                   label="Codigo Postal"
-                  formErrors={formErrors?.postal_code}
-                  errorMessage={formErrors?.postal_code?.message}
+                  formErrors={errors?.postal_code}
+                  errorMessage={errors?.postal_code?.message}
                   type="number"
                   inputMode="numeric"
                 />

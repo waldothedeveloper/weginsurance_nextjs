@@ -1,13 +1,11 @@
-import { FieldErrors, useFormContext } from "react-hook-form";
-
 import { CustomSelect } from "../utils/custom-select";
+import { useFormContext } from "react-hook-form";
 
-export const LegalStatus = ({
-  formErrors,
-}: {
-  formErrors?: FieldErrors<Partial<UserPolicyInputs>>;
-}) => {
-  const { register } = useFormContext();
+export const LegalStatus = () => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<Partial<UserPolicyInputs>>();
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -40,8 +38,8 @@ export const LegalStatus = ({
                   ]}
                   mandatory={false}
                   label="Estatus Legal"
-                  formErrors={formErrors?.legal_status}
-                  errorMessage={formErrors?.legal_status?.message}
+                  formErrors={errors?.legal_status}
+                  errorMessage={errors?.legal_status?.message}
                   readOnly={false}
                 />
               </div>

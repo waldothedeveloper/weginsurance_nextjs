@@ -1,11 +1,11 @@
-import { Controller, FieldErrors, useFormContext } from "react-hook-form";
-
+import { Controller, useFormContext } from "react-hook-form";
+import type { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 type CustomSelectProps = {
   htmlFor: keyof UserPolicyInputs;
   options: { label: string }[];
   mandatory?: boolean;
   label: string;
-  formErrors?: FieldErrors<Partial<UserPolicyInputs>>;
+  formErrors?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
   errorMessage?: string;
   readOnly?: boolean;
 };
