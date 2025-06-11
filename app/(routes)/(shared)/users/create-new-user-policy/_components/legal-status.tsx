@@ -1,8 +1,13 @@
-import { Controller, useFormContext } from "react-hook-form";
+import { FieldErrors, useFormContext } from "react-hook-form";
 
-//
-export const LegalStatus = () => {
-  const { register, control } = useFormContext();
+import { CustomSelect } from "../utils/custom-select";
+
+export const LegalStatus = ({
+  formErrors,
+}: {
+  formErrors?: FieldErrors<Partial<UserPolicyInputs>>;
+}) => {
+  const { register } = useFormContext();
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -22,35 +27,22 @@ export const LegalStatus = () => {
             <div className="grid grid-cols-6 gap-6">
               {/* Status: Residente, Citizen, Huellas */}
               <div className="col-span-6 sm:col-span-3">
-                <Controller
-                  control={control}
-                  name="legal_status"
-                  render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <>
-                      <label
-                        htmlFor="legal_status"
-                        className="block text-sm font-medium text-gray-800"
-                      >
-                        Estatus Legal
-                      </label>
-                      <select
-                        id="legal_status"
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        value={value}
-                        ref={ref}
-                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                      >
-                        <option>Seleccione una opcion</option>
-                        <option>Residente</option>
-                        <option>Ciudadano</option>
-                        <option>Permiso de Trabajo</option>
-                        <option>Huellas</option>
-                        <option>En Tramites</option>
-                        <option>Sin Estatus</option>
-                      </select>
-                    </>
-                  )}
+                <CustomSelect
+                  htmlFor="legal_status"
+                  options={[
+                    { label: "Seleccione una opcion" },
+                    { label: "Residente" },
+                    { label: "Ciudadano" },
+                    { label: "Permiso de Trabajo" },
+                    { label: "Huellas" },
+                    { label: "En Tramites" },
+                    { label: "Sin Estatus" },
+                  ]}
+                  mandatory={false}
+                  label="Estatus Legal"
+                  formErrors={formErrors?.legal_status}
+                  errorMessage={formErrors?.legal_status?.message}
+                  readOnly={false}
                 />
               </div>
               {/* Notes */}
@@ -67,7 +59,7 @@ export const LegalStatus = () => {
                     id="legal_status_notes"
                     name="legal_status_notes"
                     rows={3}
-                    className="shadow-xs focus:ring-blue-500 focus:border-blue-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6"
                     placeholder="ejemplo: 2 meses para el permiso de trabajo."
                   />
                 </div>

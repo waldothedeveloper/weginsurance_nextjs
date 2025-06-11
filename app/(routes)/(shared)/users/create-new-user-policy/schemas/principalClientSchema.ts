@@ -2,13 +2,15 @@ import { z } from "zod";
 
 export const principalClientSchema = z.object({
   accepts_insurance: z.enum(["Si", "No"], {
-    required_error: "La cobertura medica es mandatoria.",
+    message: "La cobertura medica es mandatoria.",
   }),
   firstname: z
-    .string()
+    .string({
+      required_error: "Primer nombre es mandatorio.",
+    })
     .trim()
     .min(1, {
-      message: "Primer nombre es mandatorio.",
+      message: "Primer nombre debe contener mas de 1 caracter.",
     })
     .max(150, {
       message: "El primer nombre no puede tener más de 150 caracteres.",
@@ -18,10 +20,12 @@ export const principalClientSchema = z.object({
     .optional()
     .transform((e) => (e === "" ? undefined : e)),
   lastname: z
-    .string()
+    .string({
+      required_error: "Apellidos es mandatorio.",
+    })
     .trim()
     .min(1, {
-      message: "Apellidos es mandatorio.",
+      message: "Apellidos debe contener mas de 1 caracter.",
     })
     .max(150, {
       message: "El apellido no puede tener más de 150 caracteres.",
@@ -70,15 +74,17 @@ export const principalClientSchema = z.object({
     .transform((d) => d.toISOString())
     .optional(),
   phone: z
-    .string()
+    .string({
+      required_error: "El telefono es mandatorio.",
+    })
     .trim()
     .regex(/^\d{10}$/, {
       message: "El telefono es mandatorio y debe contener 10 digitos.",
     }),
   age: z
     .number()
-    .min(0, {
-      message: "La edad no puede ser negativa.",
+    .min(1, {
+      message: "La edad no puede ser menor a 1.",
     })
     .max(120, {
       message: "La edad no puede ser mayor a 120 años.",
