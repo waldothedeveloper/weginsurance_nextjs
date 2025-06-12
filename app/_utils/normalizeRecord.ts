@@ -6,7 +6,6 @@ import { currentUser } from "@clerk/nextjs/server";
 
 // TODO: Make sure we're not adding the +1 on the phone numbers and we used a proper method from utils to format the phone numbers to the format Twilio expects
 
-
 // Typing this is driving me crazy, so I'm leaving it as any for now
 export const normalizeRecord = async (
   submittedData: CreateNewUserPolicyMultiStepForm[]
@@ -17,7 +16,7 @@ export const normalizeRecord = async (
 
   if (!clerkUser) {
     throw new Error(
-      "There must be a user logged in to create a new user record."
+      "Debe haber un usuario autenticado para normalizar el registro."
     );
   }
 
@@ -30,7 +29,7 @@ export const normalizeRecord = async (
 
   if (!submittedData || submittedData.length === 0) {
     throw new Error(
-      "No data found in the submitted data record. Verify the information and try again."
+      "La información enviada sobre el usuario que trata de guardar está vacía."
     );
   }
 
@@ -38,7 +37,7 @@ export const normalizeRecord = async (
     // the first data object of record.data can never be empty
     if (record.id === 0 && !record.data) {
       throw new Error(
-        "The first data object of record.data is empty. Verify the information and try again."
+        "El primer objeto de datos del usuario principal está vacío. Verifique la información y vuelva a intentarlo."
       );
     }
 
@@ -62,7 +61,7 @@ export const normalizeRecord = async (
             lastname: record.data.lastname || "",
             secondLastname: record.data.second_lastname || "",
             email: record.data.email || "",
-            phone: `+1${record.data.phone}` || "",
+            phone: record.data.phone ? `+1${record.data.phone}` : "",
             birthdate: record.data.birthdate || "",
             age: record.data.age || 0,
             notes: record.data.notes || "",
@@ -108,7 +107,7 @@ export const normalizeRecord = async (
             lastname: record.data.lastname || "",
             secondLastname: record.data.second_lastname || "",
             email: record.data.email || "",
-            phone: `+1${record.data.phone}` || "",
+            phone: record.data.phone ? `+1${record.data.phone}` : "",
             birthdate: record.data.birthdate || "",
             age: record.data.age || 0,
             notes: record.data.notes || "",
@@ -155,7 +154,7 @@ export const normalizeRecord = async (
               lastname: record.data.lastname || "",
               secondLastname: record.data.second_lastname || "",
               email: record.data.email || "",
-              phone: `+1${record.data.phone}` || "",
+              phone: record.data.phone ? `+1${record.data.phone}` : "",
               gender: record.data.gender || "Masculino",
               birthdate: record.data.birthdate || "",
               age: record.data.age || 0,

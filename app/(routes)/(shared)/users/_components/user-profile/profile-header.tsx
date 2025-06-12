@@ -22,8 +22,9 @@ export const ProfileHeader = () => {
               width={120}
               height={120}
               src={
-                selectedUser?.user.personal_info.avatar ||
-                createAvatarImage(selectedUser?.user?.personal_info)
+                selectedUser?.user.personal_info.avatar ??
+                createAvatarImage(selectedUser.user.personal_info) ??
+                "/images/default-avatar.svg"
               }
               className="size-16 rounded-full"
               alt="User Avatar"

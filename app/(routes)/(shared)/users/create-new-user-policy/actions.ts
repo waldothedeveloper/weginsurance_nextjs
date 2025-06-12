@@ -16,7 +16,10 @@ export async function createUserRecord(data: string) {
     const result = stepsDataSchema.safeParse(parsed);
 
     if (!result.success) {
-      // console.error("Validation failed:", result.error);
+      console.error(
+        "Validation on createUserRecord action failed:",
+        result.error
+      );
       throw new Error("Validation failed");
     }
 

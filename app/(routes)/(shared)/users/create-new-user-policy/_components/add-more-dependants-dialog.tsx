@@ -26,11 +26,9 @@ export function AddMoreDependantsDialog({
   steps: CreateNewUserPolicyMultiStepForm[];
 }) {
   return (
-    <Dialog open={open} onClose={setOpen} className="relative z-10">
-      <DialogBackdrop
-        transition
-        className="fixed inset-0 bg-black/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-leave:duration-200 data-enter:ease-out data-leave:ease-in"
-      />
+    // the onClose on the Dialog is intentional. We don't want the users to dismiss the dialog without taking an action on any of the buttons at the bottom
+    <Dialog open={open} onClose={() => void 0} className="relative z-10">
+      <DialogBackdrop transition className="fixed inset-0 bg-black/30" />
 
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -78,12 +76,12 @@ export function AddMoreDependantsDialog({
                 type="button"
                 data-autofocus
                 onClick={() => {
-                  setOpen(false);
                   dispatchSteps({
                     type: "finish",
                     data: {},
                     stepNumber: currStep?.id ?? steps.length,
                   });
+                  setOpen(false);
                 }}
                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
               >
