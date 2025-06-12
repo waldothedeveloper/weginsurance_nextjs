@@ -78,22 +78,30 @@ const CreateNewUserPolicyProvider = ({ children }: { children: ReactNode }) => {
   const [openMoreDependantsDialog, setOpenMoreDependantsDialog] =
     useState(false);
   const [steps, dispatchSteps] = useImmerReducer(reducer, stepsData);
-  // console.log("steps: ", steps);
 
   useEffect(() => {
     if (submittingForm) {
       startTransition(() => {
         const submitData = async () => {
           try {
-            const dataToSubmit = JSON.stringify(steps);
+            // Extract only serializable data, excluding React components
+            const serializableSteps = steps.map((step) => ({
+              id: step.id,
+              tag: step.tag,
+              status: step.status,
+              title: step.title,
+              description: step.description,
+              data: step.data,
+            }));
+
+            const dataToSubmit = JSON.stringify(serializableSteps);
             const result = await createUserRecord(dataToSubmit);
             if (!result) {
               throw new Error(
-                "Validation failed in useCreateUserPolicy hook, check the useEffect"
+                "La validacion del formulario sobre el usuario falló. Por favor, verifique la información."
               );
             }
-            //! remove this later
-            // await new Promise((resolve) => setTimeout(resolve, 2000));
+
             setSuccess(true);
           } catch (error) {
             setSubmissionError(true);
