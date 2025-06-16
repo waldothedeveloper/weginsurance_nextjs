@@ -1,18 +1,21 @@
 "use client";
 
+import { usePathname, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
-import { ChevronRightIcon } from "@heroicons/react/20/solid";
-import Image from "next/image";
-import { UserContext } from "../../../../global-hooks/useUser";
-import { UserSchema } from "types/global";
+import { getUsersSnapshot } from "@/_lib/firebase/firestore";
 import { createAvatarImage } from "@/appUtils/create-avatar";
 import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
-import { getUsersSnapshot } from "@/_lib/firebase/firestore";
+import { ChevronRightIcon } from "@heroicons/react/20/solid";
+import Image from "next/image";
+import { UserSchema } from "types/global";
+import { UserContext } from "../../../../global-hooks/useUser";
 
 export const UsersList = ({ children }: { children: React.ReactNode }) => {
   const [users, setUsers] = useState<UserSchema[]>([]);
   const { setSelectedUser } = useContext(UserContext);
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = getUsersSnapshot((data) => setUsers(data));
@@ -20,6 +23,13 @@ export const UsersList = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+  const handleUserSelectionAndNavigation = (user: UserSchema) => {
+    setSelectedUser(user);
+    if (pathname?.includes("/messages")) {
+      router.push(`/messages/chat?userId=${encodeURIComponent(user.fireUID)}`);
+    }
+  };
 
   return (
     <nav aria-label="Directory" className="h-full overflow-y-auto">
@@ -57,7 +67,7 @@ export const UsersList = ({ children }: { children: React.ReactNode }) => {
                   return (
                     <li
                       key={person.created.toString()}
-                      onClick={() => setSelectedUser(person)}
+                      onClick={() => handleUserSelectionAndNavigation(person)}
                       className="flex justify-between gap-x-4 px-3 py-5 items-center hover:bg-gray-50"
                     >
                       <div className="flex items-center gap-x-3">

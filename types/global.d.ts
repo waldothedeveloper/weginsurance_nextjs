@@ -152,7 +152,7 @@ type ClerkUser = {
 };
 
 // clients
-type User = {
+export type User = {
   personal_info: {
     firstname: string;
     secondName: string;
@@ -205,8 +205,9 @@ type User = {
 
 // this will be the new schema to save users and for anything in the application that refers to a user
 export type UserSchema = {
+  fireUID: string; // this is the Firebase UID
   // THIS WILL BE THE SMS CONVERSATIONS EACH USER HAS WITH THE INSURANCE COMPANY
-  conversations?: string[];
+  conversations?: Message[];
   activeRecord: boolean;
   created: Date;
   updated: Date | null;
@@ -226,8 +227,20 @@ export type Message = {
   direction: "inbound" | "outbound-api" | "outbound-reply";
   numMedia: number;
   uri: string;
-  status: "queued" | "sending" | "sent" | "failed" | "delivered";
+  status:
+    | "queued"
+    | "sending"
+    | "sent"
+    | "failed"
+    | "delivered"
+    | "undelivered"
+    | "receiving"
+    | "received"
+    | "accepted"
+    | "scheduled"
+    | "read"
+    | "canceled";
   sid: string;
   dateCreated: string;
-  dateSent: string | null;
+  dateSent: string;
 };

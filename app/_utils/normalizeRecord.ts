@@ -10,7 +10,6 @@ import { currentUser } from "@clerk/nextjs/server";
 export const normalizeRecord = async (
   submittedData: CreateNewUserPolicyMultiStepForm[]
 ) => {
-  console.log("submittedData: ", submittedData);
   const clerkUser = await currentUser();
   let normalizedRecord: Partial<UserSchema> = {};
 

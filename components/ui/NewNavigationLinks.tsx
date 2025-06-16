@@ -9,9 +9,11 @@ import {
   UsersIcon,
 } from "@heroicons/react/24/outline";
 
-import Link from "next/link";
+import { UserContext } from "@/global-hooks/useUser";
 import { classNames } from "@/utils/classNames";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useContext } from "react";
 
 const env = process.env.NODE_ENV;
 const navigation = [
@@ -67,6 +69,7 @@ const navigation = [
 ];
 
 export const NewNavigationLinks = () => {
+  const { setSelectedUser } = useContext(UserContext);
   const pathname = usePathname();
 
   return (
@@ -74,6 +77,7 @@ export const NewNavigationLinks = () => {
       <div className="space-y-3 pl-5">
         {navigation.map((item) => (
           <Link
+            onClick={() => setSelectedUser(null)}
             key={item.name}
             href={env === "production" ? item?.link : item?.devLink}
             className={classNames(

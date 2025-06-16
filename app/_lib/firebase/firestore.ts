@@ -1,9 +1,10 @@
 import {
-  DocumentData,
   Firestore,
   FirestoreDataConverter,
   addDoc,
   collection,
+  doc,
+  getDoc,
   getDocs,
   limit,
   onSnapshot,
@@ -12,8 +13,8 @@ import {
   where,
 } from "firebase/firestore";
 
-import { UserSchema } from "types/global";
 import { db } from "@/lib/firebaseConfig";
+import { UserSchema } from "types/global";
 
 const userConverter: FirestoreDataConverter<UserSchema> = {
   toFirestore(user) {
@@ -21,7 +22,7 @@ const userConverter: FirestoreDataConverter<UserSchema> = {
   },
   fromFirestore(snapshot, options) {
     const data = snapshot.data(options)!;
-    return { ...data } as UserSchema;
+    return { fireUID: snapshot.id, ...data } as UserSchema;
   },
 };
 
@@ -42,6 +43,7 @@ export function getUsersSnapshot(cb: (results: UserSchema[]) => void) {
   const q = query(
     usersCol,
     orderBy("user.personal_info.firstname"),
+    // TODO: We might need later on to put pagination or something else like tanstack virtual and adjust this accordingly
     limit(200)
   );
 
@@ -53,36 +55,12 @@ export function getUsersSnapshot(cb: (results: UserSchema[]) => void) {
   return unsubscribe;
 }
 
-// get firebase user by phone
-export async function getFirebaseUserByPhone(
-  phone: string | null | undefined,
-  dbParam: any
-): Promise<DocumentData | null> {
-  if (!phone) throw new Error("Please provide a phone number first");
-
-  try {
-    const querySnapshot = await getDocs(
-      query(collection(dbParam, "Users"), where("phone", "==", phone))
-    );
-
-    if (querySnapshot.empty) {
-      return null;
-    } else {
-      const tempUser = querySnapshot.docs[0].data();
-      tempUser.id = querySnapshot.docs[0]?.id;
-      return tempUser;
-    }
-  } catch (error) {
-    console.error("Error checking existing user:", error);
-    throw error;
-  }
-}
-
 export const doesFirebaseUserExist = async (
   phone: string | null | undefined,
   dbParam: Firestore
 ): Promise<boolean> => {
   if (!phone) throw new Error("Please provide a phone number first");
+  if (!dbParam) throw new Error("Please provide a Firestore instance");
 
   try {
     const querySnapshot = await getDocs(
@@ -95,6 +73,28 @@ export const doesFirebaseUserExist = async (
     return !querySnapshot.empty;
   } catch (error) {
     console.error("Error checking existing user:", error);
+    throw error;
+  }
+};
+
+export const getSingleFirebaseUser = async (
+  userId: string,
+  dbParam: Firestore
+): Promise<UserSchema | null> => {
+  if (!userId) throw new Error("Please provide a user ID");
+  if (!dbParam) throw new Error("Please provide a Firestore instance");
+
+  try {
+    const docRef = doc(dbParam, "Users", userId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return { fireUID: docSnap.id, ...docSnap.data() } as UserSchema;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching user:", error);
     throw error;
   }
 };
