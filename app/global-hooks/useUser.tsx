@@ -7,7 +7,7 @@ import { useFirebaseToken } from "./useFirebaseToken";
 
 export const UserContext = createContext<{
   selectedUser: UserSchema | null;
-  setSelectedUser: (value: UserSchema) => void;
+  setSelectedUser: (value: UserSchema | null) => void;
 }>({
   selectedUser: null,
   setSelectedUser: () => {},
@@ -15,6 +15,7 @@ export const UserContext = createContext<{
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [selectedUser, setSelectedUser] = useState<UserSchema | null>(null);
+
   const { firebaseTokenAuth, firebaseTokenError } = useFirebaseToken();
 
   const value = useMemo(

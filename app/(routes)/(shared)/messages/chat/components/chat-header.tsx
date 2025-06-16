@@ -1,19 +1,21 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 
+import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
+import type { UserSchema } from "types/global";
 
-export const ChatHeader = () => {
+export const ChatHeader = ({ user }: { user: UserSchema }) => {
   return (
-    <div className="border-b border-slate-200 pb-5">
+    <div className="border-b border-slate-200 p-5">
       <div className="sm:flex sm:items-center sm:justify-between">
         <div className="flex items-start space-x-5 ml-3">
           <div className="shrink-0">
             <div className="relative">
               <Image
-                alt=""
-                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=2680&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                className="size-16 rounded-full"
+                alt={user.user.personal_info?.firstname}
+                src={user.user.personal_info?.avatar || "/images/avatar.png"}
+                className="size-14 rounded-full"
                 width={64}
                 height={64}
               />
@@ -23,15 +25,29 @@ export const ChatHeader = () => {
               />
             </div>
           </div>
+
           {/*
           Use vertical padding to simulate center alignment when both lines of text are one line,
           but preserve the same layout if the text wraps without making the image jump around.
         */}
           <div className="pt-1.5">
             <h1 className="text-2xl font-bold text-slate-900">
-              Ricardo Cooper
+              {user.user ? (
+                <>
+                  {user.user.personal_info.firstname}{" "}
+                  {user.user.personal_info.lastname}
+                </>
+              ) : (
+                <span className="text-slate-400 font-normal">
+                  Seleccione un usuario
+                </span>
+              )}
             </h1>
-            <p className="text-sm text-slate-500">(786) 876-7395</p>
+            <p className="text-sm text-slate-500">
+              {formatPhoneNumberToNationalUSAformat(
+                user.user.personal_info.phone
+              )}
+            </p>
           </div>
         </div>
 

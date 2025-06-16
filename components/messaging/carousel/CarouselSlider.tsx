@@ -1,15 +1,15 @@
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
+import Image from "next/image";
 import { ShowFileTypeIcon } from "@/components/messaging/carousel/ShowFileTypeIcon";
+import { UploadedFile } from "@/interfaces/index";
+import { classNames } from "@/utils/classNames";
+import { splitFileName } from "@/utils/splitFileName";
+import { uploadedFilesAtom } from "@/lib/state/atoms";
+import { useAtomValue } from "jotai";
 import { useDeleteUploadedFileOneByOne } from "@/hooks/fileUploader/useDeleteUploadedFileOneByOne";
 import { useDropAndUploadFiles } from "@/hooks/fileUploader/useDropAndUploadFiles";
 import { useHoverFile } from "@/hooks/fileUploader/useHoverFile";
-import { UploadedFile } from "@/interfaces/index";
-import { uploadedFilesAtom } from "@/lib/state/atoms";
-import { classNames } from "@/utils/classNames";
-import { splitFileName } from "@/utils/splitFileName";
-import { useAtomValue } from "jotai";
-import Image from "next/image";
 
 type CarouselSliderProps = {
   // eslint-disable-next-line no-unused-vars
@@ -22,7 +22,7 @@ export const CarouselSlider = ({
   selectedImage,
 }: CarouselSliderProps) => {
   const uploadedResources = useAtomValue(uploadedFilesAtom);
-  console.log("uploadedResources: ", uploadedResources);
+
   const { isCurrentHoveredFile, handleMouseOver, handleMouseLeave } =
     useHoverFile();
   const { imageDropZone, documentDropZone } = useDropAndUploadFiles();

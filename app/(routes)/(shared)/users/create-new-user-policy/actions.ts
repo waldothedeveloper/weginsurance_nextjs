@@ -2,8 +2,8 @@
 
 import { createFirebaseUser } from "@/_lib/firebase/firestore";
 import { getAuthenticatedAppForUser } from "@/_lib/firebase/serverApp";
-import { getFirestore } from "firebase/firestore";
 import { normalizeRecord } from "@/appUtils/normalizeRecord";
+import { getFirestore } from "firebase/firestore";
 import { stepsDataSchema } from "./schemas/stepsDataSchema";
 
 //
@@ -16,10 +16,14 @@ export async function createUserRecord(data: string) {
     const result = stepsDataSchema.safeParse(parsed);
 
     if (!result.success) {
-      console.error(
-        "Validation on createUserRecord action failed:",
-        result.error
-      );
+      if (process.env.NODE_ENV !== "production") {
+        console.error(
+          "Validation on createUserRecord action failed:",
+          result.error.flatten()
+        );
+      } else {
+        console.warn("Validation on createUserRecord action failed");
+      }
       throw new Error("Validation failed");
     }
 
