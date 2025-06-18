@@ -23,9 +23,8 @@ const onDrop = async (
   setterFn: (fn: (prevFiles: UploadedFile[]) => UploadedFile[]) => void, // eslint-disable-line
   bucket: string,
   uploaderFn: (
-    // eslint-disable-next-line no-unused-vars
     files: (File & { id: string })[],
-    // eslint-disable-next-line no-unused-vars
+
     bucket: string
   ) => Promise<UploadedFile[]> // eslint-disable-line
 ) => {

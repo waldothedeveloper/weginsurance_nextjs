@@ -7,11 +7,14 @@ import { TimeDivider } from "@/components/messaging/TimeDivider";
 type ChatWindowProps = {
   items: VirtualItem[];
   virtualizer: Virtualizer<Element, Element>;
-  messages: VirtualizedConversationType | null
+  messages: VirtualizedConversationType | null;
 };
 
-
-export const ChatWindow = ({ virtualizer, items, messages }: ChatWindowProps) => {
+export const ChatWindow = ({
+  virtualizer,
+  items,
+  messages,
+}: ChatWindowProps) => {
   return (
     <div
       style={{
@@ -27,10 +30,17 @@ export const ChatWindow = ({ virtualizer, items, messages }: ChatWindowProps) =>
             ref={virtualizer.measureElement}
           >
             <div className="py-3">
-              {Array.isArray(messages) && "type" in messages[virtualRow.index] ? (
-                <TimeDivider time={messages[virtualRow.index]?.dateCreated} />
-              ) : messages && messages[virtualRow.index] && (
-                <ChatMessage msg={messages[virtualRow.index] as Message} />
+              {Array.isArray(messages) &&
+              messages[virtualRow.index] &&
+              "type" in messages[virtualRow.index]! ? (
+                <TimeDivider
+                  time={messages[virtualRow.index]?.dateCreated ?? ""}
+                />
+              ) : (
+                messages &&
+                messages[virtualRow.index] && (
+                  <ChatMessage msg={messages[virtualRow.index] as Message} />
+                )
               )}
             </div>
           </div>

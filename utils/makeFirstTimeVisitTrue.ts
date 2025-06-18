@@ -4,7 +4,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
 
 export const makeFirstTimeVisitTrue = async (
-  selectedUser: RealUser | FakeUser | null
+  selectedUser: RealUser | FakeUser | null | undefined
 ) => {
   if (!selectedUser) return;
   const docRef = doc(db, "Users", selectedUser?.id);
@@ -13,7 +13,7 @@ export const makeFirstTimeVisitTrue = async (
     await updateDoc(docRef, {
       firstTimeVisit: true,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(
       "Error adding last visited timestamp to a the user's document: ",
       error

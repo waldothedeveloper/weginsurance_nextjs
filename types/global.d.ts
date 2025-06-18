@@ -224,8 +224,8 @@ export type Message = {
   body: string;
   from: string;
   to: string;
-  direction: "inbound" | "outbound-api" | "outbound-reply";
-  numMedia: number;
+  direction: "inbound" | "outbound-api" | "outbound-call" | "outbound-reply";
+  numMedia: string;
   uri: string;
   status:
     | "queued"
@@ -239,8 +239,9 @@ export type Message = {
     | "accepted"
     | "scheduled"
     | "read"
-    | "canceled";
+    | "canceled"
+    | "partially_delivered";
   sid: string;
-  dateCreated: string;
-  dateSent: string;
+  dateCreated: Date;
+  dateSent: Date;
 };

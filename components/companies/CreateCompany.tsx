@@ -20,7 +20,7 @@ type CreateCompanyProps = {
   isSubmitting: boolean;
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors<FieldValues>;
-  // eslint-disable-next-line no-unused-vars
+
   onSubmit: (values: InsuranceCompany) => void;
   handleSubmit: UseFormHandleSubmit<FieldValues>;
   closeModal: () => void;

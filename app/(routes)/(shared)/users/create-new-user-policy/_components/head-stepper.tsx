@@ -8,7 +8,7 @@ export const HeadStepper = ({
   steps: CreateNewUserPolicyMultiStepForm[];
 }) => {
   return (
-    <div className="md:flex md:items-center md:justify-between md:space-x-5">
+    <div className="md:flex md:items-center md:justify-between md:space-x-5 px-6">
       <div className="flex items-start space-x-5">
         <div className="shrink-0">{currStep?.icon}</div>
         {/*
@@ -44,7 +44,7 @@ export const HeadStepper = ({
         <button
           onClick={() => setUserEventDispatch("next")}
           type="submit"
-          className="inline-flex justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+          className="inline-flex justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
         >
           {currStep?.id === steps.length - 1 ? "Finalizar" : "Continuar"}
         </button>

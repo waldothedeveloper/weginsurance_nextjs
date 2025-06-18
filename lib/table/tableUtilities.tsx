@@ -1,4 +1,3 @@
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 import {
   FilterFn,
   createColumnHelper,
@@ -7,20 +6,20 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 import React, { useState } from "react";
 
-import { useFakeUserList } from "@/hooks/test/useFakeUserList";
-import { useFirebaseUsers } from "@/hooks/user_directory/useFirebaseUsers";
-import { RealUser } from "@/interfaces/index";
 import { IndeterminateCheckbox } from "@/lib/table/Checkbox";
+import { RealUser } from "@/interfaces/index";
 import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
 import { rankItem } from "@tanstack/match-sorter-utils";
+import { useFakeUserList } from "@/hooks/test/useFakeUserList";
+import { useFirebaseUsers } from "@/hooks/user_directory/useFirebaseUsers";
 import { useMemo } from "react";
 
 type UserTableUtilitiesProps = {
-  // eslint-disable-next-line no-unused-vars
   handleUpdateModal: (arg: RealUser) => void;
-  // eslint-disable-next-line no-unused-vars
+
   handleDeleteModal: (arg: RealUser) => void;
 };
 //

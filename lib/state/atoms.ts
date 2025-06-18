@@ -18,7 +18,9 @@ import { tenYearsFromToday } from "@/components/documents/helpers/date";
 //
 export const userPhoneAtom = atom<string | null>("");
 // export const userIdAtom = atom<string | null>(null);
-export const selectedUserAtom = atom<RealUser | FakeUser | null>(null);
+export const selectedUserAtom = atom<RealUser | FakeUser | null | undefined>(
+  null
+);
 export const sendingSMSAtom = atom(true);
 export const incomingSMSUserToIdentifyAtom = atom<IdentifiedUser | null>(null);
 export const messagesListAtom = atom<VirtualizedConversationType | null>(null);

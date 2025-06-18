@@ -10,7 +10,7 @@ export const calculateFileSize = (
     if (currentSelectedFile) {
       return getFileSizeString(currentSelectedFile.size);
     } else {
-      return getFileSizeString(files[0].size);
+      return getFileSizeString(files[0]!.size);
     }
   }
 };

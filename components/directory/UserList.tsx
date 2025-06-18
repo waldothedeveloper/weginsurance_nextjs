@@ -2,15 +2,15 @@ import { FakeUser, RealUser } from "@/interfaces/index";
 import { selectedUserAtom, userPhoneAtom } from "@/lib/state/atoms";
 import { useAtomValue, useSetAtom } from "jotai";
 
+import { UserIcon } from "@heroicons/react/24/outline";
 import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
 import { normalizeString } from "@/utils/normalizeString";
-import { UserIcon } from "@heroicons/react/24/outline";
 
 export const UserList = ({
   user,
   isProcessingInfo,
 }: {
-  user: RealUser | FakeUser | null;
+  user: RealUser | FakeUser | null | undefined;
   isProcessingInfo: boolean;
 }) => {
   const selectedUser = useAtomValue(selectedUserAtom);

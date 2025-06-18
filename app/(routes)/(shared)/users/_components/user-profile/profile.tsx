@@ -68,10 +68,10 @@ export const UserProfile = () => {
       {/* Description list */}
       {selectedUser && (
         <div className="mx-auto mt-6 max-w-5xl px-4 sm:px-6 lg:px-8">
-          {tabs[0].current && <UserInfo />}
-          {tabs[1].current && <InsurancePolicy />}
-          {tabs[2].current && <LegalStatus />}
-          {tabs[3].current && <WorkInfo />}
+          {tabs[0]?.current && <UserInfo />}
+          {tabs[1]?.current && <InsurancePolicy />}
+          {tabs[2]?.current && <LegalStatus />}
+          {tabs[3]?.current && <WorkInfo />}
         </div>
       )}
     </article>

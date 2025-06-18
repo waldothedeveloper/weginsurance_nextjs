@@ -1,10 +1,10 @@
-// import "server-only";
-"use server";
+import "server-only";
 
-import { Message } from "types/global";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import twilio from "twilio";
+import { MessageInstance } from "twilio/lib/rest/api/v2010/account/message";
+import { Message } from "types/global";
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -26,7 +26,7 @@ const retrieveTwilioFromMessages = async (phone: string) => {
   return messages;
 };
 
-const formatMessage = (m: any): Message => ({
+const formatMessage = (m: MessageInstance): Message => ({
   body: m.body,
   from: m.from,
   to: m.to,
@@ -44,7 +44,7 @@ const sortByDate = (a: Message, b: Message) =>
   new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime();
 
 export async function getTwilioMessages(
-  phone: string
+  phone: string | null | undefined
 ): Promise<{ messages: Message[] }> {
   const { userId } = auth();
 

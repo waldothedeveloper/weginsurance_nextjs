@@ -1,20 +1,24 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
-import { getUsersSnapshot } from "@/_lib/firebase/firestore";
-import { createAvatarImage } from "@/appUtils/create-avatar";
-import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
-import { UserSchema } from "types/global";
 import { UserContext } from "../../../../global-hooks/useUser";
+import { UserSchema } from "types/global";
+import { createAvatarImage } from "@/appUtils/create-avatar";
+import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
+import { getUsersSnapshot } from "@/_lib/firebase/firestore";
+
+// TODO: We will use Tanstack Virtual later probably combined with Tanstack Query for better performance with large datasets
 
 export const UsersList = ({ children }: { children: React.ReactNode }) => {
   const [users, setUsers] = useState<UserSchema[]>([]);
-  const { setSelectedUser } = useContext(UserContext);
+  const { setSelectedUser, selectedUser } = useContext(UserContext);
+
   const pathname = usePathname();
+
   const router = useRouter();
 
   useEffect(() => {
@@ -26,8 +30,10 @@ export const UsersList = ({ children }: { children: React.ReactNode }) => {
 
   const handleUserSelectionAndNavigation = (user: UserSchema) => {
     setSelectedUser(user);
-    if (pathname?.includes("/messages")) {
-      router.push(`/messages/chat?userId=${encodeURIComponent(user.fireUID)}`);
+    if (pathname?.includes("/chat")) {
+      router.push(
+        `/chat/conversation?userId=${encodeURIComponent(user.fireUID)}`
+      );
     }
   };
 
@@ -51,10 +57,10 @@ export const UsersList = ({ children }: { children: React.ReactNode }) => {
 
           return (
             <div key={letter} className="relative">
-              <div className="sticky top-0 z-10 border-y border-gray-200 bg-gray-50 px-3 py-1.5 text-sm font-semibold leading-6 text-gray-900">
+              <div className="sticky top-0 z-10 border-t border-b border-gray-200 bg-gray-50 px-6 py-1 text-sm font-medium text-gray-500">
                 {letter}
               </div>
-              <ul role="list" className="divide-y divide-gray-100">
+              <ul role="list" className="relative z-0 divide-y divide-gray-200">
                 {bucket.map((person) => {
                   const full = [
                     person.user.personal_info.firstname,
@@ -68,36 +74,46 @@ export const UsersList = ({ children }: { children: React.ReactNode }) => {
                     <li
                       key={person.created.toString()}
                       onClick={() => handleUserSelectionAndNavigation(person)}
-                      className="flex justify-between gap-x-4 px-3 py-5 items-center hover:bg-gray-50"
                     >
-                      <div className="flex items-center gap-x-3">
-                        <div className="h-12 w-12 relative">
+                      <div
+                        tabIndex={0}
+                        className={`relative flex items-center space-x-3 px-6 py-5 hover:bg-blue-50 ${
+                          selectedUser?.fireUID === person.fireUID
+                            ? "bg-blue-100 ring-2 ring-blue-500 ring-inset"
+                            : ""
+                        }`}
+                      >
+                        <div className="shrink-0">
                           <Image
-                            fill
                             alt={full}
                             src={
                               person.user.personal_info.avatar ||
                               createAvatarImage(person.user.personal_info)
                             }
-                            className="rounded-full bg-blue-50 shadow-md shadow-blue-500/25"
-                            sizes="(max-width: 768px) 100vw, 33vw"
+                            width={40}
+                            height={40}
                           />
                         </div>
-                        <div className="min-w-0">
-                          <p className="text-sm font-semibold text-gray-900">
+                        <div className="min-w-0 flex-1">
+                          {/* Extend touch target to entire panel */}
+                          <span
+                            aria-hidden="true"
+                            className="absolute inset-0"
+                          />
+                          <p className="text-sm font-medium text-gray-900">
                             {full}
                           </p>
-                          <p className="mt-1 truncate text-xs text-gray-500">
+                          <p className="mt-1 text-sm text-gray-500">
                             {formatPhoneNumberToNationalUSAformat(
                               person.user.personal_info.phone
                             )}
                           </p>
                         </div>
+                        <ChevronRightIcon
+                          aria-hidden="true"
+                          className="h-5 w-5 text-gray-400"
+                        />
                       </div>
-                      <ChevronRightIcon
-                        aria-hidden="true"
-                        className="h-5 w-5 text-gray-400"
-                      />
                     </li>
                   );
                 })}

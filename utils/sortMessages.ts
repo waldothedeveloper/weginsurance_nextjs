@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 
 export const sortMessages = (
   messages: Message[],
-  // eslint-disable-next-line no-unused-vars
+
   groupedDays: (messages: Message[]) => { [key: string]: Message[] }
 ): VirtualizedConversationType[] => {
   const days = groupedDays(messages);
@@ -14,7 +14,7 @@ export const sortMessages = (
 
   const items = sortedDays.reduce(
     (acc: VirtualizedConversationType[], date) => {
-      const sortedMessages = days[date].sort((x, y) =>
+      const sortedMessages = (days[date] ?? []).sort((x, y) =>
         dayjs(y.dateCreated).diff(dayjs(x.dateCreated))
       );
       return acc.concat([

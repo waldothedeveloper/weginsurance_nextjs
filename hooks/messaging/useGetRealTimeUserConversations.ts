@@ -23,7 +23,9 @@ export const useGetRealTimeUserConversations = () => {
   const [messages, setMessages] = useState<VirtualizedConversationType | null>(
     null
   );
-  const [user, setUser] = useState<RealUser | FakeUser | null>(null);
+  const [user, setUser] = useState<RealUser | FakeUser | null | undefined>(
+    null
+  );
 
   useEffect(() => {
     let unsubscribe: Unsubscribe | null = null;
