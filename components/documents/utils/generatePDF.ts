@@ -10,7 +10,7 @@ export const generatePDF = async (
   setError: Dispatch<SetStateAction<string | null>>,
   setUrl: Dispatch<SetStateAction<string>>,
   setStep: Dispatch<SetStateAction<number>>,
-  selectedUser: RealUser | FakeUser | null,
+  selectedUser: RealUser | FakeUser | null | undefined,
   pdfData: pdfDataTypes
 ) => {
   try {

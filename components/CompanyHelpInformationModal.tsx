@@ -10,7 +10,7 @@ import { Square3Stack3DIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 type CompanyHelpInformationModalProps = {
   open: boolean;
-  // eslint-disable-next-line no-unused-vars
+
   setOpen: (open: boolean) => void;
 };
 

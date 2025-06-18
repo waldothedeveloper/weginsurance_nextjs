@@ -11,6 +11,9 @@ export const getSignatureURL: Fetcher<
   string[]
 > = async (args) => {
   const [url, userId, signerEid] = args;
+  if (!url) {
+    throw new Error("URL is undefined. Please provide a valid URL.");
+  }
   try {
     const response = await fetch(url, {
       method: "POST",

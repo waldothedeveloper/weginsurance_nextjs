@@ -1,9 +1,10 @@
 import "server-only";
 
+import { initializeServerApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 import { cookies } from "next/headers";
 import { firebaseConfig } from "./config";
-import { getAuth } from "firebase/auth";
-import { initializeServerApp } from "firebase/app";
 
 export async function getAuthenticatedAppForUser() {
   try {
@@ -26,4 +27,10 @@ export async function getAuthenticatedAppForUser() {
     console.error("Error initializing Firebase app:", error);
     throw error;
   }
+}
+
+export async function myFirebaseServerApp() {
+  const { firebaseServerApp } = await getAuthenticatedAppForUser();
+  const db = getFirestore(firebaseServerApp);
+  return { firebaseServerApp, db };
 }

@@ -2,7 +2,7 @@
 
 import {
   BuildingOfficeIcon,
-  ChatBubbleBottomCenterTextIcon,
+  ChatBubbleLeftEllipsisIcon,
   DocumentTextIcon,
   Square3Stack3DIcon,
   UserPlusIcon,
@@ -26,11 +26,11 @@ const navigation = [
     current: true,
   },
   {
-    name: "Mensajes",
-    href: "messages",
+    name: "Chat",
+    href: "chat",
     link: "/admin/messages",
-    devLink: "/messages",
-    icon: ChatBubbleBottomCenterTextIcon,
+    devLink: "/chat",
+    icon: ChatBubbleLeftEllipsisIcon,
     current: false,
   },
   {

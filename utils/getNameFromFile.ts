@@ -6,7 +6,7 @@ export const getNameFromFile = (
 ) => {
   if (!files) return;
   const currentSelectedFile = files?.find((file) => file?.id === selectedImgId);
-  const splitFileName = (fileName: string) =>
+  const splitFileName = (fileName?: string) =>
     fileName?.split(".")?.slice(0, -1)?.join(".");
 
   if (currentSelectedFile) {

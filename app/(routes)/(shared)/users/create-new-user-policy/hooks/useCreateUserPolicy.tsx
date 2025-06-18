@@ -125,20 +125,25 @@ const CreateNewUserPolicyProvider = ({ children }: { children: ReactNode }) => {
   ) {
     switch (action.type) {
       case "previous":
-        if (action.stepNumber === 0) return void draft;
-        draft[action.stepNumber].status = "upcoming";
-        draft[action.stepNumber - 1].status = "current";
+        if (
+          action.stepNumber === 0 ||
+          !draft[action.stepNumber] ||
+          !draft[action.stepNumber - 1]
+        )
+          return void draft;
+        draft[action.stepNumber]!.status = "upcoming";
+        draft[action.stepNumber - 1]!.status = "current";
         return void draft;
       case "next":
         if (action.stepNumber === draft.length - 1) {
           setOpenMoreDependantsDialog(true);
-          draft[action.stepNumber].data = action.data;
-          draft[action.stepNumber].status = "complete";
+          draft[action.stepNumber]!.data = action.data;
+          draft[action.stepNumber]!.status = "complete";
           return void draft;
         }
-        draft[action.stepNumber].data = action.data;
-        draft[action.stepNumber].status = "complete";
-        draft[action.stepNumber + 1].status = "current";
+        draft[action.stepNumber]!.data = action.data;
+        draft[action.stepNumber]!.status = "complete";
+        draft[action.stepNumber + 1]!.status = "current";
         return void draft;
 
       case "additional_dependants":
@@ -148,10 +153,15 @@ const CreateNewUserPolicyProvider = ({ children }: { children: ReactNode }) => {
         setFormReadyToSubmit(true);
         return void draft;
       case "make_changes":
-        draft[0].status = "current";
-        // set the rest of the statuses to "upcoming"
+        // ensure the first step exists before updating
+        if (draft[0]) {
+          draft[0]!.status = "current";
+        }
+        // set the rest of the statuses to "upcoming" only if they exist
         for (let i = 1; i < draft.length; i++) {
-          draft[i].status = "upcoming";
+          if (draft[i]) {
+            draft[i]!.status = "upcoming";
+          }
         }
         setFormReadyToSubmit(false);
         return void draft;

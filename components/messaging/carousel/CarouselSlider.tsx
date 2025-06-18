@@ -12,7 +12,6 @@ import { useDropAndUploadFiles } from "@/hooks/fileUploader/useDropAndUploadFile
 import { useHoverFile } from "@/hooks/fileUploader/useHoverFile";
 
 type CarouselSliderProps = {
-  // eslint-disable-next-line no-unused-vars
   handleSelectedFile: (file: UploadedFile) => void;
   selectedImage: string | null;
 };

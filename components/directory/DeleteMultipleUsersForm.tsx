@@ -5,7 +5,7 @@ import { Table } from "@tanstack/react-table";
 
 type DeleteMultipleUsersFormProps = {
   isSubmitting: boolean;
-  // eslint-disable-next-line no-unused-vars
+
   handleDeleteMultipleUsers: (table: Table<RealUser>) => void;
   handleCloseModal: () => void;
   table: Table<RealUser>;

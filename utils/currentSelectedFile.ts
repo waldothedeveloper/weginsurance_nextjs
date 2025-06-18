@@ -5,7 +5,7 @@ export const currentSelectedFile = (
   selectedImgId: string | null
 ) => {
   if (!selectedImgId || selectedImgId === null) {
-    return files[0].url;
+    return files[0]!.url;
   } else {
     const isSelected = files.find((file) => file.id === selectedImgId);
     if (isSelected) {

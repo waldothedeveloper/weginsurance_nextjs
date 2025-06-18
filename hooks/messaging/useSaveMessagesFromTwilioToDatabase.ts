@@ -10,7 +10,9 @@ import { useAtomValue } from "jotai";
 export const useSaveMessagesFromTwilioToDatabase = (
   messagesFromTwilioAPI: [],
   setKey: React.Dispatch<React.SetStateAction<[string, string | null] | null>>,
-  setUser: React.Dispatch<React.SetStateAction<RealUser | FakeUser | null>>
+  setUser: React.Dispatch<
+    React.SetStateAction<RealUser | FakeUser | null | undefined>
+  >
 ) => {
   const [isSavingMessagesToDb, setIsSavingMessagesToDb] = useState(false);
   const [errorSavingMessagesToDb, setErrorSavingMessagesToDb] = useState<

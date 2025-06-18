@@ -18,7 +18,7 @@ type CreateUserFormProps = {
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors<FieldValues>;
   handleSubmit: any;
-  // eslint-disable-next-line no-unused-vars
+
   submitCreateUser: (formInputs: RealUser) => Promise<void>;
   isSubmitting: boolean;
   handleCloseModal: () => void;

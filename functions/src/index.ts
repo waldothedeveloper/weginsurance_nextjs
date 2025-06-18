@@ -1,40 +1,32 @@
-/* eslint-disable max-len */
-/* eslint-disable operator-linebreak */
-/* eslint-disable indent */
-/* eslint-disable require-jsdoc */
-/* eslint-disable object-curly-spacing */
-/* eslint-disable quote-props */
-
 import * as functions from "firebase-functions";
 
-import { FieldValue, Timestamp } from "firebase-admin/firestore";
 import { Request, Response } from "express";
-import { getFunctionsUrl, initialize, twilioClient } from "./utils";
+import { FieldValue, Timestamp } from "firebase-admin/firestore";
 import { twiml, validateRequest } from "twilio";
+import { getFunctionsUrl, initialize, twilioClient } from "./utils";
 
-// import { MediaInstance } from "twilio/lib/rest/api/v2010/account/message/media";
-import { Novu } from "@novu/node";
 import { QueuePayload } from "./types";
+// import { MediaInstance } from "twilio/lib/rest/api/v2010/account/message/media";
 import { Storage } from "@google-cloud/storage";
 import { firestore as adminFirestore } from "firebase-admin";
 import config from "./config";
 // import { getContentTypeFromUrl } from "./getContentTypeFromUrl";
-import { returnIncomingMedia } from "./returnIncomingMedia";
 
 const fv: FieldValue = FieldValue.serverTimestamp();
 const terminalStatuses = ["delivered", "undelivered", "failed"];
 
 exports.uploadImages = functions.https.onRequest(
-  async (req: Request, res: Response): Promise<any> => {
+  async (req: Request, res: Response): Promise<void> => {
     functions.logger.info("Starting uploadImages function.");
     // Get the array of URLs from the request body.
     const urls = req.body.urls;
 
     if (!urls || !Array.isArray(urls) || urls.length === 0) {
       functions.logger.error("No URLs provided.");
-      return res
+      res
         .status(500)
-        .json("No URLs provided. Please provide an array of URLs.");
+        .json({ error: "No URLs provided. Please provide an array of URLs." });
+      return;
     }
 
     // Creates a client
@@ -45,7 +37,7 @@ exports.uploadImages = functions.https.onRequest(
         functions.logger.info("url", url);
         await storage.bucket("images").upload(url);
 
-        return res.status(200).json("Images uploaded successfully.");
+        res.status(200).json("Images uploaded successfully.");
       }
       res.sendStatus(200);
     } catch (error) {
@@ -56,7 +48,7 @@ exports.uploadImages = functions.https.onRequest(
 );
 
 exports.statusCallback = functions.https.onRequest(
-  async (req: Request, res: Response): Promise<any> => {
+  async (req: Request, res: Response): Promise<void> => {
     initialize();
     const {
       twilio: { authToken },
@@ -229,10 +221,12 @@ async function deliverMessage(
         ref.path
       )} successfully. MessageSid: ${String(info.messageSid)}`
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     update["delivery.state"] = "ERROR";
-    update["delivery.errorCode"] = `${error.code}`;
-    update["delivery.errorMessage"] = `${error.message} ${error.moreInfo}`;
+    if (error instanceof Error) {
+      update["delivery.errorCode"] = `${error.name}`;
+      update["delivery.errorMessage"] = `${error.message}`;
+    }
     functions.logger.error(
       `Error when delivering message: ${String(ref.path)}: ${String(error)}`
     );
@@ -393,8 +387,9 @@ async function processWrite(
 exports.findMessage = functions.firestore
   .document("messages/{messageId}")
   .onWrite(
-    // eslint-disable-next-line max-len
-    async (change: functions.Change<FirebaseFirestore.DocumentSnapshot>) => {
+    async (
+      change: functions.Change<FirebaseFirestore.DocumentSnapshot>
+    ): Promise<void> => {
       initialize();
       try {
         // Document has been created, initialize the delivery state
@@ -413,36 +408,9 @@ exports.findMessage = functions.firestore
   );
 
 exports.incomingMessage = functions.https.onRequest(
-  async (req: Request, res: Response): Promise<any> => {
+  async (req: Request, res: Response): Promise<void> => {
     initialize();
-    // const {
-    //   twilio: { authToken },
-    // } = config;
-    // const signature = req.get("x-twilio-signature");
-    // const url = getFunctionsUrl("incomingMessage");
-    // const params = req.body;
-    // if (!signature) {
-    //   return res
-    //     .type("text/plain")
-    //     .status(400)
-    //     .send(
-    //       "No signature header error - X-Twilio-Signature header does not exist, maybe this request is not coming from Twilio."
-    //     );
-    // }
-    // if (typeof authToken !== "string") {
-    //   return res
-    //     .type("text/plain")
-    //     .status(500)
-    //     .send(
-    //       "Webhook Error - we attempted to validate this request without first configuring our auth token."
-    //     );
-    // }
-    // if (!validateRequest(authToken, signature, url, params)) {
-    //   return res
-    //     .type("text/plain")
-    //     .status(403)
-    //     .send("Twilio Request Validation Failed");
-    // }
+
     const {
       MessageSid,
       From,
@@ -456,191 +424,59 @@ exports.incomingMessage = functions.https.onRequest(
       FromZip,
     } = req.body;
 
-    if (typeof MessageSid !== "string") {
-      return res
-        .type("text/plain")
-        .status(400)
-        .send("Webhook error - No MessageSid found.");
+    if (!MessageSid) {
+      res.status(400).send("Missing MessageSid");
+      return;
     }
 
-    const filteredMediaImages = await returnIncomingMedia(
-      NumMedia,
-      req.body,
-      "image/"
-    );
-    functions.logger.info(JSON.stringify(filteredMediaImages));
-    const filteredMediaDocuments = await returnIncomingMedia(
-      NumMedia,
-      req.body,
-      "application/"
-    );
-
-    const incomingMessage = {
-      documentUrl: filteredMediaDocuments,
-      mediaUrl: filteredMediaImages,
-      from: From,
-      direction: "inbound",
-      body: Body,
-      delivery: {
-        state: SmsStatus,
-        startTime: {
-          seconds: null,
-          nanoseconds: 0,
-        },
-        info: {
-          dateSent: null,
-          numSegments: NumSegments,
-          dateUpdated: {
-            seconds: null,
-            nanoseconds: 0,
-          },
-          numMedia: NumMedia,
-          status: SmsStatus,
-          messagingServiceSid: null,
-          messageSid: MessageSid,
-          dateCreated: {
-            seconds: new Date().getTime() / 1000,
-            nanoseconds: 0,
-          },
-        },
-        errorCode: null,
-        leaseExpireTime: null,
-        endTime: {
-          seconds: null,
-          nanoseconds: 0,
-        },
-        errorMessage: null,
-      },
-      to: To,
-      sid: MessageSid,
-      userId: "",
-      dateCreated: new Date().toISOString(),
-    };
-
-    const userCollection = adminFirestore().collection("Users");
     functions.logger.log(
-      `Attempting to identify the user who sent the message from phone number: ${From}`
+      `Incoming message from ${From} with SID ${MessageSid}`
     );
 
-    // notify the application client using NOVU notifications
-    const novu = new Novu(process.env.NOVU_API_KEY || "");
-    // ! remember that for development testing you need to keep the NOVU_DEVELOPMENT_SUBSCRIBER environment variable set, and NEVER use the production subscriber
-    const novuSubscriber = process.env.IS_FIREBASE_CLI
-      ? process.env.NOVU_DEVELOPMENT_SUBSCRIBER
-      : process.env.NOVU_PRODUCTION_SUBSCRIBER;
+    const collection = adminFirestore().collection(config.messageCollection);
 
     try {
-      const user = await userCollection
-        .where("phone", "==", From)
+      const query = await collection
+        .where("delivery.info.messageSid", "==", MessageSid)
         .limit(1)
         .get();
 
-      if (user.empty) {
-        functions.logger.warn(
-          `Could not find user document for message with SID: ${MessageSid} and From: ${From}`
+      if (query.empty) {
+        functions.logger.log(
+          `No message found in Firestore for SID ${MessageSid}, ignoring incoming message.`
         );
-
-        try {
-          await novu.trigger("inbound-sms", {
-            to: {
-              subscriberId: novuSubscriber ?? "",
-            },
-            payload: {
-              message: `${From}: ${Body} - ${FromCity}, ${FromState}, ${FromZip}`,
-            },
-          });
-        } catch (error) {
-          functions.logger.error(
-            "There was an error trying to send the notification of a new message to the client"
-          );
-          return Promise.reject(error);
-        }
-
-        // create a user document for the incoming message
-        const newUser = {
-          activeUser: true,
-          email: null,
-          firstname: "Usuario",
-          fullname: "Usuario Desconocido",
-          gender: "Masculino",
-          insuranceCompany: null,
-          lastname: "Desconocido",
-          notes: "",
-          phone: From,
-          secondLastname: "",
-          secondName: "",
-        };
-
-        try {
-          const userRef = adminFirestore().collection("Users").doc();
-          const conversationRef = userRef.collection("conversations").doc();
-
-          await adminFirestore().runTransaction(async (transaction) => {
-            transaction.set(userRef, newUser);
-            incomingMessage.userId = userRef.id;
-            transaction.set(conversationRef, incomingMessage);
-            functions.logger.info(
-              `Saved conversation in the user's conversation: ${userRef.id}`
-            );
-            return Promise.resolve();
-          });
-        } catch (error) {
-          functions.logger.error(
-            "There was an error trying to save the unknown user and user message in the database"
-          );
-          return Promise.reject(error);
-        }
-      } else {
-        functions.logger.log(`Found user: ${user.docs[0].id}`);
-
-        try {
-          await novu.trigger("inbound-sms", {
-            to: {
-              subscriberId: novuSubscriber ?? "",
-            },
-            payload: {
-              message: `${
-                user.docs[0].data().fullname
-              }:  ${Body} - ${FromCity}, ${FromState}, ${FromZip}`,
-            },
-          });
-        } catch (error) {
-          functions.logger.error(
-            "There was an error trying to send the notification of a new message to the client"
-          );
-          return Promise.reject(error);
-        }
-
-        incomingMessage.userId = user.docs[0].id;
-
-        try {
-          // save the message in the user's conversation sub-collection
-          await adminFirestore().runTransaction((transaction) => {
-            transaction.set(
-              adminFirestore()
-                .collection("Users")
-                .doc(user.docs[0].id)
-                .collection("conversations")
-                .doc(incomingMessage.sid),
-              incomingMessage
-            );
-            return Promise.resolve();
-          });
-        } catch (error) {
-          functions.logger.error(
-            "There was an error trying to save the message in the user's conversation sub-collection"
-          );
-          return Promise.reject(error);
-        }
+        res.sendStatus(200);
+        return;
       }
-      functions.logger.log("End of incomingMessage processing function.");
+
+      const doc = query.docs[0];
+
+      // Update the message document with the incoming data
+      await adminFirestore().runTransaction((transaction) => {
+        transaction.update(doc.ref, {
+          "incoming.body": Body,
+          "incoming.from": From,
+          "incoming.to": To,
+          "incoming.numSegments": NumSegments,
+          "incoming.smsStatus": SmsStatus,
+          "incoming.numMedia": NumMedia,
+          "incoming.fromCity": FromCity,
+          "incoming.fromState": FromState,
+          "incoming.fromZip": FromZip,
+          "delivery.info.status": "received",
+          "delivery.info.timestamp": fv,
+        });
+      });
+
+      functions.logger.log(
+        `Updated message document for SID ${MessageSid} with incoming data.`
+      );
     } catch (error) {
-      functions.logger.error(error);
-      return Promise.reject(error);
+      functions.logger.error(
+        `Error processing incoming message with SID ${MessageSid}: ${error}`
+      );
     }
 
-    res.contentType("text/xml");
-    res.send(new twiml.MessagingResponse().toString());
-    return;
+    res.status(200).send("Processing completed successfully.");
   }
 );

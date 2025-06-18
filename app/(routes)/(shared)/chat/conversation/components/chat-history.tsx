@@ -1,13 +1,16 @@
+"use client";
+
 import {
   ChatBubbleOvalLeftEllipsisIcon,
   CheckIcon,
   ClockIcon,
   ExclamationCircleIcon,
 } from "@heroicons/react/24/outline";
-import type { Message, UserSchema } from "types/global";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
+import type { Message } from "types/global";
+import { UserContext } from "@/global-hooks/useUser";
 
 const formatDate = (date: Date) => {
   const today = new Date();
@@ -135,13 +138,8 @@ const formatTime = (date: Date) => {
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 };
 
-export const ChatHistory = ({
-  messages,
-  user,
-}: {
-  messages: Message[];
-  user: UserSchema;
-}) => {
+export const ChatHistory = ({ messages }: { messages: Message[] }) => {
+  const { selectedUser } = useContext(UserContext);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [shouldAutoScroll, setShouldAutoScroll] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -172,13 +170,13 @@ export const ChatHistory = ({
 
   // Reset initialization when user changes
   useEffect(() => {
-    const userId = user.fireUID;
+    const userId = selectedUser?.fireUID;
     if (currentUserId !== userId) {
       setIsInitialized(false);
       setShouldAutoScroll(true);
-      setCurrentUserId(userId);
+      setCurrentUserId(userId ?? null);
     }
-  }, [user, currentUserId]);
+  }, [selectedUser, currentUserId]);
 
   // Initial scroll to bottom without animation
   useEffect(() => {
@@ -201,7 +199,7 @@ export const ChatHistory = ({
   return !messages.length ? (
     <div className="flex-1 overflow-y-auto p-4 bg-gray-50 scroll-smooth">
       <div className="flex flex-col items-center justify-center h-full text-center">
-        <div className="bg-gray-200 rounded-full p-4 mb-4">
+        <div className="bg-gray-100 rounded-full p-4 mb-4">
           <ChatBubbleOvalLeftEllipsisIcon className="mx-auto size-8 text-gray-400" />
         </div>
         <h3 className="text-lg font-medium text-gray-700 mb-1">
@@ -234,16 +232,17 @@ export const ChatHistory = ({
               <div
                 key={message.sid}
                 className={`flex ${
-                  message.from === user.user.personal_info.phone
+                  message.from === selectedUser?.user.personal_info.phone
                     ? "justify-start"
                     : "justify-end"
                 }`}
               >
-                {message.from === user.user.personal_info.phone && (
+                {message.from === selectedUser?.user.personal_info.phone && (
                   <div className="relative size-8 rounded-full overflow-hidden mr-2 shrink-0">
                     <Image
                       src={
-                        user.user.personal_info.avatar || "/default-avatar.png"
+                        selectedUser?.user.personal_info.avatar ||
+                        "/default-avatar.png"
                       }
                       alt="User Avatar"
                       width={32}
@@ -254,7 +253,7 @@ export const ChatHistory = ({
                 )}
                 <div
                   className={`max-w-[75%] ${
-                    message.from === user.user.personal_info.phone
+                    message.from === selectedUser?.user.personal_info.phone
                       ? "bg-blue-500 text-white"
                       : "bg-white text-gray-800"
                   } rounded-2xl px-4 py-2 shadow-xs max-w-md`}
@@ -262,13 +261,14 @@ export const ChatHistory = ({
                   <p>{message.body}</p>
                   <div
                     className={`flex items-end justify-end gap-2 text-xs mt-1 ${
-                      message.from === user.user.personal_info.phone
+                      message.from === selectedUser?.user.personal_info.phone
                         ? "text-blue-100"
                         : "text-gray-500"
                     }`}
                   >
                     <span>{formatTime(new Date(message.dateSent))}</span>
-                    {message.from !== user.user.personal_info.phone && (
+                    {message.from !==
+                      selectedUser?.user.personal_info.phone && (
                       <div className="shrink-0">
                         {renderStatusIndicator(message.status)}
                       </div>

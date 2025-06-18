@@ -40,7 +40,11 @@ export const useDeleteUserForm = () => {
         }
       }
 
-      setMultipleUsersToDelete(usersToDelete.map((user) => user.id));
+      setMultipleUsersToDelete(
+        usersToDelete
+          .map((user) => user?.id)
+          .filter((id): id is string => typeof id === "string")
+      );
     },
     [firebaseUsers]
   );

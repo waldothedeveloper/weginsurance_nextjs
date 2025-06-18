@@ -13,8 +13,8 @@ import {
   where,
 } from "firebase/firestore";
 
-import { db } from "@/lib/firebaseConfig";
 import { UserSchema } from "types/global";
+import { db } from "@/lib/firebaseConfig";
 
 const userConverter: FirestoreDataConverter<UserSchema> = {
   toFirestore(user) {
@@ -27,7 +27,7 @@ const userConverter: FirestoreDataConverter<UserSchema> = {
 };
 
 export async function getUsers(db: Firestore) {
-  let q = query(collection(db, "Users"), orderBy("firstname"));
+  const q = query(collection(db, "Users"), orderBy("firstname"));
 
   const results = await getDocs(q);
   return results.docs.map((doc) => {
@@ -78,14 +78,14 @@ export const doesFirebaseUserExist = async (
 };
 
 export const getSingleFirebaseUser = async (
-  userId: string,
-  dbParam: Firestore
+  userId: string | null | undefined,
+  dbParam?: Firestore
 ): Promise<UserSchema | null> => {
   if (!userId) throw new Error("Please provide a user ID");
-  if (!dbParam) throw new Error("Please provide a Firestore instance");
+  // if (!dbParam) throw new Error("Please provide a Firestore instance");
 
   try {
-    const docRef = doc(dbParam, "Users", userId);
+    const docRef = doc(dbParam ?? db, "Users", userId);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {

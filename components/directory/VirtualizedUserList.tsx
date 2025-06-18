@@ -18,7 +18,6 @@ import { useRouter } from "next/router";
 
 export type Ref = HTMLUListElement;
 
-// eslint-disable-next-line no-unused-vars
 export const VirtualizedUserList = ({
   isProcessingInfo,
 }: {

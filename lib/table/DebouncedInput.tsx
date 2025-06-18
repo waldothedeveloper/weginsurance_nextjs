@@ -9,7 +9,7 @@ export const DebouncedInput = ({
   ...props
 }: {
   value: string | number;
-  // eslint-disable-next-line no-unused-vars
+
   onChange: (value: string | number) => void;
   debounce?: number;
   cssValues: string;

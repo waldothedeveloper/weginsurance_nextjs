@@ -35,7 +35,7 @@ export const useGetMessagesNewerThanLastDayHeader = (
         // setIsLoadingNewDateHeaders(true);
         const newDateHeaders = messages.filter((message: Message | Day) => {
           const lastDateHeader =
-            dateHeaders[dateHeaders.length - 1].dateCreated;
+            dateHeaders[dateHeaders.length - 1]!.dateCreated;
 
           return (
             dayjs(message.dateCreated).format("YYYY-MM-DD") > lastDateHeader

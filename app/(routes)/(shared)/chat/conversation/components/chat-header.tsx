@@ -1,11 +1,75 @@
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+"use client";
 
-import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { useContext, useEffect, useState } from "react";
+
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
-import type { UserSchema } from "types/global";
+import { UserContext } from "@/global-hooks/useUser";
+import { formatPhoneNumberToNationalUSAformat } from "@/utils/formatPhoneNumber";
+import { useSearchParams } from "next/navigation";
 
-export const ChatHeader = ({ user }: { user: UserSchema }) => {
+export const ChatHeader = () => {
+  const searchParams = useSearchParams();
+
+  const userId = searchParams?.get("userId");
+  const { selectedUser, setSelectedUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (userId && !selectedUser) {
+      setLoading(true);
+      setError(null);
+      import("@/_lib/firebase/firestore")
+        .then(({ getSingleFirebaseUser }) => {
+          return getSingleFirebaseUser(userId);
+        })
+        .then((user) => {
+          setSelectedUser(user);
+        })
+        .catch((error) => {
+          setError(
+            `Error fetching user data. Please try again later. ${error}`
+          );
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, setSelectedUser]);
+
+  if (loading || !selectedUser) {
+    return (
+      <div className="border-b border-slate-200 p-5">
+        <div className="sm:flex sm:items-center sm:justify-between">
+          <div className="flex items-start space-x-5 ml-3">
+            <div className="shrink-0">
+              <div className="relative">
+                <div className="h-16 w-16 rounded-full bg-slate-200 animate-pulse"></div>
+              </div>
+            </div>
+            <div className="pt-1.5">
+              <div className="h-6 w-32 bg-slate-200 rounded-md animate-pulse"></div>
+              <div className="h-4 w-24 bg-slate-200 rounded-md mt-2 animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="border-b border-slate-200 p-5">
+        <div className="bg-red-50 border border-red-500 text-red-700 rounded-md p-4">
+          <p className="text-sm font-medium">Error: {error}</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="border-b border-slate-200 p-5">
       <div className="sm:flex sm:items-center sm:justify-between">
@@ -13,8 +77,8 @@ export const ChatHeader = ({ user }: { user: UserSchema }) => {
           <div className="shrink-0">
             <div className="relative">
               <Image
-                alt={user.user.personal_info?.firstname}
-                src={user.user.personal_info?.avatar || "/images/avatar.png"}
+                alt={selectedUser?.user.personal_info?.firstname}
+                src={selectedUser?.user.personal_info?.avatar}
                 className="size-14 rounded-full"
                 width={64}
                 height={64}
@@ -32,10 +96,10 @@ export const ChatHeader = ({ user }: { user: UserSchema }) => {
         */}
           <div className="pt-1.5">
             <h1 className="text-2xl font-bold text-slate-900">
-              {user.user ? (
+              {selectedUser ? (
                 <>
-                  {user.user.personal_info.firstname}{" "}
-                  {user.user.personal_info.lastname}
+                  {selectedUser.user.personal_info.firstname}{" "}
+                  {selectedUser.user.personal_info.lastname}
                 </>
               ) : (
                 <span className="text-slate-400 font-normal">
@@ -45,7 +109,7 @@ export const ChatHeader = ({ user }: { user: UserSchema }) => {
             </h1>
             <p className="text-sm text-slate-500">
               {formatPhoneNumberToNationalUSAformat(
-                user.user.personal_info.phone
+                selectedUser?.user.personal_info.phone
               )}
             </p>
           </div>
